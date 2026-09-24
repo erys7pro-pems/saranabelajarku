@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Ungkapan Bahasa Māori</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 13px;
+            color: #999;
+            text-align: right;
+        }
+        
+        .quiz-card {
+            margin-bottom: 2rem;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+            padding: 1.25rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .maori-text {
+            font-style: italic;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .option-btn {
+            padding: 0.875rem 1.25rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            text-align: left;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .option-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateX(4px);
+        }
+        
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .option-btn.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .option-btn.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 15px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .feedback.show {
+            display: block;
+        }
+        
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+        
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .results-screen {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .score-number {
+            font-size: 48px;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .results-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .percentage {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            color: #667eea;
+        }
+        
+        .results-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .stat-box.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .stat-box.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+        
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* ===== Kotak keterangan grammar ===== */
+        .grammar-box {
+            margin-top: 1rem;
+            padding: 1rem 1.25rem;
+            background: #eef2ff;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .grammar-box.show {
+            display: block;
+        }
+        
+        .grammar-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4c51bf;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .grammar-pattern {
+            display: inline-block;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            color: #4c51bf;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .grammar-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        /* ===== Tata letak 3 kolom: Benar | Kuis | Salah ===== */
+        .layout {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) minmax(0, 680px) minmax(220px, 1fr);
+            grid-template-areas: "benar kuis salah";
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .layout .container {
+            grid-area: kuis;
+            margin: 0;
+            width: 100%;
+        }
+        
+        .side-panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 40px);
+        }
+        
+        .panel-benar { grid-area: benar; }
+        .panel-salah { grid-area: salah; }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .panel-benar .panel-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .panel-salah .panel-header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .panel-count {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            padding: 2px 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .panel-list {
+            list-style: none;
+            padding: 0.75rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            min-height: 80px;
+        }
+        
+        .panel-empty {
+            color: #aaa;
+            font-size: 13px;
+            text-align: center;
+            padding: 1rem 0.5rem;
+        }
+        
+        .panel-item {
+            padding: 0.7rem 0.85rem;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .panel-benar .panel-item {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+        
+        .panel-salah .panel-item {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #7f1d1d;
+        }
+        
+        .panel-item .item-q {
+            font-style: italic;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .panel-item .item-wrong {
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+        
+        .panel-item .item-right {
+            font-weight: 600;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Tablet: kuis di atas, dua panel berdampingan di bawahnya */
+        @media (max-width: 980px) {
+            .layout {
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas:
+                    "kuis kuis"
+                    "benar salah";
+            }
+            .side-panel {
+                position: static;
+                max-height: 360px;
+            }
+        }
+        
+        /* HP: semua ditumpuk */
+        @media (max-width: 560px) {
+            .layout {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "kuis"
+                    "benar"
+                    "salah";
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+    
+    <!-- Panel BENAR (kiri) -->
+    <aside class="side-panel panel-benar">
+        <div class="panel-header">
+            <span>✓ Jawaban Benar</span>
+            <span class="panel-count" id="panelBenarCount">0</span>
+        </div>
+        <ul class="panel-list" id="panelBenarList"></ul>
+    </aside>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🌏 Kuis Ungkapan Bahasa Māori</h1>
+            <p>Pilih terjemahan yang benar dari setiap ungkapan</p>
+        </div>
+        
+        <div class="content">
+            <div id="quizContainer">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="questionCount">1</span> dari <span id="totalQuestions">100</span>
+                    </div>
+                </div>
+                
+                <div class="quiz-card">
+                    <div class="question-text">
+                        <span class="maori-text" id="questionText"></span>
+                    </div>
+                    
+                    <div class="options" id="optionsContainer"></div>
+                    
+                    <div class="feedback" id="feedback"></div>
+                    
+                    <div class="grammar-box" id="grammarBox">
+                        <div class="grammar-title">📖 Struktur Kalimat</div>
+                        <div class="grammar-pattern" id="grammarPattern"></div>
+                        <div class="grammar-desc" id="grammarDesc"></div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Selanjutnya</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="resultsContainer" class="hidden">
+                <div class="results-screen">
+                    <div class="score-circle">
+                        <div class="score-number" id="scoreNumber">0</div>
+                        <div class="score-text">poin</div>
+                    </div>
+                    
+                    <h2 class="results-title">Hasil Akhir Anda</h2>
+                    
+                    <div class="percentage" id="percentage">0%</div>
+                    
+                    <div class="results-stats">
+                        <div class="stat-box success">
+                            <div class="stat-icon">✓</div>
+                            <div class="stat-number" id="correctCount">0</div>
+                            <div class="stat-label">Jawaban Benar</div>
+                        </div>
+                        <div class="stat-box danger">
+                            <div class="stat-icon">✕</div>
+                            <div class="stat-number" id="wrongCount">0</div>
+                            <div class="stat-label">Jawaban Salah</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="width: 100%; margin-top: 2rem;">
+                        🔄 Ulangi Kuis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Panel SALAH (kanan) -->
+    <aside class="side-panel panel-salah">
+        <div class="panel-header">
+            <span>✕ Jawaban Salah</span>
+            <span class="panel-count" id="panelSalahCount">0</span>
+        </div>
+        <ul class="panel-list" id="panelSalahList"></ul>
+    </aside>
+    
+    </div>
+    
+    <script>
+        const quizData = [
+            { q: "Kia ora", a: "Halo / Hai", g: ["Kia + ora", "Kia adalah partikel harapan ('semoga'), ora berarti hidup/sehat. Harfiahnya 'semoga sehat'. Salam serbaguna yang juga dipakai untuk berterima kasih."] },
+            { q: "Mōrena", a: "Selamat pagi", g: ["Kata serapan (satu kata)", "Berasal dari kata Inggris 'morning' yang disesuaikan dengan bunyi bahasa Māori. Tidak ada struktur kalimat; berdiri sendiri sebagai salam pagi."] },
+            { q: "Ata mārie", a: "Pagi yang damai (Selamat pagi)", g: ["Kata benda + kata sifat", "Ata = pagi, mārie = damai/tenang. Kata sifat diletakkan setelah kata benda, sama seperti bahasa Indonesia."] },
+            { q: "Pō mārie", a: "Malam yang damai (Selamat malam)", g: ["Kata benda + kata sifat", "Pō = malam, mārie = damai. Pola sama dengan Ata mārie; lazim dipakai sebagai salam malam."] },
+            { q: "Haere rā", a: "Selamat tinggal (untuk orang yang pergi)", g: ["Kata kerja perintah + rā", "Haere = pergi (bentuk perintah tanpa subjek). Rā adalah partikel yang menyertai salam perpisahan. Diucapkan oleh yang tinggal kepada yang pergi."] },
+            { q: "E noho rā", a: "Selamat tinggal (untuk orang yang tinggal)", g: ["E + kata kerja + rā", "Noho = tinggal/duduk. E ... rā membingkai kata kerja sebagai perintah halus. Diucapkan oleh yang pergi kepada yang tinggal (kebalikan dari Haere rā)."] },
+            { q: "Ka kite anō", a: "Sampai jumpa lagi", g: ["Ka + kata kerja + anō", "Ka = penanda tindakan (di sini bermakna akan datang), kite = melihat, anō = lagi. Penanda waktu selalu diletakkan sebelum kata kerja."] },
+            { q: "Ko wai tō ingoa?", a: "Siapa nama Anda?", g: ["Ko + kata tanya + tō + kata benda", "Ko menandai kalimat identifikasi, wai = siapa, tō = milikmu (tunggal), ingoa = nama. Jawabannya berpola serupa: Ko [nama] tōku ingoa."] },
+            { q: "Kei te pēhea koe?", a: "Apa kabar?", g: ["Kei te + kata tanya + subjek", "Kei te menandai keadaan yang sedang berlangsung, pēhea = bagaimana, koe = kamu. Ciri utama kalimat Māori: predikat di depan, subjek di belakang."] },
+            { q: "Kei te pai ahau", a: "Saya baik-baik saja", g: ["Kei te + kata sifat + subjek", "Kei te = sedang (keadaan sekarang), pai = baik, ahau = saya. Predikat mendahului subjek. Jawaban alami untuk Kei te pēhea koe?"] },
+            { q: "Mōhio", a: "Saya tahu", g: ["Kata kerja statif (bentuk singkat)", "Mōhio = tahu. Bentuk lengkapnya memakai penanda dan subjek, mis. Kei te mōhio au ('saya tahu'). Bentuk tunggal di kuis ini adalah bentuk singkat."] },
+            { q: "Kāore au i te mōhio", a: "Saya tidak tahu", g: ["Kāore + subjek + i te + kata kerja", "Kāore = penanda negatif, au = saya, i te = penanda negatif untuk keadaan yang sedang berlangsung/lampau. Perhatikan: dalam kalimat negatif, subjek muncul sebelum kata kerja."] },
+            { q: "Ka pai", a: "Bagus", g: ["Ka + kata sifat", "Pai = baik. Ka di sini menyatakan penilaian sehingga bermakna 'bagus!' atau 'oke'. Ungkapan pendek untuk memuji."] },
+            { q: "Āe", a: "Ya", g: ["Kata jawaban", "Kata tunggal untuk 'ya'. Tidak memiliki struktur kalimat."] },
+            { q: "Kāo", a: "Tidak", g: ["Kata jawaban", "Kata tunggal untuk 'tidak' sebagai jawaban. Bedakan dari Kāore yang menandai negatif di dalam kalimat."] },
+            { q: "Tēnā koe", a: "Terima kasih (kepada satu orang)", g: ["Tēnā + koe", "Tēnā = itu (dekat lawan bicara), koe = kamu (tunggal). Umumnya dipakai sebagai salam formal kepada satu orang, dan dapat pula dipakai untuk berterima kasih."] },
+            { q: "Tēnā kōrua", a: "Terima kasih (kepada dua orang)", g: ["Tēnā + kōrua", "Kōrua = kalian berdua (dual). Bahasa Māori punya tiga tingkat jumlah: tunggal (koe), dual (kōrua), dan jamak tiga atau lebih (koutou)."] },
+            { q: "Tēnā koutou", a: "Terima kasih (kepada tiga orang atau lebih)", g: ["Tēnā + koutou", "Koutou = kalian (tiga orang atau lebih). Bandingkan dengan Tēnā koe (tunggal) dan Tēnā kōrua (dua orang)."] },
+            { q: "Tēnā rawa atu koe", a: "Terima kasih banyak", g: ["Tēnā + rawa atu + koe", "Rawa atu adalah penguat 'sekali/sangat' yang diselipkan setelah Tēnā untuk menekankan ucapan."] },
+            { q: "Aroha mai", a: "Maaf", g: ["Kata benda/kata kerja + mai", "Aroha = kasih/iba, mai = arah menuju pembicara. Harfiahnya 'tunjukkan kasih kepadaku', dipakai untuk minta maaf. Mai berlawanan dengan atu (menjauh)."] },
+            { q: "Nō hea koe?", a: "Anda dari mana?", g: ["Nō + kata tanya tempat + subjek", "Nō menandai asal, hea = mana, koe = kamu. Jawaban: Nō [tempat] ahau. Nama tempat tidak diberi artikel te."] },
+            { q: "He aha tēnei?", a: "Apa ini?", g: ["He aha + penunjuk", "He aha = apa (untuk benda), tēnei = ini. Penunjuk: tēnei = ini (dekat pembicara), tēnā = itu (dekat lawan bicara), tērā = itu (jauh dari keduanya)."] },
+            { q: "Haere mai", a: "Ayo masuk / Selamat datang", g: ["Kata kerja perintah + mai", "Haere = pergi/datang, mai = menuju pembicara. Jadi haere mai = 'datang ke sini'; kebalikannya haere atu = 'pergi menjauh'."] },
+            { q: "E hika!", a: "Ya ampun! / Astaga!", g: ["Kata seru", "Seruan untuk terkejut atau kagum. Diperlakukan sebagai ungkapan tetap, bukan kalimat dengan subjek dan predikat."] },
+            { q: "He waimarie!", a: "Beruntung sekali!", g: ["He + kata benda/kata sifat", "He menandai pernyataan atau seruan tentang sifat sesuatu. Waimarie = beruntung/keberuntungan."] },
+            { q: "E hoa mā", a: "Teman-teman", g: ["E + kata benda + mā", "E = partikel panggilan (vokatif), hoa = teman, mā menandai sebuah kelompok. Dipakai untuk menyapa banyak orang."] },
+            { q: "Kei te hiahia au ki te...", a: "Saya ingin...", g: ["Kei te + hiahia + subjek + ki te + kata kerja", "Hiahia = ingin. Ki te menghubungkan keinginan dengan kata kerja yang diinginkan. Contoh: Kei te hiahia au ki te kai ('saya ingin makan')."] },
+            { q: "He aha te wā?", a: "Jam berapa?", g: ["He aha + te + kata benda", "He aha = apa, te = artikel tentu, wā = waktu. Harfiahnya 'apa waktunya?' untuk menanyakan jam."] },
+            { q: "E hia te utu?", a: "Berapa harganya?", g: ["E hia + te + kata benda", "E hia = berapa (jumlah), te utu = harganya. E hia dipakai untuk menanyakan jumlah."] },
+            { q: "Kei te hiakai au", a: "Saya lapar", g: ["Kei te + kata sifat + subjek", "Hiakai = lapar. Keadaan fisik dinyatakan dengan pola Kei te + kata sifat + pronomina, seperti pada contoh keadaan berikutnya."] },
+            { q: "Kei te matewai au", a: "Saya haus", g: ["Kei te + kata sifat + subjek", "Matewai = haus. Pola keadaan fisik yang sama dengan Kei te hiakai au."] },
+            { q: "Kei te māuiui au", a: "Saya sakit", g: ["Kei te + kata sifat + subjek", "Māuiui = sakit. Pola keadaan fisik yang sama."] },
+            { q: "Kei te makariri au", a: "Saya kedinginan", g: ["Kei te + kata sifat + subjek", "Makariri = dingin. Kata ini juga bisa dipakai untuk benda, lihat Kua makariri te kai."] },
+            { q: "Kei te wera au", a: "Saya kepanasan", g: ["Kei te + kata sifat + subjek", "Wera = panas. Pola keadaan fisik yang sama."] },
+            { q: "Kei te ngenge au", a: "Saya lelah", g: ["Kei te + kata sifat + subjek", "Ngenge = lelah. Pola keadaan fisik yang sama."] },
+            { q: "Kei te pukumahi au", a: "Saya sibuk", g: ["Kei te + kata sifat + subjek", "Pukumahi = sibuk/giat bekerja. Pola keadaan yang sama."] },
+            { q: "He aha tō mahi?", a: "Apa pekerjaan Anda?", g: ["He aha + tō + kata benda", "Tō = milikmu, mahi = pekerjaan. Satu kata bisa berfungsi sebagai kata benda ('pekerjaan') atau kata kerja ('bekerja') tergantung posisinya."] },
+            { q: "Kei te ako au i te reo Māori", a: "Saya sedang belajar bahasa Māori", g: ["Kei te + kata kerja + subjek + i te + objek", "Ako = belajar (juga mengajar). I menandai objek langsung pada kalimat aktif; te reo Māori = bahasa Māori. Kei te = sedang berlangsung."] },
+            { q: "He aha tō whakaaro?", a: "Apa pendapat Anda?", g: ["He aha + tō + kata benda", "Whakaaro = pikiran/pendapat. Pola sama dengan He aha tō mahi?"] },
+            { q: "He pai tēnā", a: "Itu bagus", g: ["He + kata sifat + penunjuk", "Kata sifat (pai) berada di depan, benda yang dimaksud (tēnā = itu) di belakang. Harfiahnya 'baik itu'."] },
+            { q: "Kāore i te pai", a: "Itu tidak bagus", g: ["Kāore i te + kata sifat", "Bentuk negatif dari Kei te pai: Kāore i te menggantikan Kei te. Subjek dilesapkan sehingga bermakna '(itu) tidak baik'."] },
+            { q: "Kia kaha", a: "Semangat!", g: ["Kia + kata sifat", "Kia = semoga/hendaklah, kaha = kuat. Dipakai sebagai dorongan: 'jadilah kuat'. Pola yang sama muncul pada Kia tūpato dan Kia tūturu."] },
+            { q: "Kia ora anō", a: "Terima kasih lagi", g: ["Kia ora + anō", "Anō = lagi. Menambahkan makna 'sekali lagi' pada Kia ora."] },
+            { q: "He aha te take?", a: "Apa alasannya? / Mengapa?", g: ["He aha + te + kata benda", "Take = sebab/alasan. Harfiahnya 'apa alasannya?', dipakai sebagai 'mengapa?'."] },
+            { q: "Kua makariri te kai", a: "Makanan sudah dingin", g: ["Kua + kata sifat + subjek", "Kua menandai keadaan yang sudah tercapai ('sudah'). Makariri = dingin, te kai = makanannya. Predikat di depan, subjek di belakang."] },
+            { q: "Kia tūpato!", a: "Hati-hati!", g: ["Kia + kata sifat", "Tūpato = berhati-hati/waspada. Kia + kata sifat = perintah atau harapan."] },
+            { q: "Me haere tāua", a: "Ayo kita pergi", g: ["Me + kata kerja + subjek", "Me = 'sebaiknya/mari', haere = pergi, tāua = kita berdua (aku dan kamu). Untuk tiga orang atau lebih dipakai tātou (bandingkan Ka rere atu tātou)."] },
+            { q: "Ka taea e koe te āwhina i ahau?", a: "Bisakah Anda membantu saya?", g: ["Ka taea + e + pelaku + te + kata kerja + i + objek", "Taea = dapat dilakukan/mampu. Pelaku diberi penanda e (e koe = oleh kamu); te āwhina = membantu; i ahau = objeknya, 'saya'."] },
+            { q: "He uaua tēnei", a: "Ini sulit", g: ["He + kata sifat + penunjuk", "Uaua = sulit, tēnei = ini. Pola sama dengan He pai tēnā."] },
+            { q: "He māmā tēnei", a: "Ini mudah", g: ["He + kata sifat + penunjuk", "Māmā = mudah (juga 'ringan'). Pola sama dengan He uaua tēnei."] },
+            { q: "Kātahi anō!", a: "Baru saja!", g: ["Seruan: Kātahi + anō", "Kātahi = baru sekali/untuk pertama kali, anō = lagi/sungguh. Umumnya diikuti benda: Kātahi anō te ... ('baru kali ini ada ...'). Sering menyatakan keterkejutan."] },
+            { q: "Ka rere atu tātou", a: "Ayo kita lari", g: ["Ka + kata kerja + atu + subjek", "Atu = arah menjauh dari pembicara. Tātou = kita (tiga orang atau lebih, termasuk yang diajak bicara). Catatan: rere lazimnya berarti terbang/mengalir/melompat; 'lari' biasanya oma."] },
+            { q: "He pai ki ahau...", a: "Saya suka...", g: ["He + kata sifat + ki + orang", "Harfiahnya 'baik bagi saya', artinya 'saya suka'. Ki = kepada/bagi. Setelah ki dipakai bentuk ahau."] },
+            { q: "Kāore au e pai ki...", a: "Saya tidak suka...", g: ["Kāore + subjek + e + kata sifat + ki", "Kāore ... e menyatakan negatif untuk keadaan umum/kebiasaan atau masa depan. Bandingkan dengan Kāore i te (untuk yang sedang berlangsung/lampau)."] },
+            { q: "Ka pai ngā mea katoa", a: "Semuanya akan baik-baik saja", g: ["Ka + kata sifat + ngā + kata benda + katoa", "Ngā = artikel tentu jamak (kebalikan te), mea = hal, katoa = semua. Bahasa Māori menandai jamak lewat artikel, bukan akhiran pada kata benda."] },
+            { q: "Kaua e wareware", a: "Jangan lupakan", g: ["Kaua e + kata kerja", "Kaua e = larangan ('jangan'), wareware = lupa. Pola untuk perintah negatif."] },
+            { q: "Nāku te rourou, nāu te rourou", a: "Dengan keranjangku dan keranjangmu (bersama-sama kita bisa)", g: ["Nā + pronomina, te + kata benda", "Peribahasa (whakataukī). Nāku = milikku/oleh aku, nāu = milikmu/oleh kamu, te rourou = keranjang makanan. Pengulangan kalimat menekankan pesan kerja sama."] },
+            { q: "He aha te mea pai?", a: "Apa yang terbaik?", g: ["He aha + te mea + kata sifat", "Mea = hal/benda, jadi te mea pai = 'hal yang baik'. Kata sifat mengikuti kata bendanya."] },
+            { q: "Mō tō whānau", a: "Untuk keluargamu", g: ["Mō + tō + kata benda", "Mō = untuk/tentang, tō whānau = keluargamu. Frasa preposisi tanpa kata kerja."] },
+            { q: "Kei te tūmanako ahau", a: "Saya berharap", g: ["Kei te + kata kerja + subjek", "Tūmanako = berharap. Pola kalimat progresif yang sama dengan Kei te pai ahau."] },
+            { q: "Kāore e taea te pēnei", a: "Tidak bisa seperti ini", g: ["Kāore e taea + te + ...", "Taea = dapat/mampu, jadi kāore e taea = tidak bisa/tidak mungkin. Pēnei = seperti ini."] },
+            { q: "He wā pai", a: "Waktu yang baik", g: ["He + kata benda + kata sifat", "Wā = waktu, pai = baik. Kata sifat mengikuti kata benda."] },
+            { q: "Kei te haere koe ki hea?", a: "Anda mau pergi ke mana?", g: ["Kei te + kata kerja + subjek + ki + kata tanya tempat", "Ki = ke (tujuan), hea = mana. Setelah ki, hea tidak memakai artikel te."] },
+            { q: "Mō te aha?", a: "Untuk apa?", g: ["Mō + te + kata tanya", "Mō = untuk, te aha = apa. Harfiahnya 'untuk apa?'."] },
+            { q: "Mōku anake", a: "Hanya untuk saya", g: ["Mō + -ku + anake", "Mō + akhiran -ku = untukku, anake = saja/satu-satunya."] },
+            { q: "Tāne, wahine, tamaiti", a: "Pria, wanita, anak", g: ["Daftar kata benda tanpa artikel", "Tāne = pria, wahine = wanita, tamaiti = anak. Bentuk jamaknya: tāne (tetap), wāhine, tamariki. Sebagian jamak dibentuk dengan perubahan kata, bukan akhiran."] },
+            { q: "Te reo Māori", a: "Bahasa Māori", g: ["Te + kata benda + pewatas", "Te = artikel tentu tunggal, reo = bahasa, Māori = pewatas. Pewatas diletakkan setelah kata benda."] },
+            { q: "Aotearoa", a: "Selandia Baru", g: ["Nama tempat", "Nama tempat dalam bahasa Māori tidak memakai artikel. Ao (awan) + tea (putih) + roa (panjang), sering diterjemahkan 'tanah awan putih panjang'."] },
+            { q: "Māori", a: "Orang Māori / Bahasa Māori", g: ["Kata benda / pewatas", "Berfungsi sebagai kata benda (orang) atau pewatas (te reo Māori). Tidak berubah bentuk untuk jamak; jumlah ditandai lewat artikel (te / ngā)."] },
+            { q: "Ngā mihi", a: "Salam / Terima kasih", g: ["Ngā + kata benda", "Ngā = artikel jamak, mihi = salam/ucapan hormat. Harfiahnya 'salam-salam'; dipakai untuk menutup surat atau berterima kasih."] },
+            { q: "E kore e taea e au", a: "Saya tidak bisa", g: ["E kore e + kata kerja + e + pelaku", "E kore = tidak akan (negatif untuk masa depan/umum), taea = bisa, e au = oleh saya. Pelaku pada taea selalu diawali e."] },
+            { q: "Ka taea e au", a: "Saya bisa", g: ["Ka taea + e + pelaku", "Kebalikan positif dari E kore e taea e au. Ka taea = bisa/dapat dilakukan, e au = oleh saya."] },
+            { q: "He pai tō āhua", a: "Anda terlihat baik", g: ["He + kata sifat + tō + kata benda", "Āhua = penampilan/keadaan. Harfiahnya 'baik penampilanmu'. Predikat (He pai) di depan, hal yang dinilai di belakang."] },
+            { q: "Kia tūturu", a: "Jadilah tulus", g: ["Kia + kata sifat", "Tūturu = asli/sejati. Kia + kata sifat mengungkapkan harapan atau perintah ('jadilah sejati/tulus')."] },
+            { q: "He aha te mahi i te pō nei?", a: "Apa yang harus dilakukan malam ini?", g: ["He aha te mahi + i + keterangan waktu", "I te pō nei = pada malam ini (nei = ini, dekat pembicara). Catatan: i lazimnya dipakai untuk waktu lampau, sedangkan waktu yang akan datang lazimnya memakai ā (ā te pō nei); sebaiknya bentuk ini dikonfirmasi dengan penutur."] },
+            { q: "Mauri ora!", a: "Kesehatan dan kekuatan!", g: ["Kata benda + kata sifat", "Mauri = daya hidup, ora = hidup/sehat. Dipakai sebagai salam atau ungkapan doa kesehatan."] },
+            { q: "Whakawātea", a: "Santai / Tenang", g: ["Whaka- + kata sifat", "Whaka- adalah awalan pembentuk kata kerja sebab-akibat; wātea = bebas/kosong. Jadi bermakna 'membebaskan/mengosongkan'. Makna 'santai' bergantung pada konteks."] },
+            { q: "E kore e pai", a: "Tidak akan berhasil", g: ["E kore e + kata sifat", "E kore e = tidak akan, pai = baik/berhasil. Pola sama dengan E kore e taea e au."] },
+            { q: "Me hoki tāua ki te kāinga", a: "Ayo kita pulang", g: ["Me + kata kerja + subjek + ki te + tempat", "Hoki = kembali, ki te kāinga = ke rumah. Ki menandai arah tujuan."] },
+            { q: "Ka mutu!", a: "Selesai!", g: ["Ka + kata sifat/kata kerja", "Mutu = selesai/berakhir. Ka menandai keadaan baru sehingga bermakna 'sudah selesai!'."] },
+            { q: "Pōuriuri", a: "Sangat sedih", g: ["Kata sifat dengan pengulangan", "Bentuk pengulangan dari pōuri (gelap/sedih). Pengulangan suku kata di sini menambah intensitas makna."] },
+            { q: "Kei te pai tō tinana?", a: "Apakah tubuh Anda baik-baik saja?", g: ["Kei te + kata sifat + tō + kata benda", "Tinana = tubuh. Pertanyaan ya/tidak dibentuk hanya lewat intonasi; urutan kalimat tidak berubah."] },
+            { q: "Waiho māku", a: "Biar saya yang lakukan", g: ["Kata kerja perintah + mā + pronomina", "Waiho = biarkan; māku = bagi saya (untuk saya lakukan). Mā- menandai pelaku/penerima untuk hal yang akan dilakukan."] },
+            { q: "He rawe tō mahi!", a: "Pekerjaanmu luar biasa!", g: ["He + kata sifat + tō + kata benda", "Rawe = hebat/luar biasa, tō mahi = pekerjaanmu. Dipakai untuk memuji."] },
+            { q: "He aha i pērā ai?", a: "Kenapa begitu?", g: ["He aha + i + pērā + ai", "Pērā = seperti itu. I menandai lampau, ai adalah partikel pelengkap dalam pertanyaan sebab. Harfiahnya 'apa yang membuatnya begitu?'."] },
+            { q: "Tino pai tēnā!", a: "Itu sangat bagus!", g: ["Tino + kata sifat + penunjuk", "Tino = sangat/benar-benar, diletakkan sebelum kata sifat."] },
+            { q: "Kia pūrotu", a: "Jadilah cantik", g: ["Kia + kata sifat", "Pola Kia + kata sifat, sama dengan Kia kaha. Makna tepat pūrotu sebaiknya dicek di kamus (di kuis ini: 'cantik')."] },
+            { q: "Tōna pai", a: "Seberapa bagusnya!", g: ["Tōna + kata sifat", "Tōna = milik dia; dipadukan dengan kata sifat menghasilkan seruan 'betapa baiknya!'. Kata sifat diperlakukan seperti kata benda."] },
+            { q: "Me aha tāua?", a: "Apa yang harus kita lakukan?", g: ["Me + aha + subjek", "Aha = apa; me aha = 'apa yang harus dilakukan'. Tāua = kita berdua."] },
+            { q: "Kaua e āwangawanga", a: "Jangan khawatir", g: ["Kaua e + kata kerja/sifat", "Āwangawanga = khawatir. Larangan dengan pola yang sama seperti Kaua e wareware."] },
+            { q: "Kei te āhua pai au", a: "Saya merasa cukup baik", g: ["Kei te + āhua + kata sifat + subjek", "Āhua di depan kata sifat berarti 'agak/cukup', sehingga 'cukup baik'."] },
+            { q: "He uaua te ako i te reo Māori", a: "Belajar bahasa Māori itu sulit", g: ["He + kata sifat + te + kata kerja + i + objek", "Kegiatan (te ako i te reo Māori = 'belajar bahasa Māori') diperlakukan sebagai subjek berbentuk frasa benda; kata sifat uaua = sulit berada di depan."] },
+            { q: "Ka āhei au te kōrero reo Māori", a: "Saya bisa berbicara bahasa Māori", g: ["Ka + āhei + subjek + (ki) te + kata kerja", "Āhei = boleh/bisa, kōrero = berbicara. Bentuk lazimnya menyertakan ki te dan i te: Ka āhei au ki te kōrero i te reo Māori."] },
+            { q: "He rōreka tō reo", a: "Suaramu manis (bagus)", g: ["He + kata sifat + tō + kata benda", "Rōreka = manis/merdu, reo = suara/bahasa. Predikat di depan, hal yang dinilai di belakang."] },
+            { q: "Tēnā koe mō tō āwhina", a: "Terima kasih atas bantuan Anda", g: ["Tēnā koe + mō + frasa benda", "Mō = untuk/atas; ditambahkan untuk menyebut hal yang disyukuri. Pola: Tēnā koe mō + hal."] }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let selectedAnswer = null;
+        let shuffledQuestions = [];
+        
+        function initQuiz() {
+            shuffledQuestions = quizData.sort(() => Math.random() - 0.5);
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            selectedAnswer = null;
+            document.getElementById('totalQuestions').textContent = quizData.length;
+            resetPanels();
+            showQuestion();
+        }
+        
+        function resetPanels() {
+            ['Benar', 'Salah'].forEach(jenis => {
+                document.getElementById('panel' + jenis + 'Count').textContent = '0';
+                const list = document.getElementById('panel' + jenis + 'List');
+                list.innerHTML = '';
+                const empty = document.createElement('li');
+                empty.className = 'panel-empty';
+                empty.textContent = jenis === 'Benar'
+                    ? 'Belum ada jawaban benar'
+                    : 'Belum ada jawaban salah';
+                list.appendChild(empty);
+            });
+        }
+        
+        function addToPanel(jenis, question, chosen) {
+            const list = document.getElementById('panel' + jenis + 'List');
+            const empty = list.querySelector('.panel-empty');
+            if (empty) empty.remove();
+            
+            const li = document.createElement('li');
+            li.className = 'panel-item';
+            
+            const q = document.createElement('div');
+            q.className = 'item-q';
+            q.textContent = question.q;
+            li.appendChild(q);
+            
+            if (jenis === 'Salah') {
+                const wrong = document.createElement('div');
+                wrong.className = 'item-wrong';
+                wrong.textContent = 'Jawabanmu: ' + chosen;
+                li.appendChild(wrong);
+            }
+            
+            const right = document.createElement('div');
+            right.className = 'item-right';
+            right.textContent = jenis === 'Salah' ? 'Benar: ' + question.a : question.a;
+            li.appendChild(right);
+            
+            list.insertBefore(li, list.firstChild); // terbaru di atas
+            
+            document.getElementById('panel' + jenis + 'Count').textContent =
+                list.querySelectorAll('.panel-item').length;
+        }
+        
+        function showQuestion() {
+            const question = shuffledQuestions[currentQuestion];
+            document.getElementById('questionText').textContent = question.q;
+            document.getElementById('questionCount').textContent = currentQuestion + 1;
+            
+            const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            const wrongAnswers = shuffledQuestions
+                .filter((q, i) => i !== currentQuestion)
+                .map(q => q.a)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3);
+            
+            const options = [question.a, ...wrongAnswers].sort(() => Math.random() - 0.5);
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(btn, option, question.a);
+                container.appendChild(btn);
+            });
+            
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('grammarBox').classList.remove('show');
+            answered = false;
+            selectedAnswer = null;
+            document.getElementById('nextBtn').textContent = 'Selanjutnya';
+        }
+        
+        function selectAnswer(btn, selected, correct) {
+            if (answered) return;
+            
+            answered = true;
+            selectedAnswer = selected;
+            
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.style.pointerEvents = 'none');
+            
+            const feedback = document.getElementById('feedback');
+            const currentQ = shuffledQuestions[currentQuestion];
+            
+            if (selected === correct) {
+                btn.classList.add('correct');
+                score++;
+                addToPanel('Benar', currentQ, selected);
+                feedback.textContent = '✓ Benar!';
+                feedback.className = 'feedback show correct';
+            } else {
+                btn.classList.add('incorrect');
+                buttons.forEach(b => {
+                    if (b.textContent === correct) {
+                        b.classList.add('correct');
+                    }
+                });
+                addToPanel('Salah', currentQ, selected);
+                feedback.textContent = `✗ Salah! Jawaban yang benar: "${correct}"`;
+                feedback.className = 'feedback show incorrect';
+            }
+            
+            // Tampilkan keterangan grammar setelah menjawab
+            if (currentQ.g) {
+                document.getElementById('grammarPattern').textContent = currentQ.g[0];
+                document.getElementById('grammarDesc').textContent = currentQ.g[1];
+                document.getElementById('grammarBox').classList.add('show');
+            }
+            
+            document.getElementById('nextBtn').textContent = 
+                currentQuestion === shuffledQuestions.length - 1 ? 'Lihat Hasil' : 'Selanjutnya';
+        }
+        
+        function nextQuestion() {
+            if (!answered) return;
+            
+            currentQuestion++;
+            
+            if (currentQuestion >= shuffledQuestions.length) {
+                showResults();
+            } else {
+                showQuestion();
+            }
+        }
+        
+        function showResults() {
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            
+            const percentage = Math.round((score / shuffledQuestions.length) * 100);
+            document.getElementById('scoreNumber').textContent = score;
+            document.getElementById('percentage').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('wrongCount').textContent = shuffledQuestions.length - score;
+        }
+        
+        function restartQuiz() {
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('resultsContainer').classList.add('hidden');
+            initQuiz();
+        }
+        
+        initQuiz();
+    </script>
+</body>
+</html>
