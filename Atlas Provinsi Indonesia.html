@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atlas Provinsi Indonesia</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.45rem .95rem;font-family:system-ui,sans-serif;font-size:.9rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small{font-family:system-ui,sans-serif;color:var(--muted)}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted);font-size:1rem}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Atlas Provinsi Indonesia</h1><p>38 provinsi dari Sabang sampai Merauke</p></header>
+<main>
+<section class="card"><p class="label">Wilayah</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Provinsi</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+</main>
+<footer>Angka luas dan penduduk adalah perkiraan pembulatan (sekitar 2023–2024); periksa BPS untuk data resmi terbaru.</footer>
+<script>
+const R=["Sumatra","Jawa","Bali & Nusa Tenggara","Kalimantan","Sulawesi","Maluku","Papua"];
+// wilayah;nama;ibu kota;luas km²;penduduk (ribu);suku;kuliner;destinasi;ekonomi
+const D=`0;Aceh;Banda Aceh;57956;5600;Aceh, Gayo, Alas;Mi Aceh, kuah pliek u;Masjid Raya Baiturrahman, Pulau Weh (Sabang);Kopi Gayo, perkebunan, gas alam
+0;Sumatera Utara;Medan;72981;15100;Batak, Melayu, Nias;Soto Medan, arsik;Danau Toba, Bukit Lawang;Sawit, karet, kopi
+0;Sumatera Barat;Padang;42013;5700;Minangkabau, Mentawai;Rendang, sate Padang;Jam Gadang, Ngarai Sianok;Pertanian, semen, pariwisata
+0;Riau;Pekanbaru;87024;6700;Melayu, Minangkabau;Gulai ikan patin, bolu kemojo;Istana Siak, Candi Muara Takus;Minyak bumi, sawit, pulp & kertas
+0;Kepulauan Riau;Tanjung Pinang;8202;2100;Melayu, Tionghoa;Gonggong, otak-otak;Pulau Penyengat, Batam;Industri, galangan kapal, perdagangan
+0;Jambi;Jambi;50160;3700;Melayu Jambi, Kerinci;Tempoyak, gulai ikan;Candi Muaro Jambi, Kerinci Seblat;Karet, sawit, batu bara
+0;Sumatera Selatan;Palembang;91592;8600;Melayu Palembang, Komering;Pempek, tekwan;Jembatan Ampera, Sungai Musi;Batu bara, karet, migas
+0;Bangka Belitung;Pangkal Pinang;16424;1500;Melayu, Tionghoa;Lempah kuning, mie Bangka;Pantai Tanjung Tinggi, Pulau Lengkuas;Timah, lada, pariwisata
+0;Bengkulu;Bengkulu;19919;2100;Rejang, Serawai;Pendap, tempoyak;Benteng Marlborough, Rafflesia arnoldii;Kopi, batu bara, perkebunan
+0;Lampung;Bandar Lampung;34624;9400;Lampung, Jawa, Sunda;Seruit, kopi robusta;Way Kambas, Krakatau;Kopi, singkong, tebu
+1;Banten;Serang;9663;12200;Banten, Baduy, Betawi;Sate bandeng, rabeg;Ujung Kulon, Tanjung Lesung;Industri kimia, baja, pelabuhan
+1;DKI Jakarta;Jakarta;662;10700;Betawi, Jawa, Sunda;Kerak telor, soto Betawi;Monas, Kota Tua;Keuangan, perdagangan, jasa
+1;Jawa Barat;Bandung;35378;50000;Sunda, Cirebon;Batagor, nasi timbel;Tangkuban Parahu, Kawah Putih;Manufaktur, tekstil, pertanian
+1;Jawa Tengah;Semarang;34337;37900;Jawa, Samin;Lumpia, soto Kudus;Candi Borobudur, Dieng;Tekstil, pertanian, industri
+1;DI Yogyakarta;Yogyakarta;3133;3700;Jawa;Gudeg, bakpia;Keraton, Candi Prambanan, Malioboro;Pariwisata, pendidikan, kerajinan
+1;Jawa Timur;Surabaya;47800;41500;Jawa, Madura, Osing;Rawon, rujak cingur;Gunung Bromo, Kawah Ijen;Industri, gula, pelabuhan
+2;Bali;Denpasar;5780;4400;Bali;Babi guling, lawar;Ubud, Tanah Lot, Uluwatu;Pariwisata, seni, pertanian
+2;Nusa Tenggara Barat;Mataram;19710;5500;Sasak, Samawa, Mbojo;Ayam taliwang, plecing kangkung;Gunung Rinjani, Gili Trawangan;Tambang, pertanian, pariwisata
+2;Nusa Tenggara Timur;Kupang;48718;5600;Flores, Timor, Sumba;Se'i sapi, jagung bose;Pulau Komodo, Danau Kelimutu;Peternakan, perikanan, pariwisata
+3;Kalimantan Barat;Pontianak;147037;5500;Dayak, Melayu, Tionghoa;Chai kwe, bubur pedas;Tugu Khatulistiwa, Danau Sentarum;Sawit, bauksit, karet
+3;Kalimantan Tengah;Palangka Raya;153564;2800;Dayak Ngaju, Ot Danum;Juhu umbut rotan, wadi;Taman Nasional Tanjung Puting;Sawit, batu bara, kehutanan
+3;Kalimantan Selatan;Banjarmasin;38744;4200;Banjar, Dayak Meratus;Soto Banjar, ketupat Kandangan;Pasar Terapung, Loksado;Batu bara, karet, perikanan
+3;Kalimantan Timur;Samarinda;127346;4000;Kutai, Dayak, Banjar;Amplang, nasi bekepor;Kepulauan Derawan, Nusantara (IKN);Migas, batu bara, industri
+3;Kalimantan Utara;Tanjung Selor;75468;740;Tidung, Bulungan, Dayak;Kepiting soka, wadai gagatas;Hutan Heart of Borneo, Pulau Derawan utara;Tambang, perikanan, energi air
+4;Sulawesi Utara;Manado;13892;2700;Minahasa, Sangihe, Bolaang Mongondow;Tinutuan, cakalang fufu;Taman Laut Bunaken, Danau Tondano;Kelapa, perikanan, pariwisata
+4;Gorontalo;Gorontalo;11893;1200;Gorontalo;Binte biluhuta, ilabulo;Hiu paus Botubarani, Pulau Saronde;Jagung, perikanan
+4;Sulawesi Tengah;Palu;61841;3100;Kaili, Pamona, Banggai;Kaledo, uta dada;Kepulauan Togean, Danau Poso;Nikel, kakao, rumput laut
+4;Sulawesi Barat;Mamuju;16787;1500;Mandar, Mamasa;Jepa, bau peapi;Pantai Manakarra, Pulau Karampuang;Kakao, sawit, perikanan
+4;Sulawesi Selatan;Makassar;46717;9200;Bugis, Makassar, Toraja;Coto Makassar, konro;Tana Toraja, Rammang-Rammang;Beras, nikel, kakao
+4;Sulawesi Tenggara;Kendari;38068;2700;Tolaki, Buton, Muna;Sinonggi, kasuami;Kepulauan Wakatobi, Benteng Keraton Buton;Nikel, aspal Buton, perikanan
+5;Maluku;Ambon;46914;1900;Ambon, Seram, Kei;Papeda ikan kuah kuning, kohu-kohu;Banda Neira, Pantai Ora;Rempah, perikanan, mutiara
+5;Maluku Utara;Sofifi;31983;1300;Ternate, Tidore, Galela;Gohu ikan, popeda;Pulau Morotai, Gunung Gamalama;Nikel, pala & cengkih, perikanan
+6;Papua;Jayapura;82680;1000;Sentani, Biak, Ngalum;Papeda, ikan bakar;Danau Sentani, Pantai Base-G;Perikanan, perkebunan, jasa
+6;Papua Barat;Manokwari;60275;570;Arfak, Wamesa, Maybrat;Papeda, sagu bakar;Pulau Mansinam, Pegunungan Arfak;Gas alam (Tangguh), perikanan
+6;Papua Barat Daya;Sorong;38000;600;Moi, Maya, Tehit;Ikan kuah kuning, sagu lempeng;Kepulauan Raja Ampat;Pariwisata bahari, nikel, perikanan
+6;Papua Tengah;Nabire;61000;1400;Mee, Amungme, Kamoro;Papeda, ubi bakar;Puncak Jaya, Teluk Cenderawasih;Tembaga & emas (Grasberg), perikanan
+6;Papua Pegunungan;Wamena;51000;1400;Dani, Lani, Yali;Ubi jalar bakar (bakar batu), sayur lilin;Lembah Baliem, Festival Budaya;Pertanian dataran tinggi, kerajinan noken
+6;Papua Selatan;Merauke;117000;540;Marind, Asmat, Mappi;Sagu, ikan sungai;Taman Nasional Wasur, Pantai Lampu Satu;Padi, tanaman pangan, peternakan`.split("\n").map(l=>{const a=l.split(";");return{r:+a[0],n:a[1],c:a[2],a:+a[3],p:+a[4],e:a[5],f:a[6],t:a[7],k:a[8]}});
+
+const fmt=n=>n.toLocaleString("id-ID");
+const pop=k=>k>=1000?(k/1000).toLocaleString("id-ID",{maximumFractionDigits:1})+" juta jiwa":fmt(k)+" ribu jiwa";
+let reg=0,sel=null;
+const $=id=>document.getElementById(id);
+
+function drawRegions(){
+  $("regions").innerHTML="";
+  R.forEach((r,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=r;
+    b.setAttribute("aria-pressed",i===reg);b.onclick=()=>{reg=i;sel=D.find(d=>d.r===i);drawAll()};$("regions").append(b)});
+}
+function drawProvs(){
+  $("provs").innerHTML="";
+  D.filter(d=>d.r===reg).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;
+    b.setAttribute("aria-pressed",d===sel);b.onclick=()=>{sel=d;drawAll()};$("provs").append(b)});
+}
+function sub(title,html,open){
+  return `<div class="sub${open?" open":""}"><button aria-expanded="${!!open}">${title}</button><div class="body">${html}</div></div>`;
+}
+function drawDetail(){
+  const d=sel;
+  const panels=[
+    ["Profil Umum",[
+      ["Ibu kota",`<b>${d.c}</b>`,1],
+      ["Luas wilayah",`<b>${fmt(d.a)} km²</b>`,0],
+      ["Penduduk & kepadatan",`<b>${pop(d.p)}</b> (±${fmt(Math.round(d.p*1000/d.a))} jiwa/km²)`,0]]],
+    ["Budaya & Masyarakat",[
+      ["Suku utama",d.e,0],["Kuliner khas",d.f,0]]],
+    ["Potensi & Destinasi",[
+      ["Destinasi unggulan",d.t,0],["Ekonomi utama",d.k,0]]]
+  ];
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${R[d.r]}</small></div>
+    <div class="tools"><button id="ex">Buka semua</button> <button id="co">Tutup semua</button></div></div>`+
+    panels.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll(".sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll(".sub>button").forEach(b=>b.onclick=()=>{
+    const s=b.parentElement;const o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)});
+}
+function drawAll(){drawRegions();drawProvs();drawDetail()}
+sel=D[0];drawAll();
+</script>
+</body>
+</html>
