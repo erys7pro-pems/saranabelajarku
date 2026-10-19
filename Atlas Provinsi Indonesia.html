@@ -38,15 +38,36 @@ button{font:inherit;cursor:pointer;color:inherit}
 .body{display:none;padding:0 .9rem .8rem;color:var(--muted);font-size:1rem}
 .sub.open .body{display:block}
 .body b{color:var(--ink);font-weight:600}
+#q{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.6rem 1rem;font:1rem system-ui,sans-serif}
+#q:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+#qr .none{color:var(--muted);font:.9rem system-ui,sans-serif}
+#map{width:100%;height:auto;display:block;cursor:default}
+#map circle{cursor:pointer;transition:r .15s}
+#map circle:hover{r:10}
+#map text{font:600 13px system-ui,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:4px;pointer-events:none}
+.hint{color:var(--muted);font:.8rem system-ui,sans-serif;margin:.5rem 0 0}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:20%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+td.best{color:var(--green);font-weight:700}
 footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
 </style>
 </head>
 <body>
 <header><h1>Atlas Provinsi Indonesia</h1><p>38 provinsi dari Sabang sampai Merauke</p></header>
 <main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari provinsi, ibu kota, suku, kuliner, atau destinasi…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Peta (lokasi ibu kota provinsi)</p><svg id="map" viewBox="0 0 960 360" role="img" aria-label="Peta titik provinsi Indonesia"></svg><p class="hint">Klik sebuah titik untuk membuka provinsinya. Titik bergaris biru sedang dibandingkan. Peta ini skematis, bukan batas wilayah resmi.</p></section>
 <section class="card"><p class="label">Wilayah</p><div class="row" id="regions"></div></section>
 <section class="card"><p class="label">Provinsi</p><div class="row" id="provs"></div></section>
 <section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
 </main>
 <footer>Angka luas dan penduduk adalah perkiraan pembulatan (sekitar 2023–2024); periksa BPS untuk data resmi terbaru.</footer>
 <script>
@@ -122,14 +143,50 @@ function drawDetail(){
       ["Destinasi unggulan",d.t,0],["Ekonomi utama",d.k,0]]]
   ];
   $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${R[d.r]}</small></div>
-    <div class="tools"><button id="ex">Buka semua</button> <button id="co">Tutup semua</button></div></div>`+
+    <div class="tools"><button id="cmp"></button> <button id="ex">Buka semua</button> <button id="co">Tutup semua</button></div></div>`+
     panels.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
   const set=o=>document.querySelectorAll(".sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  const inC=cmpSet.includes(d.n);$("cmp").textContent=inC?"✓ Dalam perbandingan":"+ Bandingkan";$("cmp").setAttribute("aria-pressed",inC);
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};
   $("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
   document.querySelectorAll(".sub>button").forEach(b=>b.onclick=()=>{
     const s=b.parentElement;const o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)});
 }
-function drawAll(){drawRegions();drawProvs();drawDetail()}
+const P="95.32,5.55;98.67,3.59;100.35,-0.95;101.45,0.51;104.45,0.92;103.61,-1.61;104.75,-2.99;106.11,-2.13;102.26,-3.79;105.26,-5.43;106.15,-6.12;106.82,-6.2;107.61,-6.91;110.42,-6.97;110.37,-7.8;112.75,-7.25;115.22,-8.65;116.1,-8.58;123.6,-10.17;109.33,-0.03;113.91,-2.21;114.59,-3.32;117.15,-0.5;117.37,2.84;124.84,1.47;123.06,0.54;119.87,-0.9;118.89,-2.68;119.41,-5.15;122.5,-3.97;128.18,-3.7;127.38,0.79;140.7,-2.53;134.08,-0.86;131.25,-0.88;135.5,-3.37;138.93,-4.1;140.4,-8.49".split(";").map(s=>s.split(",").map(Number));
+D.forEach((d,i)=>{d.x=(P[i][0]-94)*20;d.y=(6.5-P[i][1])*20});
+const RC=["#2f8f5b","#1f6f9f","#2aa198","#6aa84f","#3d85c6","#45b0a0","#8fbf5a"];
+const ISL=[[132,134,160,26,45],[320,280,90,12,5],[400,120,100,85,0],[540,170,70,18,70],[840,210,100,50,10]];
+let cmpSet=[];
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function drawMap(){
+  let s='';
+  for(let lo=100;lo<=140;lo+=10)s+=`<line x1="${(lo-94)*20}" x2="${(lo-94)*20}" y1="0" y2="360" stroke="var(--line)" stroke-dasharray="3 5"/>`;
+  s+=`<line x1="0" x2="960" y1="130" y2="130" stroke="var(--line)" stroke-dasharray="3 5"/>`;
+  ISL.forEach(i=>s+=`<ellipse cx="${i[0]}" cy="${i[1]}" rx="${i[2]}" ry="${i[3]}" transform="rotate(${i[4]} ${i[0]} ${i[1]})" fill="var(--line)" opacity=".6"/>`);
+  D.forEach((d,i)=>{const on=d===sel,c=cmpSet.includes(d.n);
+    s+=`<circle data-i="${i}" cx="${d.x}" cy="${d.y}" r="${on?10:7}" fill="${RC[d.r]}" stroke="${c?"var(--blue)":on?"var(--ink)":"var(--surface)"}" stroke-width="${c||on?3:2}"${c?' stroke-dasharray="4 2"':''}><title>${d.n} — ${d.c}</title></circle>`});
+  s+=`<text x="${Math.min(sel.x+14,830)}" y="${sel.y+4}">${sel.n}</text>`;
+  $("map").innerHTML=s;
+}
+$("map").onclick=e=>{const t=e.target.closest("circle");if(!t)return;sel=D[+t.dataset.i];reg=sel.r;drawAll()};
+function drawSearch(){
+  const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.c,d.e,d.f,d.t,d.k,R[d.r]].join(" ").toLowerCase().includes(q)).slice(0,10);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{sel=d;reg=d.r;$("q").value="";drawAll()};box.append(b)});
+}
+$("q").oninput=drawSearch;
+function drawCmp(){
+  const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));
+  c.hidden=!L.length;if(!L.length)return;
+  const num=(f,fmtf)=>{const v=L.map(f),mx=L.length>1?Math.max(...v):null;return L.map((d,i)=>`<td${v[i]===mx?' class="best"':''}>${fmtf(v[i])}</td>`).join("")};
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join("");
+  const rows=[["Wilayah",txt(d=>R[d.r])],["Ibu kota",txt(d=>d.c)],["Luas",num(d=>d.a,v=>fmt(v)+" km²")],["Penduduk",num(d=>d.p,pop)],["Kepadatan",num(d=>Math.round(d.p*1000/d.a),v=>"±"+fmt(v)+" jiwa/km²")],["Suku utama",txt(d=>d.e)],["Kuliner",txt(d=>d.f)],["Destinasi",txt(d=>d.t)],["Ekonomi",txt(d=>d.k)]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu provinsi lagi (lewat tombol “+ Bandingkan”). Maksimal 3.":"Nilai tertinggi ditandai hijau."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()});
+}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawMap();drawCmp()}
 sel=D[0];drawAll();
 </script>
 </body>
