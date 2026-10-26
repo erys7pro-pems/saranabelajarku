@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P.R.I.M.A — Panel Responsif, Belajar Interaktif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --serif:'Source Serif 4',Georgia,serif;
+  --sans:'Source Sans 3','Segoe UI',Arial,sans-serif;
+  --bg:#f3f5f8; --panel:#fff; --panel-2:#f7f9fb;
+  --text:#1b2733; --muted:#566676; --line:#d3dae1; --line-strong:#9fb0bf;
+  --accent:#0071bc; --accent-dim:#7aa9cf; --violet:#6a4c9c; --amber:#a85f00; --red:#b3261e;
+  --on-amber:#fff; --btn-bg:#0071bc; --btn-bg-h:#005a96; --btn-ink:#fff;
+  --hdr:#002244; --hdr-ink:#fff; --hdr-muted:#b9c8d6; --hdr-accent:#4db3f0; --hdr-line:rgba(255,255,255,.32);
+  --shadow:0 1px 2px rgba(0,20,40,.08);
+  --cyan:var(--accent); --cyan-dim:var(--accent-dim);
+  --uf-tint:var(--panel-2); --uf-base:var(--panel);
+  --shine-edge:rgba(0,113,188,.20); --shine-core:rgba(255,255,255,.95);
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0a1520; --panel:#112031; --panel-2:#162a3d;
+  --text:#e4ebf2; --muted:#94a6b6; --line:#263b4f; --line-strong:#4a6075;
+  --accent:#5bb8f0; --accent-dim:#2f6f9a; --violet:#a28bd6; --amber:#f0a63a; --red:#f2776d;
+  --on-amber:#1d1300; --btn-bg:#5bb8f0; --btn-bg-h:#7cc6f4; --btn-ink:#04121f;
+  --hdr:#001428; --shadow:0 1px 2px rgba(0,0,0,.4);
+  --shine-edge:rgba(91,184,240,.22); --shine-core:rgba(255,255,255,.42);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.5;min-height:100vh;overflow-x:hidden;}
+button,input,textarea{font-family:inherit;}
+.hud-font{font-family:var(--serif);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+header :focus-visible{outline-color:#fff;}
+
+header{position:sticky;top:0;z-index:20;background:var(--hdr);color:var(--hdr-ink);padding:16px 16px 0;}
+.title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1100px;margin:0 auto 12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{width:36px;height:36px;flex-shrink:0;}
+.brand-mark svg{width:100%;height:100%;display:block;}
+.brand h1{font-family:var(--serif);font-size:24px;line-height:1.1;margin:0;font-weight:700;color:#fff;letter-spacing:.01em;}
+.brand small{display:block;font-size:13.5px;color:var(--hdr-muted);margin-top:2px;}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.header-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.role-pill,.role-btn,.hist-btn,.status{
+  display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;line-height:1.2;padding:6px 11px;
+  border:1px solid var(--hdr-line);border-radius:2px;background:transparent;color:var(--hdr-ink);
+}
+.role-pill{color:var(--hdr-muted);font-weight:400;}
+.role-pill.active{color:#fff;border-color:#fff;background:rgba(255,255,255,.12);font-weight:600;}
+.role-btn,.hist-btn,.status{cursor:pointer;}
+.role-btn:hover,.hist-btn:hover,.status:hover{background:rgba(255,255,255,.14);border-color:#fff;}
+.status.readonly{cursor:default;}
+.status.readonly:hover{background:transparent;border-color:var(--hdr-line);}
+.status{font-weight:400;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--hdr-muted);flex-shrink:0;}
+.dot.online{background:#4cc38a;}
+.dot.local{background:#f0b44c;}
+.dot.error{background:#ff8077;}
+.dot.sync{background:#7cc4f5;animation:pulse 1s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hist-count{background:#f0b44c;color:#1d1300;font-weight:700;padding:0 6px;font-size:12px;min-width:18px;text-align:center;border-radius:2px;}
+
+.menu-row{display:flex;gap:2px;overflow-x:auto;max-width:1100px;margin:0 auto;}
+.menu-tab{
+  position:relative;display:inline-flex;align-items:center;padding:10px 14px 9px;border:0;border-bottom:3px solid transparent;
+  background:transparent;color:var(--hdr-muted);white-space:nowrap;cursor:pointer;font-size:15px;font-weight:600;flex-shrink:0;
+  user-select:none;transition:color .15s,background-color .15s,border-color .15s;
+}
+.menu-tab:hover{color:#fff;background:rgba(255,255,255,.08);}
+.menu-tab.teacher-only{border-bottom:3px dashed #f0b44c;}
+.menu-tab.staff-only{border-bottom:3px dashed #b9a3e6;}
+.menu-tab.active{color:#fff;border-bottom-color:var(--hdr-accent);}
+.menu-del{position:static;margin-left:8px;opacity:.6;font-size:16px;line-height:1;}
+.menu-del:hover{opacity:1;color:#ff8077;}
+#add-menu-btn{flex-shrink:0;padding:8px 14px;border:0;background:transparent;color:var(--hdr-muted);cursor:pointer;font-size:14px;font-weight:600;}
+#add-menu-btn:hover{color:#fff;}
+.menu-tab[draggable="true"]{cursor:grab;}
+.menu-tab.dragging{opacity:.4;}
+.menu-tab.drag-over{background:rgba(255,255,255,.18);}
+.menu-move{display:inline-block;margin-left:6px;padding:0 3px;font-size:10px;line-height:1;opacity:.7;cursor:pointer;}
+.menu-move:hover{opacity:1;color:#fff;}
+.menu-move.disabled{opacity:.25;cursor:default;}
+
+main{padding:24px 16px 64px;max-width:1100px;margin:0 auto;}
+.add-panel-btn,.add-sub-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--line-strong);border-radius:2px;
+  background:transparent;color:var(--muted);cursor:pointer;width:100%;font-size:14px;font-weight:600;
+}
+.add-panel-btn{margin:0 0 18px;padding:11px 16px;}
+.add-sub-btn{margin-top:8px;padding:8px 10px;font-size:13px;}
+.add-panel-btn:hover,.add-sub-btn:hover{color:var(--accent);border-color:var(--accent);}
+.panels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px;align-items:start;}
+
+.panel-card{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:2px;box-shadow:var(--shadow);position:relative;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 16px 11px;border-bottom:1px solid var(--line);}
+.panel-head h3{margin:0;font-family:var(--serif);font-size:18px;line-height:1.3;font-weight:600;color:var(--text);}
+.panel-body{padding:4px 16px 14px;}
+.icon-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px 6px;line-height:1;}
+.icon-btn:hover{color:var(--red);}
+.sub-card{position:relative;border-top:1px solid var(--line);padding:12px 0;}
+.sub-card:first-child{border-top:none;}
+.sub-card img{max-width:100%;display:block;margin-top:8px;border:1px solid var(--line);cursor:zoom-in;}
+.sub-title{font-weight:600;font-size:15px;color:var(--text);}
+.sub-subtitle{color:var(--muted);font-size:13.5px;margin-top:2px;}
+.sub-link{color:var(--accent);font-size:14px;display:inline-block;margin-top:7px;text-decoration:underline;text-underline-offset:3px;}
+.sub-link:hover{text-decoration-thickness:2px;}
+.empty{color:var(--muted);text-align:center;padding:48px 20px;font-size:14.5px;border:1px dashed var(--line-strong);background:var(--panel);grid-column:1/-1;}
+.empty-hint{color:var(--muted);font-size:13px;text-align:center;padding:10px 0;}
+
+/* Pengumuman */
+.panel-card.type-announcement{border-top-color:var(--amber);}
+.panel-card.type-announcement.expired{border-top-color:var(--line-strong);}
+.new-badge{position:absolute;top:-11px;left:16px;background:var(--amber);color:var(--on-amber);font-size:12px;font-weight:700;padding:2px 10px 3px;border-radius:2px;}
+.new-tag{display:inline-block;flex-shrink:0;margin-left:7px;background:var(--amber);color:var(--on-amber);font-size:11.5px;font-weight:700;padding:1px 6px;line-height:1.4;vertical-align:middle;border-radius:2px;}
+.ann-body{font-size:15px;line-height:1.6;color:var(--text);white-space:pre-wrap;}
+.ann-meta,.hf-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;}
+.hf-row{gap:10px;}
+.hf-btn{font-size:13.5px;font-weight:600;color:var(--accent);background:transparent;border:1px solid var(--accent);border-radius:2px;padding:7px 14px;cursor:pointer;}
+.hf-btn:hover:not(:disabled){background:var(--panel-2);}
+.hf-btn:disabled{cursor:default;}
+.hf-btn.done{color:var(--muted);border-color:var(--line-strong);}
+.hf-count{font-size:13px;color:var(--muted);}
+.hf-admin-btn.active{color:var(--amber);}
+.status-pill{font-size:12px;font-weight:600;padding:2px 8px;border:1px solid var(--accent);color:var(--accent);border-radius:2px;}
+.status-pill.expired{border-color:var(--line-strong);color:var(--muted);}
+.ann-deadline{color:var(--muted);}
+.panel-type-tag{font-size:12px;color:var(--muted);}
+
+/* Tombol sub-panel & modal */
+.view-subs-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 10px;margin-top:8px;border:1px solid var(--accent);border-radius:2px;background:transparent;color:var(--accent);cursor:pointer;width:100%;font-size:14px;font-weight:600;}
+.view-subs-btn:hover{background:var(--panel-2);}
+.modal.subpanel-modal{max-width:min(94vw,900px);}
+.sp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+.sp-title{min-width:0;flex:1 1 200px;}
+.sp-head .modal-actions{margin-top:0;flex-shrink:0;}
+.subs-row{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;margin-top:2px;}
+.sub-tile{flex:0 0 240px;border:1px solid var(--line);border-radius:2px;padding:10px;background:var(--panel);}
+.sub-tile-move{display:flex;justify-content:flex-end;gap:2px;margin-top:8px;border-top:1px solid var(--line);padding-top:6px;}
+.type-choice{display:flex;gap:10px;margin-top:8px;}
+.type-choice button{flex:1;padding:16px 10px;border:1px solid var(--line-strong);border-radius:2px;background:var(--panel-2);color:var(--text);cursor:pointer;font-size:14px;font-weight:600;display:flex;flex-direction:column;gap:6px;align-items:center;}
+.type-choice button:hover{border-color:var(--accent);color:var(--accent);}
+.type-choice .ico{font-size:22px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,20,40,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:100;animation:ov-fade-in .16s ease;}
+@keyframes ov-fade-in{from{background-color:rgba(0,20,40,0);}to{background-color:rgba(0,20,40,.55);}}
+@keyframes modal-pop-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.modal-overlay.closing{background-color:rgba(0,20,40,0);transition:background-color .18s ease;}
+.modal-overlay .modal,.modal-overlay .lightbox-wrap{animation:modal-pop-in .18s ease;transition:transform .16s ease,opacity .16s ease;}
+.modal-overlay.closing .modal,.modal-overlay.closing .lightbox-wrap{opacity:0;transform:translateY(6px);}
+.modal{background:var(--panel);color:var(--text);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:2px;padding:22px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,20,40,.28);}
+.modal.wide{max-width:580px;}
+.modal h4{margin:0 0 4px;font-family:var(--serif);font-size:21px;line-height:1.25;font-weight:600;color:var(--text);}
+.modal .sub{font-size:14px;color:var(--muted);margin-bottom:6px;}
+.modal label{display:block;font-size:13.5px;font-weight:600;color:var(--text);margin:14px 0 5px;}
+.modal input,.modal textarea{width:100%;padding:9px 10px;border:1px solid var(--line-strong);border-radius:2px;background:var(--panel);color:var(--text);font-size:15px;}
+.modal textarea{resize:vertical;min-height:70px;}
+.modal input:focus,.modal textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent);}
+.modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;}
+.btn{padding:9px 16px;border:1px solid var(--line-strong);border-radius:2px;background:transparent;color:var(--text);cursor:pointer;font-size:14px;font-weight:600;}
+.btn:hover{background:var(--panel-2);}
+.btn-primary{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink);}
+.btn-primary:hover{background:var(--btn-bg-h);border-color:var(--btn-bg-h);}
+.hint{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5;}
+.hint code{color:var(--accent);}
+.hist-list{margin-top:10px;}
+.hist-item{border-top:1px solid var(--line);padding:12px 0;}
+.hist-item:first-child{border-top:none;}
+.hist-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.hist-title{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--text);}
+.hist-body{font-size:14px;line-height:1.6;color:var(--muted);white-space:pre-wrap;margin-top:6px;}
+.hist-meta{font-size:13px;color:var(--muted);margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 12px;}
+.hist-menu{color:var(--accent);}
+.hist-empty{color:var(--muted);text-align:center;padding:30px 10px;font-size:14px;border:1px dashed var(--line-strong);margin-top:10px;}
+.lightbox-overlay{background:rgba(0,10,20,.92);z-index:200;}
+.lightbox-overlay.closing{background-color:rgba(0,10,20,0) !important;}
+.lightbox-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.lightbox-toolbar{display:flex;gap:8px;}
+.lb-btn{font-size:15px;font-weight:600;color:var(--text);background:var(--panel);border:1px solid var(--line-strong);border-radius:2px;padding:6px 14px;cursor:pointer;min-width:40px;}
+.lb-btn:hover{background:var(--panel-2);}
+.lb-close{color:var(--red);border-color:var(--red);}
+.lightbox-view{overflow:hidden;width:96vw;height:86vh;display:flex;align-items:center;justify-content:center;touch-action:none;}
+.lightbox-img{max-width:96vw;max-height:86vh;transition:transform .05s linear;user-select:none;}
+
+/* Seret & urut */
+.drag-handle{cursor:grab;color:var(--muted);font-size:16px;padding:6px 8px;user-select:none;touch-action:none;flex-shrink:0;line-height:1;}
+.drag-handle:hover,.move-btn:hover{color:var(--accent);}
+.drag-handle:active{cursor:grabbing;}
+.move-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:4px 5px;line-height:1;}
+.move-btn:disabled{opacity:.25;cursor:default;}
+.move-btn:disabled:hover{color:var(--muted);}
+.panel-head-right{display:flex;align-items:center;gap:2px;flex-shrink:0;}
+.panel-head-left{display:flex;align-items:center;gap:6px;min-width:0;}
+.panel-head-left h3{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.panel-card.type-info.dragging,.sub-card.dragging{opacity:.4;}
+.panel-card.type-info.drag-over{outline:2px dashed var(--accent);outline-offset:-3px;}
+.sub-card.drag-over{outline:2px dashed var(--accent);outline-offset:-2px;}
+.sub-head-left{display:flex;align-items:flex-start;gap:6px;min-width:0;}
+.sub-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.sub-head-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+
+/* Akses: biru = murid, ungu = petugas, oranye = hanya guru */
+.vis-tri{position:relative;display:inline-block;vertical-align:middle;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid var(--accent);cursor:pointer;flex-shrink:0;}
+.vis-tri.staff{border-bottom-color:var(--violet);}
+.vis-tri.teacher{border-bottom-color:var(--amber);}
+.menu-tab .vis-tri{margin-left:8px;border-bottom-color:#7cc4f5;}
+.menu-tab .vis-tri.staff{border-bottom-color:#b9a3e6;}
+.menu-tab .vis-tri.teacher{border-bottom-color:#f0b44c;}
+.panel-head-right .vis-tri{margin-right:6px;}
+.teacher-only{opacity:.8;}
+.panel-card.teacher-only{border-style:dashed;border-top-style:solid;}
+.panel-card.staff-only{border-color:var(--violet);border-style:dashed;border-top-style:solid;}
+.sub-card.teacher-only{background:repeating-linear-gradient(135deg,rgba(168,95,0,.06) 0 6px,transparent 6px 12px);}
+.sub-card.staff-only{background:repeating-linear-gradient(135deg,rgba(106,76,156,.07) 0 6px,transparent 6px 12px);}
+.vis-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:13px;color:var(--muted);margin:0 0 16px;}
+.vis-legend .vis-tri{cursor:default;}
+
+/* Pembaruan otomatis */
+.update-feed{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:2px;background:var(--panel);margin:0 0 18px;box-shadow:var(--shadow);}
+.uf-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:12px 16px 9px;border-bottom:1px solid var(--line);}
+.uf-title{font-size:17px;font-weight:600;color:var(--text);}
+.uf-sub{font-size:13px;color:var(--muted);}
+.uf-list{max-height:184px;overflow-y:auto;padding:2px 16px 6px;}
+.uf-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);cursor:pointer;font-size:14px;}
+.uf-item:first-child{border-top:none;}
+.uf-item:hover .uf-strong{color:var(--accent);text-decoration:underline;}
+.uf-kind{flex-shrink:0;font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:2px;padding:1px 7px;}
+.uf-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.uf-strong{color:var(--text);font-weight:600;}
+.uf-where{color:var(--muted);}
+.uf-left{flex-shrink:0;font-size:13px;color:var(--muted);}
+.panel-card.flash::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;
+  background:linear-gradient(115deg,transparent 41%,var(--shine-edge) 46%,var(--shine-core) 50%,var(--shine-edge) 54%,transparent 59%);
+  background-size:300% 100%;background-repeat:no-repeat;background-position:100% 0;
+  animation:glassSweep 1.3s ease-in-out 2;}
+/* refleksi kaca: menyapu kiri→kanan, lalu jeda sebentar; diulang 2 kali */
+@keyframes glassSweep{0%{background-position:100% 0;}70%,100%{background-position:0% 0;}}
+
+/* Transisi halus saat ganti menu / peran */
+@keyframes grid-switch-in{from{opacity:0;}to{opacity:1;}}
+.panels-grid.menu-switch{animation:grid-switch-in .2s ease;}
+@keyframes app-switch-in{from{opacity:0;}to{opacity:1;}}
+#app.role-switch{animation:app-switch-in .25s ease;}
+@media (max-width:640px){
+  .header-right{align-items:flex-start;width:100%;}
+  .header-row{justify-content:flex-start;}
+  .brand h1{font-size:21px;}
+}
+@media (prefers-reduced-motion: reduce){
+  .modal-overlay,.modal-overlay .modal,.modal-overlay .lightbox-wrap{animation:none !important;transition:none !important;}
+  .menu-tab{transition:none !important;}
+  .panels-grid.menu-switch,#app.role-switch,.panel-card.flash::after,.dot.sync{animation:none !important;}
+}
+
+.hero{background:var(--navy,#002244);color:#fff;}
+.hero-inner{max-width:1100px;margin:0 auto;padding:30px 16px 28px;}
+.hero h2{margin:0;font-family:var(--serif);font-weight:700;font-size:clamp(26px,4.5vw,36px);line-height:1.15;color:#fff;overflow-wrap:anywhere;}
+.hero p{margin:8px 0 0;font-size:16px;color:rgba(255,255,255,.78);}
+.title-row,.menu-row{padding-left:16px;padding-right:16px;}
+@media (max-width:600px){.title-row,.menu-row{padding-left:0;padding-right:0;}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function(){
+  // Guru: isi URL Web App Apps Script di bawah ini sebelum file dibagikan ke murid,
+  // supaya murid otomatis terhubung tanpa perlu mengatur apa pun.
+  var DEFAULT_API_URL = '';
+
+  var STORAGE_KEY = 'papan-panel-state-v1';
+  var CONFIG_KEY = 'papan-panel-config-v1';
+  var defaultState = {menus:[{id:'m1', name:'Umum'}], activeMenu:'m1', panels:[]};
+  var state = normalizeState(loadState());
+  var config = loadConfig();
+  var syncStatus = 'idle'; // idle | local | online | syncing | error
+  var syncTimer = null;
+
+  // ---- Peran: 'murid' (hanya lihat), 'petugas' (lihat item yang diizinkan), atau 'guru' (bisa mengubah semua) ----
+  var role = 'murid';
+  var lastActiveMenu = null; // dipakai render() untuk mendeteksi perpindahan tab menu, agar grid panel dianimasikan hanya saat benar-benar pindah menu
+  var lastRole = null; // dipakai render() untuk mendeteksi login/logout guru & petugas, agar seluruh tampilan beranimasi halus saat peran berganti
+  var actorPw = ''; // kata sandi guru ATAU petugas, tergantung peran saat ini
+  try{
+    var savedRole = sessionStorage.getItem('papan-panel-role');
+    if(savedRole==='guru' || savedRole==='petugas'){
+      role = savedRole;
+      actorPw = sessionStorage.getItem('papan-panel-pw') || '';
+    }
+  }catch(e){}
+  function isGuru(){ return role==='guru'; }
+  function isPetugas(){ return role==='petugas'; }
+
+  // ---- Mode gelap/terang ----
+  var THEME_KEY = 'papan-panel-theme';
+  var theme = 'light';
+  try{ var savedTheme = localStorage.getItem(THEME_KEY); if(savedTheme==='light'||savedTheme==='dark') theme = savedTheme; }catch(e){}
+  function applyTheme(){ document.documentElement.setAttribute('data-theme', theme); }
+  applyTheme();
+  function toggleTheme(){
+    theme = theme==='dark' ? 'light' : 'dark';
+    applyTheme();
+    try{ localStorage.setItem(THEME_KEY, theme); }catch(e){}
+    render();
+  }
+  var fullLoaded = false; // true jika state di memori adalah data lengkap (bukan versi yang sudah disaring untuk peran ini)
+  var serverRev = 0;      // nomor versi data di server saat terakhir dimuat/disimpan; dikirim saat menyimpan untuk mendeteksi penimpaan dari sesi lain
+  var loadEpoch = 0;      // penghitung permintaan muat; respons yang bukan yang terbaru (atau beda peran) dianggap usang & diabaikan
+  var pushing = false, pushAgain = false, forceNextPush = false, conflictOpen = false;
+  var JSON_HDR = {'Content-Type':'text/plain;charset=utf-8'}; // avoids CORS preflight on Apps Script
+
+  // ---- Visibilitas 3 jalur: setiap item punya SATU pemilik akses -----
+  // 'student' (biru, murid) | 'staff' (ungu, petugas) | 'teacher' (oranye, hanya guru)
+  // Item ITU dan SEMUA induknya harus termasuk akses yang diizinkan untuk peran penonton.
+  // Murid diizinkan: biru saja. Petugas diizinkan: biru + ungu (petugas tetap dianggap murid).
+  function itemAccess(item){ return item.access || (item.hidden ? 'teacher' : 'student'); }
+  // Petugas juga murid: boleh lihat item biru (murid) DAN ungu (petugas). Murid hanya biru.
+  function viewerAllowedAccess(){ return isPetugas() ? ['student','staff'] : ['student']; } // hanya relevan saat bukan guru
+  function menuVisible(id){
+    if(isGuru()) return true;
+    var m = state.menus.find(function(x){ return x.id===id; });
+    return !!m && viewerAllowedAccess().indexOf(itemAccess(m))!==-1;
+  }
+  function panelVisible(p){ return isGuru() || (viewerAllowedAccess().indexOf(itemAccess(p))!==-1 && menuVisible(p.menuId)); }
+  var ACCESS_LABEL = {student:'BIRU: murid (petugas ikut lihat)', staff:'UNGU: khusus petugas', teacher:'KUNING: hanya guru'};
+  var ACCESS_NEXT = {student:'staff', staff:'teacher', teacher:'student'};
+  function visToggle(kind, id, access, panelId){
+    access = access || 'student';
+    return '<span class="vis-tri'+(access!=='student'?' '+access:'')+'" role="button" data-vis="'+kind+'" data-id="'+id+'"'+(panelId?' data-panel="'+panelId+'"':'')+
+      ' title="'+ACCESS_LABEL[access]+' (klik untuk ganti ke '+ACCESS_LABEL[ACCESS_NEXT[access]]+')"></span>';
+  }
+  // ---- Label Baru & feed pembaruan (3 hari sejak item dibuat / mulai tampil ke murid) ----
+  function inNewWindow(ts){ return !!ts && (Date.now() - ts) < NEW_BADGE_DURATION_MS; }
+  function newTag(ts, eff){ return (eff && inNewWindow(ts)) ? '<span class="new-tag">Baru</span>' : ''; }
+  function menuById(id){ return state.menus.find(function(m){ return m.id===id; }); }
+  function panelEff(p){ var m = menuById(p.menuId); return !!m && itemAccess(m)==='student' && itemAccess(p)==='student'; } // benar-benar bisa dilihat murid
+  function timeLeft(ts){
+    var h = Math.max(1, Math.ceil((ts + NEW_BADGE_DURATION_MS - Date.now()) / 3600000));
+    return h>=24 ? Math.ceil(h/24)+' hari lagi' : h+' jam lagi';
+  }
+  var SAME_SESSION_MS = 60 * 60 * 1000; // anak yang dibuat <1 jam setelah induknya tidak dibuatkan baris sendiri
+  function updateItems(){
+    var items = [];
+    state.menus.forEach(function(m){
+      if(itemAccess(m)==='student' && inNewWindow(m.newAt)) items.push({kind:'menu', ts:m.newAt, title:m.name, menuId:m.id});
+    });
+    state.panels.forEach(function(p){
+      if(p.type==='announcement' || !panelEff(p)) return; // pengumuman biasa sudah punya label Baru sendiri
+      var m = menuById(p.menuId);
+      if(inNewWindow(p.newAt) && !(m.newAt && p.newAt - m.newAt < SAME_SESSION_MS)){
+        items.push({kind:'panel', ts:p.newAt, title:p.title, where:'di menu '+m.name, menuId:m.id, panelId:p.id});
+      }
+      (p.subpanels||[]).forEach(function(sp){
+        if(itemAccess(sp)!=='student' || !inNewWindow(sp.newAt)) return;
+        if(p.newAt && sp.newAt - p.newAt < SAME_SESSION_MS) return;
+        items.push({kind:'sub', ts:sp.newAt, title:sp.title, where:'di panel '+p.title+' · menu '+m.name, menuId:m.id, panelId:p.id});
+      });
+    });
+    return items.sort(function(a, b){ return b.ts - a.ts; });
+  }
+  function updateFeedHtml(){
+    var items = updateItems();
+    if(!items.length) return '';
+    var labels = {menu:'Menu baru', panel:'Panel baru', sub:'Sub-panel baru'};
+    var rows = items.map(function(it){
+      return '<div class="uf-item" data-goto-menu="'+it.menuId+'"'+(it.panelId?' data-goto-panel="'+it.panelId+'"':'')+'>'+
+        '<span class="uf-kind">'+labels[it.kind]+'</span>'+
+        '<span class="uf-text"><span class="uf-strong">'+esc(it.title)+'</span>'+(it.where?'<span class="uf-where"> · '+esc(it.where)+'</span>':'')+'</span>'+
+        '<span class="uf-left">'+timeLeft(it.ts)+'</span></div>';
+    }).join('');
+    return '<div class="update-feed"><div class="uf-head"><div class="uf-title hud-font">Pembaruan</div>'+
+      '<div class="uf-sub">Otomatis dari menu, panel &amp; sub-panel baru · berlaku 3 hari</div></div>'+
+      '<div class="uf-list">'+rows+'</div></div>';
+  }
+  function goToItem(menuId, panelId){
+    state.activeMenu = menuId; render(); persistLocal();
+    if(panelId){
+      var el = document.querySelector('.panel-card[data-pid="'+panelId+'"]');
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); setTimeout(function(){ el.classList.remove('flash'); }, 2800); }
+    }
+  }
+
+  function toggleVisibility(kind, id, panelId){
+    if(!isGuru()) return;
+    var item = null;
+    if(kind==='menu') item = state.menus.find(function(m){ return m.id===id; });
+    else if(kind==='panel') item = state.panels.find(function(p){ return p.id===id; });
+    else { var pp = state.panels.find(function(x){ return x.id===panelId; }); item = pp && pp.subpanels.find(function(x){ return x.id===id; }); }
+    if(!item) return;
+    var next = ACCESS_NEXT[itemAccess(item)];
+    item.access = next;
+    delete item.hidden;
+    if(next==='student') item.newAt = Date.now(); // baru diizinkan dilihat murid -> dianggap baru lagi
+    save();
+  }
+  function setRole(r, pw){
+    role = r; actorPw = pw || '';
+    loadEpoch++; // respons muat yang masih di perjalanan milik peran sebelumnya -> usang
+    if(r==='murid') fullLoaded = false;
+    try{
+      if(r==='guru' || r==='petugas'){ sessionStorage.setItem('papan-panel-role', r); sessionStorage.setItem('papan-panel-pw', actorPw); }
+      else { sessionStorage.removeItem('papan-panel-role'); sessionStorage.removeItem('papan-panel-pw'); }
+    }catch(e){}
+    render();
+  }
+  function hashPw(str){ var h=5381; for(var i=0;i<str.length;i++){ h=((h<<5)+h+str.charCodeAt(i))|0; } return String(h); }
+
+  // Migrasi: panel yang dibuat versi file lama belum punya field "type"/"subpanels".
+  // Tanpa ini, filter berbasis type==='info' akan mengabaikan panel lama tsb sepenuhnya
+  // sehingga tombol panah & drag terlihat tidak merespons pada panel-panel tersebut.
+  function normalizeState(s){
+    if(s){
+      (s.menus||[]).forEach(function(m){ m.access = itemAccess(m); delete m.hidden; });
+      if(Array.isArray(s.panels)){
+        s.panels.forEach(function(p){
+          if(p.type !== 'announcement') p.type = 'info';
+          if(!Array.isArray(p.subpanels)) p.subpanels = [];
+          p.access = itemAccess(p); delete p.hidden;
+          p.subpanels.forEach(function(sp){ sp.access = itemAccess(sp); delete sp.hidden; });
+        });
+      }
+    }
+    return s;
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){ console.error(e); }
+    return JSON.parse(JSON.stringify(defaultState));
+  }
+  function loadConfig(){
+    try{
+      var raw = localStorage.getItem(CONFIG_KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return {apiUrl:''};
+  }
+  function persistLocal(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch(e){ console.error(e); }
+  }
+  function persistConfig(){
+    try{ localStorage.setItem(CONFIG_KEY, JSON.stringify(config)); }catch(e){}
+  }
+
+  function uid(){ return Math.random().toString(36).slice(2,10)+Date.now().toString(36); }
+  function esc(s){ return (s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  // ---- Pengumuman: label "Baru" hilang otomatis setelah 3 hari ----
+  var NEW_BADGE_DURATION_MS = 3 * 24 * 60 * 60 * 1000;
+  function isFresh(p){
+    var ts = p.newAt || p.createdAt; // newAt di-reset saat item diubah jadi tampil ke murid
+    if(!ts) return false;
+    return (Date.now() - ts) < NEW_BADGE_DURATION_MS;
+  }
+  function isExpired(p){
+    if(!p.deadline) return false;
+    // deadline disimpan sebagai 'YYYY-MM-DD'; anggap berakhir di akhir hari itu
+    var end = new Date(p.deadline+'T23:59:59').getTime();
+    return Date.now() > end;
+  }
+  function formatDate(dstr){
+    if(!dstr) return '';
+    var d = new Date(dstr+'T00:00:00');
+    if(isNaN(d.getTime())) return dstr;
+    var bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    return d.getDate()+' '+bulan[d.getMonth()]+' '+d.getFullYear();
+  }
+
+  // ---- Google Apps Script sync layer ----
+  function apiUrl(){ return ((config.apiUrl||'').trim()) || (DEFAULT_API_URL||'').trim(); }
+  function hasApi(){ return !!apiUrl(); }
+
+  // Guru memuat data LENGKAP; petugas memuat versi yang sudah disaring server (hanya item akses "petugas");
+  // murid memuat lewat GET (server sudah membuang item yang bukan akses "murid").
+  function fetchState(){
+    if(isGuru() || isPetugas()){
+      var act = isGuru() ? 'load' : 'load_staff';
+      return fetch(apiUrl(), {method:'POST', headers:JSON_HDR, body:JSON.stringify({action:act, password:actorPw})})
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res && res.error==='unauthorized') throw {unauthorized:true};
+          if(res && res.ok && res.state) return res.state;
+          throw new Error((res && res.error) || 'Gagal memuat data');
+        });
+    }
+    return fetch(apiUrl(), {method:'GET'}).then(function(r){ return r.json(); });
+  }
+
+  function loadFromApi(silent){
+    if(!hasApi()){ syncStatus='local'; render(); return; }
+    if(!silent){ syncStatus='syncing'; render(); }
+    var reqRole = role, myEpoch = ++loadEpoch;
+    fetchState()
+      .then(function(data){
+        // Respons usang: peran sudah berganti (mis. murid -> guru) atau ada permintaan yang lebih baru.
+        // Menerapkannya akan mengganti data lengkap guru dengan data tersaring lalu menimpa server.
+        if(myEpoch!==loadEpoch || reqRole!==role) return;
+        // Jangan menimpa perubahan guru yang belum sempat tersimpan.
+        if(reqRole==='guru' && fullLoaded && syncPending()) return;
+        if(data && data.error && !data.menus){ syncStatus='error'; render(); return; }
+        if(data && typeof data==='object' && data.menus){
+          var fresh = normalizeState(data);
+          serverRev = Number(fresh.rev)||0; delete fresh.rev;
+          var keep = state.activeMenu; // menu aktif bersifat lokal per pengguna
+          state = fresh;
+          // Data lengkap hanya jika permintaan DIKIRIM sebagai guru (petugas & murid selalu menerima versi tersaring).
+          fullLoaded = (reqRole==='guru');
+          if(keep && state.menus.some(function(m){ return m.id===keep; })) state.activeMenu = keep;
+          persistLocal();
+        }
+        syncStatus='online';
+        render();
+      })
+      .catch(function(err){
+        if(myEpoch!==loadEpoch || reqRole!==role) return;
+        if(err && err.unauthorized){
+          alert('Sesi '+(isGuru()?'guru':'petugas')+' tidak valid (kata sandi ditolak server). Kamu dikembalikan ke mode murid.');
+          setRole('murid');
+          loadFromApi();
+          return;
+        }
+        console.error('Gagal memuat dari server:', err);
+        syncStatus='error';
+        if(silent) renderStatusOnly(); else render();
+      });
+  }
+
+  // Ada perubahan guru yang menunggu dikirim / sedang dikirim?
+  function syncPending(){ return !!syncTimer || pushing; }
+
+  // Guru: cek ringan apakah data di server berubah dari sesi lain; bila ya dan tidak ada perubahan lokal, muat ulang.
+  function checkServerRev(){
+    if(!isGuru() || !hasApi() || !fullLoaded || syncPending()) return;
+    if(document.querySelector('.modal-overlay')) return; // jangan mengganti data saat guru sedang mengisi formulir
+    fetch(apiUrl()+(apiUrl().indexOf('?')===-1?'?':'&')+'rev=1', {method:'GET'})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if(d && typeof d.rev==='number' && d.rev!==serverRev && isGuru() && !syncPending() && !document.querySelector('.modal-overlay')) loadFromApi(true);
+      })
+      .catch(function(){});
+  }
+
+  function pushToApi(){
+    if(!hasApi() || !isGuru()) return;
+    if(!fullLoaded){ // jangan menimpa server dengan data yang belum lengkap
+      syncStatus='error'; renderStatusOnly(); return;
+    }
+    if(pushing){ pushAgain = true; return; } // satu pengiriman pada satu waktu agar nomor versi tidak bentrok dengan diri sendiri
+    pushing = true;
+    var force = forceNextPush; forceNextPush = false;
+    syncStatus='syncing'; renderStatusOnly();
+    function done(){ pushing = false; if(pushAgain){ pushAgain = false; pushToApi(); } }
+    fetch(apiUrl(), {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, // avoids CORS preflight on Apps Script
+      body: JSON.stringify({action:'save', password:actorPw, state:state, baseRev:serverRev, force:force})
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(res && res.error==='unauthorized'){
+          pushing = false; pushAgain = false;
+          alert('Sesi guru tidak valid (kata sandi ditolak server). Kamu dikembalikan ke mode murid.');
+          setRole('murid');
+          loadFromApi();
+          return;
+        }
+        if(res && res.ok){ serverRev = res.rev; syncStatus='online'; renderStatusOnly(); done(); return; }
+        syncStatus='error'; renderStatusOnly();
+        if(res && res.error==='conflict'){ pushAgain = false; pushing = false; handleSyncConflict(); return; }
+        if(res && res.error==='outdated_client'){ pushAgain = false; pushing = false; alert('Halaman ini versi lama dan ditolak server demi keamanan data. Muat ulang halaman (Ctrl+F5), lalu ulangi perubahanmu.'); return; }
+        if(res && res.error==='too_large'){ pushAgain = false; pushing = false; alert('Data terlalu besar untuk disimpan. Hapus sebagian isi (mis. teks/gambar yang tidak terpakai).'); return; }
+        done();
+      })
+      .catch(function(err){
+        console.error('Gagal menyimpan ke server:', err);
+        syncStatus='error';
+        renderStatusOnly();
+        done();
+      });
+  }
+
+  // Server menolak karena data di server sudah berubah sejak terakhir dimuat (sesi/perangkat lain).
+  function handleSyncConflict(){
+    if(conflictOpen) return;
+    conflictOpen = true;
+    function release(){ conflictOpen = false; }
+    var ov = openChoice('Data di server sudah berubah',
+      'Perubahan ini dibuat dari perangkat/tab lain setelah halaman ini memuat data. Perubahanmu di sini belum tersimpan.',
+      [
+        {icon:'\u21bb', label:'Muat data terbaru (perubahan belum tersimpan di sini dibuang)', onPick:function(){ release(); loadFromApi(); }},
+        {icon:'\u2b06', label:'Timpa dengan data saya (versi server dicadangkan dulu)', onPick:function(){ release(); forceNextPush = true; pushToApi(); }}
+      ]);
+    // menutup lewat Batal / klik di luar = nanti; lepaskan penjaga agar peringatan bisa muncul lagi di simpanan berikutnya
+    var obs = new MutationObserver(function(){ if(!document.body.contains(ov)){ release(); obs.disconnect(); } });
+    obs.observe(document.body, {childList:true});
+  }
+
+  function queueSync(){
+    if(!hasApi() || !isGuru()) return;
+    if(syncTimer) clearTimeout(syncTimer);
+    syncTimer = setTimeout(function(){ syncTimer = null; pushToApi(); }, 500); // debounce rapid edits
+  }
+
+  function statusLabel(){
+    if(!hasApi()) return {cls:'local', text: (isGuru()||isPetugas()) ? 'Mode lokal' : 'Hubungkan ke server'};
+    if(syncStatus==='syncing') return {cls:'sync', text:'Menyinkronkan…'};
+    if(syncStatus==='online') return {cls:'online', text:'Server terhubung'};
+    if(syncStatus==='error') return {cls:'error', text:'Sinkronisasi gagal'};
+    return {cls:'local', text:'Menghubungkan…'};
+  }
+
+  function renderStatusOnly(){
+    var el = document.getElementById('status-dot');
+    var lb = document.getElementById('status-label');
+    if(!el||!lb) return;
+    var s = statusLabel();
+    el.className = 'dot '+s.cls;
+    lb.textContent = s.text;
+  }
+
+  // ---- Render ----
+  // ---- Animasi pergeseran halus (teknik FLIP): elemen yang berpindah posisi meluncur dari posisi lama ke baru ----
+  function flipSnapshot(root, selector, attr){
+    var m = {};
+    root.querySelectorAll(selector).forEach(function(el){
+      var k = el.getAttribute(attr);
+      if(k) m[k] = el.getBoundingClientRect();
+    });
+    return m;
+  }
+  function flipPlay(root, selector, attr, prev){
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var moved = [];
+    root.querySelectorAll(selector).forEach(function(el){
+      var before = prev[el.getAttribute(attr)];
+      if(!before) return;
+      var r = el.getBoundingClientRect();
+      var dx = before.left - r.left, dy = before.top - r.top;
+      if(Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      el.style.transition = 'none';
+      el.style.transform = 'translate('+dx+'px,'+dy+'px)';
+      moved.push(el);
+    });
+    if(!moved.length) return;
+    void root.offsetWidth; // paksa reflow agar posisi awal tercatat sebelum meluncur
+    moved.forEach(function(el){
+      el.style.transition = 'transform .38s cubic-bezier(.22,.9,.32,1)';
+      el.style.transform = '';
+      setTimeout(function(){ el.style.transition = ''; }, 420);
+    });
+  }
+  var FLIP_APP_SEL = '.menu-tab[data-switch], .panel-card[data-pid]';
+  function render(){
+    var app = document.getElementById('app');
+    // jangan animasikan saat ganti menu/peran (isinya memang berbeda total); hanya saat urutan berubah
+    var animate = app.children.length && state.activeMenu === lastActiveMenu && role === lastRole;
+    var prev = animate ? flipSnapshot(app, FLIP_APP_SEL, 'data-key') : null;
+    renderCore();
+    if(prev) flipPlay(app, FLIP_APP_SEL, 'data-key', prev);
+  }
+  function renderCore(){
+    var app = document.getElementById('app');
+    var s = statusLabel();
+    var g = isGuru();
+    if(state.menus.length && !state.menus.some(function(m){ return m.id===state.activeMenu; })) state.activeMenu = state.menus[0].id;
+    var menusList = g ? state.menus : state.menus.filter(function(m){ return viewerAllowedAccess().indexOf(itemAccess(m))!==-1; });
+    if(!menusList.some(function(m){ return m.id===state.activeMenu; })) state.activeMenu = menusList.length ? menusList[0].id : null;
+    var menusHtml = menusList.map(function(m){
+      var idx = state.menus.indexOf(m);
+      var arrows = (g && m.id===state.activeMenu) ?
+        '<span class="menu-move'+(idx<=0?' disabled':'')+'" data-movemenu="left" data-id="'+m.id+'" title="Geser menu ke kiri">\u25c0</span>'+
+        '<span class="menu-move'+(idx>=state.menus.length-1?' disabled':'')+'" data-movemenu="right" data-id="'+m.id+'" title="Geser menu ke kanan">\u25b6</span>' : '';
+      var mAcc = itemAccess(m);
+      return '<div role="button" tabindex="0" class="menu-tab'+(m.id===state.activeMenu?' active':'')+(g&&mAcc==='teacher'?' teacher-only':'')+(g&&mAcc==='staff'?' staff-only':'')+'"'+(g?' draggable="true" title="Seret untuk mengubah urutan menu"':'')+' data-switch="'+m.id+'" data-key="m'+m.id+'">'+esc(m.name)+newTag(m.newAt, mAcc==='student')+arrows+(g?visToggle('menu',m.id,mAcc)+'<span class="menu-del" data-delmenu="'+m.id+'">\u00d7</span>':'')+'</div>';
+    }).join('');
+    var histCount = historyItems().length;
+    // Pengumuman yang sudah lewat batas waktu dipindahkan ke riwayat (tidak tampil di papan)
+    var panels = state.panels.filter(function(p){ return p.menuId===state.activeMenu && panelVisible(p) && !(p.type==='announcement' && isExpired(p)); });
+    // Panel pengumuman selalu tampil lebih dulu (kiri atas), urutan lain dipertahankan
+    panels = panels.map(function(p, i){ return {p:p, i:i}; }).sort(function(a, b){
+      var aAnn = (a.p.type==='announcement') ? 0 : 1;
+      var bAnn = (b.p.type==='announcement') ? 0 : 1;
+      if(aAnn !== bAnn) return aAnn - bAnn;
+      return a.i - b.i;
+    }).map(function(x){ return x.p; });
+    var panelsHtml = panels.length ? panels.map(panelHtml).join('') : (!g && !hasApi() ? '<div class="empty">Belum terhubung ke server<br>Klik "Hubungkan ke server" di kanan atas, lalu tempel URL yang diberikan gurumu.</div>' : '<div class="empty">Belum ada panel'+(g?'<br>Klik "+ Tambah panel" untuk memulai':'')+'</div>');
+    var activeM = menusList.find(function(m){ return m.id===state.activeMenu; });
+    var annCount = panels.filter(function(p){ return p.type==='announcement'; }).length;
+    var heroTitle = activeM ? activeM.name : 'P.R.I.M.A';
+    var heroSub = panels.length ? (panels.length+' panel'+(annCount?', '+annCount+' pengumuman aktif':'')) : 'Belum ada panel di menu ini';
+    app.innerHTML =
+      '<header>'+
+        '<div class="title-row">'+
+          '<div class="brand">'+
+            '<div class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true">'+'<rect width="40" height="40" rx="3" fill="#0071bc"/>'+'<rect x="8" y="22" width="6" height="9" fill="#fff"/><rect x="17" y="16" width="6" height="15" fill="#fff"/><rect x="26" y="9" width="6" height="22" fill="#fff"/>'+'<rect x="6" y="32.5" width="28" height="1.5" fill="#fff" opacity=".7"/>'+
+            '</svg></div>'+
+            '<div><h1 class="hud-font" title="Panel Responsif untuk Informasi dan Media Ajar">P.R.I.M.A</h1><small>Panel responsif, belajar interaktif</small></div>'+
+          '</div>'+
+          '<div class="header-right">'+
+            '<div class="header-row"><span class="role-pill'+(role!=='murid'?' active':'')+'">'+(g?'Mode guru':isPetugas()?'Mode petugas':'Mode murid')+'</span>'+
+            '<div class="role-btn" id="theme-toggle" title="Ganti mode gelap/terang">'+(theme==='dark'?'Tema terang':'Tema gelap')+'</div>'+
+            '<div class="status" id="status-toggle" title="Pengaturan koneksi server"><span class="dot '+s.cls+'" id="status-dot"></span><span id="status-label">'+s.text+'</span></div></div>'+
+            '<div class="header-row">'+
+              '<div class="hist-btn" id="hist-btn" title="Lihat riwayat pengumuman">Riwayat pengumuman'+(histCount?'<span class="hist-count">'+histCount+'</span>':'')+'</div>'+
+              (role==='murid' ?
+                '<div class="role-btn" id="role-btn-guru">Masuk sebagai guru</div><div class="role-btn" id="role-btn-petugas">Masuk sebagai petugas</div>' :
+                '<div class="role-btn" id="role-btn-logout">'+(g?'Keluar dari mode guru':'Keluar dari mode petugas')+'</div>') +
+            '</div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="menu-row">'+menusHtml+(g?'<button id="add-menu-btn" data-addmenu>+ Menu</button>':'')+'</div>'+
+      '</header>'+
+      '<section class="hero"><div class="hero-inner"><h2>'+esc(heroTitle)+'</h2><p>'+heroSub+'</p></div></section>'+
+      '<main>'+
+        updateFeedHtml()+
+        (g?'<div class="vis-legend"><span class="vis-tri"></span>Biru: murid (petugas ikut lihat)<span class="vis-tri staff"></span>Ungu: khusus petugas<span class="vis-tri teacher"></span>Oranye: hanya guru<span>· Klik segitiga untuk gonta-ganti akses. Menu/panel oranye menyembunyikan dari murid & petugas; ungu menyembunyikan dari murid saja. · Seret tab menu (atau pakai panah ◀ ▶ di menu aktif) untuk mengatur urutan.</span></div>':'')+
+        (g?'<button class="add-panel-btn" data-addpanel>+ Tambah panel</button>':'')+
+        '<div class="panels-grid">'+panelsHtml+'</div>'+
+      '</main>';
+    if(state.activeMenu !== lastActiveMenu){
+      var newGrid = app.querySelector('.panels-grid');
+      if(newGrid) newGrid.classList.add('menu-switch');
+      lastActiveMenu = state.activeMenu;
+    }
+    if(role !== lastRole){
+      app.classList.remove('role-switch');
+      void app.offsetWidth; // paksa reflow supaya animasi terulang walau nama kelasnya sama
+      app.classList.add('role-switch');
+      lastRole = role;
+    }
+    app.querySelectorAll('[data-switch]').forEach(function(el){ el.addEventListener('click', function(){ state.activeMenu = el.getAttribute('data-switch'); render(); persistLocal(); }); });
+    app.querySelectorAll('[data-delmenu]').forEach(function(el){ el.addEventListener('click', function(e){ e.stopPropagation(); delMenu(el.getAttribute('data-delmenu')); }); });
+    var am = document.getElementById('add-menu-btn'); if(am) am.addEventListener('click', addMenuModal);
+    var ap = app.querySelector('[data-addpanel]'); if(ap) ap.addEventListener('click', addPanelModal);
+    app.querySelectorAll('[data-delpanel]').forEach(function(el){ el.addEventListener('click', function(){ delPanel(el.getAttribute('data-delpanel')); }); });
+    app.querySelectorAll('[data-addsub]').forEach(function(el){ el.addEventListener('click', function(){ addSubModal(el.getAttribute('data-addsub')); }); });
+    app.querySelectorAll('[data-delsub]').forEach(function(el){ el.addEventListener('click', function(){ delSub(el.getAttribute('data-delsub'), el.getAttribute('data-panel')); }); });
+    app.querySelectorAll('[data-movepanel]').forEach(function(el){ el.addEventListener('click', function(){ movePanelPosition(el.getAttribute('data-pid'), el.getAttribute('data-movepanel')==='up'?-1:1); }); });
+    app.querySelectorAll('[data-viewsubs]').forEach(function(el){ el.addEventListener('click', function(){ openPanelDetail(el.getAttribute('data-viewsubs')); }); });
+    app.querySelectorAll('[data-editpanel]').forEach(function(el){ el.addEventListener('click', function(){ editPanelModal(el.getAttribute('data-editpanel')); }); });
+    app.querySelectorAll('[data-hftoggle]').forEach(function(el){ el.addEventListener('click', function(){ toggleHighfive(el.getAttribute('data-hftoggle')); }); });
+    app.querySelectorAll('[data-highfive]').forEach(function(el){ el.addEventListener('click', function(){ doHighfive(el.getAttribute('data-highfive'), el); }); });
+    app.querySelectorAll('.sub-card img').forEach(function(im){ im.addEventListener('click', function(){ openImageLightbox(im.getAttribute('src')); }); });
+    var st = document.getElementById('status-toggle'); if(st) st.addEventListener('click', settingsModal);
+    var tt = document.getElementById('theme-toggle'); if(tt) tt.addEventListener('click', toggleTheme);
+    app.querySelectorAll('.menu-tab').forEach(function(el){ el.addEventListener('keydown', function(e){ if((e.key==='Enter'||e.key===' ') && e.target===el){ e.preventDefault(); el.click(); } }); });
+    app.querySelectorAll('[data-movemenu]').forEach(function(el){ el.addEventListener('click', function(e){ e.stopPropagation(); moveMenuPosition(el.getAttribute('data-id'), el.getAttribute('data-movemenu')==='left'?-1:1); }); });
+    app.querySelectorAll('[data-goto-menu]').forEach(function(el){ el.addEventListener('click', function(){ goToItem(el.getAttribute('data-goto-menu'), el.getAttribute('data-goto-panel')); }); });
+    app.querySelectorAll('[data-vis]').forEach(function(el){ el.addEventListener('click', function(e){ e.stopPropagation(); toggleVisibility(el.getAttribute('data-vis'), el.getAttribute('data-id'), el.getAttribute('data-panel')); }); });
+    var rbg = document.getElementById('role-btn-guru'); if(rbg) rbg.addEventListener('click', function(){ loginModal('guru'); });
+    var rbp = document.getElementById('role-btn-petugas'); if(rbp) rbp.addEventListener('click', function(){ loginModal('petugas'); });
+    var rbo = document.getElementById('role-btn-logout'); if(rbo) rbo.addEventListener('click', function(){ setRole('murid'); if(hasApi()) loadFromApi(); });
+    var hb = document.getElementById('hist-btn'); if(hb) hb.addEventListener('click', historyModal);
+    wireDragAndDrop(app);
+  }
+
+  // ---- Drag & drop wiring (native HTML5 DnD) ----
+  function wireDragAndDrop(app){
+    var draggedPanelId = null;
+    app.querySelectorAll('[data-dragpanel]').forEach(function(handle){
+      handle.addEventListener('dragstart', function(e){
+        draggedPanelId = handle.getAttribute('data-dragpanel');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedPanelId);
+        var card = handle.closest('.panel-card');
+        if(card) setTimeout(function(){ card.classList.add('dragging'); }, 0);
+      });
+      handle.addEventListener('dragend', function(){
+        var card = handle.closest('.panel-card');
+        if(card) card.classList.remove('dragging');
+        draggedPanelId = null;
+        app.querySelectorAll('.panel-card.drag-over').forEach(function(c){ c.classList.remove('drag-over'); });
+      });
+    });
+    app.querySelectorAll('.panel-card.type-info').forEach(function(card){
+      card.addEventListener('dragover', function(e){
+        if(!draggedPanelId) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        card.classList.add('drag-over');
+      });
+      card.addEventListener('dragleave', function(){ card.classList.remove('drag-over'); });
+      card.addEventListener('drop', function(e){
+        e.preventDefault();
+        card.classList.remove('drag-over');
+        var targetId = card.getAttribute('data-pid');
+        var dragId = draggedPanelId || e.dataTransfer.getData('text/plain');
+        if(dragId) reorderInfoPanels(dragId, targetId);
+      });
+    });
+
+    var draggedSubId = null, draggedSubPanel = null;
+    app.querySelectorAll('[data-dragsub]').forEach(function(handle){
+      handle.addEventListener('dragstart', function(e){
+        draggedSubId = handle.getAttribute('data-dragsub');
+        draggedSubPanel = handle.getAttribute('data-panel');
+        e.stopPropagation();
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedSubId);
+        var sub = handle.closest('.sub-card');
+        if(sub) setTimeout(function(){ sub.classList.add('dragging'); }, 0);
+      });
+      handle.addEventListener('dragend', function(){
+        var sub = handle.closest('.sub-card');
+        if(sub) sub.classList.remove('dragging');
+        draggedSubId = null; draggedSubPanel = null;
+        app.querySelectorAll('.sub-card.drag-over').forEach(function(c){ c.classList.remove('drag-over'); });
+      });
+    });
+    app.querySelectorAll('.sub-card').forEach(function(sub){
+      sub.addEventListener('dragover', function(e){
+        if(!draggedSubId || draggedSubPanel!==sub.getAttribute('data-panel')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'move';
+        sub.classList.add('drag-over');
+      });
+      sub.addEventListener('dragleave', function(){ sub.classList.remove('drag-over'); });
+      sub.addEventListener('drop', function(e){
+        if(!draggedSubId) return; // yang diseret bukan sub-panel (mis. sebuah panel): biarkan naik ke kartu panel tujuan
+        e.preventDefault();
+        e.stopPropagation();
+        sub.classList.remove('drag-over');
+        var targetId = sub.getAttribute('data-subid');
+        var panelId = sub.getAttribute('data-panel');
+        var dragId = draggedSubId || e.dataTransfer.getData('text/plain');
+        if(dragId && panelId===draggedSubPanel) reorderSubpanels(panelId, dragId, targetId);
+      });
+    });
+
+    // ---- Geser tab menu (guru) ----
+    var draggedMenuId = null;
+    app.querySelectorAll('.menu-tab[draggable="true"]').forEach(function(tab){
+      tab.addEventListener('dragstart', function(e){
+        draggedMenuId = tab.getAttribute('data-switch');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedMenuId);
+        setTimeout(function(){ tab.classList.add('dragging'); }, 0);
+      });
+      tab.addEventListener('dragend', function(){
+        draggedMenuId = null;
+        app.querySelectorAll('.menu-tab.dragging, .menu-tab.drag-over').forEach(function(t){ t.classList.remove('dragging','drag-over'); });
+      });
+      tab.addEventListener('dragover', function(e){
+        if(!draggedMenuId) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        tab.classList.add('drag-over');
+      });
+      tab.addEventListener('dragleave', function(){ tab.classList.remove('drag-over'); });
+      tab.addEventListener('drop', function(e){
+        e.preventDefault();
+        tab.classList.remove('drag-over');
+        var dragId = draggedMenuId || e.dataTransfer.getData('text/plain');
+        if(dragId) reorderMenus(dragId, tab.getAttribute('data-switch'));
+      });
+    });
+  }
+
+  function panelHtml(p){
+    return (p.type==='announcement') ? announcementPanelHtml(p) : infoPanelHtml(p);
+  }
+
+  function infoPanelHtml(p){
+    var g = isGuru();
+    var subsList = g ? p.subpanels : p.subpanels.filter(function(x){ return viewerAllowedAccess().indexOf(itemAccess(x))!==-1; });
+    var pAcc = itemAccess(p);
+    var previewList = subsList.slice(0, 2);
+    var previewHtml = previewList.map(function(s){
+      var sAcc = itemAccess(s);
+      return '<div class="sub-card'+(g&&sAcc==='teacher'?' teacher-only':'')+(g&&sAcc==='staff'?' staff-only':'')+'">'+
+        '<div class="sub-title">'+esc(s.title)+newTag(s.newAt, panelEff(p) && sAcc==='student')+'</div>'+
+        (s.subtitle?'<div class="sub-subtitle">'+esc(s.subtitle)+'</div>':'')+
+        (s.image?'<img src="'+esc(s.image)+'" alt="">':'')+
+        (s.linkUrl?'<a class="sub-link" href="'+esc(s.linkUrl)+'" target="_blank" rel="noopener">'+esc(s.linkLabel||s.linkUrl)+'</a>':'')+
+      '</div>';
+    }).join('');
+    var hasMore = subsList.length > 2;
+    var showBtn = hasMore || (g && subsList.length > 0);
+    var btnLabel = hasMore ? ('Lihat semua sub-panel ('+subsList.length+')') : 'Kelola sub-panel';
+    return '<div class="panel-card type-info'+(g&&pAcc==='teacher'?' teacher-only':'')+(g&&pAcc==='staff'?' staff-only':'')+'" data-pid="'+p.id+'" data-key="p'+p.id+'">'+
+      '<div class="panel-head"><div class="panel-head-left">'+(g?'<span class="drag-handle" draggable="true" data-dragpanel="'+p.id+'" title="Seret untuk urutkan">\u283f</span>':'')+'<h3 class="hud-font">'+esc(p.title)+'</h3>'+newTag(p.newAt, panelEff(p))+'</div>'+
+      (g?'<div class="panel-head-right">'+visToggle('panel',p.id,pAcc)+
+        '<button class="icon-btn" data-editpanel="'+p.id+'" title="Edit judul panel">\u270e</button>'+
+        '<button class="move-btn" data-movepanel="up" data-pid="'+p.id+'" title="Pindah ke atas">\u25b2</button>'+
+        '<button class="move-btn" data-movepanel="down" data-pid="'+p.id+'" title="Pindah ke bawah">\u25bc</button>'+
+        '<button class="icon-btn" data-delpanel="'+p.id+'">\u00d7</button>'+
+      '</div>':'')+'</div>'+
+      '<div class="panel-body" data-panelbody="'+p.id+'">'+
+        (previewList.length ? previewHtml : '<div class="empty-hint">Belum ada sub-panel.</div>')+
+        (showBtn ? '<button class="view-subs-btn" data-viewsubs="'+p.id+'">'+btnLabel+'</button>' : '')+
+        (g?'<button class="add-sub-btn" data-addsub="'+p.id+'">+ Sub-panel</button>':'')+
+      '</div>'+
+    '</div>';
+  }
+
+  function announcementPanelHtml(p){
+    var expired = isExpired(p);
+    var fresh = isFresh(p) && !expired && panelEff(p);
+    var annAcc = itemAccess(p);
+    var hfOn = !!p.highfiveEnabled;
+    var hfDone = hfOn && hfAlreadyDone(p.id);
+    return '<div class="panel-card type-announcement'+(expired?' expired':'')+(isGuru()&&annAcc==='teacher'?' teacher-only':'')+(isGuru()&&annAcc==='staff'?' staff-only':'')+'">'+
+      (fresh?'<div class="new-badge">Baru</div>':'')+
+      '<div class="panel-head"><h3 class="hud-font">'+esc(p.title)+'</h3>'+(isGuru()?'<div class="panel-head-right">'+visToggle('panel',p.id,annAcc)+
+        '<button class="icon-btn hf-admin-btn'+(hfOn?' active':'')+'" data-hftoggle="'+p.id+'" title="'+(hfOn?'Matikan tombol Highfive untuk pengumuman ini':'Aktifkan tombol Highfive untuk pengumuman ini')+'">\u270b</button>'+
+        '<button class="icon-btn" data-editpanel="'+p.id+'" title="Edit pengumuman">\u270e</button><button class="icon-btn" data-delpanel="'+p.id+'">\u00d7</button></div>':'')+'</div>'+
+      '<div class="panel-body">'+
+        '<div class="ann-body">'+esc(p.body)+'</div>'+
+        '<div class="ann-meta">'+
+          '<span class="status-pill'+(expired?' expired':'')+'">'+(expired?'Sudah diumumkan':'Aktif')+'</span>'+
+          (p.deadline?'<span class="ann-deadline">Batas waktu: '+formatDate(p.deadline)+'</span>':'')+
+        '</div>'+
+        (hfOn?('<div class="hf-row"><button class="hf-btn'+(hfDone?' done':'')+'" data-highfive="'+p.id+'"'+(hfDone?' disabled':'')+'>'+(hfDone?'Sudah highfive':'Highfive')+'</button><span class="hf-count">'+(p.highfiveCount||0)+' highfive</span></div>'):'')+
+      '</div>'+
+    '</div>';
+  }
+
+  // Menutup pop-up dengan animasi halus (fade + scale) sebelum elemen benar-benar dihapus.
+  function closeOverlay(ov, after){
+    if(!ov || ov.dataset.closing) return;
+    ov.dataset.closing = '1';
+    ov.classList.add('closing');
+    var done = false;
+    function finish(){
+      if(done) return; done = true;
+      ov.remove();
+      if(after) after();
+    }
+    ov.addEventListener('transitionend', finish, {once:true});
+    setTimeout(finish, 220); // jaring pengaman jika transitionend tak terpicu
+  }
+
+  function openImageLightbox(src){
+    var scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0, stx = 0, sty = 0;
+    var ov = document.createElement('div'); ov.className = 'modal-overlay lightbox-overlay';
+    ov.innerHTML = '<div class="lightbox-wrap">'+
+      '<div class="lightbox-toolbar">'+
+        '<button class="lb-btn" data-lbout title="Perkecil">\u2212</button>'+
+        '<button class="lb-btn" data-lbreset title="Reset ukuran">100%</button>'+
+        '<button class="lb-btn" data-lbin title="Perbesar">+</button>'+
+        '<button class="lb-btn lb-close" data-lbclose title="Tutup">\u00d7</button>'+
+      '</div>'+
+      '<div class="lightbox-view"><img src="'+esc(src)+'" class="lightbox-img" draggable="false" alt=""></div>'+
+    '</div>';
+    document.body.appendChild(ov);
+    var img = ov.querySelector('.lightbox-img');
+    function apply(){ img.style.transform = 'translate('+tx+'px,'+ty+'px) scale('+scale+')'; img.style.cursor = scale>1 ? 'grab' : 'zoom-in'; }
+    function setScale(ns){ scale = Math.max(0.5, Math.min(6, ns)); if(scale<=1){ tx=0; ty=0; } apply(); }
+    apply();
+    function close(){
+      closeOverlay(ov, function(){
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+        document.removeEventListener('keydown', onKey);
+      });
+    }
+    function onWheel(e){ e.preventDefault(); setScale(scale + (e.deltaY<0?0.25:-0.25)); }
+    function onDown(e){ if(scale<=1) return; dragging=true; sx=e.clientX; sy=e.clientY; stx=tx; sty=ty; img.style.cursor='grabbing'; e.preventDefault(); }
+    function onMove(e){ if(!dragging) return; tx = stx+(e.clientX-sx); ty = sty+(e.clientY-sy); apply(); }
+    function onUp(){ if(dragging){ dragging=false; apply(); } }
+    function onKey(e){ if(e.key==='Escape') close(); }
+    ov.querySelector('[data-lbin]').onclick = function(){ setScale(scale+0.4); };
+    ov.querySelector('[data-lbout]').onclick = function(){ setScale(scale-0.4); };
+    ov.querySelector('[data-lbreset]').onclick = function(){ setScale(1); };
+    ov.querySelector('[data-lbclose]').onclick = close;
+    ov.addEventListener('click', function(e){ if(e.target===ov) close(); });
+    ov.querySelector('.lightbox-view').addEventListener('wheel', onWheel, {passive:false});
+    img.addEventListener('dblclick', function(){ setScale(scale>1?1:2); });
+    img.addEventListener('mousedown', onDown);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    document.addEventListener('keydown', onKey);
+  }
+
+  function openModal(title, sub, fields, onSave, saveLabel){
+    var ov = document.createElement('div'); ov.className='modal-overlay';
+    var f = fields.map(function(fl){
+      if(fl.type==='textarea'){
+        return '<label>'+fl.label+'</label><textarea data-f="'+fl.name+'" placeholder="'+(fl.placeholder||'')+'">'+esc(fl.value||'')+'</textarea>';
+      }
+      return '<label>'+fl.label+'</label><input data-f="'+fl.name+'" type="'+(fl.type||'text')+'" value="'+esc(fl.value||'')+'" placeholder="'+(fl.placeholder||'')+'">';
+    }).join('');
+    ov.innerHTML = '<div class="modal"><h4 class="hud-font">'+title+'</h4>'+(sub?'<div class="sub">'+sub+'</div>':'')+f+'<div class="modal-actions"><button class="btn" data-cancel>Batal</button><button class="btn btn-primary" data-save>'+(saveLabel||'Simpan')+'</button></div></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeOverlay(ov); });
+    ov.querySelector('[data-cancel]').onclick = function(){ closeOverlay(ov); };
+    ov.querySelectorAll('input').forEach(function(inp){ inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ov.querySelector('[data-save]').click(); } }); });
+    ov.querySelector('[data-save]').onclick = function(){
+      var vals = {};
+      fields.forEach(function(fl){ vals[fl.name] = ov.querySelector('[data-f="'+fl.name+'"]').value.trim(); });
+      closeOverlay(ov, function(){ onSave(vals); });
+    };
+    return ov;
+  }
+
+  function openChoice(title, sub, choices){
+    var ov = document.createElement('div'); ov.className='modal-overlay';
+    var btns = choices.map(function(c, i){ return '<button data-c="'+i+'"><span class="ico">'+c.icon+'</span>'+c.label+'</button>'; }).join('');
+    ov.innerHTML = '<div class="modal"><h4 class="hud-font">'+title+'</h4>'+(sub?'<div class="sub">'+sub+'</div>':'')+'<div class="type-choice">'+btns+'</div><div class="modal-actions"><button class="btn" data-cancel>Batal</button></div></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeOverlay(ov); });
+    ov.querySelector('[data-cancel]').onclick = function(){ closeOverlay(ov); };
+    ov.querySelectorAll('[data-c]').forEach(function(btn){
+      btn.onclick = function(){ var idx = +btn.getAttribute('data-c'); closeOverlay(ov, function(){ choices[idx].onPick(); }); };
+    });
+    return ov;
+  }
+
+  function addMenuModal(){
+    if(!isGuru()) return;
+    openModal('Menu baru', null, [{name:'name', label:'Nama menu', placeholder:'Contoh: Materi Kelas X'}], function(v){
+      if(!v.name) return;
+      var id = uid();
+      state.menus.push({id:id, name:v.name, newAt:Date.now()});
+      state.activeMenu = id;
+      save();
+    });
+  }
+  function delMenu(id){
+    if(!isGuru()) return;
+    if(!confirm('Hapus menu ini beserta semua panelnya?')) return;
+    state.menus = state.menus.filter(function(m){ return m.id!==id; });
+    state.panels = state.panels.filter(function(p){ return p.menuId!==id; });
+    if(state.activeMenu===id) state.activeMenu = state.menus.length? state.menus[0].id : null;
+    save();
+  }
+  function addPanelModal(){
+    if(!isGuru()) return;
+    if(!state.activeMenu){ alert('Buat menu terlebih dahulu.'); return; }
+    openChoice('Pilih tipe panel', 'Panel pengumuman selalu tampil di posisi kiri atas.', [
+      {icon:'\u26a0', label:'Pengumuman', onPick: addAnnouncementModal},
+      {icon:'\u2261', label:'Informasi', onPick: addInfoPanelModal}
+    ]);
+  }
+  function addInfoPanelModal(){
+    if(!isGuru()) return;
+    openModal('Panel informasi baru', null, [{name:'title', label:'Judul panel', placeholder:'Contoh: Bahan Bacaan'}], function(v){
+      if(!v.title) return;
+      state.panels.push({id:uid(), menuId:state.activeMenu, type:'info', title:v.title, newAt:Date.now(), subpanels:[]});
+      save();
+    });
+  }
+  function addAnnouncementModal(){
+    if(!isGuru()) return;
+    openModal('Panel pengumuman baru', 'Tanda "Baru" otomatis hilang setelah 3 hari. Setelah lewat batas waktu, pengumuman ditandai "Sudah diumumkan".', [
+      {name:'title', label:'Judul pengumuman', placeholder:'Contoh: Libur Nasional'},
+      {name:'body', label:'Isi pengumuman', type:'textarea', placeholder:'Tulis isi pengumuman di sini...'},
+      {name:'deadline', label:'Batas waktu', type:'date'}
+    ], function(v){
+      if(!v.title) return;
+      state.panels.push({id:uid(), menuId:state.activeMenu, type:'announcement', title:v.title, body:v.body, deadline:v.deadline||null, createdAt:Date.now(), newAt:Date.now(), subpanels:[], highfiveEnabled:false, highfiveCount:0});
+      save();
+    });
+  }
+  // ---- Highfive: tombol "colek" tanpa login, satu kali per pengguna per panel pengumuman ----
+  var CLIENT_ID_KEY = 'papan-panel-clientid';
+  var HF_DONE_KEY = 'papan-panel-hf-done';
+  function clientId(){
+    try{
+      var id = localStorage.getItem(CLIENT_ID_KEY);
+      if(!id){ id = uid()+uid(); localStorage.setItem(CLIENT_ID_KEY, id); }
+      return id;
+    }catch(e){ return 'anon-'+Date.now(); }
+  }
+  function hfDoneSet(){
+    try{ return JSON.parse(localStorage.getItem(HF_DONE_KEY)||'[]'); }catch(e){ return []; }
+  }
+  function hfAlreadyDone(panelId){ return hfDoneSet().indexOf(panelId)!==-1; }
+  function hfMarkDone(panelId){
+    try{
+      var arr = hfDoneSet();
+      if(arr.indexOf(panelId)===-1){ arr.push(panelId); localStorage.setItem(HF_DONE_KEY, JSON.stringify(arr)); }
+    }catch(e){}
+  }
+  function toggleHighfive(panelId){
+    if(!isGuru()) return;
+    var p = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p || p.type!=='announcement') return;
+    p.highfiveEnabled = !p.highfiveEnabled;
+    save();
+  }
+  function doHighfive(panelId, btn){
+    if(hfAlreadyDone(panelId)) return;
+    var p = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p || !p.highfiveEnabled) return;
+    if(btn) btn.disabled = true;
+    if(!hasApi()){
+      // tanpa server: hitung di perangkat ini saja supaya fitur tetap berfungsi
+      p.highfiveCount = (p.highfiveCount||0) + 1;
+      hfMarkDone(panelId);
+      persistLocal();
+      render();
+      return;
+    }
+    fetch(apiUrl(), {method:'POST', headers:JSON_HDR, body:JSON.stringify({action:'highfive', panelId:panelId, clientId:clientId()})})
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(res && res.ok){
+          p.highfiveCount = res.count;
+          hfMarkDone(panelId);
+          persistLocal();
+        }
+        render();
+      })
+      .catch(function(){ if(btn) btn.disabled = false; });
+  }
+  function fetchHighfiveCounts(){
+    if(!hasApi()) return;
+    fetch(apiUrl()+(apiUrl().indexOf('?')===-1?'?':'&')+'counts=1', {method:'GET'})
+      .then(function(r){ return r.json(); })
+      .then(function(counts){
+        if(!counts || typeof counts!=='object') return;
+        var changed = false;
+        state.panels.forEach(function(p){
+          if(p.type==='announcement'){
+            var c = counts[p.id]||0;
+            if(p.highfiveCount!==c){ p.highfiveCount=c; changed=true; }
+          }
+        });
+        if(changed){ persistLocal(); render(); }
+      })
+      .catch(function(){});
+  }
+
+  function editPanelModal(panelId){
+    if(!isGuru()) return;
+    var p = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p) return;
+    if(p.type==='announcement'){
+      openModal('Edit panel pengumuman', 'Tanda "Baru" otomatis hilang setelah 3 hari. Setelah lewat batas waktu, pengumuman ditandai "Sudah diumumkan".', [
+        {name:'title', label:'Judul pengumuman', placeholder:'Contoh: Libur Nasional', value:p.title},
+        {name:'body', label:'Isi pengumuman', type:'textarea', placeholder:'Tulis isi pengumuman di sini...', value:p.body},
+        {name:'deadline', label:'Batas waktu', type:'date', value:p.deadline||''}
+      ], function(v){
+        if(!v.title) return;
+        p.title = v.title; p.body = v.body; p.deadline = v.deadline||null;
+        save();
+      }, 'Simpan perubahan');
+    } else {
+      openModal('Edit panel', null, [
+        {name:'title', label:'Judul panel', placeholder:'Contoh: Bahan Bacaan', value:p.title}
+      ], function(v){
+        if(!v.title) return;
+        p.title = v.title;
+        save();
+      }, 'Simpan perubahan');
+    }
+  }
+  function delPanel(id){
+    if(!isGuru()) return;
+    if(!confirm('Hapus panel ini?')) return;
+    state.panels = state.panels.filter(function(p){ return p.id!==id; });
+    save();
+  }
+  function addSubModal(panelId){
+    if(!isGuru()) return;
+    openModal('Sub-panel baru', null, [
+      {name:'title', label:'Judul', placeholder:'Judul sub-panel'},
+      {name:'subtitle', label:'Sub-judul', placeholder:'Opsional'},
+      {name:'linkUrl', label:'Hyperlink (URL)', placeholder:'https://...'},
+      {name:'linkLabel', label:'Teks link', placeholder:'Opsional'},
+      {name:'image', label:'URL gambar', placeholder:'https://...jpg'}
+    ], function(v){
+      if(!v.title) return;
+      var p = state.panels.find(function(p){ return p.id===panelId; });
+      if(!p) return;
+      p.subpanels.push({id:uid(), title:v.title, subtitle:v.subtitle, linkUrl:v.linkUrl, linkLabel:v.linkLabel, image:v.image, newAt:Date.now()});
+      save();
+    });
+  }
+  function delSub(subId, panelId){
+    if(!isGuru()) return;
+    var p = state.panels.find(function(p){ return p.id===panelId; });
+    if(!p) return;
+    p.subpanels = p.subpanels.filter(function(s){ return s.id!==subId; });
+    save();
+  }
+  function editSubModal(panelId, subId, afterSave){
+    if(!isGuru()) return;
+    var p = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p) return;
+    var s = p.subpanels.find(function(x){ return x.id===subId; });
+    if(!s) return;
+    openModal('Edit sub-panel', null, [
+      {name:'title', label:'Judul', placeholder:'Judul sub-panel', value:s.title},
+      {name:'subtitle', label:'Sub-judul', placeholder:'Opsional', value:s.subtitle},
+      {name:'linkUrl', label:'Hyperlink (URL)', placeholder:'https://...', value:s.linkUrl},
+      {name:'linkLabel', label:'Teks link', placeholder:'Opsional', value:s.linkLabel},
+      {name:'image', label:'URL gambar', placeholder:'https://...jpg', value:s.image}
+    ], function(v){
+      if(!v.title) return;
+      s.title = v.title; s.subtitle = v.subtitle; s.linkUrl = v.linkUrl; s.linkLabel = v.linkLabel; s.image = v.image;
+      save();
+      if(afterSave) afterSave();
+    }, 'Simpan perubahan');
+  }
+
+  // ---- Pop-up sub-panel (dibuka lewat tombol "LIHAT SUB-PANEL" di tiap panel) ----
+  function subTileHtml(p, s, idx, total){
+    var g = isGuru();
+    var sAcc = itemAccess(s);
+    return '<div class="sub-card sub-tile'+(g&&sAcc==='teacher'?' teacher-only':'')+(g&&sAcc==='staff'?' staff-only':'')+'" data-subid="'+s.id+'">'+
+      '<div class="sub-head">'+
+        '<div><div class="sub-title">'+esc(s.title)+newTag(s.newAt, panelEff(p) && sAcc==='student')+'</div>'+(s.subtitle?'<div class="sub-subtitle">'+esc(s.subtitle)+'</div>':'')+'</div>'+
+        (g?'<div class="sub-head-right">'+visToggle('sub',s.id,sAcc,p.id)+'<button class="icon-btn" data-editsub="'+s.id+'" title="Edit sub-panel">\u270e</button><button class="icon-btn" data-delsub="'+s.id+'">\u00d7</button></div>':'')+
+      '</div>'+
+      (s.image?'<img src="'+esc(s.image)+'" alt="">':'')+
+      (s.linkUrl?'<a class="sub-link" href="'+esc(s.linkUrl)+'" target="_blank" rel="noopener">'+esc(s.linkLabel||s.linkUrl)+'</a>':'')+
+      (g?'<div class="sub-tile-move"><button class="move-btn" data-movesub="left" title="Pindah ke kiri"'+(idx===0?' disabled':'')+'>\u25c0</button><button class="move-btn" data-movesub="right" title="Pindah ke kanan"'+(idx===total-1?' disabled':'')+'>\u25b6</button></div>':'')+
+    '</div>';
+  }
+
+  function openPanelDetail(panelId){
+    var g = isGuru();
+    var p0 = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p0) return;
+    var ov = document.createElement('div'); ov.className='modal-overlay';
+    ov.innerHTML = '<div class="modal subpanel-modal">'+
+      '<div class="sp-head"><div class="sp-title"><h4 class="hud-font">'+esc(p0.title)+'</h4>'+
+      '<div class="sub">Sub-panel dalam panel ini, berjejer di bawah</div></div>'+
+      '<div class="modal-actions">'+(g?'<button class="btn" data-addsub-here>+ Sub-panel</button>':'')+'<button class="btn btn-primary" data-cancel>Tutup</button></div></div>'+
+      '<div class="subs-row"></div></div>';
+    document.body.appendChild(ov);
+    var row = ov.querySelector('.subs-row');
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeOverlay(ov); });
+    ov.querySelector('[data-cancel]').onclick = function(){ closeOverlay(ov); };
+
+    function refresh(){
+      var p = state.panels.find(function(x){ return x.id===panelId; });
+      if(!p){ closeOverlay(ov); return; }
+      var list = g ? p.subpanels : p.subpanels.filter(function(x){ return viewerAllowedAccess().indexOf(itemAccess(x))!==-1; });
+      var prevTiles = row.children.length ? flipSnapshot(row, '.sub-tile[data-subid]', 'data-subid') : null;
+      row.innerHTML = list.length ? list.map(function(s, i){ return subTileHtml(p, s, i, list.length); }).join('') : '<div class="empty-hint">Belum ada sub-panel.</div>';
+      if(prevTiles) flipPlay(row, '.sub-tile[data-subid]', 'data-subid', prevTiles);
+      row.querySelectorAll('.sub-card img').forEach(function(im){
+        im.addEventListener('click', function(){ openImageLightbox(im.getAttribute('src')); });
+      });
+      row.querySelectorAll('[data-delsub]').forEach(function(btn){
+        btn.addEventListener('click', function(){ delSub(btn.closest('[data-subid]').getAttribute('data-subid'), panelId); refresh(); });
+      });
+      row.querySelectorAll('[data-editsub]').forEach(function(btn){
+        btn.addEventListener('click', function(){ editSubModal(panelId, btn.closest('[data-subid]').getAttribute('data-subid'), refresh); });
+      });
+      row.querySelectorAll('[data-vis]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.stopPropagation(); toggleVisibility(el.getAttribute('data-vis'), el.getAttribute('data-id'), el.getAttribute('data-panel')); refresh(); });
+      });
+      row.querySelectorAll('[data-movesub]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var subId = btn.closest('[data-subid]').getAttribute('data-subid');
+          moveSubpanel(panelId, subId, btn.getAttribute('data-movesub'));
+          refresh();
+        });
+      });
+    }
+    refresh();
+
+    var addBtn = ov.querySelector('[data-addsub-here]');
+    if(addBtn) addBtn.onclick = function(){
+      openModal('Sub-panel baru', null, [
+        {name:'title', label:'Judul', placeholder:'Judul sub-panel'},
+        {name:'subtitle', label:'Sub-judul', placeholder:'Opsional'},
+        {name:'linkUrl', label:'Hyperlink (URL)', placeholder:'https://...'},
+        {name:'linkLabel', label:'Teks link', placeholder:'Opsional'},
+        {name:'image', label:'URL gambar', placeholder:'https://...jpg'}
+      ], function(v){
+        if(!v.title) return;
+        var p = state.panels.find(function(x){ return x.id===panelId; });
+        if(!p) return;
+        p.subpanels.push({id:uid(), title:v.title, subtitle:v.subtitle, linkUrl:v.linkUrl, linkLabel:v.linkLabel, image:v.image, newAt:Date.now()});
+        save();
+        refresh();
+      });
+    };
+  }
+
+  function moveSubpanel(panelId, subId, dir){
+    if(!isGuru()) return;
+    var p = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p) return;
+    var idx = p.subpanels.findIndex(function(s){ return s.id===subId; });
+    if(idx<0) return;
+    var swap = dir==='left' ? idx-1 : idx+1;
+    if(swap<0 || swap>=p.subpanels.length) return;
+    var tmp = p.subpanels[idx]; p.subpanels[idx]=p.subpanels[swap]; p.subpanels[swap]=tmp;
+    save();
+  }
+
+  // ---- Reorder via drag & drop ----
+  function reorderInfoPanels(draggedId, targetId){
+    if(!isGuru()) return;
+    if(draggedId===targetId) return;
+    var idxs = [];
+    state.panels.forEach(function(p, i){ if(p.menuId===state.activeMenu && p.type!=='announcement') idxs.push(i); });
+    var items = idxs.map(function(i){ return state.panels[i]; });
+    var di = items.findIndex(function(p){ return p.id===draggedId; });
+    var ti = items.findIndex(function(p){ return p.id===targetId; });
+    if(di<0 || ti<0 || di===ti) return;
+    var moved = items.splice(di, 1)[0];
+    // ti is the target's index BEFORE removal; splicing at that same numeric
+    // index on the shortened array correctly places moved right after the
+    // target when dragging forward, and right before it when dragging
+    // backward. Recomputing ti via findIndex after the splice (as before)
+    // breaks the forward case and made adjacent-forward drags a no-op.
+    items.splice(ti, 0, moved);
+    idxs.forEach(function(origIdx, k){ state.panels[origIdx] = items[k]; });
+    save();
+  }
+  function reorderSubpanels(panelId, draggedId, targetId){
+    if(!isGuru()) return;
+    if(draggedId===targetId) return;
+    var p = state.panels.find(function(x){ return x.id===panelId; });
+    if(!p) return;
+    var arr = p.subpanels;
+    var di = arr.findIndex(function(s){ return s.id===draggedId; });
+    var ti = arr.findIndex(function(s){ return s.id===targetId; });
+    if(di<0 || ti<0 || di===ti) return;
+    var moved = arr.splice(di, 1)[0];
+    arr.splice(ti, 0, moved); // see note above in reorderInfoPanels
+    save();
+  }
+  function reorderMenus(draggedId, targetId){
+    if(!isGuru() || draggedId===targetId) return;
+    var arr = state.menus;
+    var di = arr.findIndex(function(m){ return m.id===draggedId; });
+    var ti = arr.findIndex(function(m){ return m.id===targetId; });
+    if(di<0 || ti<0 || di===ti) return;
+    var moved = arr.splice(di, 1)[0];
+    arr.splice(ti, 0, moved); // geser maju: tepat setelah target; geser mundur: tepat sebelum target
+    save();
+  }
+  function moveMenuPosition(id, direction){
+    if(!isGuru()) return;
+    var arr = state.menus;
+    var pos = arr.findIndex(function(m){ return m.id===id; });
+    var np = pos + direction;
+    if(pos<0 || np<0 || np>=arr.length) return;
+    var tmp = arr[pos]; arr[pos] = arr[np]; arr[np] = tmp;
+    save();
+  }
+  function movePanelPosition(panelId, direction){
+    if(!isGuru()) return;
+    // direction: -1 = naik satu posisi, +1 = turun satu posisi, di antara panel informasi lain saja
+    var idxs = [];
+    state.panels.forEach(function(p, i){ if(p.menuId===state.activeMenu && p.type!=='announcement') idxs.push(i); });
+    var items = idxs.map(function(i){ return state.panels[i]; });
+    var pos = items.findIndex(function(p){ return p.id===panelId; });
+    var newPos = pos + direction;
+    if(pos<0 || newPos<0 || newPos>=items.length) return;
+    var tmp = items[pos]; items[pos] = items[newPos]; items[newPos] = tmp;
+    idxs.forEach(function(origIdx, k){ state.panels[origIdx] = items[k]; });
+    save();
+  }
+
+  // ---- Riwayat pengumuman ----
+  function historyItems(){
+    return state.panels.filter(function(p){ return p.type==='announcement' && isExpired(p) && panelVisible(p); })
+      .sort(function(a, b){ return (b.deadline||'').localeCompare(a.deadline||''); });
+  }
+  function menuName(id){
+    var m = state.menus.find(function(x){ return x.id===id; });
+    return m ? m.name : '-';
+  }
+  function historyModal(){
+    var ov = document.createElement('div'); ov.className = 'modal-overlay';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeOverlay(ov); });
+    function draw(){
+      var items = historyItems();
+      var list = items.length ? items.map(function(p){
+        return '<div class="hist-item">'+
+          '<div class="hist-top"><div class="hist-title">'+esc(p.title)+'</div>'+(isGuru()?'<button class="icon-btn" data-delhist="'+p.id+'" title="Hapus dari riwayat">\u00d7</button>':'')+'</div>'+
+          (p.body?'<div class="hist-body">'+esc(p.body)+'</div>':'')+
+          '<div class="hist-meta"><span class="hist-menu">Menu: '+esc(menuName(p.menuId))+'</span>'+
+            '<span>Batas waktu: '+formatDate(p.deadline)+'</span>'+
+            (p.createdAt?'<span>Dibuat: '+formatDate(new Date(p.createdAt).toISOString().slice(0,10))+'</span>':'')+
+          '</div></div>';
+      }).join('') : '<div class="hist-empty">Belum ada riwayat pengumuman<br>Pengumuman yang lewat batas waktu akan tersimpan di sini.</div>';
+      ov.innerHTML = '<div class="modal wide"><h4 class="hud-font">Riwayat pengumuman</h4>'+
+        '<div class="sub">'+items.length+' pengumuman sudah diumumkan (lewat batas waktu).</div>'+
+        '<div class="hist-list">'+list+'</div>'+
+        '<div class="modal-actions"><button class="btn" data-close>Tutup</button></div></div>';
+      ov.querySelector('[data-close]').onclick = function(){ closeOverlay(ov); };
+      ov.querySelectorAll('[data-delhist]').forEach(function(b){
+        b.onclick = function(){
+          if(!isGuru()) return;
+          if(!confirm('Hapus pengumuman ini dari riwayat secara permanen?')) return;
+          var id = b.getAttribute('data-delhist');
+          state.panels = state.panels.filter(function(p){ return p.id!==id; });
+          save();
+          draw();
+        };
+      });
+    }
+    draw();
+  }
+
+  function settingsModal(){
+    var g = isGuru();
+    var ov = openModal('Koneksi server',
+      g ? 'Tempel URL Web App Google Apps Script untuk menyimpan data ke Google Sheets. Kosongkan untuk mode lokal (localStorage saja).'
+        : 'Tempel URL server yang diberikan gurumu. Kamu hanya bisa melihat isinya, tidak bisa mengubahnya.',
+      [{name:'apiUrl', label:'Apps Script Web App URL', placeholder:'https://script.google.com/macros/s/.../exec', value:config.apiUrl||DEFAULT_API_URL}],
+      function(v){
+        config.apiUrl = v.apiUrl;
+        persistConfig();
+        if(hasApi()){ loadFromApi(); } else { syncStatus='local'; render(); }
+      }, 'Hubungkan');
+    var hint = document.createElement('div');
+    hint.className = 'hint';
+    hint.innerHTML = g ? 'Deploy skrip Apps Script sebagai Web App (Execute as: Me, Access: Anyone), lalu tempel URL <code>/exec</code> di atas.'
+                       : 'Alamat ini biasanya berakhiran <code>/exec</code>. Tanyakan ke gurumu jika belum punya.';
+    ov.querySelector('.modal').appendChild(hint);
+    if(g){
+      var box = document.createElement('div');
+      box.className = 'hint';
+      box.style.borderTop = '1px solid var(--line)';
+      box.style.paddingTop = '12px';
+      box.innerHTML = '<b style="color:var(--cyan)">Bagikan ke murid</b><br>Unduh salinan halaman yang sudah terisi URL di atas, lalu kirim file itu ke murid. Murid langsung terhubung tanpa perlu mengetik URL. Kata sandi guru tidak ikut tersimpan di dalam file.<br>';
+      var btn = document.createElement('button');
+      btn.className = 'btn'; btn.style.marginTop = '8px'; btn.textContent = 'Unduh file untuk murid';
+      btn.onclick = function(){ downloadStudentCopy(ov.querySelector('[data-f="apiUrl"]').value.trim()); };
+      box.appendChild(btn);
+      ov.querySelector('.modal').appendChild(box);
+    }
+  }
+
+  // Salinan halaman untuk murid: sama persis, hanya DEFAULT_API_URL yang sudah terisi.
+  function downloadStudentCopy(url){
+    url = url || apiUrl();
+    if(!url){ alert('Isi dan simpan URL server terlebih dahulu.'); return; }
+    var clone = document.documentElement.cloneNode(true);
+    var appEl = clone.querySelector('#app'); if(appEl) appEl.innerHTML = '';
+    clone.querySelectorAll('.modal-overlay').forEach(function(n){ n.remove(); });
+    var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    html = html.replace(/var DEFAULT_API_URL = '[^']*';/, function(){ return 'var DEFAULT_API_URL = ' + JSON.stringify(url) + ';'; });
+    var blob = new Blob([html], {type:'text/html'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'papan-panel-murid.html';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 800);
+  }
+
+  function save(){ if(!isGuru()){ render(); return; } render(); persistLocal(); queueSync(); }
+
+  // ---- Login guru / petugas ----
+  function loginModal(kind){
+    var hdr = {'Content-Type':'text/plain;charset=utf-8'};
+    var isG = kind==='guru';
+    var label = isG ? 'GURU' : 'PETUGAS';
+    var loginAction = isG ? 'login' : 'login_staff';
+    var localKey = isG ? 'localPw' : 'localStaffPw';
+    if(hasApi()){
+      openModal('Masuk sebagai '+label.toLowerCase(), 'Kata sandi diperiksa oleh server (Google Apps Script).',
+        [{name:'pw', label:'Kata sandi '+label.toLowerCase(), type:'password'}],
+        function(v){
+          if(!v.pw) return;
+          fetch(apiUrl(), {method:'POST', headers:hdr, body:JSON.stringify({action:loginAction, password:v.pw})})
+            .then(function(r){ return r.json(); })
+            .then(function(res){
+              if(res && res.ok){
+                if(res.state && typeof res.state==='object' && res.state.menus){
+                  var keep = state.activeMenu;
+                  state = normalizeState(res.state);
+                  serverRev = Number(state.rev)||0; delete state.rev;
+                  if(keep && state.menus.some(function(m){ return m.id===keep; })) state.activeMenu = keep;
+                  persistLocal();
+                }
+                fullLoaded = isG; // versi petugas tetap versi tersaring, bukan data lengkap
+                setRole(kind, v.pw);
+              }
+              else alert('Kata sandi salah, atau Code.gs di server belum diperbarui ke versi yang mendukung peran '+label.toLowerCase()+'.');
+            })
+            .catch(function(){ alert('Tidak dapat menghubungi server. Periksa koneksi internet dan URL Web App.'); });
+        }, 'Masuk');
+    } else if(!config[localKey]){
+      openModal('Buat kata sandi '+label.toLowerCase(), 'Mode lokal (belum terhubung ke Apps Script): kata sandi hanya disimpan di browser ini dan tidak mengamankan data dari orang lain yang memakai browser yang sama.',
+        [{name:'pw', label:'Kata sandi baru', type:'password'}],
+        function(v){
+          if(!v.pw) return;
+          config[localKey] = hashPw(v.pw); persistConfig();
+          setRole(kind, '');
+        }, 'Simpan dan masuk');
+    } else {
+      openModal('Masuk sebagai '+label.toLowerCase(), null,
+        [{name:'pw', label:'Kata sandi '+label.toLowerCase(), type:'password'}],
+        function(v){
+          if(hashPw(v.pw||'')===config[localKey]){ setRole(kind, ''); }
+          else alert('Kata sandi salah.');
+        }, 'Masuk');
+    }
+  }
+
+  render();
+  loadFromApi();
+  fetchHighfiveCounts();
+  setInterval(function(){
+    // murid: ambil data terbaru dari server secara berkala; guru: cukup segarkan tampilan
+    if(!isGuru() && hasApi()) loadFromApi(true); else { render(); checkServerRev(); }
+    fetchHighfiveCounts();
+  }, 60 * 1000);
+})();
+</script>
+</body>
+</html>
