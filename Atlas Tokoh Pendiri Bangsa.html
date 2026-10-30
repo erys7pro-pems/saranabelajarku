@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atlas Tokoh Pendiri Bangsa</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.45rem .95rem;font-family:system-ui,sans-serif;font-size:.9rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small{font-family:system-ui,sans-serif;color:var(--muted)}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted)}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+#q{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.6rem 1rem;font:1rem system-ui,sans-serif}
+#q:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+.none,.hint{color:var(--muted);font:.85rem system-ui,sans-serif}
+.hint{margin:.5rem 0 0}
+.tw{overflow-x:auto}
+#tl{width:100%;min-width:640px;height:auto;display:block}
+#tl rect{cursor:pointer}
+#tl text{font:11px system-ui,sans-serif;fill:#fff;pointer-events:none}
+#tl .ax{fill:var(--muted)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:18%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+td.best{color:var(--green);font-weight:700}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Atlas Tokoh Pendiri Bangsa</h1><p>20 tokoh yang membentuk jalan menuju Indonesia merdeka</p></header>
+<main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari nama, organisasi, provinsi, atau gagasan…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Lini masa hidup</p><div class="tw"><svg id="tl" viewBox="0 0 960 400" role="img" aria-label="Lini masa hidup tokoh"></svg></div><p class="hint">Klik sebuah batang untuk membuka tokohnya. Batang bergaris putus-putus sedang dibandingkan.</p></section>
+<section class="card"><p class="label">Kelompok peran</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Tokoh</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
+</main>
+<footer>Indonesia tidak memiliki daftar resmi “founding fathers”; pengelompokan di sini bersifat ringkasan peran. Tahun dan tempat dibulatkan seperlunya, periksa sumber sejarah untuk rujukan akademik.</footer>
+<script>
+const G=["Proklamator & pemimpin awal","Perumus dasar negara","Perintis pergerakan","Tokoh daerah"];
+const GC=["#2f8f5b","#1f6f9f","#2aa198","#6a8f3f"];
+// kelompok;nama;lahir;thn lahir;wafat;thn wafat;provinsi asal;peran;organisasi;gagasan/karya;kontribusi
+const D=`0;Soekarno;Surabaya, 6 Juni 1901;1901;Jakarta, 21 Juni 1970;1970;Jawa Timur;Proklamator dan presiden pertama RI (1945–1967);PNI (didirikan 1927);Pancasila, buku “Indonesia Menggugat” (pleidoi 1930);Membacakan teks proklamasi 17 Agustus 1945 bersama Hatta dan menyampaikan pidato 1 Juni 1945 tentang dasar negara.
+0;Mohammad Hatta;Bukittinggi, 12 Agustus 1902;1902;Jakarta, 14 Maret 1980;1980;Sumatera Barat;Proklamator dan wakil presiden pertama RI (1945–1956);Perhimpunan Indonesia, PNI Baru;Ekonomi kerakyatan dan koperasi, buku “Demokrasi Kita”;Mendampingi Soekarno sebagai proklamator dan dijuluki Bapak Koperasi Indonesia.
+0;Sutan Sjahrir;Padang Panjang, 5 Maret 1909;1909;Zürich, 9 April 1966;1966;Sumatera Barat;Perdana menteri pertama RI (1945–1947);PNI Baru, Partai Sosialis Indonesia (1948);Brosur “Perjuangan Kita” (1945), demokrasi sosial;Memimpin diplomasi awal republik, termasuk Perundingan Linggarjati.
+0;Achmad Soebardjo;Karawang, 23 Maret 1896;1896;Jakarta, 15 Desember 1978;1978;Jawa Barat;Menteri luar negeri pertama RI;Perhimpunan Indonesia, BPUPKI;Diplomasi dan penyusunan naskah awal kemerdekaan;Ikut membujuk Soekarno-Hatta kembali ke Jakarta setelah peristiwa Rengasdengklok.
+0;Sultan Hamengkubuwono IX;Yogyakarta, 12 April 1912;1912;Washington D.C., 2 Oktober 1988;1988;DI Yogyakarta;Raja Yogyakarta dan wakil presiden RI (1973–1978);Kesultanan Yogyakarta, Gerakan Pramuka;Integrasi kerajaan ke dalam republik;Menyatakan Yogyakarta bagian dari RI pada 1945 dan menyediakan kota itu sebagai ibu kota republik 1946–1949.
+1;Radjiman Wedyodiningrat;Yogyakarta, 21 April 1879;1879;Ngawi, 20 September 1952;1952;DI Yogyakarta;Ketua BPUPKI dan dokter;Boedi Oetomo, BPUPKI;Pertanyaan “dasar negara” yang membuka perumusan Pancasila;Membuka sidang BPUPKI 1945 dengan menanyakan dasar negara Indonesia merdeka.
+1;Mohammad Yamin;Talawi, Sawahlunto, 23 Agustus 1903;1903;Jakarta, 17 Oktober 1962;1962;Sumatera Barat;Sastrawan, ahli hukum, dan menteri;Jong Sumatranen Bond, BPUPKI;Gagasan dasar negara dan konstitusi, puisi, sejarah;Terlibat dalam Kongres Pemuda II 1928 dan perumusan dasar negara di BPUPKI.
+1;Soepomo;Sukoharjo, 22 Januari 1903;1903;Jakarta, 12 September 1958;1958;Jawa Tengah;Ahli hukum adat dan menteri kehakiman pertama;BPUPKI, Panitia Perancang UUD;Gagasan negara integralistik;Ikut merancang UUD 1945 sebagai tokoh utama panitia perancang.
+1;Agus Salim;Koto Gadang, Agam, 8 Oktober 1884;1884;Jakarta, 4 November 1954;1954;Sumatera Barat;Diplomat dan menteri luar negeri;Sarekat Islam, Panitia Sembilan;Diplomasi lintas bahasa, dijuluki “The Grand Old Man”;Memimpin misi diplomatik 1947 yang memperoleh pengakuan negara-negara Arab bagi RI.
+1;A.A. Maramis;Manado, 20 Juni 1897;1897;Jakarta, 31 Juli 1977;1977;Sulawesi Utara;Menteri keuangan pertama RI;Panitia Sembilan, BPUPKI;Dasar kebijakan keuangan awal negara;Anggota Panitia Sembilan yang ikut merumuskan Piagam Jakarta.
+1;Wahid Hasyim;Jombang, 1 Juni 1914;1914;Cimahi, 19 April 1953;1953;Jawa Timur;Tokoh Nahdlatul Ulama dan menteri agama;Nahdlatul Ulama, Masyumi, Panitia Sembilan;Pembaruan pendidikan pesantren;Anggota Panitia Sembilan dan ikut menyusun Piagam Jakarta 1945.
+2;H.O.S. Tjokroaminoto;Madiun, 16 Agustus 1882;1882;Yogyakarta, 17 Desember 1934;1934;Jawa Timur;Pemimpin Sarekat Islam;Sarekat Islam;Buku “Islam dan Sosialisme” (1924);Menjadi guru politik bagi banyak tokoh pergerakan, termasuk Soekarno.
+2;Ki Hajar Dewantara;Yogyakarta, 2 Mei 1889;1889;Yogyakarta, 26 April 1959;1959;DI Yogyakarta;Pendidik, jurnalis, dan menteri pengajaran pertama;Indische Partij, Taman Siswa (1922);Semboyan “Ing ngarsa sung tuladha”, tulisan “Als ik eens Nederlander was”;Dijuluki Bapak Pendidikan Nasional; hari lahirnya diperingati sebagai Hari Pendidikan Nasional.
+2;Cipto Mangunkusumo;Pecangaan, Jepara, 4 Maret 1886;1886;Jakarta, 8 Maret 1943;1943;Jawa Tengah;Dokter dan tokoh pergerakan;Boedi Oetomo, Indische Partij;Kritik tajam terhadap pemerintah kolonial;Anggota Tiga Serangkai yang diasingkan karena menentang kolonialisme.
+2;E.F.E. Douwes Dekker;Pasuruan, 8 Oktober 1879;1879;Bandung, 28 Agustus 1950;1950;Jawa Timur;Jurnalis dan politikus;Indische Partij (1912);Gagasan nasionalisme untuk semua penduduk Hindia;Salah satu pendiri partai politik pertama yang menuntut kemerdekaan.
+2;Tan Malaka;Pandam Gadang, Suliki, ±1897;1897;Kediri, 21 Februari 1949;1949;Sumatera Barat;Revolusioner dan penulis;PKI (ketua 1921), Partai Murba (1948);“Naar de Republiek Indonesia” (1925), “Madilog” (1943);Menulis konsep republik Indonesia lebih dari dua dekade sebelum proklamasi.
+2;K.H. Ahmad Dahlan;Yogyakarta, 1 Agustus 1868;1868;Yogyakarta, 23 Februari 1923;1923;DI Yogyakarta;Pendiri Muhammadiyah;Muhammadiyah (1912);Pembaruan Islam, sekolah dan layanan kesehatan modern;Membangun jaringan pendidikan dan sosial yang memperkuat kesadaran kebangsaan.
+2;K.H. Hasyim Asy'ari;Jombang, 14 Februari 1871;1871;Malang, 25 Juli 1947;1947;Jawa Timur;Pendiri Nahdlatul Ulama;Nahdlatul Ulama (1926), Pesantren Tebuireng;Resolusi Jihad 22 Oktober 1945;Menyerukan perlawanan menjaga kemerdekaan; tanggal resolusi diperingati sebagai Hari Santri.
+3;Sam Ratulangi;Tondano, 5 November 1890;1890;Jakarta, 30 Juni 1949;1949;Sulawesi Utara;Gubernur Sulawesi pertama (1945);Volksraad, PPKI;Semboyan “Si tou timou tumou tou”;Mewakili Sulawesi dalam penetapan dasar negara dan memimpin pemerintahan daerah awal.
+3;Johannes Latuharhary;Saparua, 6 Juli 1900;1900;Jakarta, 8 November 1959;1959;Maluku;Gubernur Maluku pertama (1945);Sarekat Ambon, PPKI;Penegasan keindonesiaan wilayah timur;Anggota PPKI yang mewakili Maluku dalam penetapan UUD 1945.`.split("\n").map(l=>{const a=l.split(";");return{g:+a[0],n:a[1],l:a[2],b:+a[3],w:a[4],d:+a[5],o:a[6],p:a[7],org:a[8],k:a[9],c:a[10],u:+a[5]-+a[3]}});
+
+const $=id=>document.getElementById(id);
+let grp=0,sel=D[0],cmpSet=[];
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function drawRegions(){const r=$("regions");r.innerHTML="";
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+    b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
+function drawProvs(){const r=$("provs");r.innerHTML="";
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+    b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
+function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function drawDetail(){const d=sel;
+  const P=[["Profil",[["Kelahiran",`<b>${d.l}</b>`,1],["Wafat",`<b>${d.w}</b>`,0],["Provinsi asal",`<b>${d.o}</b> (wilayah modern)`,0],["Rentang hidup",`<b>±${d.u} tahun</b> (${d.b}–${d.d})`,0]]],
+    ["Peran & Organisasi",[["Peran utama",d.p,0],["Organisasi",d.org,0]]],
+    ["Gagasan & Warisan",[["Gagasan dan karya",d.k,0],["Kontribusi bagi kemerdekaan",d.c,0]]]];
+  const inC=cmpSet.includes(d.n);
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+    P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll(".sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll(".sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)});}
+function drawTL(){
+  const S=[...D].sort((a,b)=>a.b-b.b),x=y=>(y-1860)/130*940+10;let s="";
+  for(let y=1870;y<=1990;y+=20)s+=`<line x1="${x(y)}" x2="${x(y)}" y1="0" y2="372" stroke="var(--line)" stroke-dasharray="3 5"/><text class="ax" x="${x(y)}" y="392" text-anchor="middle">${y}</text>`;
+  S.forEach((d,i)=>{const c=cmpSet.includes(d.n),on=d===sel;
+    s+=`<rect data-n="${d.n}" x="${x(d.b)}" y="${i*18+4}" width="${x(d.d)-x(d.b)}" height="15" rx="7" fill="${GC[d.g]}" stroke="${c?"var(--blue)":on?"var(--ink)":"none"}" stroke-width="2.5"${c?' stroke-dasharray="4 2"':''}><title>${d.n} (${d.b}–${d.d})</title></rect><text x="${x(d.b)+8}" y="${i*18+15.5}">${d.n}</text>`});
+  $("tl").innerHTML=s}
+$("tl").onclick=e=>{const t=e.target.closest("rect");if(!t)return;sel=D.find(d=>d.n===t.dataset.n);grp=sel.g;drawAll()};
+function drawSearch(){const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.o,d.p,d.org,d.k,d.c,d.l,G[d.g]].join(" ").toLowerCase().includes(q)).slice(0,10);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{sel=d;grp=d.g;$("q").value="";drawAll()};box.append(b)})}
+$("q").oninput=drawSearch;
+function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hidden=!L.length;if(!L.length)return;
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join("");
+  const mx=L.length>1?Math.max(...L.map(d=>d.u)):null;
+  const rows=[["Kelompok",txt(d=>G[d.g])],["Lahir",txt(d=>d.l)],["Wafat",txt(d=>d.w)],["Rentang hidup",L.map(d=>`<td${d.u===mx?' class="best"':''}>±${d.u} tahun</td>`).join("")],["Provinsi asal",txt(d=>d.o)],["Peran",txt(d=>d.p)],["Organisasi",txt(d=>d.org)],["Gagasan & karya",txt(d=>d.k)],["Kontribusi",txt(d=>d.c)]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu tokoh lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Usia terpanjang ditandai hijau."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawTL();drawCmp()}
+drawAll();
+</script>
+</body>
+</html>
