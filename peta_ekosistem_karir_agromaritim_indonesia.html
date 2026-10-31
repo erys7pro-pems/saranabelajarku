@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Ekosistem & Karir Agromaritim Indonesia</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        agro: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        maritime: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        synergy: {
+                            50: '#f0fdfa',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            900: '#134e4a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-agro-maritime {
+            background: linear-gradient(135deg, #065f46 0%, #0d9488 40%, #0369a1 100%);
+        }
+        .card-hover {
+            transition: all 0.25s ease-in-out;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-slate-900 text-white shadow-lg backdrop-blur-md bg-opacity-95 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="w-10 h-10 rounded-xl gradient-agro-maritime flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-wheat-awn-circle-exclamation text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400">
+                            AgroMaritim ID
+                        </span>
+                        <span class="hidden sm:inline-block text-xs text-slate-400 block -mt-1 font-medium">Peta Ekosistem & Karir Masa Depan</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2 text-sm font-medium">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-tab px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 bg-slate-800 text-emerald-400 font-semibold">
+                        <i class="fa-solid fa-compass"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="switchTab('careers')" id="btn-careers" class="nav-tab px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Katalog Karir</span>
+                    </button>
+                    <button onclick="switchTab('simulator')" id="btn-simulator" class="nav-tab px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-diagram-project"></i>
+                        <span>Simulator Rantai Nilai</span>
+                    </button>
+                    <button onclick="switchTab('prodi')" id="btn-prodi" class="nav-tab px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Jalur Prodi</span>
+                    </button>
+                    <button onclick="switchTab('quiz')" id="btn-quiz" class="nav-tab px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span>Kuis</span>
+                    </button>
+                </nav>
+
+                <!-- Bookmarks Counter & Mobile Menu Button -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchTab('saved')" id="btn-saved" class="relative bg-slate-800 hover:bg-slate-700 text-amber-400 p-2.5 rounded-xl transition-all border border-slate-700 flex items-center justify-center">
+                        <i class="fa-solid fa-bookmark text-base"></i>
+                        <span id="saved-badge-count" class="absolute -top-1.5 -right-1.5 bg-amber-500 text-slate-950 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 hidden">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Trigger -->
+                    <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1 text-sm font-medium">
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
+                <i class="fa-solid fa-compass w-5 text-emerald-400"></i><span>Dashboard & Konsep</span>
+            </button>
+            <button onclick="switchTab('careers'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
+                <i class="fa-solid fa-briefcase w-5 text-sky-400"></i><span>Katalog Karir (34 Sektor)</span>
+            </button>
+            <button onclick="switchTab('simulator'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
+                <i class="fa-solid fa-diagram-project w-5 text-teal-400"></i><span>Simulator Rantai Nilai</span>
+            </button>
+            <button onclick="switchTab('prodi'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
+                <i class="fa-solid fa-graduation-cap w-5 text-indigo-400"></i><span>Jalur Education / Prodi</span>
+            </button>
+            <button onclick="switchTab('quiz'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
+                <i class="fa-solid fa-circle-question w-5 text-amber-400"></i><span>Mini Kuis Interaktif</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        <!-- TAB 1: DASHBOARD & KONSEP -->
+        <section id="tab-dashboard" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl gradient-agro-maritime p-6 sm:p-10 text-white shadow-2xl">
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-emerald-200 border border-white/20">
+                        <i class="fa-solid fa-earth-americas"></i>
+                        <span>Ekosistem Ekonomi Masa Depan Indonesia</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                        Peta Ekosistem & Karir <br class="hidden sm:block"/>Agromaritim Indonesia
+                    </h1>
+                    <p class="text-slate-100 text-sm sm:text-base leading-relaxed opacity-95">
+                        Agromaritim menggabungkan dua sektor strategis terbesar Indonesia: <strong>Agrikultur (Pertanian, Perkebunan, Peternakan, Kehutanan)</strong> dan <strong>Maritim (Perikanan, Kelautan, Pesisir)</strong>. Temukan bagaimana sains, teknologi, industri, hingga kebijakan saling terhubung membentuk ratusan karir modern.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="switchTab('careers')" class="bg-white text-slate-900 hover:bg-slate-100 font-bold px-5 py-3 rounded-xl transition shadow-lg text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-magnifying-glass text-emerald-600"></i>
+                            <span>Jelajahi 34 Sektor Pekerjaan</span>
+                        </button>
+                        <button onclick="switchTab('simulator')" class="bg-emerald-950/40 hover:bg-emerald-950/60 text-white font-semibold px-5 py-3 rounded-xl border border-white/20 transition text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-play text-amber-300"></i>
+                            <span>Simulasi Rantai Nilai Udang</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Decorative Graphic Elements -->
+                <div class="absolute -right-10 -bottom-10 opacity-15 text-[220px] pointer-events-none text-white select-none">
+                    <i class="fa-solid fa-ship"></i>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-900">34</div>
+                        <div class="text-xs text-slate-500 font-medium">Sub-Sektor Industri</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-900">300+</div>
+                        <div class="text-xs text-slate-500 font-medium">Profesi Spesifik</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-900">20+</div>
+                        <div class="text-xs text-slate-500 font-medium">Program Studi Terkait</div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-extrabold text-slate-900">100%</div>
+                        <div class="text-xs text-slate-500 font-medium">Interdisipliner</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Main Ecosystem Pillars -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- AGRO Pillar -->
+                <div class="bg-gradient-to-br from-emerald-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-emerald-800 shadow-lg">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-emerald-400 tracking-tight">EKOSISTEM AGRO</h2>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                        Mencakup seluruh pemanfaatan daratan: Pertanian tanaman pangan, perkebunan komoditas ekspor, peternakan modern, hingga agroforestri & konservasi kehutanan.
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-wheat-awn text-emerald-400"></i><span>Pangan & Hortikultura</span>
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-tree text-emerald-400"></i><span>Perkebunan Besar</span>
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-cow text-emerald-400"></i><span>Peternakan & Veteriner</span>
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-mountain-sun text-emerald-400"></i><span>Kehutanan & Agroforestri</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MARITIM Pillar -->
+                <div class="bg-gradient-to-br from-sky-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-sky-800 shadow-lg">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-sky-400 tracking-tight">EKOSISTEM MARITIM</h2>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                        Mencakup eksplorasi perairan dan lautan: Perikanan tangkap, akuakultur/budidaya, oseanografi, pengelolaan wilayah pesisir & pulau kecil, serta teknologi kelautan.
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-semibold">
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-fish text-sky-400"></i><span>Perikanan Tangkap</span>
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-shrimp text-sky-400"></i><span>Akuakultur & Tambak</span>
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-compass-drafting text-sky-400"></i><span>Oseanografi & Sains Laut</span>
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-island-tropical text-sky-400"></i><span>Pesisir & Pulau Kecil</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Value Chain Diagram (Rantai Nilai Ekonomi) -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <h3 class="text-2xl font-bold text-slate-900">Rantai Nilai Ekonomi Agromaritim</h3>
+                    <p class="text-slate-600 text-sm">
+                        Agromaritim bukan sekadar kegiatan bercocok tanam atau menangkap ikan. Ini adalah siklus ekonomi terpadu dari hulu ke hilir.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+                    <!-- Step 1 -->
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs mb-3">1</div>
+                            <h4 class="font-bold text-emerald-900 text-sm mb-1">Sumber Daya & Input</h4>
+                            <p class="text-xs text-slate-600">R&D benih, bibit, pakan, pupuk, alat tangkap, sensor IoT.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-emerald-200 text-[11px] font-semibold text-emerald-700">
+                            Contoh: Formulator Pakan, Geneticist
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-teal-50 border border-teal-200 p-4 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-xs mb-3">2</div>
+                            <h4 class="font-bold text-teal-900 text-sm mb-1">Produksi Primar</h4>
+                            <p class="text-xs text-slate-600">Budidaya sawah, kebun, peternakan, nelayan, tambak udang/ikan.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-teal-200 text-[11px] font-semibold text-teal-700">
+                            Contoh: Agronom, Manajer Tambak
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-full bg-cyan-600 text-white font-bold flex items-center justify-center text-xs mb-3">3</div>
+                            <h4 class="font-bold text-cyan-900 text-sm mb-1">Pengolahan Industrial</h4>
+                            <p class="text-xs text-slate-600">Pengalengan, pembekuan, fermentasi, pengemasan, mutasi rasa.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-cyan-200 text-[11px] font-semibold text-cyan-700">
+                            Contoh: Food Technologist, QC Officer
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="bg-sky-50 border border-sky-200 p-4 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center text-xs mb-3">4</div>
+                            <h4 class="font-bold text-sky-900 text-sm mb-1">Logistik & Pemasaran</h4>
+                            <p class="text-xs text-slate-600">Cold chain, pelabuhan, ekspor-impor, e-commerce, lelang komoditas.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-sky-200 text-[11px] font-semibold text-sky-700">
+                            Contoh: Supply Chain Mgr, Eksportir
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="bg-slate-100 border border-slate-300 p-4 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-8 h-8 rounded-full bg-slate-800 text-white font-bold flex items-center justify-center text-xs mb-3">5</div>
+                            <h4 class="font-bold text-slate-900 text-sm mb-1">Pendukung & Kebijakan</h4>
+                            <p class="text-xs text-slate-600">Keuangan, asuransi, software AI/GIS, kebijakan publik, R&D.</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-slate-300 text-[11px] font-semibold text-slate-700">
+                            Contoh: AI Developer, Analis Kebijakan
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Myths vs Facts Section -->
+            <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bold">Mitos vs Fakta Agromaritim</h3>
+                        <p class="text-xs sm:text-sm text-slate-400">Klik kartu untuk membuka penjelasan fakta di balik stigma lapangan.</p>
+                    </div>
+                    <div class="text-amber-400 text-2xl"><i class="fa-solid fa-lightbulb"></i></div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <!-- Myth 1 -->
+                    <div onclick="toggleMyth(1)" class="cursor-pointer bg-slate-800 hover:bg-slate-750 p-5 rounded-2xl border border-slate-700 transition space-y-3">
+                        <div class="flex justify-between items-center text-rose-400 text-xs font-bold uppercase tracking-wider">
+                            <span><i class="fa-solid fa-circle-xmark mr-1"></i> Mitos #1</span>
+                            <i id="myth-icon-1" class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">"Karir Agromaritim Hanya Petani, Nelayan, dan Peternak Tradisional"</h4>
+                        <div id="myth-fact-1" class="hidden text-xs text-slate-300 pt-2 border-t border-slate-700 space-y-2">
+                            <span class="text-emerald-400 font-bold block"><i class="fa-solid fa-circle-check mr-1"></i> FAKTA LENGKAP:</span>
+                            Hanya sebagian kecil yang turun langsung ke lapangan secara tradisional. Ekosistem ini membutuhkan AI Engineers, Marine Geologists, Food Technologists, Data Analysts, Financial Actuaries, hingga Marine Lawyers!
+                        </div>
+                    </div>
+
+                    <!-- Myth 2 -->
+                    <div onclick="toggleMyth(2)" class="cursor-pointer bg-slate-800 hover:bg-slate-750 p-5 rounded-2xl border border-slate-700 transition space-y-3">
+                        <div class="flex justify-between items-center text-rose-400 text-xs font-bold uppercase tracking-wider">
+                            <span><i class="fa-solid fa-circle-xmark mr-1"></i> Mitos #2</span>
+                            <i id="myth-icon-2" class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">"Sektor Pertanian & Kelautan Ketinggalan Zaman & Berteknologi Rendah"</h4>
+                        <div id="myth-fact-2" class="hidden text-xs text-slate-300 pt-2 border-t border-slate-700 space-y-2">
+                            <span class="text-emerald-400 font-bold block"><i class="fa-solid fa-circle-check mr-1"></i> FAKTA LENGKAP:</span>
+                            Saat ini ekosistem ini menggunakan drone pemetaan tanaman, robotika bawah laut (ROV), sistem IoT bioflok otomatis, citra satelit remote sensing, dan kecerdasan buatan (AI) untuk prediksi stok komoditas.
+                        </div>
+                    </div>
+
+                    <!-- Myth 3 -->
+                    <div onclick="toggleMyth(3)" class="cursor-pointer bg-slate-800 hover:bg-slate-750 p-5 rounded-2xl border border-slate-700 transition space-y-3">
+                        <div class="flex justify-between items-center text-rose-400 text-xs font-bold uppercase tracking-wider">
+                            <span><i class="fa-solid fa-circle-xmark mr-1"></i> Mitos #3</span>
+                            <i id="myth-icon-3" class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <h4 class="font-bold text-sm text-white">"Hanya Lulusan Vokasi Pertanian/Kelautan yang Bisa Masuk"</h4>
+                        <div id="myth-fact-3" class="hidden text-xs text-slate-300 pt-2 border-t border-slate-700 space-y-2">
+                            <span class="text-emerald-400 font-bold block"><i class="fa-solid fa-circle-check mr-1"></i> FAKTA LENGKAP:</span>
+                            Lulusan IT, Hukum, Ekonomi, Manajemen, Teknik Mesin, Teknik Elektro, Bioteknologi, hingga Komunikasi Kebijakan sangat dicari untuk mengelola korporasi agromaritim global!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: KATALOG KARIR & SEKTOR (34 KATEGORI) -->
+        <section id="tab-careers" class="tab-content hidden space-y-6">
+            <!-- Header & Search Controls -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Katalog Pekerjaan Agromaritim</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Jelajahi 34 sub-sektor lengkap dari poin A hingga M sesuai peta profesi nasional.</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-filter text-emerald-600"></i>
+                        <span>Total Profesi: <strong id="career-count-display" class="text-slate-900">0</strong></span>
+                    </div>
+                </div>
+
+                <!-- Controls Bar -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <!-- Search Input -->
+                    <div class="relative sm:col-span-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="career-search" oninput="filterCareers()" placeholder="Cari profesi, misal: AI, Drone, Udang..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                    </div>
+
+                    <!-- Sector Category Filter -->
+                    <div>
+                        <select id="sector-filter" onchange="filterCareers()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium text-slate-700">
+                            <option value="ALL">Semua Kelompok Sektor (A-M)</option>
+                            <option value="A">A. Agrikultur & Tanaman</option>
+                            <option value="B">B. Maritim, Perikanan & Kelautan</option>
+                            <option value="C">C. Industri Pengolahan & Manufaktur</option>
+                            <option value="D">D. Perdagangan, Logistik & Rantai Pasok</option>
+                            <option value="E">E. Teknologi, Smart Farming & AI</option>
+                            <option value="F">F. Sains, R&D & Pendidikan</option>
+                            <option value="G">G. Lingkungan & Energi Terbarukan</option>
+                            <option value="H">H. Keuangan, Ekonomi & Bisnis</option>
+                            <option value="I">I. Pelayaran & Infrastruktur</option>
+                            <option value="J">J. Pemerintahan, Hukum & Regulasi</option>
+                            <option value="K">K. Pariwisata & Ekowisata</option>
+                            <option value="L">L. Interdisipliner & Masa Depan</option>
+                            <option value="M">M. Sinergi Agro-Maritim Terpadu</option>
+                        </select>
+                    </div>
+
+                    <!-- Sub-category Specific Filter -->
+                    <div>
+                        <select id="subcategory-filter" onchange="filterCareers()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium text-slate-700">
+                            <option value="ALL">Semua 34 Sub-Kategori</option>
+                            <!-- Options filled dynamically -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Careers Grid Container -->
+            <div id="careers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamic cards populated via JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="no-careers-found" class="hidden bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-3">
+                <div class="text-4xl text-slate-300"><i class="fa-solid fa-magnifying-glass-minus"></i></div>
+                <h3 class="font-bold text-slate-700 text-base">Tidak ada profesi yang cocok</h3>
+                <p class="text-xs text-slate-400">Coba ubah kata kunci pencarian atau reset filter sektor Anda.</p>
+                <button onclick="resetCareerFilters()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">Reset Filter</button>
+            </div>
+        </section>
+
+        <!-- TAB 3: SIMULATOR RANTAI NILAI INDUSTRI -->
+        <section id="tab-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-teal-600 bg-teal-50 px-3 py-1 rounded-full">Studi Kasus Rantai Nilai Ekonomi</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Simulator Rantai Nilai Komoditas</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Pilih komoditas untuk melihat bagaimana 1 komoditas menggerakkan puluhan profesi lintas keilmuan!</p>
+                    </div>
+
+                    <!-- Commodity Selector Tabs -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="loadCommodity('udang')" id="com-btn-udang" class="com-selector-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-teal-600 text-white shadow-md">
+                            <i class="fa-solid fa-shrimp mr-1.5"></i> Udang Vaname
+                        </button>
+                        <button onclick="loadCommodity('padi')" id="com-btn-padi" class="com-selector-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            <i class="fa-solid fa-wheat-awn mr-1.5"></i> Padi & Beras
+                        </button>
+                        <button onclick="loadCommodity('kopi')" id="com-btn-kopi" class="com-selector-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            <i class="fa-solid fa-mug-hot mr-1.5"></i> Kopi Spesialis
+                        </button>
+                        <button onclick="loadCommodity('rumputlaut')" id="com-btn-rumputlaut" class="com-selector-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            <i class="fa-solid fa-water mr-1.5"></i> Rumput Laut
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Commodity Info -->
+                <div id="commodity-banner" class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Interactive Stepper -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-slate-700 uppercase tracking-wider">Tahapan Rantai Nilai & Profesi Terkait:</h3>
+                    
+                    <div id="value-chain-stepper" class="grid grid-cols-1 md:grid-cols-6 gap-3">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Detailed Phase Inspector Panel -->
+                <div id="phase-detail-panel" class="bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-4">
+                    <!-- Populated dynamically based on selected step -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: EXPLORER JALUR PENDIDIKAN & PROGRAM STUDI -->
+        <section id="tab-prodi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Pendidikan ke Karir</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Explorer Program Studi (Prodi)</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">Pilih jurusan/rumpun keilmuan untuk melihat peta peluang karir dalam ekosistem agromaritim.</p>
+                </div>
+
+                <!-- Select Major Dropdown -->
+                <div class="max-w-xl">
+                    <label class="block text-xs font-bold text-slate-700 mb-2 uppercase tracking-wider">Pilih Program Studi / Jurusan Kuliah:</label>
+                    <select id="major-select" onchange="renderMajorDetails()" class="w-full py-3 px-4 bg-slate-50 border border-slate-300 rounded-2xl font-bold text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
+                        <!-- Options populated via JS -->
+                    </select>
+                </div>
+
+                <!-- Major Detail Display Container -->
+                <div id="major-display-container" class="space-y-6">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: MINI KUIS INTERAKTIF -->
+        <section id="tab-quiz" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 max-w-4xl mx-auto">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-3 py-1 rounded-full">Uji Pemahaman</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Kuis Ekosistem Agromaritim</h2>
+                    </div>
+                    <div id="quiz-score-badge" class="bg-slate-100 px-4 py-2 rounded-xl text-xs font-bold text-slate-700">
+                        Soal: <span id="current-question-num">1</span> / <span id="total-questions-num">6</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Card Container -->
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Dynamic Quiz Content -->
+                </div>
+
+                <!-- Quiz Controls -->
+                <div id="quiz-actions" class="flex justify-between items-center pt-4 border-t border-slate-100">
+                    <button id="btn-prev-quiz" onclick="navigateQuiz(-1)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition disabled:opacity-40">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Sebelum
+                    </button>
+                    <button id="btn-next-quiz" onclick="navigateQuiz(1)" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-md">
+                        Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: SAVED / FAVORITE CAREERS -->
+        <section id="tab-saved" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-3 py-1 rounded-full">Bookmarks Saya</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Karir Agromaritim Impian Saya</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Daftar profesi yang Anda simpan untuk referensi studi dan karir masa depan.</p>
+                    </div>
+                    <button onclick="clearAllBookmarks()" class="text-xs text-rose-600 hover:text-rose-800 font-bold px-3 py-1.5 bg-rose-50 hover:bg-rose-100 rounded-xl transition">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Hapus Semua
+                    </button>
+                </div>
+
+                <!-- Grid of saved items -->
+                <div id="saved-careers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div id="no-saved-careers" class="hidden text-center py-12 space-y-3">
+                    <div class="text-4xl text-slate-300"><i class="fa-regular fa-bookmark"></i></div>
+                    <h3 class="font-bold text-slate-700 text-base">Belum Ada Karir yang Disimpan</h3>
+                    <p class="text-xs text-slate-400">Jelajahi tab Katalog Karir dan klik icon bookmark pada pekerjaan yang menarik minat Anda!</p>
+                    <button onclick="switchTab('careers')" class="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-semibold hover:bg-emerald-700 transition">Ke Katalog Karir</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <div class="flex items-center justify-center space-x-2 text-white font-bold text-sm">
+                <i class="fa-solid fa-wheat-awn-circle-exclamation text-emerald-400"></i>
+                <span>AgroMaritim ID Ecosystem</span>
+            </div>
+            <p class="max-w-2xl mx-auto text-slate-400">
+                Media pembelajaran interaktif berbasis kurikulum ekonomi agromaritim terpadu. Mengintegrasikan pertanian, kelautan, industri pengolahan, digitalisasi, dan tata kelola kebijakan publik.
+            </p>
+            <div class="pt-2 text-slate-400">
+                © 2026 AgroMaritim ID — Membangun Masa Depan Pangan & Kelautan Indonesia.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JOB DETAIL MODAL -->
+    <div id="job-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-5 relative animate-fade-in">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between">
+                <div class="flex items-center space-x-3">
+                    <div id="modal-icon-bg" class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
+                        <i id="modal-icon" class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <div>
+                        <span id="modal-sector-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">Sektor</span>
+                        <h3 id="modal-title" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Title</h3>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="space-y-4 text-xs sm:text-sm">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-1">Ruang Lingkup Pekerjaan:</h4>
+                    <p id="modal-scope" class="text-slate-600 leading-relaxed"></p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                        <span class="font-bold text-emerald-900 block text-xs mb-0.5"><i class="fa-solid fa-graduation-cap mr-1"></i> Rumpun Pendidikan Terkait:</span>
+                        <span id="modal-education" class="text-slate-700 text-xs"></span>
+                    </div>
+                    <div class="p-3 bg-sky-50 rounded-xl border border-sky-100">
+                        <span class="font-bold text-sky-900 block text-xs mb-0.5"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Skill Utama:</span>
+                        <span id="modal-skills" class="text-slate-700 text-xs"></span>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                    <h4 class="font-bold text-amber-900 text-xs uppercase tracking-wider mb-1"><i class="fa-solid fa-chart-line mr-1"></i> Peran Strategis dalam Ekosistem:</h4>
+                    <p id="modal-strategic" class="text-amber-800 text-xs leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Modal Actions -->
+            <div class="flex items-center justify-end space-x-3 pt-2">
+                <button id="modal-bookmark-btn" class="px-4 py-2.5 rounded-xl border border-amber-300 text-amber-700 hover:bg-amber-50 text-xs font-bold transition flex items-center space-x-2">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span id="modal-bookmark-text">Simpan ke Favorit</span>
+                </button>
+                <button onclick="closeModal()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & DATA -->
+    <script>
+        // --- 1. DATASET AGROMARITIM (34 CATEGORIES & ALL PROFESSIONS) ---
+        const ALL_CATEGORIES = [
+            { id: "1", code: "A", name: "Pertanian Tanaman Pangan & Hortikultura", icon: "fa-wheat-awn" },
+            { id: "2", code: "A", name: "Perkebunan & Tanaman Industri", icon: "fa-tree" },
+            { id: "3", code: "A", name: "Peternakan & Veteriner", icon: "fa-cow" },
+            { id: "4", code: "A", name: "Kehutanan & Agroforestri", icon: "fa-mountain-sun" },
+            { id: "5", code: "B", name: "Perikanan Tangkap", icon: "fa-fish-fins" },
+            { id: "6", code: "B", name: "Budidaya Perikanan & Akuakultur", icon: "fa-shrimp" },
+            { id: "7", code: "B", name: "Kelautan & Oseanografi", icon: "fa-water" },
+            { id: "8", code: "B", name: "Pengelolaan Pesisir & Pulau Kecil", icon: "fa-island-tropical" },
+            { id: "9", code: "C", name: "Industri Pengolahan Hasil Pertanian", icon: "fa-industry" },
+            { id: "10", code: "C", name: "Industri Pengolahan Hasil Laut", icon: "fa-box-open" },
+            { id: "11", code: "C", name: "Industri Pakan, Pupuk & Input Produksi", icon: "fa-flask-vial" },
+            { id: "12", code: "D", name: "Perdagangan & Pemasaran Komoditas", icon: "fa-store" },
+            { id: "13", code: "D", name: "Logistik & Rantai Pasok (Supply Chain)", icon: "fa-truck-fast" },
+            { id: "14", code: "E", name: "Pertanian Presisi & Agri-Tech", icon: "fa-robot" },
+            { id: "15", code: "E", name: "Teknologi Perikanan & Mari-Tech", icon: "fa-satellite-dish" },
+            { id: "16", code: "E", name: "Sistem Informasi, AI & Data Science", icon: "fa-laptop-code" },
+            { id: "17", code: "F", name: "Penelitian & Pengembangan (R&D)", icon: "fa-microscope" },
+            { id: "18", code: "F", name: "Pendidikan & Pelatihan Vokasi", icon: "fa-chalkboard-user" },
+            { id: "19", code: "F", name: "Laboratorium & Pengujian Mutu", icon: "fa-vial" },
+            { id: "20", code: "G", name: "Pengelolaan Lingkungan & Keberlanjutan", icon: "fa-leaf" },
+            { id: "21", code: "G", name: "Energi Terbarukan Berbasis Agromaritim", icon: "fa-solar-panel" },
+            { id: "22", code: "H", name: "Keuangan & Pembiayaan Agribisnis", icon: "fa-coins" },
+            { id: "23", code: "H", name: "Kewirausahaan & Business Development", icon: "fa-chart-line" },
+            { id: "24", code: "I", name: "Pelayaran & Transportasi Laut", icon: "fa-ship" },
+            { id: "25", code: "I", name: "Infrastruktur Pertanian & Kelautan", icon: "fa-bridge-water" },
+            { id: "26", code: "J", name: "Administrasi & Kebijakan Publik", icon: "fa-landmark" },
+            { id: "27", code: "J", name: "Hubungan Internasional & Perdagangan Global", icon: "fa-globe" },
+            { id: "28", code: "K", name: "Ekowisata & Wisata Agromaritim", icon: "fa-camera-retro" },
+            { id: "29", code: "L", name: "Bioteknologi & Rekayasa Biologis", icon: "fa-dna" },
+            { id: "30", code: "L", name: "Analisis Risiko & Intelijen Ketahanan Pangan", icon: "fa-shield-halved" },
+            { id: "31", code: "L", name: "Komunikasi, Media & Advokasi Sains", icon: "fa-bullhorn" },
+            { id: "32", code: "M", name: "Pekerjaan Sinergi Agro-Maritim Terpadu", icon: "fa-arrows-split-up-and-left" },
+            { id: "33", code: "M", name: "Ringkasan Kelompok Pekerjaan", icon: "fa-table-cells" },
+            { id: "34", code: "M", name: "Rantai Nilai Industri Komoditas", icon: "fa-diagram-successor" }
+        ];
+
+        // Complete List of Careers matching text input A-M
+        const CAREER_DATABASE = [
+            // Sub 1: Pertanian Tanaman Pangan
+            { id: "c1", catId: "1", name: "Petani Padi / Jagung / Kedelai", scope: "Produksi tanaman beras, jagung, kedelai, dan umbi-umbian.", edu: "Agronomi, Pertanian", skill: "Budidaya Lahan, Olah Tanah", strat: "Menjamin ketersediaan pasokan pangan pokok nasional." },
+            { id: "c2", catId: "1", name: "Pengelola Greenhouse & Hidroponik", scope: "Budidaya tanaman terkendali tanpa tanah menggunakan nutrisi presisi.", edu: "Teknik Pertanian, Agronomi", skill: "Manajemen Nutrisi, Pengendalian Iklim", strat: "Efisiensi lahan perkotaan & kualitas tinggi." },
+            { id: "c3", catId: "1", name: "Agronom & Ahli Pemuliaan Tanaman", scope: "Pengelolaan produksi tanaman dan pengembangan varietas unggul tahan hama/iklim.", edu: "Pemuliaan Tanaman, Bioteknologi", skill: "Genetika Tanaman, Riset Varietas", strat: "Menciptakan benih unggul masa depan." },
+            { id: "c4", catId: "1", name: "Ahli Proteksi & Kesuburan Tanah", scope: "Pengendalian hama penyakit tanaman serta pengelolaan kualitas hara tanah.", edu: "Ilmu Tanah, Hama Penyakit Tumbuhan", skill: "Analisis Mikroba, Organik Farming", strat: "Menjaga kesehatan ekosistem tanah." },
+
+            // Sub 2: Perkebunan
+            { id: "c5", catId: "2", name: "Estate Manager & Manajer Perkebunan", scope: "Pengelolaan operasional skala besar kebun sawit, kopi, kakao, teh, tebu.", edu: "Agribisnis, Agronomi", skill: "Manajemen SDM & Operasional", strat: "Memastikan produktivitas komoditas ekspor nasional." },
+            { id: "c6", catId: "2", name: "Spesialis Tanaman Kopi / Kakao / Teh", scope: "Riset dan pengawasan kualitas budidaya kopi spesialis & kakao.", edu: "Agronomi, Teknologi Pangan", skill: "Pascapanen, Testing Kualitas", strat: "Meningkatkan daya saing ekspor premium." },
+            { id: "c7", catId: "2", name: "Auditor Keberlanjutan Perkebunan", scope: "Sertifikasi praktik perkebunan ramah lingkungan (RSPO/ISPO).", edu: "Teknik Lingkungan, Agribisnis", skill: "Audit ESG, Compliance Standard", strat: "Memenuhi standar pasar internasional." },
+
+            // Sub 3: Peternakan
+            { id: "c8", catId: "3", name: "Dokter Hewan & Paramedik Veteriner", scope: "Pencegahan, diagnosis, dan pengobatan penyakit ternak potong dan perah.", edu: "Kedokteran Hewan", skill: "Kesehatan Hewan, Bio-Security", strat: "Mencegah wabah zoonosis dan menjamin keamanan daging." },
+            { id: "c9", catId: "3", name: "Ahli Nutrisi & Formulator Pakan Ternak", scope: "Formulasi ransum pakan ternak sapi, ayam, dan kambing secara presisi.", edu: "Nutrisi Ternak, Peternakan", skill: "Kimia Pakan, Bio-sintesis", strat: "Efisiensi biaya produksi peternakan." },
+            { id: "c10", catId: "3", name: "Teknisi Kandang Otomatis & Inseminator", scope: "Operasional kandang modern berteknologi tinggi dan pembiakan buatan.", edu: "Teknik Pertanian, Peternakan", skill: "IoT Kandang, Reproduksi Ternak", strat: "Modernisasi swasembada daging." },
+
+            // Sub 4: Kehutanan
+            { id: "c11", catId: "4", name: "Ahli Silvikultur & Rehabilitasi Hutan", scope: "Pengelolaan pertumbuhan hutan tanaman industri & pemulihan lahan kritis.", edu: "Kehutanan, Silvikultur", skill: "Penanaman Hutan, Ekologi", strat: "Keseimbangan produksi kayu dan fungsi lingkungan." },
+            { id: "c12", catId: "4", name: "Pengelola Agroforestri & Hutan Sosial", scope: "Penggabungan tanaman hutan dengan tanaman pertanian bersama masyarakat lokal.", edu: "Kehutanan, Sosio-Ekonomi", skill: "Pemberdayaan Masyarakat, Agroforestri", strat: "Kesejahteraan warga pesisir & pegunungan." },
+
+            // Sub 5: Perikanan Tangkap
+            { id: "c13", catId: "5", name: "Nakhoda & Fishing Master Kapal Laut", scope: "Memimpin navigasi dan pencarian penangkapan ikan pelagis di laut lepas.", edu: "Kecakapan Bahari, Pemanfaatan Sumber Daya Perikanan", skill: "Navigasi Laut, Radar Ikan", strat: "Memaksimalkan tangkapan terukur ramah lingkungan." },
+            { id: "c14", catId: "5", name: "Ahli Oseanografi Perikanan & Fishing Analyst", scope: "Menganalisis zona potensi penangkapan ikan (ZPPI) berbasis satelit.", edu: "Oseanografi, Ilmu Kelautan", skill: "GIS Satelit, Pemodelan Arus Laut", strat: "Efisiensi BBM kapal penangkap ikan." },
+
+            // Sub 6: Budidaya Perikanan & Akuakultur
+            { id: "c15", catId: "6", name: "Pembudidaya Udang Vaname / Ikan Nila", scope: "Manajemen operasional kolam/tambak udang presisi & ikan air tawar.", edu: "Akuakultur, Perikanan", skill: "Manajemen Pakan, Biosekuriti Tambak", strat: "Komoditas utama ekspor hasil laut Indonesia." },
+            { id: "c16", catId: "6", name: "Teknisi Bioflok & System RAS", scope: "Penerapan sistem Recirculating Aquaculture & mikroba pengurai limbah.", edu: "Bioteknologi Perikanan, Akuakultur", skill: "Sirkulasi Air, Pengelolaan Kimia Air", strat: "Budidaya hemat air dan hemat lahan." },
+            { id: "c17", catId: "6", name: "Ahli Kesehatan & Penyakit Udang/Ikan", scope: "Diagnosis dan penanganan penyakit bakteri/virus pada akuakultur.", edu: "Kesehatan Ikan, Parasitologi Laut", skill: "PCR Diagnostik, Pengobatan Ikan", strat: "Mencegah gagal panen massal." },
+
+            // Sub 7: Kelautan & Oseanografi
+            { id: "c18", catId: "7", name: "Oseanografer & Peneliti Terumbu Karang", scope: "Studi pergerakan arus, gelombang, serta ekosistem terumbu karang dan lamun.", edu: "Oseanografi, Biologi Laut", skill: "Diving Ilmiah, pemodelan Laut", strat: "Memahami dampak perubahan iklim global." },
+            { id: "c19", catId: "7", name: "Penyelam Ilmiah & Teknisi Instrumen Laut", scope: "Pemasangan alat ukur oseanografi di dasar laut dan observasi fauna.", edu: "Ilmu Kelautan, Teknik Kelautan", skill: "Scientific Diving, Sensor Bawah Air", strat: "Pengumpulan data dasar laut presisi." },
+
+            // Sub 8: Pengelolaan Pesisir
+            { id: "c20", catId: "8", name: "Ahli Rehabilitasi Mangrove & Pesisir", scope: "Restorasi kawasan hutan bakau untuk penyerapan karbon dan penahan abrasi.", edu: "Ilmu Kelautan, Manajemen Pesisir", skill: "Penanaman Bakau, Blue Carbon", strat: "Mitigasi bencana pantai & ekowisata." },
+
+            // Sub 9 & 10: Industri Pengolahan
+            { id: "c21", catId: "9", name: "Food Technologist & Ahli Fermentasi", scope: "Riset dan pengolahan bahan mentah pertanian menjadi makanan kemasan bernilai.", edu: "Teknologi Pangan, Kimia", skill: "Formulasi Produk, Pengawetan Aman", strat: "Nilai tambah ekonomi pangan lokal." },
+            { id: "c22", catId: "10", name: "Ahli Pengalengan & Pembekuan Hasil Laut", scope: "Teknologi pembekuan cepat (IQF) dan ekstraksi kolagen rumput laut.", edu: "Teknologi Hasil Perikanan", skill: "HACCP, Canning Tech", strat: "Standar mutu pasar ekspor Amerika/Eropa." },
+
+            // Sub 11: Pakan & Pupuk
+            { id: "c23", catId: "11", name: "Ahli Biostimulan & Pupuk Organik Hayati", scope: "Pengembangan pupuk berbasis konsorsium mikroba pengikat nitrogen.", edu: "Bioteknologi, Pertanian", skill: "Isolasi Mikroba, Fermentasi Industri", strat: "Mengurangi ketergantungan pupuk kimia." },
+
+            // Sub 12 & 13: Logistik & Perdagangan
+            { id: "c24", catId: "12", name: "Eksportir & Commodity Trader", scope: "Perdagangan internasional hasil tani/laut ke pasar global.", edu: "Agribisnis, Perdagangan Internasional", skill: "Hukum Dagang, Negosiasi Ekspor", strat: "Perluasan devisa negara." },
+            { id: "c25", catId: "13", name: "Cold Chain Manager & Traceability Specialist", scope: "Pengelolaan rantai dingin dan pelacakan QR-code asal-usul komoditas.", edu: "Manajemen Rantai Pasok, Logistik", skill: "Refrigeration System, Block-Chain Traceability", strat: "Menjaga kejelasan & kesegaran mutu produk." },
+
+            // Sub 14, 15, 16: Teknologi & AI
+            { id: "c26", catId: "14", name: "Operator Drone Pertanian & IoT Engineer", scope: "Penyemprotan pupuk via drone dan instalasi sensor kelembaban tanah.", edu: "Teknik Pertanian, Informatika", skill: "Drone Pilot, Sensor Calibration", strat: "Pertanian presisi efisien." },
+            { id: "c27", catId: "15", name: "ROV Operator & Robotika Bawah Laut", scope: "Pengoperasian robot kapal selam tanpa awak untuk survei infrastruktur laut.", edu: "Teknik Kelautan, Mechatronics", skill: "ROV Handling, Sonar Scan", strat: "Eksplorasi laut dalam berisiko tinggi." },
+            { id: "c28", catId: "16", name: "Data Scientist Agribisnis & GIS Analyst", scope: "Analisis data spasial satelit untuk prediksi panen dan pemetaan tambak.", edu: "Informatika, Geodesi/GIS", skill: "Machine Learning, Python/ArcGIS", strat: "Prediksi ketahanan pangan nasional berbasis AI." },
+
+            // Sub 17, 18, 19: R&D & Edukasi
+            { id: "c29", catId: "17", name: "Peneliti Kultur Jaringan & Bio-genetika", scope: "Perbanyakan bibit bebas penyakit dalam kondisi steril laboratorium.", edu: "Biologi, Bioteknologi", skill: "Sterilisasi Tissue Culture", strat: "Penyediaan jutaan bibit unggul cepat." },
+            { id: "c30", catId: "18", name: "Penyuluh Pertanian & Instruktur Akuakultur", scope: "Pendampingan dan transfer teknologi modern kepada kelompok tani/nelayan.", edu: "Penyuluhan Pertanian, Perikanan", skill: "Komunikasi Publik, Pelatihan Teknis", strat: "Jembatan riset ke praktik lapangan." },
+
+            // Sub 20 & 21: Lingkungan & Energi
+            { id: "c31", catId: "20", name: "ESG Specialist & Carbon Trading Analyst", scope: "Perhitungan jejak karbon dan perdagangan kredit karbon sektor mangrov/hutan.", edu: "Ilmu Lingkungan, Ekonomi", skill: "Carbon Accounting, Audit ESG", strat: "Nilai ekonomi baru dari pelestarian alam." },
+            { id: "c32", catId: "21", name: "Insinyur Bioenergi & Biofuel Alga", scope: "Konversi lim biomass & mikroalga laut menjadi bahan bakar biodiesel.", edu: "Teknik Kimia, Energi Terbarukan", skill: "Transesterifikasi, Bioreaktor Alga", strat: "Kemandirian energi terbarukan." },
+
+            // Sub 22 & 23: Keuangan & Bisnis
+            { id: "c33", catId: "22", name: "Analis Kredit Agribisnis & Aktuaris Asuransi", scope: "Penilaian risiko kredit pinjaman petani dan premi asuransi gagal panen.", edu: "Keuangan, Aktuaria, Agronomi", skill: "Risk Assessment, Financial Modeling", strat: "Inklusi keuangan bagi pelaku usaha tani." },
+            { id: "c34", catId: "23", name: "Founder Startup Agritech / Maritech", scope: "Membangun inovasi aplikasi digital penyeimbang rantai pasok dan pasarraya.", edu: "Manajemen, Informatika", skill: "Product Management, Fundraising", strat: "Disrupsi efisiensi ekonomi pangan." },
+
+            // Sub 24 & 25: Pelayaran & Infrastruktur
+            { id: "c35", catId: "24", name: "Naval Architect & Insinyur Kapal Perikanan", scope: "Desain dan perancangan konstruksi kapal penangkap ikan & pelabuhan modern.", edu: "Teknik Perkapalan, Teknik Kelautan", skill: "Ship CAD Design, Hydrodynamics", strat: "Armada laut tangguh dan aman." },
+
+            // Sub 26 & 27: Pemerintahan & Publik
+            { id: "c36", catId: "26", name: "Analis Kebijakan Pangan & Pengawas Karantina", scope: "Merumuskan regulasi swasembada & karantina pencegahan hama impor.", edu: "Hukum, Kebijakan Publik, Veteriner", skill: "Policy Analysis, Quarantine Protocol", strat: "Proteksi kedaulatan pangan nasional." },
+
+            // Sub 28: Ekowisata
+            { id: "c37", catId: "28", name: "Pengelola Agrowisata & Wisata Bahari", scope: "Pengembangan kawasan wisata edukasi kebun kopi & diving konservasi laut.", edu: "Pariwisata, Manajemen", skill: "Hospitality, Tour Guiding", strat: "Diversifikasi pendapatan masyarakat lokal." },
+
+            // Sub 29, 30, 31: Bio & Future Jobs
+            { id: "c38", catId: "29", name: "Seaweed Biorefinery Scientist", scope: "Pengolahan rumput laut menjadi bioplastik, kosmetik, dan pangan fungsional.", edu: "Bioteknologi Kelautan", skill: "Ekstraksi Polimer, Bio-Refinery", strat: "Pengganti plastik berbasis minyak bumi." },
+
+            // Sub 32: Integrated Synergy
+            { id: "c39", catId: "32", name: "Integrated Farming Specialist (Mina Padi)", scope: "Perancangan ekosistem terpadu sawah padi bersama budidaya ikan lele/nila.", edu: "Agronomi + Akuakultur", skill: "Sistem Sirkulasi Terpadu", strat: "Panen ganda beras + protein ikan." },
+            { id: "c40", catId: "32", name: "Aquaponics Engineer", scope: "Sistem rekstrusasi sirkulasi air antara pembesaran ikan dan tanaman sayur hidroponik.", edu: "Teknik Pertanian, Akuakultur", skill: "Recirculation Hydrodynamics", strat: "Produksi pangan tanpa bahan kimia sintetis." }
+        ];
+
+        // --- 2. VALUE CHAIN SIMULATOR DATASET ---
+        const VALUE_CHAIN_DATA = {
+            udang: {
+                title: "Rantai Nilai Udang Vaname (Akuakultur Laut)",
+                icon: "fa-shrimp",
+                desc: "Udang Vaname adalah komoditas ekspor perikanan terbesar Indonesia. 1 hektar tambak udang melibatkan puluhan keahlian dari R&D genetik hingga perdagangan global.",
+                steps: [
+                    { name: "1. R&D Genetik", icon: "fa-dna", roles: ["Geneticist Udang", "Mikrobiolog Laut", "Peneliti Penyakit Virus"], desc: "Seleksi indukan SPF (Specific Pathogen Free) & pemulihan genetik imun udang." },
+                    { name: "2. Input Produksi", icon: "fa-flask-vial", roles: ["Formulator Pakan Udang", "Teknisi Hatchery Benur", "Produsen Kincir IoT"], desc: "Penyediaan benih kualitas tinggi, pakan berprotein 35%, dan sensor kualitas air." },
+                    { name: "3. Budidaya Tambak", icon: "fa-water", roles: ["Manajer Tambak Udang", "Teknisi Bioflok", "Ahli Kualitas Air"], desc: "Pengelolaan pemberian pakan otomatis, kontrol Salinitas & DO (Dissolved Oxygen)." },
+                    { name: "4. Pengolahan Cold-Chain", icon: "fa-boxes-packing", roles: ["Teknisi Cold Storage", "QC Food Safety", "Pengolah Udang IQF"], desc: "Pemotongan kepala, pembekuan instan (-40°C), dan sertifikasi sterilitas ekspor." },
+                    { name: "5. Logistik & Ekspor", icon: "fa-ship", roles: ["Freight Forwarder", "Eksportir Seafood", "Petugas Karantina Ikan"], desc: "Pengiriman kontainer pendingin ke AS, Jepang, & Eropa." },
+                    { name: "6. Layanan Pendukung", icon: "fa-chart-line", roles: ["Aktuaris Asuransi Tambak", "Software Dev Tambak", "ESG Auditor"], desc: "Pembiayaan perbankan, sistem monitoring berbasis smartphone, & sertifikasi keberlanjutan." }
+                ]
+            },
+            padi: {
+                title: "Rantai Nilai Beras & Pangan Pokok",
+                icon: "fa-wheat-awn",
+                desc: "Dari laboratorium pemuliaan benih hingga beras siap saji di meja makan keluarga Indonesia.",
+                steps: [
+                    { name: "1. Pemuliaan Benih", icon: "fa-microscope", roles: ["Pemulia Tanaman Padi", "Ahli Kesuburan Tanah"], desc: "Pengembangan varietas padi unggul tahan kekeringan." },
+                    { name: "2. Input & Irigasi", icon: "fa-faucet-drip", roles: ["Insinyur Irigasi", "Formulator Pupuk Organik"], desc: "Manajemen jaringan bendungan dan kecukupan hara sawah." },
+                    { name: "3. Produksi Sawah", icon: "fa-tractor", roles: ["Petani Padi Modern", "Operator Drone Pupuk"], desc: "Olah tanah mekanis, pemantauan kesehatan daun via drone." },
+                    { name: "4. Penggilingan", icon: "fa-industry", roles: ["Operator Pabrik Milling", "QC Mutu Beras"], desc: "Pembersihan, pecah kulit, penyosohan, dan grading beras premium." },
+                    { name: "5. Distribusi", icon: "fa-truck-ramp-box", roles: ["Pengelola Gudang Bulog", "Trader Komoditas"], desc: "Distribusi logistik logistik pasokan nasional." },
+                    { name: "6. Regulasi", icon: "fa-landmark", roles: ["Analis Kebijakan Pangan", "Ekonom Agraria"], desc: "Pengaturan HET beras dan stabilitas harga pasar." }
+                ]
+            },
+            kopi: {
+                title: "Rantai Nilai Kopi Spesialis Nusantara",
+                icon: "fa-mug-hot",
+                desc: "Kopi Indonesia menembus pasar kafe dunia dari dataran tinggi Sumatera, Jawa, hingga Sulawesi.",
+                steps: [
+                    { name: "1. Pemulihan Varietas", icon: "fa-seedling", roles: ["Agronom Kebun Kopi", "Ahli Naungan Agroforestri"], desc: "Seleksi varietas Arabica/Robusta di bawah naungan pohon hutan." },
+                    { name: "2. Pemeliharaan Kebun", icon: "fa-cloud-sun-rain", roles: ["Estate Manager Kopi", "Penyuluh Kopi"], desc: "Pengendalian hama penggerek buah kopi secara biologis." },
+                    { name: "3. Panen & Fermentasi", icon: "fa-leaf", roles: ["Pengawas Pemanenan Red-Cherry", "Ahli Fermentasi Kopi"], desc: "Petik merah, pengolahan metode Natural, Wash, atau Honey." },
+                    { name: "4. Roasting & Quality", icon: "fa-fire-burner", roles: ["Q-Grader / Sensory Expert", "Roaster Kopi Spesialis"], desc: "Penilaian skor cupping >85 & sangrai profil cita rasa." },
+                    { name: "5. Pemasaran Ekspor", icon: "fa-globe", roles: ["Digital Marketer Kopi", "Eksportir Green Beans"], desc: "Penjualan langsung Direct-Trade ke kedai internasional." },
+                    { name: "6. Agrowisata", icon: "fa-camera-retro", roles: ["Pengelola Destinasi Agrowisata", "Barista"], desc: "Tur wisata kebun kopi edukatif dan penyajian akhir." }
+                ]
+            },
+            rumputlaut: {
+                title: "Rantai Nilai Rumput Laut (Blue Economy)",
+                icon: "fa-water",
+                desc: "Bahan mentah hidrokoloid untuk industri pangan, kosmetik, hingga bioplastik ramah lingkungan.",
+                steps: [
+                    { name: "1. Bibit & Tissue Culture", icon: "fa-vial", roles: ["Peneliti Kultur Jaringan Rumput Laut"], desc: "Pengembangan jaringan bibit Eucheuma cottonii murni." },
+                    { name: "2. Budidaya Pesisir", icon: "fa-anchor", roles: ["Pembudidaya Rumput Laut", "Penyuluh Pesisir"], desc: "Metode bentang tali di perairan jernih pesisir." },
+                    { name: "3. Penjemuran & QC", icon: "fa-sun", roles: ["Teknisi Pengeringan Solar", "Inspektur Kadar Air"], desc: "Pembersihan dari garam/pasir dan pengeringan standar." },
+                    { name: "4. Biorefinery Industri", icon: "fa-flask", roles: ["Biorefinery Scientist", "Ekstraktor Karagenan"], desc: "Pengolahan rumput laut menjadi tepung agar & karagenan." },
+                    { name: "5. Aplikasi Produk", icon: "fa-bag-shopping", roles: ["Pengembang Bioplastik", "Formulator Kosmetik"], desc: "Pembuatan cangkang kapsul, kosmetik, & kantong biodegradable." },
+                    { name: "6. Perdagangan Karbon", icon: "fa-leaf", roles: ["Carbon Accounting Specialist"], desc: "Klaim kredit karbon penyerapan emisi oleh makroalga." }
+                ]
+            }
+        };
+
+        // --- 3. EDUCATION PATHWAYS DATASET ---
+        const EDUCATION_MAJORS = [
+            {
+                id: "informatika",
+                name: "Informatika / Ilmu Komputer / Data Science",
+                icon: "fa-laptop-code",
+                roles: ["Software Developer Agritech/Maritech", "AI Engineer Pertanian", "GIS & Satellite Remote Sensing Analyst", "Data Scientist Komoditas"],
+                desc: "Jurusan IT sangat krusial untuk otomatisasi IoT sensor tanah/tambak, analisis citra drone, pemetaan GIS, dan algoritma kecerdasan buatan.",
+                skills: ["Python / Machine Learning", "GIS & Remote Sensing", "IoT Protocols (MQTT/Sensor)", "Database & Cloud Architecture"]
+            },
+            {
+                id: "agronomi",
+                name: "Agronomi / Buat Tanaman",
+                icon: "fa-seedling",
+                roles: ["Agronom Perkebunan", "Pemulia Tanaman (Plant Breeder)", "Manajer Greenhouse Modern", "Konsultan Kesuburan Tanah"],
+                desc: "Fokus pada rekayasa fisiologi tanaman, produktivitas lahan sawah/kebun, dan adaptasi perubahan iklim.",
+                skills: ["Fisiologi Tanaman", "Manajemen Nutrisi Soil", "Genetika & Pemuliaan", "Pascapanen Presisi"]
+            },
+            {
+                id: "kelautan",
+                name: "Ilmu Kelautan & Oseanografi",
+                icon: "fa-water",
+                roles: ["Oseanografer Ilmiah", "Peneliti Terumbu Karang & Mangrove", "Penyelam Ilmiah (Scientific Diver)", "Konsultan Blue Carbon"],
+                desc: "Mempelajari dinamika fisik, kimia, biologi laut, dasar samudera, serta upaya konservasi pesisir nasional.",
+                skills: ["Scientific Diving", "Pemodelan Arus & Gelombang", "Analisis Kualitas Air Laut", "Remote Sensing Kelautan"]
+            },
+            {
+                id: "pangan",
+                name: "Teknologi Pangan / Hasil Perikanan",
+                icon: "fa-utensils",
+                roles: ["Food Technologist", "Quality Control / QA Pabrik Pangan", "Ahli Fermentasi & Pengawetan", "Spesialis Pengemasan Produk"],
+                desc: "Mengolah bahan mentah panen tani & tangkapan laut menjadi produk konsumsi bernilai tinggi, higienis, dan tahan lama.",
+                skills: ["HACCP & Keamanan Pangan", "Kimia & Mikrobiologi Pangan", "Teknologi Pembekuan/Canning", "Sensory Analysis"]
+            },
+            {
+                id: "ekonomi",
+                name: "Agribisnis / Ekonomi Pertanian & Kelautan",
+                icon: "fa-coins",
+                roles: ["Commodity Trader", "Analis Kredit Bank Agribisnis", "Supply Chain Risk Analyst", "Founder Startup Pangan"],
+                desc: "Menghubungkan sains produksi dengan pasar. Mempelajari rantai pasok, manajemen pembiayaan, dan perdagangan internasional.",
+                skills: ["Analisis Finansial & Risiko", "Manajemen Rantai Pasok", "Perdagangan Komoditas", "Pemasaran Digital"]
+            },
+            {
+                id: "hukum",
+                name: "Ilmu Hukum (Hukum Maritim & Agraria)",
+                icon: "fa-scale-balanced",
+                roles: ["Ahli Hukum Kelautan & Pelayaran", "Konsultan Hukum Agraria / Pertanahan", "Negosiator Perdagangan Internasional", "Penyidik Tindak Pidana Perikanan"],
+                desc: "Mengatur kepastian hak guna usaha (HGU) lahan sawah/kebun, wilayah tangkap laut, batas maritim, serta standar ekspor.",
+                skills: ["Hukum Agraria & Pertanahan", "Hukum Laut Internasional (UNCLOS)", "Audit Regulatory Compliance", "Negosiasi Kontrak Ekspor"]
+            }
+        ];
+
+        // --- 4. QUIZ DATASET ---
+        const QUIZ_QUESTIONS = [
+            {
+                q: "Mengapa sektor Agromaritim tidak boleh hanya dibayangkan sebagai pekerjaan petani atau nelayan tradisional?",
+                options: [
+                    "Karena petani dan nelayan tradisional sudah tidak ada lagi di Indonesia.",
+                    "Karena rantai nilai agromaritim mencakup R&D sains, teknologi AI, industri pengolahan, logistik cold-chain, hingga kebijakan publik.",
+                    "Karena hanya sektor manufaktur pabrik yang menghasilkan uang.",
+                    "Karena seluruh pekerjaan lapangan akan digantikan sepenuhnya oleh robot."
+                ],
+                answer: 1,
+                explain: "Sektor agromaritim adalah ekosistem luas dari hulu ke hilir. Membutuhkan kolaborasi saintis, insinyur IT, manajer logistik, hingga analis hukum dan keuangan."
+            },
+            {
+                q: "Komoditas Udang Vaname melibatkan profesi berikut pada tahap hulu (Input & R&D), KECUALI:",
+                options: [
+                    "Formulator Pakan Udang",
+                    "Ahli Genetika Indukan Udang (SPF)",
+                    "Freight Forwarder Ekspor Kontainer",
+                    "Teknisi Hatchery Benur"
+                ],
+                answer: 2,
+                explain: "Freight Forwarder adalah profesi di tahap HILIR (Logistik & Distribusi Ekspor), bukan di tahap hulu penyediaan input."
+            },
+            {
+                q: "Apa nama sistem budidaya terpadu yang menggabungkan produksi padi di sawah sekaligus budidaya ikan dalam satu lahan?",
+                options: [
+                    "Hidroponik",
+                    "Mina Padi",
+                    "Aeroponik",
+                    "Silvopastura"
+                ],
+                answer: 1,
+                explain: "Mina Padi adalah contoh nyata sinergi Agro-Maritim di mana sawah padi dimanfaatkan sekaligus untuk membudidayakan ikan."
+            },
+            {
+                q: "Seorang lulusan Teknik Informatika atau Data Science dapat berkontribusi dalam agromaritim sebagai:",
+                options: [
+                    "Operator traktor manual",
+                    "Pengembang AI untuk prediksi lokasi ikan & pengolahan citra satelit lahan",
+                    "Penyosoh beras di penggilingan tradisional",
+                    "Penyelam tradisional tanpa tabung"
+                ],
+                answer: 1,
+                explain: "Lulusan IT/Data Science memegang peran kunci dalam memproses citra satelit (GIS), otomatisasi sensor IoT tambak, dan kecerdasan buatan."
+            },
+            {
+                q: "Profesi yang bertugas mengukur dan menguji kandungan gizi, sterilitas bakteri, serta sertifikasi HACCP pada produk pengalengan ikan adalah:",
+                options: [
+                    "Estate Manager",
+                    "Quality Control (QC) & Food Safety Officer",
+                    "Fishing Master",
+                    "Polisi Kehutanan"
+                ],
+                answer: 1,
+                explain: "Food Safety Officer & Quality Control bertanggung jawab memastikan kelayakan higienis serta standar mutu pangan olahan sebelum dijual."
+            },
+            {
+                q: "Apa yang dimaksud dengan 'Blue Carbon Specialist' dalam ekosistem agromaritim?",
+                options: [
+                    "Ahli cat minyak untuk perahu nelayan berwarna biru.",
+                    "Spesialis yang mengukur penyerapan dan penyimpanan karbon pada ekosistem laut & pesisir seperti mangrove dan lamun.",
+                    "Pedagang BBM solar khusus kapal laut.",
+                    "Penyelam pencari batu bara dasar laut."
+                ],
+                answer: 1,
+                explain: "Blue Carbon Specialist meneliti dan mengelola kapasitas ekosistem pesisir (hutan bakau & padang lamun) dalam menyerap emisi karbon global."
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let savedBookmarks = JSON.parse(localStorage.getItem('agro_bookmarks') || '[]');
+        let currentQuizIndex = 0;
+        let quizAnswers = Array(QUIZ_QUESTIONS.length).fill(null);
+        let activeCommodity = 'udang';
+        let activeStepIndex = 0;
+
+        // --- DOM INITIALIZATION ---
+        window.onload = function() {
+            populateSubcategoryDropdown();
+            renderCareers();
+            updateBookmarkBadge();
+            loadCommodity('udang');
+            populateMajorDropdown();
+            renderMajorDetails();
+            renderQuizQuestion();
+
+            // Setup Mobile Menu toggle
+            document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+        };
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- TAB NAVIGATION SYSTEM ---
+        function switchTab(tabId) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Show target tab
+            const target = document.getElementById('tab-' + tabId);
+            if(target) target.classList.remove('hidden');
+
+            // Update Header Nav active styles
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-emerald-400', 'font-semibold');
+                btn.classList.add('text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-slate-800', 'text-emerald-400', 'font-semibold');
+                activeBtn.classList.remove('text-slate-300');
+            }
+
+            // Special re-render for saved tab
+            if(tabId === 'saved') {
+                renderSavedCareers();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- TAB 1: MYTH TOGGLE ---
+        function toggleMyth(id) {
+            const fact = document.getElementById(`myth-fact-${id}`);
+            const icon = document.getElementById(`myth-icon-${id}`);
+            if(fact.classList.contains('hidden')) {
+                fact.classList.remove('hidden');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                fact.classList.add('hidden');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        // --- TAB 2: CAREERS CATALOG ENGINE ---
+        function populateSubcategoryDropdown() {
+            const select = document.getElementById('subcategory-filter');
+            select.innerHTML = '<option value="ALL">Semua 34 Sub-Kategori</option>';
+            ALL_CATEGORIES.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.id;
+                opt.textContent = `${cat.id}. ${cat.name}`;
+                select.appendChild(opt);
+            });
+        }
+
+        function filterCareers() {
+            const searchVal = document.getElementById('career-search').value.toLowerCase().trim();
+            const sectorVal = document.getElementById('sector-filter').value;
+            const subcatVal = document.getElementById('subcategory-filter').value;
+
+            const filtered = CAREER_DATABASE.filter(item => {
+                const categoryObj = ALL_CATEGORIES.find(c => c.id === item.catId);
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || 
+                                      item.scope.toLowerCase().includes(searchVal) ||
+                                      item.edu.toLowerCase().includes(searchVal) ||
+                                      item.strat.toLowerCase().includes(searchVal);
+                
+                const matchesSector = (sectorVal === 'ALL') || (categoryObj && categoryObj.code === sectorVal);
+                const matchesSubcat = (subcatVal === 'ALL') || (item.catId === subcatVal);
+
+                return matchesSearch && matchesSector && matchesSubcat;
+            });
+
+            renderCareersList(filtered);
+        }
+
+        function resetCareerFilters() {
+            document.getElementById('career-search').value = '';
+            document.getElementById('sector-filter').value = 'ALL';
+            document.getElementById('subcategory-filter').value = 'ALL';
+            filterCareers();
+        }
+
+        function renderCareers() {
+            filterCareers();
+        }
+
+        function renderCareersList(items) {
+            const grid = document.getElementById('careers-grid');
+            const countDisplay = document.getElementById('career-count-display');
+            const noFound = document.getElementById('no-careers-found');
+
+            countDisplay.textContent = items.length;
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                noFound.classList.remove('hidden');
+                return;
+            } else {
+                noFound.classList.add('hidden');
+            }
+
+            items.forEach(c => {
+                const catObj = ALL_CATEGORIES.find(cat => cat.id === c.catId) || { name: "Sektor", icon: "fa-briefcase" };
+                const isBookmarked = savedBookmarks.includes(c.id);
+
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 card-hover flex flex-col justify-between space-y-4 relative group";
+                
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-start justify-between">
+                            <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700">
+                                <i class="fa-solid ${catObj.icon} text-emerald-600"></i>
+                                <span>${catObj.name}</span>
+                            </span>
+                            <button onclick="toggleBookmark('${c.id}')" class="text-slate-300 hover:text-amber-500 transition p-1 text-lg">
+                                <i class="${isBookmarked ? 'fa-solid fa-bookmark text-amber-500' : 'fa-regular fa-bookmark'}"></i>
+                            </button>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base group-hover:text-emerald-700 transition">${c.name}</h3>
+                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${c.scope}</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-400 font-medium truncate max-w-[160px]"><i class="fa-solid fa-graduation-cap mr-1"></i>${c.edu}</span>
+                        <button onclick="openModal('${c.id}')" class="text-emerald-600 hover:text-emerald-800 font-bold flex items-center space-x-1">
+                            <span>Detail</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- BOOKMARK MANAGEMENT ---
+        function toggleBookmark(id) {
+            const index = savedBookmarks.indexOf(id);
+            if(index > -1) {
+                savedBookmarks.splice(index, 1);
+            } else {
+                savedBookmarks.push(id);
+            }
+            localStorage.setItem('agro_bookmarks', JSON.stringify(savedBookmarks));
+            updateBookmarkBadge();
+            filterCareers();
+            renderSavedCareers();
+
+            // Update modal if open
+            const currentModalId = document.getElementById('modal-title').dataset.activeId;
+            if (currentModalId === id) {
+                updateModalBookmarkBtn(id);
+            }
+        }
+
+        function updateBookmarkBadge() {
+            const badge = document.getElementById('saved-badge-count');
+            badge.textContent = savedBookmarks.length;
+            if (savedBookmarks.length > 0) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function clearAllBookmarks() {
+            if(confirm('Apakah Anda yakin ingin menghapus semua bookmark karir impian Anda?')) {
+                savedBookmarks = [];
+                localStorage.setItem('agro_bookmarks', JSON.stringify(savedBookmarks));
+                updateBookmarkBadge();
+                filterCareers();
+                renderSavedCareers();
+            }
+        }
+
+        function renderSavedCareers() {
+            const grid = document.getElementById('saved-careers-grid');
+            const emptyState = document.getElementById('no-saved-careers');
+            grid.innerHTML = '';
+
+            const savedItems = CAREER_DATABASE.filter(c => savedBookmarks.includes(c.id));
+
+            if(savedItems.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            savedItems.forEach(c => {
+                const catObj = ALL_CATEGORIES.find(cat => cat.id === c.catId) || { name: "Sektor", icon: "fa-briefcase" };
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 card-hover flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-start justify-between">
+                            <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                                <i class="fa-solid ${catObj.icon}"></i>
+                                <span>${catObj.name}</span>
+                            </span>
+                            <button onclick="toggleBookmark('${c.id}')" class="text-rose-500 hover:text-rose-700 p-1 text-sm font-bold">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base">${c.name}</h3>
+                            <p class="text-xs text-slate-500 mt-1">${c.scope}</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-400 font-medium"><i class="fa-solid fa-graduation-cap mr-1"></i>${c.edu}</span>
+                        <button onclick="openModal('${c.id}')" class="text-emerald-600 hover:text-emerald-800 font-bold">Lihat Detail</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- JOB MODAL SYSTEM ---
+        function openModal(id) {
+            const career = CAREER_DATABASE.find(c => c.id === id);
+            if(!career) return;
+
+            const catObj = ALL_CATEGORIES.find(cat => cat.id === career.catId) || { name: "Sektor", icon: "fa-briefcase" };
+
+            document.getElementById('modal-title').textContent = career.name;
+            document.getElementById('modal-title').dataset.activeId = career.id;
+            document.getElementById('modal-sector-badge').textContent = catObj.name;
+            document.getElementById('modal-icon').className = `fa-solid ${catObj.icon}`;
+            document.getElementById('modal-scope').textContent = career.scope;
+            document.getElementById('modal-education').textContent = career.edu;
+            document.getElementById('modal-skills').textContent = career.skill;
+            document.getElementById('modal-strategic').textContent = career.strat;
+
+            updateModalBookmarkBtn(career.id);
+
+            const modalBtn = document.getElementById('modal-bookmark-btn');
+            modalBtn.onclick = function() {
+                toggleBookmark(career.id);
+            };
+
+            document.getElementById('job-modal').classList.remove('hidden');
+        }
+
+        function updateModalBookmarkBtn(id) {
+            const isBookmarked = savedBookmarks.includes(id);
+            const btnText = document.getElementById('modal-bookmark-text');
+            if(isBookmarked) {
+                btnText.textContent = "Tersimpan di Favorit";
+            } else {
+                btnText.textContent = "Simpan ke Favorit";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('job-modal').classList.add('hidden');
+        }
+
+        // --- TAB 3: VALUE CHAIN SIMULATOR ---
+        function loadCommodity(key) {
+            activeCommodity = key;
+            activeStepIndex = 0;
+
+            // Highlight button
+            document.querySelectorAll('.com-selector-btn').forEach(btn => {
+                btn.classList.remove('bg-teal-600', 'text-white', 'shadow-md');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            });
+
+            const activeBtn = document.getElementById('com-btn-' + key);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-teal-600', 'text-white', 'shadow-md');
+                activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+            }
+
+            const data = VALUE_CHAIN_DATA[key];
+            
+            // Render Banner
+            document.getElementById('commodity-banner').innerHTML = `
+                <div class="space-y-1">
+                    <span class="text-xs text-teal-300 font-semibold uppercase tracking-wider">Komoditas Terpilih</span>
+                    <h3 class="text-xl sm:text-2xl font-extrabold flex items-center space-x-2">
+                        <i class="fa-solid ${data.icon} text-teal-400"></i>
+                        <span>${data.title}</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">${data.desc}</p>
+                </div>
+            `;
+
+            // Render Stepper
+            const stepperContainer = document.getElementById('value-chain-stepper');
+            stepperContainer.innerHTML = '';
+
+            data.steps.forEach((step, idx) => {
+                const stepBtn = document.createElement('button');
+                const isActive = idx === activeStepIndex;
+                stepBtn.onclick = () => selectStep(idx);
+                stepBtn.className = `p-3 rounded-2xl border text-left transition flex flex-col justify-between space-y-2 ${
+                    isActive 
+                    ? 'bg-teal-50 border-teal-500 ring-2 ring-teal-500/30' 
+                    : 'bg-white border-slate-200 hover:border-slate-300'
+                }`;
+
+                stepBtn.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="w-7 h-7 rounded-lg ${isActive ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center text-xs font-bold">
+                            <i class="fa-solid ${step.icon}"></i>
+                        </div>
+                        <span class="text-[10px] font-extrabold ${isActive ? 'text-teal-700' : 'text-slate-400'}">Fase ${idx+1}</span>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold ${isActive ? 'text-teal-900' : 'text-slate-800'} line-clamp-1">${step.name}</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">${step.roles.length} Profesi Utama</div>
+                    </div>
+                `;
+                stepperContainer.appendChild(stepBtn);
+            });
+
+            renderPhaseDetail();
+        }
+
+        function selectStep(idx) {
+            activeStepIndex = idx;
+            loadCommodity(activeCommodity);
+        }
+
+        function renderPhaseDetail() {
+            const data = VALUE_CHAIN_DATA[activeCommodity];
+            const step = data.steps[activeStepIndex];
+            const panel = document.getElementById('phase-detail-panel');
+
+            panel.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid ${step.icon}"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-teal-600">Fase ${activeStepIndex + 1} dari 6</span>
+                            <h4 class="text-lg font-extrabold text-slate-900">${step.name}</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${step.desc}</p>
+
+                <div class="space-y-2">
+                    <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wider"><i class="fa-solid fa-users text-teal-600 mr-1.5"></i>Profesi Kunci Pada Tahapan Ini:</h5>
+                    <div class="flex flex-wrap gap-2">
+                        ${step.roles.map(r => `<span class="bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center space-x-1.5"><i class="fa-solid fa-user-check text-emerald-500 text-[10px]"></i><span>${r}</span></span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- TAB 4: EDUCATION PATHWAYS ENGINE ---
+        function populateMajorDropdown() {
+            const select = document.getElementById('major-select');
+            select.innerHTML = '';
+            EDUCATION_MAJORS.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.id;
+                opt.textContent = m.name;
+                select.appendChild(opt);
+            });
+        }
+
+        function renderMajorDetails() {
+            const selectedId = document.getElementById('major-select').value;
+            const major = EDUCATION_MAJORS.find(m => m.id === selectedId);
+            const container = document.getElementById('major-display-container');
+
+            if(!major) return;
+
+            container.innerHTML = `
+                <div class="bg-slate-900 text-white p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl font-bold border border-indigo-500/30">
+                            <i class="fa-solid ${major.icon}"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-indigo-300 font-semibold uppercase tracking-wider">Program Studi / Rumpun Ilmu</span>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white">${major.name}</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed opacity-90">${major.desc}</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-indigo-50/60 border border-indigo-100 p-6 rounded-3xl space-y-3">
+                        <h4 class="font-bold text-indigo-950 text-sm uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-bullseye text-indigo-600"></i>
+                            <span>Target Profesi Agromaritim:</span>
+                        </h4>
+                        <ul class="space-y-2">
+                            ${major.roles.map(r => `
+                                <li class="bg-white p-3 rounded-xl border border-indigo-100 text-xs font-bold text-slate-800 flex items-center space-x-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                                    <span>${r}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="bg-emerald-50/60 border border-emerald-100 p-6 rounded-3xl space-y-3">
+                        <h4 class="font-bold text-emerald-950 text-sm uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-key text-emerald-600"></i>
+                            <span>Kompetensi & Skill Kunci Required:</span>
+                        </h4>
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            ${major.skills.map(s => `
+                                <span class="bg-white border border-emerald-200 px-3 py-2 rounded-xl text-xs font-semibold text-emerald-900 shadow-sm">
+                                    # ${s}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- TAB 5: MINI QUIZ ENGINE ---
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-container');
+            const q = QUIZ_QUESTIONS[currentQuizIndex];
+
+            document.getElementById('current-question-num').textContent = currentQuizIndex + 1;
+            document.getElementById('total-questions-num').textContent = QUIZ_QUESTIONS.length;
+
+            const selectedAnswer = quizAnswers[currentQuizIndex];
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+                        ${currentQuizIndex + 1}. ${q.q}
+                    </h3>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => {
+                            const isChosen = selectedAnswer === idx;
+                            let btnClass = "w-full text-left p-4 rounded-2xl border text-xs sm:text-sm font-medium transition flex items-start space-x-3 ";
+                            
+                            if (selectedAnswer !== null) {
+                                if (idx === q.answer) {
+                                    btnClass += "bg-emerald-50 border-emerald-500 text-emerald-900 font-bold";
+                                } else if (isChosen) {
+                                    btnClass += "bg-rose-50 border-rose-400 text-rose-900 font-bold";
+                                } else {
+                                    btnClass += "bg-slate-50 border-slate-200 text-slate-400 opacity-60";
+                                }
+                            } else {
+                                btnClass += "bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700";
+                            }
+
+                            return `
+                                <button onclick="answerQuiz(${idx})" ${selectedAnswer !== null ? 'disabled' : ''} class="${btnClass}">
+                                    <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs shrink-0 mt-0.5">
+                                        ${String.fromCharCode(65 + idx)}
+                                    </span>
+                                    <span class="leading-relaxed">${opt}</span>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    ${selectedAnswer !== null ? `
+                        <div class="p-4 rounded-2xl border ${selectedAnswer === q.answer ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'} text-xs space-y-1">
+                            <div class="font-bold uppercase tracking-wider flex items-center space-x-1.5">
+                                <i class="fa-solid ${selectedAnswer === q.answer ? 'fa-circle-check text-emerald-600' : 'fa-circle-info text-amber-600'}"></i>
+                                <span>${selectedAnswer === q.answer ? 'Jawaban Benar!' : 'Penjelasan Jawaban:'}</span>
+                            </div>
+                            <p class="leading-relaxed">${q.explain}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Update Nav buttons state
+            document.getElementById('btn-prev-quiz').disabled = currentQuizIndex === 0;
+
+            if(currentQuizIndex === QUIZ_QUESTIONS.length - 1 && selectedAnswer !== null) {
+                document.getElementById('btn-next-quiz').innerHTML = `Lihat Skor Akhir <i class="fa-solid fa-trophy ml-1"></i>`;
+            } else {
+                document.getElementById('btn-next-quiz').innerHTML = `Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>`;
+            }
+        }
+
+        function answerQuiz(optionIdx) {
+            quizAnswers[currentQuizIndex] = optionIdx;
+            renderQuizQuestion();
+        }
+
+        function navigateQuiz(dir) {
+            if(dir === 1 && currentQuizIndex === QUIZ_QUESTIONS.length - 1 && quizAnswers[currentQuizIndex] !== null) {
+                showQuizResult();
+                return;
+            }
+
+            currentQuizIndex += dir;
+            if(currentQuizIndex < 0) currentQuizIndex = 0;
+            if(currentQuizIndex >= QUIZ_QUESTIONS.length) currentQuizIndex = QUIZ_QUESTIONS.length - 1;
+            renderQuizQuestion();
+        }
+
+        function showQuizResult() {
+            let score = 0;
+            quizAnswers.forEach((ans, idx) => {
+                if(ans === QUIZ_QUESTIONS[idx].answer) score++;
+            });
+
+            const percentage = Math.round((score / QUIZ_QUESTIONS.length) * 100);
+            const container = document.getElementById('quiz-container');
+
+            document.getElementById('quiz-actions').classList.add('hidden');
+
+            container.innerHTML = `
+                <div class="text-center py-8 space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-4xl mx-auto shadow-inner">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-slate-900">Kuis Selesai!</h3>
+                        <p class="text-xs text-slate-500 mt-1">Skor Pemahaman Ekosistem Agromaritim Anda:</p>
+                    </div>
+
+                    <div class="text-5xl font-black text-emerald-600">${percentage}%</div>
+                    <p class="text-xs text-slate-600">Anda menjawab benar <strong>${score}</strong> dari ${QUIZ_QUESTIONS.length} pertanyaan.</p>
+
+                    <div class="pt-4">
+                        <button onclick="resetQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            quizAnswers = Array(QUIZ_QUESTIONS.length).fill(null);
+            document.getElementById('quiz-actions').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+    </script>
+</body>
+</html>
