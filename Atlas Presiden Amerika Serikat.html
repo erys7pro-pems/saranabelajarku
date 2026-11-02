@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atlas Presiden Amerika Serikat</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.4rem .85rem;font-family:system-ui,sans-serif;font-size:.88rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small{font-family:system-ui,sans-serif;color:var(--muted)}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted)}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+#q{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.6rem 1rem;font:1rem system-ui,sans-serif}
+#q:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+.none,.hint{color:var(--muted);font:.85rem system-ui,sans-serif}
+.hint{margin:.5rem 0 0}
+.tw{overflow-x:auto}
+.tlw{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+#tl{width:100%;min-width:680px;height:auto;display:block}
+#tl rect{cursor:pointer}
+#tl text{font:10.5px system-ui,sans-serif;fill:var(--ink);pointer-events:none}
+#tl .ax{fill:var(--muted)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:18%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+td.best{color:var(--green);font-weight:700}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Atlas Presiden Amerika Serikat</h1><p>45 tokoh, 47 kepresidenan, dari 1789 hingga kini</p></header>
+<main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari nama, partai, peristiwa, atau kebijakan…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Linimasa masa jabatan</p><div class="tlw"><svg id="tl" viewBox="0 0 960 610" role="img" aria-label="Linimasa masa jabatan presiden"></svg></div><p class="hint">Gulir untuk melihat semua presiden. Klik batang untuk membuka profilnya. Batang bergaris putus-putus sedang dibandingkan. Warna mengikuti era.</p></section>
+<section class="card"><p class="label">Era</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Presiden</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
+</main>
+<footer>Per 2 November 2026, Donald Trump menjabat sebagai presiden ke-47 (masa jabatan kedua sejak 20 Januari 2025). Lama menjabat dibulatkan dari tahun; pembagian era adalah ringkasan, bukan periodisasi baku.</footer>
+<script>
+const G=["Pendirian (1789–1829)","Ekspansi & Perang Saudara (1829–1877)","Industrialisasi & Progresif (1877–1921)","Depresi & Perang Dunia (1921–1961)","Perang Dingin (1961–2001)","Abad ke-21 (2001–kini)"];
+const GC=["#2f8f5b","#1f6f9f","#2aa198","#6a8f3f","#3d85c6","#45b0a0"];
+// era|nama|nomor|partai|masa jabatan|kisah|kebijakan (dipisah ^, format Judul: isi)
+const D=`0|George Washington|1|Tanpa partai|1789-1797|Panglima Perang Kemerdekaan yang menjadi presiden pertama dan memilih berhenti setelah dua periode.|Preseden dua periode: Ia menolak periode ketiga sehingga menjadi tradisi pergantian kekuasaan.^Sistem keuangan awal: Mendukung rencana Hamilton untuk melunasi utang perang dan mendirikan bank nasional.
+0|John Adams|2|Federalis|1797-1801|Perumus kemerdekaan yang menjaga AS tetap di luar perang besar dengan Prancis.|Alien and Sedition Acts (1798): Membatasi imigran dan kritik terhadap pemerintah, kemudian sangat diperdebatkan.^Penguatan angkatan laut: Dibangun selama konflik laut dengan Prancis.
+0|Thomas Jefferson|3|Demokrat-Republik|1801-1809|Penulis Deklarasi Kemerdekaan yang menggandakan luas wilayah AS.|Louisiana Purchase (1803): Membeli wilayah sekitar 2,1 juta km² dari Prancis.^Embargo Act (1807): Melarang perdagangan luar negeri dan merugikan ekonomi dalam negeri.
+0|James Madison|4|Demokrat-Republik|1809-1817|Dijuluki Bapak Konstitusi dan memimpin AS dalam Perang 1812.|Perang 1812: Perang dengan Inggris yang memperkuat rasa persatuan nasional.^Bank Kedua AS (1816): Menandatangani piagam bank nasional kedua.
+0|James Monroe|5|Demokrat-Republik|1817-1825|Memimpin masa yang dijuluki Era Perasaan Baik saat AS memperluas wilayahnya.|Doktrin Monroe (1823): Menyatakan Belahan Bumi Barat tertutup bagi kolonisasi baru Eropa.^Kompromi Missouri (1820): Menyeimbangkan masuknya negara bagian bebas dan budak.
+0|John Quincy Adams|6|Nasional Republik|1825-1829|Putra John Adams yang menang lewat pemilu yang diputuskan di DPR.|Proyek infrastruktur: Mendorong jalan dan kanal dengan dana federal.^Tarif 1828: Tarif tinggi yang dijuluki Tarif Kekejian dan memicu kemarahan negara bagian Selatan.
+1|Andrew Jackson|7|Demokrat|1829-1837|Pahlawan Perang New Orleans yang terpilih dengan dukungan massa luas.|Indian Removal Act (1830): Memindahkan paksa suku asli ke barat Sungai Mississippi.^Perang Bank: Menolak memperbarui piagam Bank Kedua AS.
+1|Martin Van Buren|8|Demokrat|1837-1841|Presiden pertama yang lahir setelah kemerdekaan AS dan menghadapi krisis ekonomi.|Treasury Independen (1840): Memisahkan keuangan pemerintah dari bank swasta.^Panik 1837: Menghadapi depresi dengan pendekatan non-intervensi.
+1|William Henry Harrison|9|Whig|1841|Wafat 31 hari setelah dilantik, masa jabatan terpendek dalam sejarah AS.|Preseden masa jabatan singkat: Kematiannya memunculkan pertanyaan tentang suksesi presiden.
+1|John Tyler|10|Whig|1841-1845|Wakil presiden pertama yang naik menggantikan presiden yang wafat.|Preseden suksesi: Ia menjabat sebagai presiden penuh, bukan pelaksana tugas.^Aneksasi Texas: Menandatangani resolusi aneksasi pada 1845.
+1|James K. Polk|11|Demokrat|1845-1849|Memimpin ekspansi ke barat dan perang dengan Meksiko.|Perang Meksiko–Amerika (1846–1848): AS memperoleh wilayah termasuk California dan Nevada.^Perjanjian Oregon (1846): Membagi wilayah Oregon dengan Inggris.
+1|Zachary Taylor|12|Whig|1849-1850|Jenderal perang yang wafat di tengah masa jabatan.|Penerimaan California: Mendorong California menjadi negara bagian bebas dan memicu debat perbudakan.
+1|Millard Fillmore|13|Whig|1850-1853|Naik setelah Taylor wafat dan menandatangani paket kompromi tentang perbudakan.|Kompromi 1850: Paket undang-undang termasuk Fugitive Slave Act yang mewajibkan pengembalian budak buron.^Ekspedisi Perry: Mengirim armada untuk membuka hubungan dengan Jepang.
+1|Franklin Pierce|14|Demokrat|1853-1857|Menjabat saat ketegangan seputar perbudakan semakin tajam.|Kansas–Nebraska Act (1854): Menyerahkan isu perbudakan ke penduduk wilayah dan memicu kekerasan di Kansas.^Gadsden Purchase (1853): Membeli wilayah di selatan Arizona dan New Mexico.
+1|James Buchanan|15|Demokrat|1857-1861|Presiden pada tahun-tahun menjelang Perang Saudara.|Krisis pemisahan diri: Tujuh negara bagian Selatan memisahkan diri sebelum masa jabatannya berakhir.^Panik 1857: Krisis keuangan yang terjadi di masa jabatannya.
+1|Abraham Lincoln|16|Republik|1861-1865|Memimpin Union dalam Perang Saudara dan dibunuh pada April 1865.|Proklamasi Emansipasi (1863): Menyatakan bebas para budak di wilayah pemberontak.^Homestead Act (1862): Memberi lahan kepada pemukim di Barat.
+1|Andrew Johnson|17|Demokrat (Persatuan Nasional)|1865-1869|Presiden pertama yang dimakzulkan DPR, tetapi lolos di Senat dengan selisih satu suara.|Rekonstruksi presidensial: Pendekatan lunak terhadap Selatan yang ditentang Kongres.^Pembelian Alaska (1867): Membeli Alaska dari Rusia.
+1|Ulysses S. Grant|18|Republik|1869-1877|Jenderal pemenang perang Union yang memimpin masa Rekonstruksi.|Amandemen ke-15 dan Ku Klux Klan Act: Mendukung hak pilih pria kulit hitam dan menindak Klan.^Departemen Kehakiman (1870): Dibentuk pada masa jabatannya.
+2|Rutherford B. Hayes|19|Republik|1877-1881|Terpilih lewat pemilu 1876 yang sangat sengit.|Akhir Rekonstruksi: Menarik pasukan federal dari Selatan.^Reformasi pegawai negeri: Mendorong sistem berbasis prestasi.
+2|James A. Garfield|20|Republik|1881|Ditembak pada Juli 1881 dan wafat pada September.|Dorongan reformasi: Pembunuhannya mempercepat lahirnya Pendleton Act.
+2|Chester A. Arthur|21|Republik|1881-1885|Naik setelah Garfield wafat.|Pendleton Act (1883): Dasar sistem merit bagi pegawai federal.^Chinese Exclusion Act (1882): Melarang imigrasi pekerja Tiongkok.
+2|Grover Cleveland|22 & 24|Demokrat|1885-1889,1893-1897|Satu-satunya presiden dengan dua masa jabatan yang tidak berurutan.|Interstate Commerce Act (1887): Regulasi federal pertama atas kereta api.^Standar emas: Mempertahankannya saat depresi 1893.
+2|Benjamin Harrison|23|Republik|1889-1893|Cucu William Henry Harrison yang menjabat saat enam negara bagian baru masuk.|Sherman Antitrust Act (1890): Undang-undang antimonopoli federal pertama.^Penerimaan negara bagian: Dakota Utara dan Selatan, Montana, Washington, Idaho, Wyoming.
+2|William McKinley|25|Republik|1897-1901|Memimpin Perang Spanyol–Amerika dan dibunuh pada 1901.|Perang Spanyol–Amerika (1898): AS memperoleh Filipina, Guam, dan Puerto Riko.^Gold Standard Act (1900): Menetapkan standar emas secara resmi.
+2|Theodore Roosevelt|26|Republik|1901-1909|Presiden termuda yang pernah menjabat, berusia 42 tahun saat naik.|Square Deal: Menindak monopoli dan membela konsumen serta pekerja.^Konservasi: Melindungi sekitar 230 juta acre lahan publik.
+2|William H. Taft|27|Republik|1909-1913|Satu-satunya presiden yang kemudian menjadi Ketua Mahkamah Agung.|Amandemen ke-16: Disahkan Kongres 1909, mengizinkan pajak penghasilan federal.^Penegakan antimonopoli: Standard Oil dibubarkan pada 1911.
+2|Woodrow Wilson|28|Demokrat|1913-1921|Memimpin AS selama Perang Dunia I.|Federal Reserve Act (1913): Membentuk bank sentral AS.^Empat Belas Poin: Visi tatanan damai dan pembentukan Liga Bangsa-Bangsa.
+3|Warren G. Harding|29|Republik|1921-1923|Wafat saat menjabat; pemerintahannya diwarnai skandal Teapot Dome.|Konferensi Angkatan Laut Washington (1921–1922): Membatasi persenjataan angkatan laut.^Pembatasan imigrasi: Menandatangani undang-undang kuota 1921.
+3|Calvin Coolidge|30|Republik|1923-1929|Memimpin masa pertumbuhan ekonomi pada dekade 1920-an dengan pemerintahan yang ramping.|Pemotongan pajak dan anggaran: Menurunkan pajak dan utang federal.^Indian Citizenship Act (1924): Memberi kewarganegaraan kepada penduduk asli yang belum memilikinya.
+3|Herbert Hoover|31|Republik|1929-1933|Menjabat saat Depresi Besar dimulai setelah jatuhnya bursa saham 1929.|Smoot–Hawley Tariff (1930): Menaikkan tarif impor secara tajam.^Reconstruction Finance Corporation (1932): Pinjaman federal bagi bank dan bisnis.
+3|Franklin D. Roosevelt|32|Demokrat|1933-1945|Satu-satunya presiden yang terpilih empat kali, memimpin saat Depresi dan Perang Dunia II.|New Deal: Program bantuan, pemulihan, dan reformasi termasuk Jaminan Sosial (1935).^Lend-Lease (1941): Pasokan perang bagi negara-negara Sekutu.
+3|Harry S. Truman|33|Demokrat|1945-1953|Naik saat FDR wafat, menyetujui penggunaan bom atom atas Jepang, dan membuka era Perang Dingin.|Doktrin Truman dan Marshall Plan: Bantuan untuk menahan pengaruh Soviet dan membangun kembali Eropa.^Integrasi militer (1948): Perintah eksekutif untuk mengakhiri segregasi di angkatan bersenjata.
+3|Dwight D. Eisenhower|34|Republik|1953-1961|Jenderal Sekutu di Perang Dunia II yang memimpin AS di awal Perang Dingin.|Federal-Aid Highway Act (1956): Membangun sistem jalan antarnegara bagian.^Little Rock (1957): Mengirim pasukan federal untuk menegakkan integrasi sekolah.
+4|John F. Kennedy|35|Demokrat|1961-1963|Presiden termuda yang terpilih lewat pemilu, dibunuh pada November 1963.|Krisis Rudal Kuba (1962): Menghindari perang nuklir lewat blokade dan diplomasi.^Program Apollo: Menargetkan pendaratan manusia di Bulan sebelum 1970.
+4|Lyndon B. Johnson|36|Demokrat|1963-1969|Naik setelah Kennedy dibunuh dan terpilih penuh pada 1964.|Civil Rights Act (1964) dan Voting Rights Act (1965): Melarang diskriminasi dan melindungi hak pilih.^Great Society: Medicare, Medicaid, dan program pendidikan.^Eskalasi Vietnam: Penambahan besar pasukan AS.
+4|Richard Nixon|37|Republik|1969-1974|Satu-satunya presiden yang mengundurkan diri, akibat skandal Watergate.|Kunjungan ke Tiongkok (1972): Membuka hubungan setelah puluhan tahun terputus.^Badan Perlindungan Lingkungan (EPA): Dibentuk pada 1970.
+4|Gerald Ford|38|Republik|1974-1977|Satu-satunya yang menjadi wakil presiden dan presiden tanpa pernah dipilih untuk keduanya.|Pengampunan Nixon (1974): Keputusan yang sangat kontroversial.^Helsinki Accords (1975): Kesepakatan keamanan dan hak asasi di Eropa.
+4|Jimmy Carter|39|Demokrat|1977-1981|Mantan gubernur Georgia yang kemudian meraih Nobel Perdamaian 2002 dan wafat pada Desember 2024.|Camp David Accords (1978): Perjanjian damai Mesir–Israel.^Departemen Energi (1977) dan deregulasi penerbangan: Perubahan besar di sektor energi dan transportasi.
+4|Ronald Reagan|40|Republik|1981-1989|Mantan aktor dan gubernur California yang memimpin AS menjelang berakhirnya Perang Dingin.|Pemotongan pajak 1981: Menurunkan tarif pajak secara besar-besaran.^Perjanjian INF (1987): Kesepakatan rudal nuklir jarak menengah dengan Uni Soviet.
+4|George H. W. Bush|41|Republik|1989-1993|Menjabat saat Perang Dingin berakhir dan Perang Teluk berlangsung.|Perang Teluk (1991): Koalisi pimpinan AS membebaskan Kuwait.^Americans with Disabilities Act (1990): Melarang diskriminasi terhadap penyandang disabilitas.
+4|Bill Clinton|42|Demokrat|1993-2001|Menjabat saat ekonomi tumbuh kuat; dimakzulkan DPR 1998 tetapi dibebaskan Senat.|NAFTA (1993): Zona perdagangan bebas dengan Kanada dan Meksiko.^Reformasi kesejahteraan (1996): Mengubah program bantuan keluarga.
+5|George W. Bush|43|Republik|2001-2009|Menjabat saat serangan 11 September 2001.|Perang Melawan Teror: Intervensi di Afghanistan (2001) dan Irak (2003).^USA PATRIOT Act dan No Child Left Behind: Memperluas kewenangan keamanan dan standar pendidikan nasional.
+5|Barack Obama|44|Demokrat|2009-2017|Presiden kulit hitam pertama yang menjabat di tengah krisis keuangan 2008.|Affordable Care Act (2010): Memperluas akses asuransi kesehatan.^Dodd–Frank Act (2010): Reformasi regulasi keuangan setelah krisis.
+5|Donald Trump|45 & 47|Republik|2017-2021,2025-kini|Menjabat dua kali tidak berurutan; dimakzulkan DPR dua kali dan dibebaskan Senat, lalu kembali pada Januari 2025.|Tax Cuts and Jobs Act (2017): Menurunkan tarif pajak korporasi menjadi 21 persen.^Kebijakan tarif impor: Kenaikan tarif perdagangan pada masa jabatan pertama dan kedua.
+5|Joe Biden|46|Demokrat|2021-2025|Presiden tertua saat dilantik (78 tahun) dan memutuskan tidak mencalonkan diri lagi pada 2024.|American Rescue Plan (2021): Paket stimulus pandemi.^Infrastructure Investment and Jobs Act (2021) dan Inflation Reduction Act (2022): Investasi infrastruktur dan energi.`.split("\n").map(l=>{const a=l.split("|");
+ const tm=a[4].split(",").map(t=>{const [s,e]=t.split("-");const S=+s;return[S,e===undefined?S+.4:e==="kini"?2026.85:+e]});
+ return{g:+a[0],n:a[1],no:a[2],p:a[3],ts:a[4].replace(/-/g,"–").replace(/,/g,", "),tm,s:a[5],pol:a[6].split("^").map(x=>{const i=x.indexOf(": ");return[x.slice(0,i),x.slice(i+2)]}),
+ u:tm.reduce((z,t)=>z+t[1]-t[0],0)}});
+
+const $=id=>document.getElementById(id);
+const dur=d=>d.u<1?"<1 tahun":"±"+Math.round(d.u)+" tahun";
+let grp=0,sel=D[0],cmpSet=[];
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function drawRegions(){const r=$("regions");r.innerHTML="";
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+    b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
+function drawProvs(){const r=$("provs");r.innerHTML="";
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+    b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
+function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function drawDetail(){const d=sel,inC=cmpSet.includes(d.n);
+  const P=[["Profil",[["Urutan kepresidenan",`<b>Presiden ke-${d.no}</b>`,1],["Partai",`<b>${d.p}</b>`,0],["Masa jabatan",`<b>${d.ts}</b>`,0],["Total lama menjabat",`<b>${dur(d)}</b>`,0]]],
+    ["Kisah Singkat",[["Ringkasan",d.s,1]]],
+    ["Kebijakan & Peristiwa Berpengaruh",d.pol.map(p=>[p[0],p[1],0])]];
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+    P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll(".sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll(".sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)})}
+function drawTL(){const x=y=>(y-1780)/270*940+10;let s="";
+  for(let y=1800;y<=2000;y+=50)s+=`<line x1="${x(y)}" x2="${x(y)}" y1="14" y2="610" stroke="var(--line)" stroke-dasharray="3 5"/><text class="ax" x="${x(y)}" y="10" text-anchor="middle">${y}</text>`;
+  D.forEach((d,i)=>{const c=cmpSet.includes(d.n),on=d===sel,y=18+i*13,x0=x(d.tm[0][0]),x1=x(d.tm[d.tm.length-1][1]);
+    d.tm.forEach(t=>s+=`<rect data-i="${i}" x="${x(t[0])}" y="${y}" width="${Math.max(3,x(t[1])-x(t[0]))}" height="10" rx="3" fill="${GC[d.g]}" stroke="${c?"var(--blue)":on?"var(--ink)":"none"}" stroke-width="2"${c?' stroke-dasharray="3 2"':''}><title>${d.n} (${d.ts})</title></rect>`);
+    s+=x0>650?`<text x="${x0-5}" y="${y+9}" text-anchor="end">${d.n}</text>`:`<text x="${x1+5}" y="${y+9}">${d.n}</text>`});
+  $("tl").innerHTML=s}
+$("tl").onclick=e=>{const t=e.target.closest("rect");if(!t)return;sel=D[+t.dataset.i];grp=sel.g;drawAll()};
+function drawSearch(){const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.p,d.s,d.ts,G[d.g],d.pol.map(p=>p.join(" ")).join(" ")].join(" ").toLowerCase().includes(q)).slice(0,12);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{sel=d;grp=d.g;$("q").value="";drawAll()};box.append(b)})}
+$("q").oninput=drawSearch;
+function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hidden=!L.length;if(!L.length)return;
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join(""),mx=L.length>1?Math.max(...L.map(d=>d.u)):null;
+  const rows=[["Era",txt(d=>G[d.g])],["Urutan",txt(d=>"Ke-"+d.no)],["Partai",txt(d=>d.p)],["Masa jabatan",txt(d=>d.ts)],["Total lama",L.map(d=>`<td${d.u===mx?' class="best"':''}>${dur(d)}</td>`).join("")],["Kisah singkat",txt(d=>d.s)],["Kebijakan",txt(d=>d.pol.map(p=>`<b>${p[0]}</b>: ${p[1]}`).join("<br><br>"))]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu presiden lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Masa jabatan terlama ditandai hijau."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawTL();drawCmp()}
+drawAll();
+</script>
+</body>
+</html>
