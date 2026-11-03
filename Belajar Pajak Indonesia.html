@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Belajar Pajak Indonesia</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b;--bad:#b3473b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43;--bad:#e58a7e}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43;--bad:#e58a7e}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.4rem .85rem;font-family:system-ui,sans-serif;font-size:.88rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small,.none,.hint{font-family:system-ui,sans-serif;color:var(--muted);font-size:.85rem}
+.hint{margin:.5rem 0 0}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted)}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+input,select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:.5rem .7rem;font:1rem system-ui,sans-serif;max-width:100%}
+#q{width:100%;border-radius:999px;padding:.6rem 1rem}
+input:focus,select:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+.f{display:flex;flex-direction:column;gap:.2rem;font:.8rem system-ui,sans-serif;color:var(--muted);flex:1;min-width:150px}
+.out{margin-top:.8rem;background:var(--soft);border-radius:12px;padding:.8rem 1rem;font-family:system-ui,sans-serif;font-size:.92rem}
+.out b{color:var(--green);font-size:1.15rem}
+.out table{min-width:0;margin-top:.4rem}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:18%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+.opt{display:block;width:100%;text-align:left;margin-top:.45rem;border:1px solid var(--line);background:none;border-radius:10px;padding:.55rem .8rem;font:.95rem system-ui,sans-serif}
+.opt:hover{border-color:var(--green)}
+.opt.ok{border-color:var(--green);background:var(--soft)}
+.opt.no{border-color:var(--bad)}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Belajar Pajak Indonesia</h1><p>Berdasarkan UU KUP, UU PPh, UU PPN, UU HPP, dan UU HKPD</p></header>
+<main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari topik, tarif, atau istilah (mis. PTKP, faktur, 0,5%)…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Kelompok</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Topik</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
+<section class="card"><p class="label">Kalkulator simulasi</p><div class="row" id="ctabs"></div><div id="calc"></div></section>
+<section class="card"><p class="label">Kuis singkat</p><div id="quiz"></div></section>
+</main>
+<footer>Materi edukasi, bukan nasihat pajak. Angka disusun berdasarkan ketentuan yang berlaku per November 2026 (antara lain UU HPP, PMK 131/2024 dan PMK 11/2025 untuk PPN, serta PP 20/2026 untuk PPh final UMKM) dan dapat berubah. Rujuk pajak.go.id atau konsultan pajak untuk keputusan nyata.</footer>
+<script>
+const G=["Ketentuan umum (KUP)","Pajak Penghasilan","PPN & PPnBM","Pajak daerah & lainnya"];
+// kelompok|topik|dasar hukum|konsep|tarif & ketentuan|praktik|contoh
+const D=`0|NPWP & Coretax|UU KUP (UU 6/1983 jo. UU 7/2021 HPP)|NPWP adalah identitas wajib pajak. Sejak UU HPP, NIK dipakai sebagai NPWP bagi orang pribadi penduduk Indonesia.|Setiap orang yang memenuhi syarat subjektif dan objektif wajib mendaftarkan diri dan memiliki NPWP.|Layanan administrasi perpajakan dilakukan lewat sistem inti perpajakan Coretax yang berlaku sejak 2025.|Karyawan baru cukup memastikan NIK-nya telah aktif sebagai NPWP, lalu memberi tahu pemberi kerja.
+0|SPT & Batas Waktu|UU KUP Pasal 3|SPT adalah laporan penghitungan dan pembayaran pajak yang terutang dalam satu masa atau tahun pajak.|SPT Tahunan orang pribadi paling lambat 31 Maret dan badan paling lambat 30 April setelah tahun pajak berakhir. SPT Masa dilaporkan bulanan dengan tenggat yang berbeda per jenis pajak.|Pelaporan dilakukan secara elektronik dan dapat dibetulkan jika ada kekeliruan.|Tahun pajak 2026 dilaporkan paling lambat 31 Maret 2027 oleh orang pribadi.
+0|Sanksi Administrasi|UU KUP Pasal 7, 8, 9, dan 19|Sanksi berupa denda, bunga, dan kenaikan yang dikenakan atas pelanggaran kewajiban administrasi.|Denda terlambat lapor: SPT Tahunan orang pribadi Rp100.000, SPT Tahunan badan Rp1.000.000, SPT Masa PPN Rp500.000, SPT Masa lainnya Rp100.000. Keterlambatan bayar dikenai bunga bulanan.|Pembetulan SPT secara sukarela umumnya meringankan sanksi dibanding menunggu pemeriksaan.|Telat lapor SPT Tahunan orang pribadi dikenai denda Rp100.000, di luar bunga bila ada kekurangan bayar.
+0|Keberatan & Banding|UU KUP Pasal 25 dan 27; UU 14/2002 Pengadilan Pajak|Wajib pajak berhak menolak ketetapan pajak lewat keberatan ke DJP, lalu banding ke Pengadilan Pajak.|Keberatan diajukan dalam 3 bulan sejak surat ketetapan diterima; banding dalam 3 bulan sejak keputusan keberatan diterima.|Pajak yang telah disetujui dalam pembahasan akhir hasil pemeriksaan harus dilunasi sebelum keberatan diajukan.|SKPKB diterima 10 Januari berarti keberatan diajukan paling lambat 10 April.
+1|PPh Orang Pribadi|UU PPh Pasal 7 dan 17 jo. UU HPP|PPh dikenakan atas tambahan kemampuan ekonomis dengan tarif progresif per lapisan penghasilan kena pajak (PKP).|Lapisan PKP: 5% sampai Rp60 juta; 15% di atas Rp60–250 juta; 25% di atas Rp250–500 juta; 30% di atas Rp500 juta–5 miliar; 35% di atas Rp5 miliar. PTKP Rp54 juta, ditambah Rp4,5 juta untuk status kawin dan Rp4,5 juta per tanggungan (maksimal 3).|PKP = penghasilan neto − PTKP. Tarif hanya berlaku untuk bagian PKP di dalam tiap lapisan.|PKP Rp300 juta: 5% × 60 + 15% × 190 + 25% × 50 = Rp44 juta.
+1|PPh Pasal 21 (Karyawan)|UU PPh Pasal 21; PMK 168/2023|PPh 21 adalah pajak atas penghasilan dari pekerjaan yang dipotong oleh pemberi kerja.|Masa Januari–November dipotong memakai tarif efektif rata-rata (TER) menurut kategori PTKP. Masa Desember dihitung dengan tarif Pasal 17 untuk setahun penuh.|Pemberi kerja menerbitkan bukti potong dan menyetor serta melaporkan pajaknya. Hasilnya dikreditkan di SPT Tahunan.|Gaji Rp10 juta tidak langsung dikenai tarif Pasal 17; selisih dikoreksi pada masa Desember.
+1|PPh Badan|UU PPh Pasal 17 ayat (1) huruf b dan Pasal 31E jo. UU HPP|PPh Badan adalah pajak atas penghasilan perseroan dan badan usaha lain yang bukan UMKM final.|Tarif umum 22%. Wajib pajak badan beromzet sampai Rp50 miliar mendapat potongan tarif 50% atas laba dari omzet Rp4,8 miliar pertama.|Penghasilan kena pajak = penghasilan bruto − biaya yang boleh dikurangkan menurut UU PPh (dibuktikan lewat pembukuan).|PKP Rp1 miliar × 22% = Rp220 juta (sebelum fasilitas Pasal 31E).
+1|PPh Final UMKM|PP 20/2026 (merevisi PP 55/2022)|Wajib pajak UMKM yang memenuhi syarat dapat membayar PPh final atas omzet bruto, bukan atas laba.|Tarif 0,5% dari omzet untuk orang pribadi, PT perorangan, dan koperasi dengan omzet sampai Rp4,8 miliar setahun. Omzet sampai Rp500 juta bagi orang pribadi tidak dikenai pajak. Orang pribadi dan PT perorangan tanpa batas waktu; koperasi maksimal 4 tahun. CV, firma, dan PT non-perorangan tidak termasuk.|Dibayar bulanan setelah omzet kumulatif setahun melewati Rp500 juta. Omzet sampai Rp4,8 miliar dihitung dari seluruh peredaran bruto usaha wajib pajak.|Omzet orang pribadi Rp1,2 miliar: (1,2 miliar − 500 juta) × 0,5% = Rp3,5 juta.
+2|PPN|UU PPN (UU 8/1983 jo. UU 42/2009 jo. UU HPP) Pasal 7; PMK 131/2024; PMK 11/2025|PPN adalah pajak atas konsumsi barang dan jasa kena pajak yang dipungut bertahap dan ditanggung konsumen akhir.|Tarif menurut UU 12% sejak 1 Januari 2025. Untuk barang dan jasa nonmewah, dasar pengenaan pajak berupa nilai lain 11/12 dari harga jual, sehingga tarif efektifnya 11%. Barang mewah dikenai 12% dari harga jual.|PPN terutang = PPN keluaran − PPN masukan yang dapat dikreditkan. Ketentuan teknis dapat berubah, cek pajak.go.id.|Harga Rp1.000.000 (nonmewah): DPP Rp916.667, PPN 12% × 916.667 = Rp110.000.
+2|PKP & Faktur Pajak|UU PPN Pasal 3A dan 13|Pengusaha Kena Pajak (PKP) wajib memungut PPN, membuat faktur pajak, dan melapor SPT Masa PPN.|Pengusaha wajib dikukuhkan sebagai PKP jika omzet setahun melebihi Rp4,8 miliar. Pengusaha di bawah batas itu boleh memilih menjadi PKP.|Faktur pajak dibuat saat penyerahan barang atau jasa kena pajak; pembeli memakainya untuk mengkreditkan PPN masukan.|Omzet Rp6 miliar setahun berarti wajib dikukuhkan sebagai PKP.
+2|PPnBM|UU PPN Pasal 5 dan 8|PPnBM adalah pajak tambahan atas barang kena pajak yang tergolong mewah.|Tarif paling rendah 10% dan paling tinggi 200%, dengan kelompok barang diatur lebih rinci dalam peraturan pelaksanaan.|Dipungut satu kali saja, yaitu pada penyerahan oleh pabrikan atau saat impor, dan tidak dapat dikreditkan.|Barang mewah dikenai PPN 12% ditambah PPnBM sesuai kelompok tarifnya.
+3|PBB-P2 & BPHTB|UU 1/2022 tentang HKPD|PBB-P2 adalah pajak tahunan atas bumi dan bangunan perkotaan dan perdesaan; BPHTB dikenakan atas perolehan hak atas tanah dan bangunan.|Tarif PBB-P2 paling tinggi 0,5%. Tarif BPHTB paling tinggi 5% dengan NPOPTKP minimal Rp80 juta (waris dan hibah wasiat minimal Rp300 juta).|Tarif dan nilai akhir ditetapkan Perda masing-masing kabupaten atau kota.|BPHTB = tarif × (NPOP − NPOPTKP). Dengan tarif 5%, NPOP Rp500 juta, NPOPTKP Rp80 juta: Rp21 juta.
+3|PKB & BBNKB|UU 1/2022 tentang HKPD|PKB dikenakan atas kepemilikan atau penguasaan kendaraan bermotor; BBNKB atas penyerahan kepemilikan (balik nama).|Tarif maksimum diatur UU HKPD dan besaran akhir ditetapkan Perda provinsi. Sejak Januari 2025 berlaku opsen, yaitu pungutan tambahan oleh kabupaten atau kota atas pokok pajak provinsi.|Pembayaran dilakukan di Samsat atau kanal resmi provinsi.|Besar pajak kendaraan berbeda antardaerah karena tarif ditetapkan lewat Perda.
+3|Bea Meterai|UU 10/2020 tentang Bea Meterai|Bea meterai adalah pajak atas dokumen tertentu, seperti perjanjian dan dokumen yang menyebut jumlah uang.|Tarif tunggal Rp10.000. Dokumen yang menyebut nilai uang lebih dari Rp5 juta dikenai bea meterai.|Dapat dibayar dengan meterai tempel atau meterai elektronik.|Surat perjanjian sewa kendaraan dikenai bea meterai Rp10.000.`.split("\n").map(l=>{const a=l.split("|");return{g:+a[0],n:a[1],d:a[2],c:a[3],t:a[4],p:a[5],x:a[6]}});
+const $=id=>document.getElementById(id);
+const rp=n=>"Rp"+Math.round(n).toLocaleString("id-ID");
+let grp=0,sel=D[0],cmpSet=[];
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function drawRegions(){const r=$("regions");r.innerHTML="";
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+    b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
+function drawProvs(){const r=$("provs");r.innerHTML="";
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+    b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
+function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function drawDetail(){const d=sel,inC=cmpSet.includes(d.n);
+  const P=[["Dasar & Konsep",[["Dasar hukum",`<b>${d.d}</b>`,1],["Konsep",d.c,1]]],["Tarif & Ketentuan",[["Tarif dan ketentuan utama",d.t,1],["Praktik",d.p,0]]],["Contoh",[["Contoh sederhana",d.x,0]]]];
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+    P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll("#detail .sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll("#detail .sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)})}
+function drawSearch(){const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.d,d.c,d.t,d.p,d.x,G[d.g]].join(" ").toLowerCase().includes(q)).slice(0,12);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{sel=d;grp=d.g;$("q").value="";drawAll()};box.append(b)})}
+$("q").oninput=drawSearch;
+function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hidden=!L.length;if(!L.length)return;
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join("");
+  const rows=[["Kelompok",txt(d=>G[d.g])],["Dasar hukum",txt(d=>d.d)],["Konsep",txt(d=>d.c)],["Tarif & ketentuan",txt(d=>d.t)],["Praktik",txt(d=>d.p)],["Contoh",txt(d=>d.x)]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu topik lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Bandingkan dasar hukum, tarif, dan praktiknya."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawCmp()}
+
+// Kalkulator
+const num=id=>Math.max(0,parseFloat($(id).value.replace(/\./g,"").replace(",","."))||0);
+const fld=(l,h)=>`<label class="f">${l}${h}</label>`;
+const LY=[[60e6,.05],[250e6,.15],[500e6,.25],[5e9,.30],[Infinity,.35]];
+const CT=[
+ ["PPh Orang Pribadi",()=>`<div class="row">${fld("Penghasilan neto setahun (Rp)",'<input id="a" inputmode="numeric" value="300000000">')}${fld("Status",'<select id="b"><option value="0">Tidak kawin</option><option value="1">Kawin</option></select>')}${fld("Tanggungan",'<select id="c"><option>0</option><option>1</option><option>2</option><option>3</option></select>')}</div><div class="out" id="o"></div>`,
+  ()=>{const ptkp=54e6+num("b")*4.5e6+(+$("c").value)*4.5e6,neto=num("a"),pkp=Math.floor(Math.max(0,neto-ptkp)/1000)*1000;let rest=pkp,lo=0,tot=0,rows="";
+   for(const [hi,r] of LY){const part=Math.min(rest,hi-lo);if(part>0){tot+=part*r;rows+=`<tr><td>${r*100}%</td><td>${rp(part)}</td><td>${rp(part*r)}</td></tr>`;rest-=part}lo=hi;if(rest<=0)break}
+   $("o").innerHTML=`PTKP: <b>${rp(ptkp)}</b> · PKP: <b>${rp(pkp)}</b><br>PPh terutang setahun: <b>${rp(tot)}</b>${rows?`<div class="tw"><table><thead><tr><th>Tarif</th><th>Bagian PKP</th><th>Pajak</th></tr></thead><tbody>${rows}</tbody></table></div>`:""}`}],
+ ["PPN",()=>`<div class="row">${fld("Harga sebelum PPN (Rp)",'<input id="a" inputmode="numeric" value="1000000">')}${fld("Jenis barang/jasa",'<select id="b"><option value="0">Nonmewah (DPP nilai lain 11/12)</option><option value="1">Mewah (DPP harga jual)</option></select>')}</div><div class="out" id="o"></div>`,
+  ()=>{const h=num("a"),dpp=$("b").value==="0"?h*11/12:h,p=dpp*.12;$("o").innerHTML=`DPP: <b>${rp(dpp)}</b> · PPN 12%: <b>${rp(p)}</b><br>Total yang dibayar: <b>${rp(h+p)}</b> (tarif efektif ${(p/(h||1)*100).toFixed(1).replace(".",",")}%)`}],
+ ["PPh Final UMKM",()=>`<div class="row">${fld("Omzet bruto setahun (Rp)",'<input id="a" inputmode="numeric" value="1200000000">')}${fld("Bentuk usaha",'<select id="b"><option value="0">Orang pribadi</option><option value="1">PT perorangan / koperasi</option></select>')}</div><div class="out" id="o"></div>`,
+  ()=>{const o=num("a"),op=$("b").value==="0";let h;
+   if(o>4.8e9)h=`Omzet melebihi Rp4,8 miliar, sehingga tidak dapat memakai tarif final 0,5%. Berlaku ketentuan umum PPh.`;
+   else{const base=op?Math.max(0,o-500e6):o;h=`Dasar pengenaan: <b>${rp(base)}</b><br>PPh final 0,5% setahun: <b>${rp(base*.005)}</b>${op&&o<=500e6?"<br>Omzet sampai Rp500 juta tidak dikenai PPh.":""}`}
+   $("o").innerHTML=h}]];
+let ct=0;
+function drawCalc(){const t=$("ctabs");t.innerHTML="";CT.forEach((c,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=c[0];b.setAttribute("aria-pressed",i===ct);b.onclick=()=>{ct=i;drawCalc()};t.append(b)});
+  $("calc").innerHTML=CT[ct][1]();const run=CT[ct][2];$("calc").querySelectorAll("input,select").forEach(e=>e.oninput=run);run()}
+
+// Kuis
+const Q=[["Berapa tarif PPh orang pribadi untuk lapisan PKP sampai Rp60 juta?",["5%","10%","15%"],0],
+["Berapa PTKP dasar bagi wajib pajak orang pribadi per tahun?",["Rp36 juta","Rp54 juta","Rp60 juta"],1],
+["Batas omzet setahun yang mewajibkan pengusaha dikukuhkan sebagai PKP?",["Rp500 juta","Rp2 miliar","Rp4,8 miliar"],2],
+["Kapan batas akhir lapor SPT Tahunan orang pribadi?",["31 Maret","30 April","31 Desember"],0],
+["Berapa tarif umum PPh Badan?",["20%","22%","25%"],1],
+["Omzet UMKM orang pribadi sampai berapa yang tidak dikenai PPh?",["Rp500 juta","Rp1 miliar","Rp4,8 miliar"],0]];
+let qi=0,sc=0;
+function drawQuiz(){const z=$("quiz");
+  if(qi>=Q.length){z.innerHTML=`<p>Skor kamu: <b>${sc} dari ${Q.length}</b></p><button class="opt" id="rs">Ulangi kuis</button>`;$("rs").onclick=()=>{qi=0;sc=0;drawQuiz()};return}
+  const q=Q[qi];z.innerHTML=`<p class="hint">Pertanyaan ${qi+1} dari ${Q.length}</p><p style="margin:.2rem 0">${q[0]}</p>`+q[1].map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  z.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;z.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.i===q[2])x.classList.add("ok")});
+    if(i===q[2])sc++;else b.classList.add("no");const n=document.createElement("button");n.className="opt";n.textContent=qi+1<Q.length?"Berikutnya":"Lihat skor";n.onclick=()=>{qi++;drawQuiz()};z.append(n)})}
+drawAll();drawCalc();drawQuiz();
+</script>
+</body>
+</html>
