@@ -1,35 +1,41 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good Governance - Tata Kelola Pemerintahan & Publik yang Baik</title>
+    <title>EduGovernance ID - Interaktif Good Governance</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 6 CDN -->
+    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         gov: {
-                            50: '#f0f3ff',
-                            100: '#e0e7ff',
-                            500: '#4338ca',
-                            600: '#3730a3',
-                            700: '#312e81',
-                            800: '#1e1b4b',
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            950: '#042f2e',
+                        },
+                        navy: {
+                            800: '#1e293b',
                             900: '#0f172a',
-                            gold: '#d97706',
-                            emerald: '#059669',
+                            950: '#020617',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
                         }
                     },
                     fontFamily: {
@@ -51,535 +57,497 @@
             background: #cbd5e1;
             border-radius: 4px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
         .counter-badge {
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .hero-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+        .counter-pulse {
+            animation: pulse-gold 0.4s ease-out;
+        }
+        @keyframes pulse-gold {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); filter: brightness(1.2); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-gov-500 selection:text-white">
 
     <!-- HEADER & NAVBAR -->
-    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-gov-800 text-white sticky top-0 z-40 shadow-lg border-b border-indigo-900/40">
+    <header class="bg-gradient-to-r from-navy-950 via-gov-950 to-navy-900 text-white sticky top-0 z-40 shadow-xl border-b border-gov-800/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 sm:h-20">
+            <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="trackActivity('Header Logo', 'Navigasi Utama'); switchTab('beranda')">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-indigo-500 text-white flex items-center justify-center font-bold text-xl sm:text-2xl shadow-lg border border-amber-400/30">
-                        <i class="fa-solid fa-building-columns"></i>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-amber-600 text-navy-950 flex items-center justify-center font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-scale-balanced"></i>
                     </div>
                     <div>
-                        <span class="font-extrabold text-lg sm:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-indigo-200 to-emerald-300">
-                            GoodGovNusantara
-                        </span>
-                        <span class="block text-[11px] text-indigo-300 font-semibold -mt-1 tracking-wider uppercase">Portal Tata Kelola Publik yang Baik</span>
+                        <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">EduGovernance</h1>
+                        <p class="text-[11px] text-gov-100/80 font-medium">Platform Edukasi Tata Kelola Publik</p>
                     </div>
                 </div>
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden lg:flex items-center space-x-1 text-xs font-bold">
-                    <button onclick="switchTab('beranda')" id="btn-beranda" class="nav-tab px-3.5 py-2 rounded-xl transition flex items-center space-x-2 bg-indigo-900 text-amber-300">
-                        <i class="fa-solid fa-house"></i><span>Beranda & Konsep</span>
-                        <span id="nav-count-beranda" class="bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full text-[10px] font-black">0</span>
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-white/10 text-white">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>Beranda</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
                     </button>
-                    <button onclick="switchTab('prinsip')" id="btn-prinsip" class="nav-tab px-3.5 py-2 rounded-xl transition flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-scale-balanced"></i><span>9 Prinsip Utama</span>
-                        <span id="nav-count-prinsip" class="bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full text-[10px] font-black">0</span>
+                    <button onclick="trackActivity('Tab Prinsip Governance', 'Navigasi Menu'); switchTab('prinsip')" id="nav-prinsip" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>9 Prinsip</span>
+                        <span id="nav-count-prinsip" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
                     </button>
-                    <button onclick="switchTab('penerapan')" id="btn-penerapan" class="nav-tab px-3.5 py-2 rounded-xl transition flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-flag"></i><span>Penerapan di Indonesia</span>
-                        <span id="nav-count-penerapan" class="bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full text-[10px] font-black">0</span>
+                    <button onclick="trackActivity('Tab Studi Kasus System', 'Navigasi Menu'); switchTab('kasus')" id="nav-kasus" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-laptop-code"></i>
+                        <span>Studi Kasus</span>
+                        <span id="nav-count-kasus" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
                     </button>
-                    <button onclick="switchTab('simulator')" id="btn-simulator" class="nav-tab px-3.5 py-2 rounded-xl transition flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-chart-line"></i><span>Simulator Audit</span>
-                        <span id="nav-count-simulator" class="bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full text-[10px] font-black">0</span>
+                    <button onclick="trackActivity('Tab Audit Simulator', 'Navigasi Menu'); switchTab('audit')" id="nav-audit" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator Audit</span>
+                        <span id="nav-count-audit" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
                     </button>
-                    <button onclick="switchTab('kuis')" id="btn-kuis" class="nav-tab px-3.5 py-2 rounded-xl transition flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
-                        <i class="fa-solid fa-graduation-cap"></i><span>Kuis Interaktif</span>
-                        <span id="nav-count-kuis" class="bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded-full text-[10px] font-black">0</span>
-                    </button>
-
-                    <!-- Learning Analytics Header Button -->
-                    <button onclick="openAnalyticsModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black flex items-center space-x-2 shadow-lg transition ml-2">
-                        <i class="fa-solid fa-chart-pie"></i>
-                        <span>Analitik Belajar</span>
-                        <span id="header-click-count" class="bg-slate-950 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-black">0 Klik</span>
+                    <button onclick="trackActivity('Tab Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
                     </button>
                 </nav>
 
-                <!-- Mobile Menu Button -->
-                <div class="flex items-center space-x-2 lg:hidden">
-                    <button onclick="openAnalyticsModal()" class="p-2 text-amber-400 bg-slate-800 rounded-xl relative">
-                        <i class="fa-solid fa-chart-pie text-lg"></i>
-                        <span id="mobile-analytics-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 font-black text-[9px] px-1 rounded-full">0</span>
-                    </button>
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white p-2 rounded-xl bg-slate-800">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
+                <!-- Analytics Header Button -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-navy-950 px-3.5 py-1.5 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-line text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-navy-950 text-gold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
             </div>
-        </div>
-
-        <!-- Mobile Drawer -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-slate-950 border-b border-indigo-900 px-4 pt-2 pb-4 space-y-1 text-sm font-semibold">
-            <button onclick="switchTab('beranda'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-house w-6 text-amber-400"></i><span>Beranda & Konsep Utama</span>
-            </button>
-            <button onclick="switchTab('prinsip'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-scale-balanced w-6 text-emerald-400"></i><span>9 Prinsip Good Governance</span>
-            </button>
-            <button onclick="switchTab('penerapan'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-flag w-6 text-sky-400"></i><span>Penerapan di Indonesia</span>
-            </button>
-            <button onclick="switchTab('simulator'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-chart-line w-6 text-indigo-400"></i><span>Simulator Audit Indeks</span>
-            </button>
-            <button onclick="switchTab('kuis'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-graduation-cap w-6 text-purple-400"></i><span>Kuis Pemahaman Interaktif</span>
-            </button>
-            <button onclick="openAnalyticsModal(); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-amber-300 bg-amber-500/10 hover:bg-slate-800 flex items-center space-x-3 font-bold border border-amber-500/30">
-                <i class="fa-solid fa-chart-pie w-6 text-amber-400"></i><span>Panel Analitik Belajar</span>
-            </button>
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-        <!-- ================= TAB 1: BERANDA & KONSEP ================= -->
-        <section id="tab-beranda" class="tab-content space-y-8">
+        <!-- ================= SECTION 1: BERANDA ================= -->
+        <section id="sec-beranda" class="tab-content space-y-8">
             <!-- Hero Banner -->
-            <div class="hero-gradient rounded-3xl p-6 sm:p-10 text-white shadow-2xl relative overflow-hidden border border-indigo-500/30">
-                <div class="relative z-10 max-w-3xl space-y-4">
-                    <span class="inline-flex items-center space-x-2 bg-amber-400/20 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold text-amber-300 border border-amber-300/30 uppercase tracking-wider">
-                        <i class="fa-solid fa-award"></i>
-                        <span>Reformasi Birokrasi & Tata Kelola Publik</span>
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-gov-950 to-slate-900 text-white p-8 sm:p-12 shadow-2xl border border-gov-800/40">
+                <div class="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
+                    <i class="fa-solid fa-building-columns text-9xl"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="bg-gold-400/20 text-gold-400 border border-gold-400/30 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase inline-block">
+                        Platform Interaktif Memahami Tata Kelola Publik
                     </span>
-                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-                        Memahami Good Governance untuk Pelayanan Publik Berkualitas
-                    </h1>
-                    <p class="text-indigo-100 text-sm sm:text-base leading-relaxed opacity-95">
-                        Good Governance (Tata Kelola Pemerintahan yang Baik) adalah proses penyelenggaraan kekuasaan negara dalam menyediakan barang dan jasa publik yang efektif, adil, transparan, serta bertanggung jawab melalui sinergi harmonis antara pemerintah, sektor swasta, dan masyarakat.
+                    <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
+                        Mewujudkan Pemerintahan Bersih, Transparan, & Akuntabel
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Good Governance adalah sistem pengelolaan negara dan publik yang menjamin keterlibatan tiga pilar utama: <strong>Pemerintah (State)</strong>, <strong>Sektor Swasta (Market)</strong>, dan <strong>Masyarakat Sipil (Civil Society)</strong> secara seimbang dan berintegritas.
                     </p>
                     <div class="pt-2 flex flex-wrap gap-3">
-                        <button onclick="switchTab('prinsip')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-5 py-3 rounded-xl transition shadow-lg text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-book-open"></i><span>Eksplorasi 9 Prinsip Utama</span>
+                        <button onclick="trackActivity('Hero: Pelajari 9 Prinsip', 'Materi Utama'); switchTab('prinsip')" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-navy-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-xl flex items-center space-x-2">
+                            <span>Pelajari 9 Prinsip Kunci</span>
+                            <i class="fa-solid fa-arrow-right"></i>
                         </button>
-                        <button onclick="switchTab('simulator')" class="bg-slate-900/60 hover:bg-slate-900 text-white font-bold px-5 py-3 rounded-xl border border-white/20 transition text-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-calculator"></i><span>Uji Audit Indeks Instansi</span>
+                        <button onclick="trackActivity('Hero: Buka Simulator Audit', 'Fitur Interaktif'); switchTab('audit')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium px-5 py-3 rounded-xl text-sm transition backdrop-blur-md">
+                            Uji Kemampuan Instansi (Simulator)
                         </button>
                     </div>
                 </div>
-                <div class="absolute -right-8 -bottom-12 opacity-10 text-[260px] text-white pointer-events-none select-none">
-                    <i class="fa-solid fa-landmark"></i>
-                </div>
             </div>
 
-            <!-- 3 Pillars Section -->
+            <!-- 3 Pilar Good Governance (Interactive Cards) -->
             <div class="space-y-4">
-                <div class="text-center max-w-2xl mx-auto space-y-1">
-                    <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">Struktur Ekosistem</span>
-                    <h2 class="text-2xl font-black text-slate-900">3 Pilar Utama Good Governance</h2>
-                    <p class="text-xs text-slate-500">Tata kelola yang sehat mensyaratkan Keseimbangan dan Kemitraan Sejajar antara 3 aktor negara.</p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">3 Pilar Ekosistem Good Governance</h3>
+                        <p class="text-slate-500 text-xs">Sinergi tripartit yang menggerakkan pembangunan berkelanjutan</p>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Pillar 1 -->
-                    <div onclick="trackActivity('Pilar 1: Pemerintah (State)', 'Konsep Utama')" class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition cursor-pointer relative group">
+                    <!-- Pilar 1: State -->
+                    <div onclick="trackActivity('Pilar 1: Negara & Pemerintah (State)', 'Modul 3 Pilar'); openPillarDetail('state')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xl">
+                            <div class="w-12 h-12 rounded-xl bg-gov-100 text-gov-800 flex items-center justify-center font-bold text-xl">
                                 <i class="fa-solid fa-building-flag"></i>
                             </div>
-                            <span id="badge-pilar-state" class="counter-badge bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                            <span id="click-count-pilar-state" class="counter-badge bg-slate-100 group-hover:bg-gov-100 text-slate-600 group-hover:text-gov-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
                                 👁️ 0x dipelajari
                             </span>
                         </div>
-                        <h3 class="font-extrabold text-slate-900 text-lg mb-1 group-hover:text-indigo-700 transition">1. Pemerintah (State)</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Menciptakan kondisi politik, hukum, dan regulasi yang kondusif. Berperan sebagai fasilitator, penyedia pelayanan publik, dan penegak hukum yang adil.
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-gov-700 transition">1. Negara / Pemerintah (State)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Penyedia kepastian hukum, regulasi, keamanan, pelayanan publik, dan kebijakan yang adil bagi seluruh rakyat.
                         </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Regulasi & Penegakan Hukum</li>
+                            <li>• Kualitas Pelayanan Publik</li>
+                            <li>• Perlindungan Hak Asasi Manusia</li>
+                        </ul>
                     </div>
 
-                    <!-- Pillar 2 -->
-                    <div onclick="trackActivity('Pilar 2: Sektor Swasta (Private Sector)', 'Konsep Utama')" class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition cursor-pointer relative group">
+                    <!-- Pilar 2: Private Sector -->
+                    <div onclick="trackActivity('Pilar 2: Sektor Swasta (Market)', 'Modul 3 Pilar'); openPillarDetail('market')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xl">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xl">
                                 <i class="fa-solid fa-briefcase"></i>
                             </div>
-                            <span id="badge-pilar-private" class="counter-badge bg-slate-100 group-hover:bg-amber-100 text-slate-600 group-hover:text-amber-800 text-xs font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                            <span id="click-count-pilar-market" class="counter-badge bg-slate-100 group-hover:bg-amber-100 text-slate-600 group-hover:text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
                                 👁️ 0x dipelajari
                             </span>
                         </div>
-                        <h3 class="font-extrabold text-slate-900 text-lg mb-1 group-hover:text-amber-700 transition">2. Sektor Swasta (Private Sector)</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Menciptakan lapangan kerja dan pendapatan, mendorong pertumbuhan ekonomi nasional, serta menerapkan prinsip *Corporate Governance* yang etis dan ramah lingkungan.
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-amber-700 transition">2. Sektor Swasta (Market)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Penggerak pertumbuhan ekonomi, pencipta lapangan kerja, penyedia barang/jasa, serta pelopor investasi beretika.
                         </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Corporate Social Responsibility (CSR)</li>
+                            <li>• Kepatuhan Pajak & Etika Bisnis</li>
+                            <li>• Persaingan Usaha yang Sehat</li>
+                        </ul>
                     </div>
 
-                    <!-- Pillar 3 -->
-                    <div onclick="trackActivity('Pilar 3: Masyarakat Sipil (Civil Society)', 'Konsep Utama')" class="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition cursor-pointer relative group">
+                    <!-- Pilar 3: Civil Society -->
+                    <div onclick="trackActivity('Pilar 3: Masyarakat Sipil (Civil Society)', 'Modul 3 Pilar'); openPillarDetail('society')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xl">
-                                <i class="fa-solid fa-users-between-lines"></i>
+                            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-users"></i>
                             </div>
-                            <span id="badge-pilar-civil" class="counter-badge bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                            <span id="click-count-pilar-society" class="counter-badge bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
                                 👁️ 0x dipelajari
                             </span>
                         </div>
-                        <h3 class="font-extrabold text-slate-900 text-lg mb-1 group-hover:text-emerald-700 transition">3. Masyarakat Sipil (Civil Society)</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Mendorong interaksi sosial, politik, dan publik. Berperan aktif melakukan pengawasan (*social control*), menyuarakan aspirasi, dan berpartisipasi dalam pengambilan keputusan.
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-indigo-700 transition">3. Masyarakat Sipil (Civil Society)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Penyeimbang kekuasaan, penyalur aspirasi warga, pengawas independen (watchdog), serta pendorong partisipasi publik.
                         </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• LSM / NGO & Media Massa</li>
+                            <li>• Partisipasi Aktif Pengawasan Publik</li>
+                            <li>• Advokasi Kebijakan Kerakyatan</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- 3 Interactive Concept Modules -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
-                    <div>
-                        <span class="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">Modul Pembelajaran Interaktif</span>
-                        <h2 class="text-2xl font-black text-slate-900 mt-1">Studi Konsep & Dimensi Tata Kelola</h2>
+            <!-- Modul Tambahan Kunci -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="trackActivity('Modul: Integritas & Anti-Korupsi', 'Studi Konsep')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full">Fokus Budaya</span>
+                        <span id="click-count-modul-integritas" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
                     </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-rose-700 transition mb-1">Integritas & Sistem Anti-Korupsi</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Membangun benteng pencegahan benturan kepentingan, gratifikasi, dan budaya nepotisme di ranah birokrasi.</p>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div onclick="trackActivity('Modul Konsep: Ekosistem Tripartit', 'Konsep Utama')" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3 cursor-pointer hover:border-indigo-500 transition">
-                        <div class="flex justify-between items-center">
-                            <span class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">1</span>
-                            <span id="badge-mod-1" class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded-full">0x diklik</span>
-                        </div>
-                        <h3 class="font-extrabold text-slate-900 text-base">Sinergi Kemitraan Tripartit</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">Pemerintah tidak lagi mendominasi secara absolut (*governing*), melainkan bergeser menjadi fasilitator (*governing with partners*). Kunci utamanya adalah transparansi informasi dan ruang dialog.</p>
+                <div onclick="trackActivity('Modul: GovTech & SPBE Digital', 'Studi Konsep')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-gov-600 bg-gov-50 px-2.5 py-1 rounded-full">Inovasi Digital</span>
+                        <span id="click-count-modul-govtech" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
                     </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-gov-700 transition mb-1">GovTech & Digitalisasi SPBE</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Transformasi Sistem Pemerintahan Berbasis Elektronik (SPBE) untuk transparansi anggaran & kecepatan layanan.</p>
+                </div>
 
-                    <div onclick="trackActivity('Modul Konsep: Anti-Korupsi & Integritas', 'Konsep Utama')" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3 cursor-pointer hover:border-amber-500 transition">
-                        <div class="flex justify-between items-center">
-                            <span class="w-8 h-8 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-sm">2</span>
-                            <span id="badge-mod-2" class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">0x diklik</span>
-                        </div>
-                        <h3 class="font-extrabold text-slate-900 text-base">Integritas Publik & Anti-Korupsi</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">Korupsi timbul akibat kewenangan besar tanpa akuntabilitas dan transparansi. Good governance membangun benteng pencegahan sistemik melalui audit terbuka dan pengawasan publik.</p>
+                <div onclick="trackActivity('Modul: Reformasi Birokrasi Tematik', 'Studi Konsep')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Dampak Kebijakan</span>
+                        <span id="click-count-modul-reformasi" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
                     </div>
-
-                    <div onclick="trackActivity('Modul Konsep: Digital Governance (SPBE)', 'Konsep Utama')" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3 cursor-pointer hover:border-emerald-500 transition">
-                        <div class="flex justify-between items-center">
-                            <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">3</span>
-                            <span id="badge-mod-3" class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">0x diklik</span>
-                        </div>
-                        <h3 class="font-extrabold text-slate-900 text-base">Transformasi Digital / GovTech</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">Penerapan Sistem Pemerintahan Berbasis Elektronik (SPBE) mengurangi tatap muka langsung, memangkas birokrasi berbelit, serta menjamin keabsahan data publik secara *real-time*.</p>
-                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-amber-700 transition mb-1">Reformasi Birokrasi Tematik</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Fokus penanganan pengentasan kemiskinan, peningkatan investasi, digitalisasi, dan kemudahan berusaha.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ================= TAB 2: 9 PRINSIP UTAMA ================= -->
-        <section id="tab-prinsip" class="tab-content hidden space-y-6">
-            <!-- Filter Header -->
-            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- ================= SECTION 2: KATALOG 9 PRINSIP ================= -->
+        <section id="sec-prinsip" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
-                        <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">Standar UNDP & LAN RI</span>
-                        <h2 class="text-2xl font-black text-slate-900 mt-1">9 Prinsip Utama Good Governance</h2>
-                        <p class="text-xs sm:text-sm text-slate-500">Saring dan pelajari tiap prinsip untuk memahami standar tata kelola publik berkualitas dunia.</p>
+                        <h3 class="font-extrabold text-slate-800 text-xl">9 Prinsip Utama Good Governance (UNDP & LAN RI)</h3>
+                        <p class="text-slate-500 text-xs mt-1">Klik kartu untuk mempelajari indikator sukses, contoh penerapan di Indonesia, serta dampaknya.</p>
                     </div>
-                    <div class="flex items-center space-x-2 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-xl text-xs font-bold text-indigo-800">
-                        <i class="fa-solid fa-list-check"></i>
-                        <span>Menampilkan: <strong id="principles-count">9</strong> Prinsip</span>
-                    </div>
-                </div>
-
-                <!-- Controls Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <!-- Search Input -->
-                    <div class="relative sm:col-span-2">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
-                        <input type="text" id="principles-search" oninput="filterPrinciples()" placeholder="Cari prinsip (Transparansi, Hukum, Akuntabilitas...)" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-
-                    <!-- Category Filter -->
-                    <div>
-                        <select id="principles-filter" onchange="filterPrinciples()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="ALL">Semua Kategori Prinsip</option>
-                            <option value="Akuntabilitas">Akuntabilitas & Keterbukaan</option>
-                            <option value="Demokrasi">Demokrasi & Hak Warga</option>
-                            <option value="Efisiensi">Manajemen & Hasil Kerja</option>
-                        </select>
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="principle-search" oninput="trackActivity('Pencarian Prinsip', 'Filter Prinsip'); filterPrinciples()" placeholder="Cari prinsip governance..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-gov-500 transition">
                     </div>
                 </div>
             </div>
 
             <!-- Principles Grid -->
             <div id="principles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Populated via JS -->
+                <!-- Dynamically Rendered Principles -->
             </div>
         </section>
 
-        <!-- ================= TAB 3: PENERAPAN DI INDONESIA ================= -->
-        <section id="tab-penerapan" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+        <!-- ================= SECTION 3: STUDI KASUS SISTEM PUBLIK ================= -->
+        <section id="sec-kasus" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                 <div>
-                    <span class="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">Implementasi Nasional</span>
-                    <h2 class="text-2xl font-black text-slate-900 mt-1">Inisiatif & Studi Kasus Governance di Indonesia</h2>
-                    <p class="text-xs sm:text-sm text-slate-500">Berbagai inovasi sistem yang telah diterapkan untuk mendorong keterbukaan dan integritas di Indonesia.</p>
+                    <h3 class="font-extrabold text-slate-800 text-xl">Aplikasi & Sistem Nyata Good Governance di Indonesia</h3>
+                    <p class="text-slate-500 text-xs mt-1">Eksplorasi platform resmi negara yang mewujudkan transparansi dan kemudahan pengawasan oleh warga.</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="cases-grid">
-                    <!-- Populated via JS -->
+                <div id="case-studies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Case Studies Cards -->
                 </div>
             </div>
         </section>
 
-        <!-- ================= TAB 4: SIMULATOR AUDIT INDEKS ================= -->
-        <section id="tab-simulator" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 max-w-4xl mx-auto">
-                <div>
-                    <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">Simulasi Interaktif</span>
-                    <h2 class="text-2xl font-black text-slate-900 mt-1">Kalkulator Indeks Kematangan Governance Instansi</h2>
-                    <p class="text-xs sm:text-sm text-slate-500">Evaluasi instansi publik/pemerintah berdasarkan 5 dimensi utama untuk mendapatkan skor *Maturity Level* dan saran rekomendasi.</p>
+        <!-- ================= SECTION 4: SIMULATOR AUDIT ================= -->
+        <section id="sec-audit" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-2xl">Simulator Audit Indeks Good Governance</h3>
+                        <p class="text-slate-500 text-xs">Evaluasi kematangan tata kelola instansi publik berdasarkan 5 dimensi evaluasi baku</p>
+                    </div>
+                    <span id="click-count-audit-sim" class="counter-badge bg-gov-100 text-gov-800 text-xs font-bold px-3 py-1.5 rounded-full border border-gov-200">
+                        👁️ 0x simulasi dijalankan
+                    </span>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-3xl border border-slate-200">
-                    <!-- Form Input -->
-                    <div class="space-y-4">
-                        <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">1. Evaluasi Dimensi Instansi</h3>
-
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Sliders Input Form (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-6">
                         <!-- Dimensi 1 -->
-                        <div class="space-y-1">
-                            <label class="block text-xs font-bold text-slate-700">Dimensi 1: Keterbukaan Informasi & Publikasi APBD/APBN</label>
-                            <select id="sim-d1" onchange="calculateMaturityIndex()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold">
-                                <option value="1">Level 1: Dokumen tertutup / sulit diakses publik</option>
-                                <option value="3">Level 3: Dipublikasi terbatas di situs resmi</option>
-                                <option value="5" selected>Level 5: Open Data real-time & ramah unduh</option>
-                            </select>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">1. Transparansi & Akses Informasi Publik</label>
+                                <span id="val-dim1" class="font-mono font-bold text-gov-700">70 / 100</span>
+                            </div>
+                            <input type="range" id="dim1" min="10" max="100" value="70" oninput="trackActivity('Slider: Transparansi Audit', 'Simulator Audit'); calculateAuditScore()" class="w-full accent-gov-600">
+                            <p class="text-[11px] text-slate-400">Ketersediaan portal data terbuka, transparansi DPA anggaran, dan kecepatan respon PPID.</p>
                         </div>
 
                         <!-- Dimensi 2 -->
-                        <div class="space-y-1">
-                            <label class="block text-xs font-bold text-slate-700">Dimensi 2: Layanan Aduan & Kecepatan Respons (SP4N)</label>
-                            <select id="sim-d2" onchange="calculateMaturityIndex()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold">
-                                <option value="1">Level 1: Tidak ada kanal aduan resmi</option>
-                                <option value="3" selected>Level 3: Ada kanal aduan, tindak lanjut 7-14 hari</option>
-                                <option value="5">Level 5: Kanal aduan digital terpadu, respons &lt;24 jam</option>
-                            </select>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">2. Akuntabilitas & Pengawasan Internal</label>
+                                <span id="val-dim2" class="font-mono font-bold text-gov-700">65 / 100</span>
+                            </div>
+                            <input type="range" id="dim2" min="10" max="100" value="65" oninput="trackActivity('Slider: Akuntabilitas Audit', 'Simulator Audit'); calculateAuditScore()" class="w-full accent-gov-600">
+                            <p class="text-[11px] text-slate-400">Opini WTP BPK, ketercapaian LAKIP/SAKIP, dan efektivitas audit Inspektorat.</p>
                         </div>
 
                         <!-- Dimensi 3 -->
-                        <div class="space-y-1">
-                            <label class="block text-xs font-bold text-slate-700">Dimensi 3: Digitalisasi Layanan (SPBE / e-Gov)</label>
-                            <select id="sim-d3" onchange="calculateMaturityIndex()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold">
-                                <option value="1">Level 1: Masih dominan kertas / tatap muka fisik</option>
-                                <option value="3">Level 3: Ada aplikasi tetapi belum terintegrasi</option>
-                                <option value="5" selected>Level 5: Layanan 100% online & terinteroperabilitas</option>
-                            </select>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">3. Partisipasi & Penanganan Pengaduan</label>
+                                <span id="val-dim3" class="font-mono font-bold text-gov-700">80 / 100</span>
+                            </div>
+                            <input type="range" id="dim3" min="10" max="100" value="80" oninput="trackActivity('Slider: Partisipasi Audit', 'Simulator Audit'); calculateAuditScore()" class="w-full accent-gov-600">
+                            <p class="text-[11px] text-slate-400">Forum Musrenbang inklusif, penanganan kanal pengaduan (SP4N-LAPOR!), dan publikasi respon.</p>
                         </div>
 
                         <!-- Dimensi 4 -->
-                        <div class="space-y-1">
-                            <label class="block text-xs font-bold text-slate-700">Dimensi 4: Sistem Pengawasan Internal & WBS Anti-Korupsi</label>
-                            <select id="sim-d4" onchange="calculateMaturityIndex()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold">
-                                <option value="1">Level 1: Belum ada unit kepatuhan internal</option>
-                                <option value="3" selected>Level 3: Audit berkala oleh Inspektorat/SPIP</option>
-                                <option value="5">Level 5: Sertifikasi ISO Anti-Bribery & WBK/WBBM</option>
-                            </select>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">4. Penegakan Hukum & Anti-Gratifikasi</label>
+                                <span id="val-dim4" class="font-mono font-bold text-gov-700">75 / 100</span>
+                            </div>
+                            <input type="range" id="dim4" min="10" max="100" value="75" oninput="trackActivity('Slider: Penegakan Hukum Audit', 'Simulator Audit'); calculateAuditScore()" class="w-full accent-gov-600">
+                            <p class="text-[11px] text-slate-400">Penerapan WBS (Whistleblowing System), kepatuhan LHKPN 100%, dan bebas pungli.</p>
                         </div>
 
                         <!-- Dimensi 5 -->
-                        <div class="space-y-1">
-                            <label class="block text-xs font-bold text-slate-700">Dimensi 5: Inklusivitas & Partisipasi Warga (Musrenbang)</label>
-                            <select id="sim-d5" onchange="calculateMaturityIndex()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold">
-                                <option value="1">Level 1: Keputusan sepihak tanpa konsultasi publik</option>
-                                <option value="3">Level 3: Dengar pendapat formal tahunan</option>
-                                <option value="5" selected>Level 5: Forum publik rutin & penganggaran partisipatif</option>
-                            </select>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">5. Efisiensi & Digitalisasi Layanan (SPBE)</label>
+                                <span id="val-dim5" class="font-mono font-bold text-gov-700">85 / 100</span>
+                            </div>
+                            <input type="range" id="dim5" min="10" max="100" value="85" oninput="trackActivity('Slider: Digitalisasi Audit', 'Simulator Audit'); calculateAuditScore()" class="w-full accent-gov-600">
+                            <p class="text-[11px] text-slate-400">Integrasi sistem elektronik (e-Procurement, e-Budgeting) dan penyederhanaan izin.</p>
                         </div>
                     </div>
 
-                    <!-- Output Results Card -->
-                    <div class="space-y-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-extrabold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2 text-indigo-700">2. Hasil Indeks Governance</h3>
+                    <!-- Output Score Result Box (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-navy-950 to-gov-950 text-white rounded-2xl p-6 flex flex-col justify-between space-y-6 shadow-xl border border-gov-800/50">
+                        <div class="space-y-2">
+                            <span class="text-xs font-mono text-gold-400 uppercase tracking-widest font-bold">Hasil Evaluasi Akhir</span>
+                            <h4 class="text-xl font-bold">Governance Index Level</h4>
+                        </div>
 
-                            <div class="mt-4 text-center space-y-2">
-                                <span class="text-xs text-slate-500 font-bold uppercase tracking-wider block">Skor Maturity Level:</span>
-                                <div id="sim-score-display" class="text-4xl font-black text-indigo-700 font-mono">4.6 / 5.0</div>
-                                <span id="sim-level-badge" class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full">
-                                    Level 4: Sangat Baik & Terintegrasi
+                        <div class="text-center py-4 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm space-y-2">
+                            <span id="audit-score-number" class="text-5xl font-extrabold text-gold-400 font-mono tracking-tight">75.0</span>
+                            <span class="text-xs text-slate-300 block">Skor Komposit Indeks (/100)</span>
+                            <div class="inline-block mt-2">
+                                <span id="audit-status-badge" class="bg-gov-500 text-white font-extrabold text-xs px-4 py-1.5 rounded-full shadow">
+                                    Sangat Baik (Level 4 - Advanced)
                                 </span>
-                            </div>
-
-                            <div class="mt-4 space-y-2 text-xs">
-                                <span class="font-bold text-slate-800 block">Rekomendasi Langkah Perbaikan:</span>
-                                <p id="sim-recommendation" class="bg-indigo-50/70 p-3 rounded-xl border border-indigo-100 text-slate-700 leading-relaxed">
-                                    Pertahankan integrasi digital layanan publik dan tingkatkan kecepatan tindak lanjut aduan masyarakat di bawah 24 jam.
-                                </p>
                             </div>
                         </div>
 
-                        <div class="pt-2 text-[11px] text-slate-400 italic text-center">
-                            *Model kalkulasi diadaptasi dari indikator KemenPAN-RB & Kementerian Dalam Negeri RI.
+                        <div class="space-y-3 text-xs">
+                            <h5 class="font-bold text-gold-400 border-b border-white/10 pb-1">Rekomendasi Perbaikan Prioritas:</h5>
+                            <p id="audit-recommendation" class="text-slate-300 leading-relaxed">
+                                Tingkatkan integrasi transparansi data real-time anggaran publik dan perkuat perlindungan saksi pelapor WBS internal.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ================= TAB 5: KUIS INTERAKTIF ================= -->
-        <section id="tab-kuis" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 max-w-3xl mx-auto">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <div>
-                        <span class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">Evaluasi Pemahaman</span>
-                        <h2 class="text-2xl font-black text-slate-900 mt-1">Kuis Pemahaman Good Governance</h2>
+        <!-- ================= SECTION 5: KUIS EVALUASI ================= -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-xl">Uji Pemahaman Materi Good Governance</h3>
+                            <p class="text-slate-500 text-xs">Jawab 5 soal studi kasus untuk menguji pemahaman Anda</p>
+                        </div>
                     </div>
-                    <div class="bg-slate-100 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700">
-                        Soal: <span id="quiz-curr">1</span> / 5
-                    </div>
+                    <span id="click-count-quiz-mod" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x kuis dikerjakan
+                    </span>
                 </div>
 
-                <div id="quiz-question-card" class="space-y-4">
-                    <!-- Populated via JS -->
-                </div>
-
-                <div id="quiz-controls" class="flex justify-between items-center pt-2">
-                    <button id="btn-quiz-prev" onclick="navigateQuiz(-1)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition disabled:opacity-40">
-                        <i class="fa-solid fa-arrow-left mr-1"></i> Sebelumnya
-                    </button>
-                    <button id="btn-quiz-next" onclick="navigateQuiz(1)" class="px-5 py-2.5 bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold rounded-xl transition shadow-md">
-                        Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
-                    </button>
+                <!-- Quiz Interactive Container -->
+                <div id="quiz-interactive-container" class="max-w-3xl space-y-6">
+                    <!-- Dynamic Question Area -->
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- FLOATING ACTION BUTTON FOR LEARNING ANALYTICS -->
-    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end space-y-2 pointer-events-none">
-        <!-- Toast Notification Container -->
-        <div id="toast-container" class="space-y-2 pointer-events-none"></div>
-
-        <!-- FAB Button -->
-        <button onclick="openAnalyticsModal()" class="pointer-events-auto group bg-slate-900 hover:bg-slate-800 text-amber-400 border border-indigo-500/50 shadow-2xl p-3.5 rounded-full flex items-center space-x-3 transition transform hover:scale-105 active:scale-95">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-indigo-500 text-slate-950 flex items-center justify-center font-black text-sm">
-                <i class="fa-solid fa-chart-line"></i>
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-8 border-t border-navy-900 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-md bg-gold-400 text-navy-950 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+                <span class="font-bold text-slate-200">EduGovernance Indonesia © 2026</span>
             </div>
-            <div class="text-left pr-2 hidden sm:block">
-                <span class="block text-[10px] text-slate-400 font-bold uppercase -mb-0.5">Aktivitas Belajar</span>
-                <span id="fab-click-counter" class="text-xs font-black text-white">0 Klik Tercatat</span>
-            </div>
-        </button>
-    </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Disusun berdasarkan pedoman UNDP, KemepanRB, & Komisi Pemberantasan Korupsi (KPK) RI.
+            </p>
+        </div>
+    </footer>
 
-    <!-- LEARNING ANALYTICS MODAL PANEL -->
-    <div id="modal-analytics" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6 relative">
-            <div class="flex items-start justify-between border-b border-slate-100 pb-4">
+    <!-- ================= FLOATING ANALYTICS BUTTON & MODAL ================= -->
+    <!-- Floating Counter FAB -->
+    <button onclick="openAnalyticsModal(); trackActivity('FAB Statistik Melayang', 'Navigasi Melayang')" class="fixed bottom-6 right-6 bg-gradient-to-r from-gold-400 via-amber-500 to-gov-600 text-navy-950 p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-white/30">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-navy-950"></i>
+            <span id="fab-pulse-dot" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-navy-900">Aktivitas Belajar</span>
+            <span id="fab-click-total" class="font-extrabold text-sm font-mono leading-none text-navy-950">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ANALYTICS MODAL (POPUP) -->
+    <div id="modal-analytics" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navy-950 to-gov-950 text-white p-5 flex items-center justify-between border-b border-gov-800">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-indigo-600 text-white flex items-center justify-center text-xl font-bold shadow-md">
-                        <i class="fa-solid fa-chart-pie"></i>
+                    <div class="w-10 h-10 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
                     </div>
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">Learning Analytics</span>
-                        <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">Panel Catatan & Analitik Interaksi Belajar</h3>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-gov-200">Rekapitulasi lengkap interaksi eksplorasi pengguna</p>
                     </div>
                 </div>
-                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Top Summary Cards -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
-                    <span class="text-[10px] font-extrabold text-indigo-800 uppercase tracking-wider block">Total Interaksi</span>
-                    <strong id="an-total-clicks" class="text-2xl font-black text-slate-900">0</strong>
-                    <span class="text-[11px] text-indigo-700 block mt-0.5">Klik Tercatat</span>
-                </div>
-                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
-                    <span class="text-[10px] font-extrabold text-amber-800 uppercase tracking-wider block">Materi Terjelajah</span>
-                    <strong id="an-unique-count" class="text-2xl font-black text-slate-900">0 / 20</strong>
-                    <span class="text-[11px] text-amber-700 block mt-0.5">Sub-Sub Topik</span>
-                </div>
-                <div class="bg-sky-50 p-4 rounded-2xl border border-sky-100">
-                    <span class="text-[10px] font-extrabold text-sky-800 uppercase tracking-wider block">Cakupan Modul</span>
-                    <strong id="an-progress-pct" class="text-2xl font-black text-slate-900">0%</strong>
-                    <span class="text-[11px] text-sky-700 block mt-0.5">Progress Belajar</span>
-                </div>
-                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100">
-                    <span class="text-[10px] font-extrabold text-purple-800 uppercase tracking-wider block">Kategori Teraktif</span>
-                    <strong id="an-top-category" class="text-sm font-black text-slate-900 block truncate">-</strong>
-                    <span class="text-[11px] text-purple-700 block mt-0.5">Paling Banyak Diklik</span>
-                </div>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="space-y-1.5 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                <div class="flex justify-between text-xs font-bold text-slate-700">
-                    <span>Kemajuan Eksplorasi Topik Good Governance:</span>
-                    <span id="an-progress-text">0% Selesai</span>
-                </div>
-                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
-                    <div id="an-progress-bar" class="h-full bg-gradient-to-r from-indigo-600 via-amber-500 to-emerald-500 transition-all duration-500" style="width: 0%;"></div>
-                </div>
-            </div>
-
-            <!-- Charts & Top Items Grid -->
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Chart Container -->
-                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 flex flex-col justify-between">
-                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-3">Distribusi Klik Berdasarkan Kategori</h4>
-                    <div class="w-full h-56 flex items-center justify-center">
-                        <canvas id="analyticsChart"></canvas>
+            <!-- Content Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- Summary Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-gov-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Terlibat aktif di aplikasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-base text-slate-800 font-bold block truncate">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Area terbanyak dieksplorasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Cakupan Pembelajaran</span>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <div class="flex-grow bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-gold-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-bold text-slate-700">0%</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 block mt-1">Prinsip telah dibuka</span>
                     </div>
                 </div>
 
-                <!-- Top Explored Items -->
-                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
-                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
-                    <div id="an-top-list" class="space-y-2">
-                        <!-- Populated via JS -->
+                <!-- Chart & Top Items Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart Doughnut Container -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Most Clicked Items -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-clicked-list" class="space-y-2 text-xs">
+                            <!-- Dynamic Top Items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="clearAnalyticsData()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-48 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Terakhir Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100">
+                                <!-- Log rows -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Detailed Log Table -->
-            <div class="space-y-3">
-                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Tabel Rekap Aktivitas Belajar Detailed Log</h4>
-                <div class="overflow-x-auto max-h-56 border border-slate-200 rounded-2xl">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-700 font-extrabold sticky top-0">
-                            <tr>
-                                <th class="p-3">Nama Sub-Materi</th>
-                                <th class="p-3">Kategori</th>
-                                <th class="p-3 text-center">Jumlah Klik</th>
-                                <th class="p-3">Terakhir Diklik</th>
-                            </tr>
-                        </thead>
-                        <tbody id="an-log-table-body" class="divide-y divide-slate-100 bg-white">
-                            <!-- Populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Footer Controls -->
-            <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
-                <div class="flex space-x-2">
-                    <button onclick="exportAnalyticsData()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5">
-                        <i class="fa-solid fa-download"></i><span>Export Log (.JSON)</span>
-                    </button>
-                    <button onclick="resetAnalyticsData()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs transition flex items-center space-x-1.5">
-                        <i class="fa-solid fa-rotate-right"></i><span>Reset Hitungan</span>
-                    </button>
-                </div>
-                <button onclick="closeAnalyticsModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-gov-700 hover:bg-gov-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
                     Tutup Panel
                 </button>
             </div>
@@ -587,593 +555,485 @@
     </div>
 
     <!-- PRINCIPLE DETAIL MODAL -->
-    <div id="modal-principle" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-5 relative">
-            <div class="flex items-start justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl font-bold shadow-md">
-                        <i id="pm-icon" class="fa-solid fa-scale-balanced"></i>
-                    </div>
-                    <div>
-                        <span id="pm-cat" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">KATEGORI</span>
-                        <h3 id="pm-title" class="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">Nama Prinsip</h3>
-                    </div>
-                </div>
-                <button onclick="closePrincipleModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+    <div id="modal-principle" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="principle-modal-header" class="p-6 text-white relative bg-gradient-to-r from-gov-950 to-navy-950">
+                <button onclick="closePrincipleModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
+                <!-- Dynamic Header -->
             </div>
-
-            <div class="space-y-4 text-xs sm:text-sm">
-                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
-                    <span class="font-bold text-indigo-700 uppercase text-[10px] tracking-wider">Definisi Konseptual:</span>
-                    <p id="pm-def" class="text-slate-600 leading-relaxed"></p>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider"><i class="fa-solid fa-check-double text-emerald-600 mr-1"></i> Indikator Kunci Keberhasilan:</h4>
-                    <p id="pm-ind" class="text-slate-700 bg-emerald-50/60 p-3 rounded-xl border border-emerald-100 text-xs leading-relaxed"></p>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider"><i class="fa-solid fa-flag text-amber-600 mr-1"></i> Contoh Penerapan Nyata di Indonesia:</h4>
-                    <p id="pm-app" class="text-slate-700 bg-amber-50/60 p-3 rounded-xl border border-amber-100 text-xs leading-relaxed"></p>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider"><i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i> Risiko Jika Diabaikan:</h4>
-                    <p id="pm-risk" class="text-slate-700 bg-rose-50/60 p-3 rounded-xl border border-rose-100 text-xs leading-relaxed"></p>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end pt-2">
-                <button onclick="closePrincipleModal()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">
-                    Tutup
-                </button>
+            <div id="principle-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 custom-scrollbar">
+                <!-- Dynamic Body -->
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC & DATABASE -->
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+
+    <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
     <script>
-        /* ================= 1. DATABASE 9 PRINSIP GOOD GOVERNANCE ================= */
+        /* ----------------------------------------------------
+         * 1. DATA 9 PRINSIP GOOD GOVERNANCE
+         * ---------------------------------------------------- */
         const PRINCIPLES_DATA = [
             {
-                id: "transparansi",
-                icon: "fa-eye",
-                title: "1. Transparansi (Transparency)",
-                cat: "Akuntabilitas",
-                summary: "Keterbukaan atas seluruh proses pembuatan keputusan dan akses bebas terhadap informasi publik bagi masyarakat.",
-                def: "Membangun atas dasar kebebasan arus informasi yang secara langsung dapat diterima oleh mereka yang membutuhkan. Informasi harus mudah dipahami dan dipantau.",
-                ind: "Ketersediaan dokumen publik, Open Data APBD/APBN, kemudahan akses informasi publik tanpa syarat yang memberatkan.",
-                app: "Portal Satu Data Indonesia, Transparansi Anggaran Kemenkeu (APBN Kita), serta kewajiban PPID di instansi pemerintah.",
-                risk: "Terjadinya korupsi sistemik, transaksi gelap kebijakan, dan ketidakpercayaan publik terhadap pemerintah."
+                id: 'transparansi',
+                title: '1. Transparansi (Transparency)',
+                icon: 'fa-eye',
+                color: 'from-sky-600 to-blue-800',
+                shortDesc: 'Keterbukaan informasi publik mengenai proses pembuatan keputusan, pengelolaan keuangan, dan hasil kinerja instansi.',
+                indicators: [
+                    'Publikasi laporan keuangan & APBD/APBN secara terbuka (Open Data)',
+                    'Kemudahan akses masyarakat terhadap informasi publik melalui PPID',
+                    'Proses pengadaan barang/jasa pemerintah secara elektronik (e-Procurement)'
+                ],
+                indonesiaCase: 'Portal Satu Data Indonesia (data.go.id) dan e-Budgeting Pemda.',
+                riskIfIgnored: 'Peluang korupsi tinggi, manipulasi anggaran, dan hilangnya kepercayaan publik.'
             },
             {
-                id: "akuntabilitas",
-                icon: "fa-scale-balanced",
-                title: "2. Akuntabilitas (Accountability)",
-                cat: "Akuntabilitas",
-                summary: "Pertanggungjawaban para pembuat keputusan publik kepada masyarakat dan lembaga pemangku kepentingan.",
-                def: "Kewajiban pejabat publik untuk menjelaskan dan memertanggungjawabkan setiap tindakan, keputusan, dan alokasi anggaran yang dilakukan.",
-                ind: "Laporan LAKIP/SAKIP instansi, opini WTP dari BPK, pencapaian target kinerja utama (IKU).",
-                app: "Laporan Keuangan Kementerian/Lembaga terverifikasi BPK, Sistem Akuntabilitas Kinerja Instansi Pemerintah (SAKIP).",
-                risk: "Pemborosan anggaran negara, mal-administrasi, dan kesewenang-wenangan penggunaan wewenang."
+                id: 'akuntabilitas',
+                title: '2. Akuntabilitas (Accountability)',
+                icon: 'fa-file-signature',
+                color: 'from-emerald-600 to-gov-800',
+                shortDesc: 'Kewajiban penanggung jawab untuk mempertanggungjawabkan kinerja dan penggunaan uang rakyat kepada publik.',
+                indicators: [
+                    'Penyusunan Sistem Akuntabilitas Kinerja Instansi Pemerintah (SAKIP/LAKIP)',
+                    'Pemeriksaan independen oleh BPK (Badan Pemeriksa Keuangan) dengan Opini WTP',
+                    'Mekanisme evaluasi & sanksi tegas bagi pelanggaran kinerja'
+                ],
+                indonesiaCase: 'Penilaian Sistem Akuntabilitas Kinerja (SAKIP) KemenPAN-RB.',
+                riskIfIgnored: 'Penyalahgunaan wewenang (abuse of power) tanpa konsekuensi.'
             },
             {
-                id: "partisipasi",
-                icon: "fa-users",
-                title: "3. Partisipasi Publik (Public Participation)",
-                cat: "Demokrasi",
-                summary: "Hak dan kesempatan seluruh warga negara untuk bersuara dan terlibat dalam proses pengambilan keputusan.",
-                def: "Setiap warga negara mempunyai suara dalam pembuatan keputusan, baik secara langsung maupun melalui lembaga perwakilan yang sah.",
-                ind: "Pelaksanaan Musrenbang desa hingga nasional, konsultasi publik publikasi RUU/RPJMN, forum warga.",
-                app: "Musrenbang (Musyawarah Perencanaan Pembangunan) berkala dan partisipasi publik rancangan Perda.",
-                risk: "Kebijakan top-down yang tidak sesuai kebutuhan nyata warga dan penolakan massal terhadap aturan baru."
+                id: 'partisipasi',
+                title: '3. Partisipasi Masyarakat (Participation)',
+                icon: 'fa-comments-dollar',
+                color: 'from-amber-600 to-orange-700',
+                shortDesc: 'Hak setiap warga negara untuk memberikan suara dan aspirasi dalam pengambilan keputusan publik.',
+                indicators: [
+                    'Pelaksanaan Musrenbang (Musyawarah Perencanaan Pembangunan) dari desa hingga nasional',
+                    'Kanal aduan publik SP4N-LAPOR! yang direspon secara cepat',
+                    'Uji publik draft Rancangan Undang-Undang (RUU) bersama warga'
+                ],
+                indonesiaCase: 'Musrenbang Desa/Kecamatan & Aplikasi SP4N-LAPOR! KemenPAN-RB.',
+                riskIfIgnored: 'Kebijakan elitis yang tidak sesuai dengan kebutuhan riil rakyat.'
             },
             {
-                id: "hukum",
-                icon: "fa-gavel",
-                title: "4. Supremasi Hukum (Rule of Law)",
-                cat: "Demokrasi",
-                summary: "Kerangka hukum yang adil, tidak tebang pilih, dan ditegakkan secara independen serta menghormati HAM.",
-                def: "Kerangka hukum yang adil dan dilaksanakan tanpa pandang bulu, termasuk perlindungan terhadap Hak Asasi Manusia.",
-                ind: "Kepastian hukum investasi, independensi peradilan, perlindungan saksi/pelapor (Whistleblower).",
-                app: "Penegakan hukum kasus korupsi tanpa pandang jabatan oleh KPK dan Peradilan Umum.",
-                risk: "Korupsi peradilan, kriminalisasi warga, dan jatuhnya kepastian hukum nasional."
+                id: 'supremasi-hukum',
+                title: '4. Supremasi Hukum (Rule of Law)',
+                icon: 'fa-gavel',
+                color: 'from-purple-600 to-indigo-900',
+                shortDesc: 'Kerangka hukum yang adil, independen, dan ditegakkan tanpa pandang bulu bagi seluruh lapisan masyarakat.',
+                indicators: [
+                    'Independensi lembaga peradilan & anti-intervensi politik',
+                    'Perlindungan HAM yang terjamin undang-undang',
+                    'Kepastian hukum dan perlindungan investasi'
+                ],
+                indonesiaCase: 'Peradilan Tipikor dan Penegakan Hukum oleh KPK / Kejaksaan / POLRI.',
+                riskIfIgnored: 'Hukum tajam ke bawah tumpul ke atas, kekacauan sosial, dan diskriminasi.'
             },
             {
-                id: "responsivitas",
-                icon: "fa-reply-all",
-                title: "5. Responsivitas (Responsiveness)",
-                cat: "Demokrasi",
-                summary: "Kepekaan dan kecepatan lembaga publik dalam melayani dan menindaklanjuti kebutuhan masyarakat.",
-                def: "Lembaga birokrasi harus melayani semua pemangku kepentingan secara cepat, tepat, dan tanggap dalam waktu yang wajar.",
-                ind: "SLA (Service Level Agreement) penanganan aduan, layanan darurat 112, kepuasan masyarakat (IKM).",
-                app: "Sistem Pengaduan Pelayanan Publik Nasional (SP4N-LAPOR!) terintegrasi seluruh instansi.",
-                risk: "Birokrasi lamban, penumpukan aduan warga yang terabaikan, serta krisis kepercayaan publik."
+                id: 'responsivitas',
+                title: '5. Responsivitas (Responsiveness)',
+                icon: 'fa-bolt',
+                color: 'from-rose-600 to-red-800',
+                shortDesc: 'Kecepatan dan ketepatan instansi publik dalam melayani dan menanggapi permasalahan warga.',
+                indicators: [
+                    'SOP Pelayanan Publik yang terukur dengan SLA (Service Level Agreement) jelas',
+                    'Penanganan darurat bencana dan krisis secara terpadu',
+                    'Penyederhanaan birokrasi layanan publik'
+                ],
+                indonesiaCase: 'Mal Pelayanan Publik (MPP) Terpadu dan Layanan Tanggap Darurat 112.',
+                riskIfIgnored: 'Birokrasi lambat, berbelit-belit, dan maraknya praktik percaloan.'
             },
             {
-                id: "inklusivitas",
-                icon: "fa-hand-holding-hand",
-                title: "6. Kesetaraan & Inklusivitas (Equity)",
-                cat: "Demokrasi",
-                summary: "Jaminan bahwa semua warga negara memiliki kesempatan sama untuk meningkatkan atau mempertahankan kesejahteraan.",
-                def: "Memberi kesempatan yang sama bagi setiap anggota masyarakat (termasuk kelompok rentan/disabilitas) untuk memperoleh pelayanan publik.",
-                ind: "Fasilitas publik ramah disabilitas, kuota affirmative action perempuan, bantuan sosial tepat sasaran.",
-                app: "Penyediaan jalur pemilu dan trotoar ramah disabilitas, serta beasiswa pendidikan daerah tertinggal.",
-                risk: "Marginalisasi kelompok rentan, ketimpangan sosial-ekonomi mendalam, dan konflik internal."
+                id: 'inklusivitas',
+                title: '6. Kesetaraan & Inklusivitas (Equity)',
+                icon: 'fa-hands-holding-child',
+                color: 'from-teal-600 to-emerald-800',
+                shortDesc: 'Jaminan bahwa seluruh kelompok warga, termasuk penyandang disabilitas dan perempuan, memiliki akses yang sama.',
+                indicators: [
+                    'Fasilitas publik ramah disabilitas dan lansia',
+                    'Penganggaran Responsif Gender (ARG)',
+                    'Perlindungan hak-hak kelompok minoritas dan adat'
+                ],
+                indonesiaCase: 'Infrastruktur Kantor Publik Aksesibel & Program Afirmatif Beasiswa Daerah.',
+                riskIfIgnored: 'Kesenjangan sosial mendalam dan marjinalisasi kelompok rentan.'
             },
             {
-                id: "efisiensi",
-                icon: "fa-gauge-high",
-                title: "7. Efektivitas & Efisiensi",
-                cat: "Efisiensi",
-                summary: "Pemanfaatan sumber daya publik secara optimal untuk menghasilkan output maksimal tanpa pemborosan.",
-                def: "Proses-proses tata kelola dan lembaga menghasilkan sesuai kebutuhan dengan menggunakan sumber daya seoptimal mungkin.",
-                ind: "Penghematan biaya operasional birokrasi, rasio belanja modal vs belanja pegawai, simplifikasi izin.",
-                app: "Pengadaan barang/jasa elektronik (LPSE & E-Katalog LKPP) dan OSS (Online Single Submission).",
-                risk: "Anggaran habis untuk operasional internal birokrasi daripada pembangunan publik."
+                id: 'efisiensi',
+                title: '7. Efisiensi & Efektivitas (Efficiency)',
+                icon: 'fa-chart-line',
+                color: 'from-blue-600 to-cyan-800',
+                shortDesc: 'Penggunaan sumber daya publik secara optimal untuk menghasilkan manfaat maksimal tanpa pemborosan.',
+                indicators: [
+                    'Penerapan e-Government (SPBE) mengurangi biaya operasional',
+                    'Pencegahan program tumpang tindih antar instansi',
+                    'Optimalisasi pemanfaatan aset negara'
+                ],
+                indonesiaCase: 'Digitalisasi Surat Sertifikat Tanah & Integrasi Layanan Sistem SPBE.',
+                riskIfIgnored: 'Pemborosan anggaran (inefficiency) dan pemenuhan target tidak tercapai.'
             },
             {
-                id: "visi-strategis",
-                icon: "fa-compass",
-                title: "8. Visi Strategis (Strategic Vision)",
-                cat: "Efisiensi",
-                summary: "Pandangan jauh ke depan dari pemimpin dan publik tentang pembangunan manusia dan tata kelola jangka panjang.",
-                def: "Para pemimpin dan publik memiliki perspektif yang luas dan jauh ke depan tentang tata kelola pemerintahan dan pembangunan manusia.",
-                ind: "Ketersediaan RPJPN (Rencana Pembangunan Jangka Panjang Nasional), konsistensi indikator makro.",
-                app: "Visi Indonesia Emas 2045 dan target Peta Jalan Transformasi Digital Nasional.",
-                risk: "Kebijakan ganti menteri ganti aturan, proyek mangkrak, dan ketidakpastian arah bangsa."
+                id: 'visi-strategis',
+                title: '8. Visi Strategis (Strategic Vision)',
+                icon: 'fa-compass',
+                color: 'from-violet-600 to-purple-900',
+                shortDesc: 'Pandangan jauh ke depan dari para pemimpin dan publik tentang pembangunan manusia dan berbangsa.',
+                indicators: [
+                    'Penyusunan Rencana Pembangunan Jangka Panjang (RPJPN / RPJMD)',
+                    'Mitigasi risiko perubahan iklim & masa depan ekonomi digital',
+                    'Investasi berlanjut pada riset dan pendidikan'
+                ],
+                indonesiaCase: 'Visi Indonesia Emas 2045 dan RPJPN Bappenas.',
+                riskIfIgnored: 'Pembangunan tanpa arah jangka panjang dan kebijakan berseri ganti pejabat.'
             },
             {
-                id: "konsensus",
-                icon: "fa-handshake",
-                title: "9. Orientasi Konsensus (Consensus)",
-                cat: "Demokrasi",
-                summary: "Menjembatani kepentingan yang berbeda untuk mencapai kesepakatan terbaik bagi seluruh masyarakat.",
-                def: "Tata kelola bertindak sebagai penengah di antara kepentingan yang berbeda untuk mencapai konsensus yang luas demi kepentingan terbaik kelompok.",
-                ind: "Forum dialog tripartit buruh-pengusaha-pemerintah, mediasi konflik agraria, harmonisasi aturan.",
-                app: "Forum Dewan Pengupahan Nasional dan Musyawarah Pembentukan Peraturan Daerah.",
-                risk: "Gejolak sosial berkelanjutan, aksi unjuk rasa berujung anarki, dan kemacetan pembuatan hukum."
+                id: 'konsensus',
+                title: '9. Orientasi Konsensus (Consensus Oriented)',
+                icon: 'fa-handshake',
+                color: 'from-amber-500 to-yellow-700',
+                shortDesc: 'Kemampuan menjembatani kepentingan yang berbeda demi mencapai kesepakatan terbaik bagi publik.',
+                indicators: [
+                    'Dialog tripartit dalam penetapan kebijakan ketenagakerjaan',
+                    'Resolusi konflik pertanahan melalui mediasi damai',
+                    'Musyawarah mufakat dalam pengambilan keputusan strategis'
+                ],
+                indonesiaCase: 'Dewan Pengupahan Nasional dan Musyawarah Lembaga Adat.',
+                riskIfIgnored: 'Konflik horizontal, perpecahan sosial, dan kebuntuan regulasi.'
             }
         ];
 
-        /* ================= 2. DATABASE STUDI KASUS INDONESIA ================= */
-        const CASES_DATA = [
+        /* ----------------------------------------------------
+         * 2. DATA STUDI KASUS APLIKASI PUBLIK INDONESIA
+         * ---------------------------------------------------- */
+        const CASE_STUDIES = [
             {
-                title: "SP4N-LAPOR!",
-                badge: "Pelayanan Publik",
-                icon: "fa-bullhorn",
-                color: "border-sky-500",
-                desc: "Sistem Pengaduan Pelayanan Publik Nasional yang menghubungkan warga dengan seluruh kementerian, lembaga, dan Pemda di Indonesia.",
-                impact: "Transparansi tidak lanjut aduan publik >85% dengan waktu respons rata-rata terpantau nasional."
+                id: 'lapor',
+                title: 'SP4N-LAPOR!',
+                agency: 'KemenPAN-RB / Kantor Staf Presiden / Ombudsman',
+                desc: 'Layanan aspirasi dan pengaduan online rakyat secara terintegrasi nasional untuk menyampaikan keluhan pelayanan publik.',
+                prinsip: 'Partisipasi & Responsivitas'
             },
             {
-                title: "E-LHKPN KPK",
-                badge: "Anti Korupsi",
-                icon: "fa-file-invoice-dollar",
-                color: "border-rose-500",
-                desc: "Kewajiban pelaporan harta kekayaan secara elektronik bagi penyelenggara negara untuk cegah gratifikasi dan tindak pidana pencucian uang.",
-                impact: "Masyarakat dapat memantau profil harta pejabat publik secara transparan."
+                id: 'lhkpn',
+                title: 'E-LHKPN KPK',
+                agency: 'Komisi Pemberantasan Korupsi (KPK)',
+                desc: 'Sistem pelaporan kekayaan penyelenggara negara secara elektronik untuk memantau kewajaran aset pejabat publik.',
+                prinsip: 'Transparansi & Akuntabilitas'
             },
             {
-                title: "LPSE & E-Katalog LKPP",
-                badge: "Pengadaan Digital",
-                icon: "fa-cart-shopping",
-                color: "border-emerald-500",
-                desc: "Sistem pengadaan barang dan jasa pemerintah berbasis elektronik untuk menghapus praktik suap dan persekongkolan tender.",
-                impact: "Menghemat triliunan rupiah anggaran negara serta meningkatkan efisiensi belanja publik."
+                id: 'lpse',
+                title: 'LPSE & E-Katalog LKPP',
+                agency: 'Lembaga Kebijakan Pengadaan Barang/Jasa Pemerintah',
+                desc: 'Pengadaan barang/jasa pemerintah secara elektronik transparan untuk mencegah penunjukan langsung bermasalah.',
+                prinsip: 'Transparansi & Efisiensi'
             },
             {
-                title: "Portal Satu Data Indonesia",
-                badge: "Open Data",
-                icon: "fa-database",
-                color: "border-indigo-500",
-                desc: "Kebijakan tata kelola data pemerintah untuk menghasilkan data yang akurat, mutakhir, terpadu, dan mudah diakses antar instansi.",
-                impact: "Mencegah duplikasi program sosial & mempercepat pembuatan kebijakan berbasis bukti (*evidence-based*)."
+                id: 'satudata',
+                title: 'Satu Data Indonesia',
+                agency: 'Bappenas & Badan Pusat Statistik (BPS)',
+                desc: 'Kebijakan tata kelola data pemerintah untuk menghasilkan data yang akurat, mutakhir, dan mudah diakses antar instansi.',
+                prinsip: 'Transparansi & Visi Strategis'
             },
             {
-                title: "Zona Integritas (WBK/WBBM)",
-                badge: "Reformasi Birokrasi",
-                icon: "fa-shield-halved",
-                color: "border-amber-500",
-                desc: "Predikat yang diberikan kepada instansi pemerintah yang pimpinannya komitmen mewujudkan Wilayah Bebas dari Korupsi.",
-                impact: "Meningkatkan indeks kepuasan masyarakat terhadap unit layanan publik secara terukur."
+                id: 'zi-wbk',
+                title: 'Zona Integritas WBK/WBBM',
+                agency: 'Seluruh Instansi Pemerintah RI',
+                desc: 'Predikat Wilayah Bebas dari Korupsi (WBK) bagi unit kerja yang berhasil menerapkan reformasi birokrasi nyata.',
+                prinsip: 'Akuntabilitas & Integritas'
             },
             {
-                title: "E-Budgeting APBD",
-                badge: "Transparansi Anggaran",
-                icon: "fa-coins",
-                color: "border-teal-500",
-                desc: "Penguncian dokumen perencanaan penganggaran daerah secara digital agar tidak bisa disusupi 'anggaran siluman'.",
-                impact: "Menjamin setiap rupiah APBD teralokasi sesuai hasil Musrenbang warga."
+                id: 'ebudgeting',
+                title: 'E-Budgeting APBD',
+                agency: 'Pemerintah Daerah (Pemda)',
+                desc: 'Penguncian sistem penganggaran secara online sejak musrenbang untuk mencegah munculnya anggaran siluman.',
+                prinsip: 'Transparansi & Efisiensi'
             }
         ];
 
-        /* ================= 3. DATABASE KUIS ================= */
+        /* ----------------------------------------------------
+         * 3. QUIZ QUESTIONS DATA
+         * ---------------------------------------------------- */
         const QUIZ_DATA = [
             {
-                q: "Manakah dari 3 pilar utama Good Governance yang berperan menciptakan regulasi dan hukum yang adil?",
-                opts: ["Sektor Swasta (Private Sector)", "Pemerintah (State)", "Masyarakat Sipil (Civil Society)", "Organisasi Internasional"],
-                ans: 1,
-                exp: "Pemerintah (State) bertanggung jawab merumuskan regulasi, penegakan hukum, dan penyediaan fasilitas pelayanan publik."
+                q: "Prinsip Good Governance yang mewajibkan instansi publik untuk mempublikasikan laporan APBD secara terbuka kepada masyarakat dinamakan...",
+                options: ["Inklusivitas", "Transparansi", "Visi Strategis", "Konsensus"],
+                answer: 1,
+                explain: "Transparansi adalah keterbukaan atas informasi publik sehingga masyarakat dapat mengawasi pengelolaan anggaran negara."
             },
             {
-                q: "Prinsip Good Governance yang mewajibkan kebebasan arus informasi publik dan dapat diakses dengan mudah disebut...",
-                opts: ["Akuntabilitas", "Orientasi Konsensus", "Transparansi", "Efisiensi"],
-                ans: 2,
-                exp: "Transparansi menjamin ketersediaan data dan kebebasan informasi publik agar masyarakat dapat memantau kebijakan."
+                q: "Sebuah instansi menyediakan fasilitas ramah disabilitas dan penganggaran responsif gender. Hal ini mencerminkan prinsip...",
+                options: ["Supremasi Hukum", "Akuntabilitas", "Kesetaraan & Inklusivitas", "Responsivitas"],
+                answer: 2,
+                explain: "Kesetaraan & Inklusivitas (Equity) menjamin semua kelompok warga memiliki hak dan akses yang sejajar tanpa diskriminasi."
             },
             {
-                q: "Aplikasi nasional resmi Indonesia yang digunakan sebagai kanal aduan pelayanan publik terpadu adalah...",
-                opts: ["E-LHKPN", "SP4N-LAPOR!", "Satu Data Indonesia", "OSS Go Online"],
-                ans: 1,
-                exp: "SP4N-LAPOR! adalah aplikasi resmi pengelolaan pengaduan pelayanan publik bagi seluruh instansi di Indonesia."
+                q: "Apa nama platform nasional resmi Indonesia yang memfasilitasi aduan pelayanan publik warga secara terintegrasi?",
+                options: ["E-LHKPN", "SP4N-LAPOR!", "Satu Data Indonesia", "LPSE"],
+                answer: 1,
+                explain: "SP4N-LAPOR! adalah Sistem Pengelolaan Pengaduan Pelayanan Publik Nasional milik pemerintah RI."
             },
             {
-                q: "Apa dampak risiko utama jika prinsip Akuntabilitas diabaikan dalam sebuah instansi pemerintah?",
-                opts: ["Anggaran boros & kewenangan disalahgunakan", "Rakyat terlalu cepat terlayani", "Informasi publik terlalu bebas", "Investasi swasta melonjak tinggi"],
-                ans: 0,
-                exp: "Tanpa akuntabilitas, pejabat publik tidak merasa bertanggung jawab atas anggaran dan wewenang sehingga rawan korupsi."
+                q: "Opini pemeriksaan keuangan terbaik dari BPK yang menandakan laporan keuangan instansi akuntabel disebut...",
+                options: ["Opini Wajar Tanpa Pengecualian (WTP)", "Opini Tidak Memberikan Pendapat (Disclaimer)", "Opini Wajar Dengan Pengecualian (WDP)", "Opini Tidak Wajar (Adverse)"],
+                answer: 0,
+                explain: "Opini WTP (Wajar Tanpa Pengecualian) adalah predikat akuntabilitas keuangan tertinggi dari Badan Pemeriksa Keuangan."
             },
             {
-                q: "Pengadaan barang/jasa pemerintah secara elektronik melalui LPSE merupakan wujud nyata penerapan prinsip...",
-                opts: ["Inklusivitas & Kesetaraan", "Efisiensi & Efektivitas", "Visi Strategis", "Orientasi Konsensus"],
-                ans: 1,
-                exp: "E-Procurement (LPSE) memangkas birokrasi, menghemat pengeluaran anggaran negara, dan mencegah pemborosan."
+                q: "Tiga pilar utama penggerak Good Governance yang harus bersinergi secara seimbang adalah...",
+                options: ["Presiden, DPR, dan MA", "Pemerintah (State), Swasta (Market), dan Masyarakat Sipil (Civil Society)", "POLRI, TNI, dan Kejaksaan", "BUMN, BUMD, dan Swasta"],
+                answer: 1,
+                explain: "Good Governance berdiri di atas 3 pilar: State (Pemerintah), Market (Swasta), dan Civil Society (Masyarakat Sipil)."
             }
         ];
 
-        /* ================= 4. ANALYTICS & EVENT TRACKING ENGINE ================= */
-        const TOTAL_TOPICS_COUNT = 20;
-        let analyticsData = {
-            totalClicks: 0,
-            categories: {
-                "Konsep Utama": 0,
-                "9 Prinsip": 0,
-                "Penerapan Indonesia": 0,
-                "Simulator Audit": 0,
-                "Kuis Pemahaman": 0
-            },
-            items: {}
-        };
+        /* ----------------------------------------------------
+         * 4. STATE & LOCALSTORAGE PERSISTENCE
+         * ---------------------------------------------------- */
+        let activityLog = [];
+        let quizCurrentIndex = 0;
+        let quizScore = 0;
+        let categoryChartInstance = null;
 
-        let analyticsChartInstance = null;
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityFromStorage();
+            updateOnPageBadges();
+            renderPrinciplesGrid();
+            renderCaseStudies();
+            calculateAuditScore();
+            renderQuizQuestion();
+            updateAnalyticsUI();
+        });
 
-        function initAnalytics() {
-            const saved = localStorage.getItem('goodgov_learning_analytics');
+        function loadActivityFromStorage() {
+            const saved = localStorage.getItem('gov_activity_log');
             if (saved) {
                 try {
-                    analyticsData = JSON.parse(saved);
+                    activityLog = JSON.parse(saved);
                 } catch(e) {
-                    console.error("Gagal memuat analitik tersimpan", e);
+                    activityLog = [];
                 }
             }
-            updateAnalyticsCounters();
         }
 
-        function saveAnalytics() {
-            localStorage.setItem('goodgov_learning_analytics', JSON.stringify(analyticsData));
-            updateAnalyticsCounters();
+        function saveActivityToStorage() {
+            localStorage.setItem('gov_activity_log', JSON.stringify(activityLog));
         }
 
-        function trackActivity(itemName, category) {
-            if (!itemName || !category) return;
+        /* CORE TRACKING FUNCTION */
+        function trackActivity(itemName, categoryName) {
+            const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let record = activityLog.find(item => item.name === itemName);
 
-            analyticsData.totalClicks++;
-            if (analyticsData.categories[category] !== undefined) {
-                analyticsData.categories[category]++;
+            if (record) {
+                record.count += 1;
+                record.lastTime = now;
             } else {
-                analyticsData.categories[category] = 1;
-            }
-
-            if (!analyticsData.items[itemName]) {
-                analyticsData.items[itemName] = {
-                    count: 0,
-                    category: category,
-                    lastClicked: ''
+                record = {
+                    id: 'act-' + Date.now() + '-' + Math.floor(Math.random()*1000),
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: now
                 };
+                activityLog.push(record);
             }
-            analyticsData.items[itemName].count++;
-            analyticsData.items[itemName].lastClicked = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-            saveAnalytics();
+            saveActivityToStorage();
+            updateAnalyticsUI();
+            showToastNotification(`Aktivitas Dicatat: ${itemName} (+1)`);
             updateOnPageBadges();
-            showToast(`Hitungan bertambah (+1): ${itemName}`);
         }
 
-        function updateAnalyticsCounters() {
-            const countStr = `${analyticsData.totalClicks} Klik`;
-            document.getElementById('header-click-count').textContent = countStr;
-            document.getElementById('mobile-analytics-badge').textContent = analyticsData.totalClicks;
-            document.getElementById('fab-click-counter').textContent = `${analyticsData.totalClicks} Klik Tercatat`;
+        function getItemCount(itemName) {
+            const record = activityLog.find(item => item.name === itemName);
+            return record ? record.count : 0;
         }
 
+        /* ----------------------------------------------------
+         * 5. UI UPDATERS & COUNTER BADGES
+         * ---------------------------------------------------- */
         function updateOnPageBadges() {
-            // Pillars & Modul Counters
-            const getItemCount = (name) => (analyticsData.items[name] ? analyticsData.items[name].count : 0);
-            
-            document.getElementById('badge-pilar-state').textContent = `👁️ ${getItemCount('Pilar 1: Pemerintah (State)')}x dipelajari`;
-            document.getElementById('badge-pilar-private').textContent = `👁️ ${getItemCount('Pilar 2: Sektor Swasta (Private Sector)')}x dipelajari`;
-            document.getElementById('badge-pilar-civil').textContent = `👁️ ${getItemCount('Pilar 3: Masyarakat Sipil (Civil Society)')}x dipelajari`;
+            // Update Nav counts
+            document.getElementById('nav-count-beranda').innerText = getItemCount('Tab Beranda');
+            document.getElementById('nav-count-prinsip').innerText = getItemCount('Tab Prinsip Governance');
+            document.getElementById('nav-count-kasus').innerText = getItemCount('Tab Studi Kasus System');
+            document.getElementById('nav-count-audit').innerText = getItemCount('Tab Audit Simulator');
+            document.getElementById('nav-count-kuis').innerText = getItemCount('Tab Kuis Evaluasi');
 
-            document.getElementById('badge-mod-1').textContent = `${getItemCount('Modul Konsep: Ekosistem Tripartit')}x diklik`;
-            document.getElementById('badge-mod-2').textContent = `${getItemCount('Modul Konsep: Anti-Korupsi & Integritas')}x diklik`;
-            document.getElementById('badge-mod-3').textContent = `${getItemCount('Modul Konsep: Digital Governance (SPBE)')}x diklik`;
+            // Beranda counters
+            document.getElementById('click-count-pilar-state').innerText = `👁️ ${getItemCount('Pilar 1: Negara & Pemerintah (State)')}x dipelajari`;
+            document.getElementById('click-count-pilar-market').innerText = `👁️ ${getItemCount('Pilar 2: Sektor Swasta (Market)')}x dipelajari`;
+            document.getElementById('click-count-pilar-society').innerText = `👁️ ${getItemCount('Pilar 3: Masyarakat Sipil (Civil Society)')}x dipelajari`;
+
+            document.getElementById('click-count-modul-integritas').innerText = `👁️ ${getItemCount('Modul: Integritas & Anti-Korupsi')}x dipelajari`;
+            document.getElementById('click-count-modul-govtech').innerText = `👁️ ${getItemCount('Modul: GovTech & SPBE Digital')}x dipelajari`;
+            document.getElementById('click-count-modul-reformasi').innerText = `👁️ ${getItemCount('Modul: Reformasi Birokrasi Tematik')}x dipelajari`;
+
+            // Audit & Quiz
+            const totalAuditUse = getItemCount('Slider: Transparansi Audit') + getItemCount('Slider: Akuntabilitas Audit') + getItemCount('Slider: Partisipasi Audit') + getItemCount('Slider: Penegakan Hukum Audit') + getItemCount('Slider: Digitalisasi Audit');
+            document.getElementById('click-count-audit-sim').innerText = `👁️ ${totalAuditUse}x simulasi dijalankan`;
+            document.getElementById('click-count-quiz-mod').innerText = `👁️ ${getItemCount('Kuis: Jawab Soal')}x kuis dikerjakan`;
+
+            // Principles Card Badges
+            PRINCIPLES_DATA.forEach(p => {
+                const badge = document.getElementById(`card-badge-${p.id}`);
+                if (badge) {
+                    badge.innerText = `👁️ ${getItemCount(`Prinsip: ${p.title}`)}x dipelajari`;
+                }
+            });
+
+            // Case Studies Badges
+            CASE_STUDIES.forEach(c => {
+                const badge = document.getElementById(`case-badge-${c.id}`);
+                if (badge) {
+                    badge.innerText = `👁️ ${getItemCount(`Studi Kasus: ${c.title}`)}x dipelajari`;
+                }
+            });
         }
 
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'pointer-events-auto bg-slate-900 text-amber-300 border border-indigo-500/50 shadow-2xl px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-0 opacity-100';
-            toast.innerHTML = `<i class="fa-solid fa-chart-line text-amber-400"></i><span class="truncate max-w-xs">${message}</span>`;
-            
+        function showToastNotification(msg) {
             const container = document.getElementById('toast-container');
-            if (container) {
-                container.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.add('opacity-0', 'translate-y-2');
-                    setTimeout(() => toast.remove(), 300);
-                }, 2200);
-            }
+            const toast = document.createElement('div');
+            toast.className = "bg-navy-950 text-gold-400 border border-gold-400/30 text-xs px-3.5 py-2 rounded-xl shadow-xl flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-bell text-gold-400"></i> <span>${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
         }
 
-        function openAnalyticsModal() {
-            renderAnalyticsPanel();
-            document.getElementById('modal-analytics').classList.remove('hidden');
-        }
-
-        function closeAnalyticsModal() {
-            document.getElementById('modal-analytics').classList.add('hidden');
-        }
-
-        function renderAnalyticsPanel() {
-            const uniqueCount = Object.keys(analyticsData.items).length;
-            const progressPct = Math.min(100, Math.round((uniqueCount / TOTAL_TOPICS_COUNT) * 100));
-
-            document.getElementById('an-total-clicks').textContent = analyticsData.totalClicks;
-            document.getElementById('an-unique-count').textContent = `${uniqueCount} / ${TOTAL_TOPICS_COUNT}`;
-            document.getElementById('an-progress-pct').textContent = `${progressPct}%`;
-            document.getElementById('an-progress-text').textContent = `${progressPct}% Selesai`;
-            document.getElementById('an-progress-bar').style.width = `${progressPct}%`;
-
-            let topCat = "-";
-            let maxCatVal = -1;
-            Object.entries(analyticsData.categories).forEach(([cat, val]) => {
-                if (val > maxCatVal && val > 0) {
-                    maxCatVal = val;
-                    topCat = cat;
-                }
-            });
-            document.getElementById('an-top-category').textContent = topCat;
-
-            const sortedItems = Object.entries(analyticsData.items)
-                .map(([name, data]) => ({ name, ...data }))
-                .sort((a, b) => b.count - a.count);
-
-            const top5List = document.getElementById('an-top-list');
-            top5List.innerHTML = '';
-            if (sortedItems.length === 0) {
-                top5List.innerHTML = `<div class="text-xs text-slate-400 italic p-3 text-center">Belum ada materi yang diklik.</div>`;
-            } else {
-                sortedItems.slice(0, 5).forEach((item, idx) => {
-                    const row = document.createElement('div');
-                    row.className = "flex items-center justify-between p-2.5 bg-white rounded-xl border border-slate-100 text-xs";
-                    row.innerHTML = `
-                        <div class="flex items-center space-x-2 truncate">
-                            <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[10px] flex items-center justify-center">${idx + 1}</span>
-                            <span class="font-bold text-slate-800 truncate">${item.name}</span>
-                        </div>
-                        <span class="font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100 shrink-0">${item.count} Klik</span>
-                    `;
-                    top5List.appendChild(row);
-                });
-            }
-
-            const tableBody = document.getElementById('an-log-table-body');
-            tableBody.innerHTML = '';
-            if (sortedItems.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada riwayat klik.</td></tr>`;
-            } else {
-                sortedItems.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50";
-                    tr.innerHTML = `
-                        <td class="p-3 font-bold text-slate-800">${item.name}</td>
-                        <td class="p-3 text-slate-600">${item.category}</td>
-                        <td class="p-3 text-center font-black text-indigo-700">${item.count}</td>
-                        <td class="p-3 text-slate-500">${item.lastClicked || '-'}</td>
-                    `;
-                    tableBody.appendChild(tr);
-                });
-            }
-
-            renderAnalyticsChart();
-        }
-
-        function renderAnalyticsChart() {
-            const ctx = document.getElementById('analyticsChart').getContext('2d');
-            if (analyticsChartInstance) {
-                analyticsChartInstance.destroy();
-            }
-
-            const labels = Object.keys(analyticsData.categories);
-            const dataVals = Object.values(analyticsData.categories);
-
-            analyticsChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: dataVals,
-                        backgroundColor: [
-                            '#4338ca', '#d97706', '#059669', '#0284c7', '#ec4899'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: { size: 10, family: 'Plus Jakarta Sans' },
-                                boxWidth: 12
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function exportAnalyticsData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analyticsData, null, 2));
-            const dlAnchorElem = document.createElement('a');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", `Analitik_GoodGov_${new Date().toISOString().slice(0,10)}.json`);
-            dlAnchorElem.click();
-        }
-
-        function resetAnalyticsData() {
-            analyticsData = {
-                totalClicks: 0,
-                categories: {
-                    "Konsep Utama": 0,
-                    "9 Prinsip": 0,
-                    "Penerapan Indonesia": 0,
-                    "Simulator Audit": 0,
-                    "Kuis Pemahaman": 0
-                },
-                items: {}
-            };
-            saveAnalytics();
-            updateOnPageBadges();
-            renderAnalyticsPanel();
-            showToast("Data analitik belajar berhasil direset.");
-        }
-
-        /* ================= 5. APP CONTROLLER & LOGIC ================= */
-        let quizIndex = 0;
-        let quizAnswers = Array(QUIZ_DATA.length).fill(null);
-
-        window.onload = function() {
-            initAnalytics();
-            renderPrinciplesGrid(PRINCIPLES_DATA);
-            renderCasesGrid();
-            calculateMaturityIndex();
-            renderQuizCard();
-            updateOnPageBadges();
-        };
-
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        }
-
+        /* ----------------------------------------------------
+         * 6. NAVIGATION & TABS
+         * ---------------------------------------------------- */
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById('tab-' + tabId);
-            if(target) target.classList.remove('hidden');
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
 
-            document.querySelectorAll('.nav-tab').forEach(btn => {
-                btn.classList.remove('bg-indigo-900', 'text-amber-300');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
                 btn.classList.add('text-slate-300');
             });
-
-            const activeBtn = document.getElementById('btn-' + tabId);
-            if(activeBtn) {
-                activeBtn.classList.add('bg-indigo-900', 'text-amber-300');
-                activeBtn.classList.remove('text-slate-300');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-white/10', 'text-white');
+                activeNav.classList.remove('text-slate-300');
             }
 
-            const tabCategoryMap = {
-                'beranda': 'Konsep Utama',
-                'prinsip': '9 Prinsip',
-                'penerapan': 'Penerapan Indonesia',
-                'simulator': 'Simulator Audit',
-                'kuis': 'Kuis Pemahaman'
-            };
-
-            const tabNameMap = {
-                'beranda': 'Tab Beranda',
-                'prinsip': 'Tab 9 Prinsip',
-                'penerapan': 'Tab Penerapan Indonesia',
-                'simulator': 'Tab Simulator Audit',
-                'kuis': 'Tab Kuis Pemahaman'
-            };
-
-            trackActivity(tabNameMap[tabId] || tabId, tabCategoryMap[tabId] || 'Umum');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* RENDERING 9 PRINSIP */
-        function filterPrinciples() {
-            const search = document.getElementById('principles-search').value.toLowerCase().trim();
-            const category = document.getElementById('principles-filter').value;
+        /* ----------------------------------------------------
+         * 7. KATALOG 9 PRINSIP GOVERNANCE
+         * ---------------------------------------------------- */
+        function renderPrinciplesGrid() {
+            const container = document.getElementById('principles-grid');
+            container.innerHTML = '';
 
-            const filtered = PRINCIPLES_DATA.filter(item => {
-                const matchSearch = item.title.toLowerCase().includes(search) || item.summary.toLowerCase().includes(search);
-                const matchCat = (category === 'ALL') || (item.cat === category);
-                return matchSearch && matchCat;
+            const searchTerm = (document.getElementById('principle-search')?.value || '').toLowerCase();
+
+            const filtered = PRINCIPLES_DATA.filter(p => {
+                return p.title.toLowerCase().includes(searchTerm) || p.shortDesc.toLowerCase().includes(searchTerm) || p.indonesiaCase.toLowerCase().includes(searchTerm);
             });
 
-            renderPrinciplesGrid(filtered);
-        }
-
-        function renderPrinciplesGrid(items) {
-            const grid = document.getElementById('principles-grid');
-            document.getElementById('principles-count').textContent = items.length;
-            grid.innerHTML = '';
-
-            items.forEach(item => {
-                const clickCount = analyticsData.items[item.title] ? analyticsData.items[item.title].count : 0;
+            filtered.forEach(p => {
+                const count = getItemCount(`Prinsip: ${p.title}`);
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-lg transition p-5 flex flex-col justify-between space-y-4 group";
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer";
+                card.onclick = () => openPrincipleModal(p.id);
 
                 card.innerHTML = `
-                    <div class="space-y-3">
+                    <div class="h-28 bg-gradient-to-r ${p.color} p-5 text-white relative flex flex-col justify-between">
                         <div class="flex items-center justify-between">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-lg group-hover:bg-indigo-600 group-hover:text-white transition">
-                                <i class="fa-solid ${item.icon}"></i>
-                            </div>
-                            <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-                                👁️ ${clickCount}x dipelajari
+                            <i class="fa-solid ${p.icon} text-2xl opacity-90"></i>
+                            <span id="card-badge-${p.id}" class="counter-badge bg-gold-400 text-navy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                👁️ ${count}x dipelajari
                             </span>
                         </div>
-
-                        <div>
-                            <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">${item.cat}</span>
-                            <h3 class="text-base font-extrabold text-slate-900 group-hover:text-indigo-700 transition mt-0.5">${item.title}</h3>
-                            <p class="text-xs text-slate-600 mt-1 line-clamp-3 leading-relaxed">${item.summary}</p>
+                        <h4 class="font-bold text-lg group-hover:translate-x-1 transition-transform">${p.title}</h4>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                        <p class="text-slate-600 leading-relaxed">${p.shortDesc}</p>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block">Contoh Nyata di Indonesia:</span>
+                            <span class="text-slate-700 font-medium">${p.indonesiaCase}</span>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-gov-700 font-bold group-hover:underline">
+                            <span>Lihat Indikator Sukses</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
                         </div>
                     </div>
-
-                    <div class="pt-3 border-t border-slate-100">
-                        <button onclick="openPrincipleModal('${item.id}')" class="w-full py-2 bg-slate-50 group-hover:bg-indigo-700 text-slate-700 group-hover:text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5">
-                            <span>Baca Detail Prinsip</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
-                    </div>
                 `;
-                grid.appendChild(card);
+                container.appendChild(card);
             });
+        }
+
+        function filterPrinciples() {
+            renderPrinciplesGrid();
         }
 
         function openPrincipleModal(id) {
             const p = PRINCIPLES_DATA.find(item => item.id === id);
             if (!p) return;
 
-            trackActivity(p.title, '9 Prinsip');
+            trackActivity(`Prinsip: ${p.title}`, 'Detail 9 Prinsip');
 
-            document.getElementById('pm-icon').className = `fa-solid ${p.icon}`;
-            document.getElementById('pm-cat').textContent = p.cat;
-            document.getElementById('pm-title').textContent = p.title;
-            document.getElementById('pm-def').textContent = p.def;
-            document.getElementById('pm-ind').textContent = p.ind;
-            document.getElementById('pm-app').textContent = p.app;
-            document.getElementById('pm-risk').textContent = p.risk;
+            const header = document.getElementById('principle-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${p.color}`;
+            header.innerHTML = `
+                <button onclick="closePrincipleModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center font-bold text-xl">
+                        <i class="fa-solid ${p.icon}"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-gold-300 font-mono">Prinsip Baku UNDP</span>
+                </div>
+                <h3 class="text-2xl font-extrabold">${p.title}</h3>
+                <div class="mt-3 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-lg inline-flex items-center space-x-2 text-xs font-mono text-gold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah dipelajari sebanyak <strong>${getItemCount(`Prinsip: ${p.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('principle-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h5 class="font-bold text-slate-800 text-sm mb-1">Penjelasan Singkat</h5>
+                    <p class="text-slate-600 leading-relaxed">${p.shortDesc}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">3 Indikator Utama Keberhasilan:</h5>
+                    <ul class="space-y-1.5 bg-gov-50/60 border border-gov-100 p-3 rounded-xl text-gov-900">
+                        ${p.indicators.map(ind => `<li class="flex items-start space-x-2"><i class="fa-solid fa-check text-gov-600 mt-0.5"></i><span>${ind}</span></li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Penerapan Nyata di Indonesia:</h5>
+                    <p class="bg-amber-50 text-amber-900 p-3 rounded-xl border border-amber-200 font-medium">${p.indonesiaCase}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Risiko Jika Prinsip Ini Diabaikan:</h5>
+                    <p class="bg-rose-50 text-rose-800 p-3 rounded-xl border border-rose-100 font-medium">
+                        <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-600"></i> ${p.riskIfIgnored}
+                    </p>
+                </div>
+            `;
 
             document.getElementById('modal-principle').classList.remove('hidden');
         }
@@ -1182,168 +1042,283 @@
             document.getElementById('modal-principle').classList.add('hidden');
         }
 
-        /* RENDERING STUDI KASUS INDONESIA */
-        function renderCasesGrid() {
-            const grid = document.getElementById('cases-grid');
-            grid.innerHTML = '';
+        function openPillarDetail(pillarType) {
+            if (pillarType === 'state') {
+                alert('Pilar Negara (State): Berfungsi menciptakan kepastian hukum, menjamin keamanan nasional, serta mengelola anggaran publik secara akuntabel.');
+            } else if (pillarType === 'market') {
+                alert('Pilar Swasta (Market): Berperan menggerakkan perekonomian, menciptakan lapangan kerja, dan mematuhi etika bisnis serta tata kelola perusahaan yang baik (GCG).');
+            } else if (pillarType === 'society') {
+                alert('Pilar Masyarakat Sipil (Civil Society): Berperan sebagai pengawas independen (watchdog) untuk memastikan transparansi dan memperjuangkan aspirasi publik.');
+            }
+        }
 
-            CASES_DATA.forEach(c => {
-                const clickCount = analyticsData.items[`Studi Kasus: ${c.title}`] ? analyticsData.items[`Studi Kasus: ${c.title}`].count : 0;
+        /* ----------------------------------------------------
+         * 8. STUDI KASUS APLIKASI PUBLIK INDONESIA
+         * ---------------------------------------------------- */
+        function renderCaseStudies() {
+            const container = document.getElementById('case-studies-container');
+            container.innerHTML = '';
+
+            CASE_STUDIES.forEach(c => {
+                const count = getItemCount(`Studi Kasus: ${c.title}`);
                 const card = document.createElement('div');
-                card.onclick = () => trackActivity(`Studi Kasus: ${c.title}`, 'Penerapan Indonesia');
-                card.className = `bg-white p-5 rounded-2xl border-t-4 ${c.color} border-x border-b border-slate-200/90 shadow-sm hover:shadow-md transition cursor-pointer space-y-3`;
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group";
+                card.onclick = () => trackActivity(`Studi Kasus: ${c.title}`, 'Studi Kasus Indonesia');
 
                 card.innerHTML = `
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">${c.badge}</span>
-                        <span class="text-[10px] font-bold text-slate-500">👁️ ${clickCount}x</span>
+                        <span class="bg-gov-100 text-gov-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">${c.prinsip}</span>
+                        <span id="case-badge-${c.id}" class="counter-badge bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full border">
+                            👁️ ${count}x dipelajari
+                        </span>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid ${c.icon}"></i>
-                        </div>
-                        <h3 class="font-extrabold text-slate-900 text-base leading-snug">${c.title}</h3>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed">${c.desc}</p>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-[11px] text-slate-700">
-                        <strong class="text-indigo-700 block mb-0.5">Dampak Utama:</strong>
-                        ${c.impact}
+                    <h4 class="font-bold text-slate-800 text-lg group-hover:text-gov-700 transition">${c.title}</h4>
+                    <p class="text-slate-500 text-xs leading-relaxed">${c.desc}</p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>Instansi: <strong>${c.agency}</strong></span>
                     </div>
                 `;
-                grid.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        /* SIMULATOR MATURITY INDEX */
-        function calculateMaturityIndex() {
-            const d1 = parseInt(document.getElementById('sim-d1').value);
-            const d2 = parseInt(document.getElementById('sim-d2').value);
-            const d3 = parseInt(document.getElementById('sim-d3').value);
-            const d4 = parseInt(document.getElementById('sim-d4').value);
-            const d5 = parseInt(document.getElementById('sim-d5').value);
+        /* ----------------------------------------------------
+         * 9. SIMULATOR AUDIT INDEKS GOVERNANCE
+         * ---------------------------------------------------- */
+        function calculateAuditScore() {
+            const d1 = parseInt(document.getElementById('dim1').value) || 70;
+            const d2 = parseInt(document.getElementById('dim2').value) || 65;
+            const d3 = parseInt(document.getElementById('dim3').value) || 80;
+            const d4 = parseInt(document.getElementById('dim4').value) || 75;
+            const d5 = parseInt(document.getElementById('dim5').value) || 85;
 
-            const avg = ((d1 + d2 + d3 + d4 + d5) / 5).toFixed(1);
+            document.getElementById('val-dim1').innerText = `${d1} / 100`;
+            document.getElementById('val-dim2').innerText = `${d2} / 100`;
+            document.getElementById('val-dim3').innerText = `${d3} / 100`;
+            document.getElementById('val-dim4').innerText = `${d4} / 100`;
+            document.getElementById('val-dim5').innerText = `${d5} / 100`;
 
-            document.getElementById('sim-score-display').textContent = `${avg} / 5.0`;
+            const score = ((d1 + d2 + d3 + d4 + d5) / 5).toFixed(1);
+            document.getElementById('audit-score-number').innerText = score;
 
-            const badge = document.getElementById('sim-level-badge');
-            const rec = document.getElementById('sim-recommendation');
+            const badge = document.getElementById('audit-status-badge');
+            const reco = document.getElementById('audit-recommendation');
 
-            if (avg >= 4.5) {
-                badge.className = "inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full";
-                badge.textContent = "Level 5: World-Class / Exemplary";
-                rec.textContent = "Instansi Anda memenuhi standar tata kelola publik internasional. Pertahankan konsistensi integrasi data dan terus bagikan praktik terbaik ke instansi lain.";
-            } else if (avg >= 3.5) {
-                badge.className = "inline-block px-3 py-1 bg-indigo-100 text-indigo-800 text-xs font-extrabold rounded-full";
-                badge.textContent = "Level 4: Terkelola & Terintegrasi";
-                rec.textContent = "Sangat baik. Fokus berikutnya adalah mempercepat respons aduan publik di bawah 24 jam dan memperkuat audit pencegahan korupsi internal.";
-            } else if (avg >= 2.5) {
-                badge.className = "inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-extrabold rounded-full";
-                badge.textContent = "Level 3: Diterapkan Terbatas";
-                rec.textContent = "Tata kelola berjalan secara formal namun belum terintegrasi digital. Integrasikan aplikasi layanan dan buka transparansi publikasi anggaran.";
+            if (score >= 85) {
+                badge.innerText = 'Sangat Baik (Level 5 - World Class)';
+                badge.className = 'bg-emerald-500 text-white font-bold text-xs px-4 py-1.5 rounded-full shadow';
+                reco.innerText = 'Instansi memiliki tata kelola sangat matang. Pertahankan konsistensi integrasi digital dan jadilah role model nasional.';
+            } else if (score >= 70) {
+                badge.innerText = 'Baik (Level 4 - Advanced)';
+                badge.className = 'bg-gov-500 text-white font-bold text-xs px-4 py-1.5 rounded-full shadow';
+                reco.innerText = 'Tingkatkan integrasi transparansi data real-time anggaran publik dan perkuat perlindungan saksi pelapor WBS internal.';
+            } else if (score >= 55) {
+                badge.innerText = 'Cukup (Level 3 - Intermediate)';
+                badge.className = 'bg-amber-500 text-navy-950 font-bold text-xs px-4 py-1.5 rounded-full shadow';
+                reco.innerText = 'Fokus pada penyederhanaan izin publik dan peningkatan tindak lanjut pengaduan masyarakat di platform SP4N-LAPOR!.';
             } else {
-                badge.className = "inline-block px-3 py-1 bg-rose-100 text-rose-800 text-xs font-extrabold rounded-full";
-                badge.textContent = "Level 1-2: Rintisan / Rentang Risiko";
-                rec.textContent = "Risiko mal-administrasi dan korupsi tinggi. Segera bangun kanal aduan resmi, terapkan Sistem Pemerintahan Berbasis Elektronik, dan publikasikan APBD.";
+                badge.innerText = 'Perlu Perbaikan (Level 1-2 - Basic)';
+                badge.className = 'bg-rose-500 text-white font-bold text-xs px-4 py-1.5 rounded-full shadow';
+                reco.innerText = 'Segera bentuk Satgas Pengawasan Internal, buka transparansi APBD melalui portal resmi, dan laksanakan digitalisasi layanan.';
             }
 
-            trackActivity('Kalkulator Simulator Audit', 'Simulator Audit');
+            updateOnPageBadges();
         }
 
-        /* QUIZ ENGINE */
-        function renderQuizCard() {
-            const container = document.getElementById('quiz-question-card');
-            const q = QUIZ_DATA[quizIndex];
-            const selectedAns = quizAnswers[quizIndex];
-
-            document.getElementById('quiz-curr').textContent = quizIndex + 1;
-
-            let html = `
-                <div class="space-y-4">
-                    <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">${quizIndex+1}. ${q.q}</h3>
-                    <div class="space-y-2">
-                        ${q.opts.map((opt, idx) => {
-                            let btnStyle = "w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-start space-x-3 ";
-                            if(selectedAns !== null) {
-                                if(idx === q.ans) btnStyle += "bg-emerald-50 border-emerald-500 text-emerald-900 font-bold";
-                                else if(idx === selectedAns) btnStyle += "bg-rose-50 border-rose-400 text-rose-900 font-bold";
-                                else btnStyle += "bg-slate-50 border-slate-200 text-slate-400 opacity-60";
-                            } else {
-                                btnStyle += "bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700";
-                            }
-                            return `
-                                <button onclick="selectQuizAns(${idx})" ${selectedAns !== null ? 'disabled' : ''} class="${btnStyle}">
-                                    <span class="w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs shrink-0">${String.fromCharCode(65 + idx)}</span>
-                                    <span>${opt}</span>
-                                </button>
-                            `;
-                        }).join('')}
-                    </div>
-
-                    ${selectedAns !== null ? `
-                        <div class="p-3.5 rounded-xl border ${selectedAns === q.ans ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'} text-xs space-y-1">
-                            <span class="font-bold block"><i class="fa-solid fa-circle-info mr-1"></i> Penjelasan:</span>
-                            <p class="leading-relaxed">${q.exp}</p>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-
-            container.innerHTML = html;
-            document.getElementById('btn-quiz-prev').disabled = quizIndex === 0;
-
-            if(quizIndex === QUIZ_DATA.length - 1 && selectedAns !== null) {
-                document.getElementById('btn-quiz-next').innerHTML = `Lihat Skor <i class="fa-solid fa-trophy ml-1"></i>`;
-            } else {
-                document.getElementById('btn-quiz-next').innerHTML = `Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>`;
-            }
-        }
-
-        function selectQuizAns(idx) {
-            quizAnswers[quizIndex] = idx;
-            trackActivity(`Kuis Soal #${quizIndex+1}: Jawaban ${String.fromCharCode(65 + idx)}`, 'Kuis Pemahaman');
-            renderQuizCard();
-        }
-
-        function navigateQuiz(dir) {
-            if(dir === 1 && quizIndex === QUIZ_DATA.length - 1 && quizAnswers[quizIndex] !== null) {
-                showQuizScore();
-                return;
-            }
-            quizIndex += dir;
-            if(quizIndex < 0) quizIndex = 0;
-            if(quizIndex >= QUIZ_DATA.length) quizIndex = QUIZ_DATA.length - 1;
-            renderQuizCard();
-        }
-
-        function showQuizScore() {
-            let correct = 0;
-            quizAnswers.forEach((ans, i) => {
-                if(ans === QUIZ_DATA[i].ans) correct++;
-            });
-
-            const pct = Math.round((correct / QUIZ_DATA.length) * 100);
-            const container = document.getElementById('quiz-question-card');
-            document.getElementById('quiz-controls').classList.add('hidden');
+        /* ----------------------------------------------------
+         * 10. MINI QUIZ INTERAKTIF
+         * ---------------------------------------------------- */
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-interactive-container');
+            const q = QUIZ_DATA[quizCurrentIndex];
 
             container.innerHTML = `
-                <div class="text-center py-8 space-y-4">
-                    <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto shadow-inner">
-                        <i class="fa-solid fa-trophy"></i>
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span>Pertanyaan Soal ${quizCurrentIndex + 1} dari ${QUIZ_DATA.length}</span>
+                        <span>Skor Terkumpul: <strong class="text-gov-700 font-mono">${quizScore}</strong></span>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-900">Kuis Selesai!</h3>
-                    <div class="text-4xl font-black text-indigo-700">${pct}%</div>
-                    <p class="text-xs text-slate-600">Anda berhasil menjawab benar <strong>${correct}</strong> dari ${QUIZ_DATA.length} pertanyaan seputar Good Governance.</p>
-                    <button onclick="resetQuiz()" class="px-5 py-2.5 bg-indigo-700 text-white font-bold text-xs rounded-xl hover:bg-indigo-800 transition">Ulangi Kuis</button>
+                    <h4 class="font-extrabold text-slate-800 text-sm sm:text-base leading-snug">${q.q}</h4>
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="answerQuizQuestion(${idx})" class="w-full text-left bg-white hover:bg-gov-50 border border-slate-200 hover:border-gov-300 p-3.5 rounded-xl text-xs font-medium text-slate-700 transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-gov-600 transition"></i>
+                            </button>
+                        `).join('')}
+                    </div>
                 </div>
             `;
         }
 
-        function resetQuiz() {
-            quizIndex = 0;
-            quizAnswers = Array(QUIZ_DATA.length).fill(null);
-            document.getElementById('quiz-controls').classList.remove('hidden');
-            renderQuizCard();
+        function answerQuizQuestion(optIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi');
+            const q = QUIZ_DATA[quizCurrentIndex];
+            const isCorrect = optIdx === q.answer;
+
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-interactive-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-3.5 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' : 'bg-rose-100 text-rose-900 border border-rose-200'} text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-lg"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Tepat! (+20 Poin)' : 'Jawaban Kurang Tepat.'}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed bg-white p-4 rounded-xl border border-slate-200">
+                        <strong>Pembahasan:</strong> ${q.explain}
+                    </p>
+                    <button onclick="nextQuizStep()" class="bg-gov-700 hover:bg-gov-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                        ${quizCurrentIndex < QUIZ_DATA.length - 1 ? 'Pertanyaan Berikutnya →' : 'Selesaikan Kuis'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuizStep() {
+            if (quizCurrentIndex < QUIZ_DATA.length - 1) {
+                quizCurrentIndex++;
+                renderQuizQuestion();
+            } else {
+                const container = document.getElementById('quiz-interactive-container');
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-navy-950 to-gov-950 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-gov-800">
+                        <i class="fa-solid fa-trophy text-gold-400 text-5xl"></i>
+                        <h4 class="font-extrabold text-2xl">Kuis Selesai!</h4>
+                        <p class="text-xs text-slate-300">Skor Akhir Pemahaman Good Governance Anda: <strong class="text-gold-400 text-xl font-mono block mt-1">${quizScore} / 100</strong></p>
+                        <button onclick="quizCurrentIndex=0; quizScore=0; renderQuizQuestion();" class="bg-gradient-to-r from-gold-400 to-amber-500 hover:from-gold-500 hover:to-amber-600 text-navy-950 font-bold px-6 py-2.5 rounded-xl text-xs transition inline-block">
+                            Ulangi Kuis
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        /* ----------------------------------------------------
+         * 11. ANALYTICS MODAL & CHART MANAGER
+         * ---------------------------------------------------- */
+        function openAnalyticsModal() {
+            updateAnalyticsUI();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function updateAnalyticsUI() {
+            const totalClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            
+            document.getElementById('header-total-clicks').innerText = `${totalClicks} Klik`;
+            document.getElementById('fab-click-total').innerText = `${totalClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalClicks;
+
+            // Category Aggregation
+            const catCounts = {};
+            activityLog.forEach(item => {
+                catCounts[item.category] = (catCounts[item.category] || 0) + item.count;
+            });
+
+            let topCat = '-';
+            let maxCatCount = 0;
+            Object.keys(catCounts).forEach(cat => {
+                if (catCounts[cat] > maxCatCount) {
+                    maxCatCount = catCounts[cat];
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // Progress Bar (Visited principles)
+            const visitedPrinciples = activityLog.filter(i => i.category === 'Detail 9 Prinsip').length;
+            const percent = Math.min(100, Math.round((visitedPrinciples / PRINCIPLES_DATA.length) * 100));
+            document.getElementById('modal-progress-bar').style.width = `${percent}%`;
+            document.getElementById('modal-progress-percent').innerText = `${percent}%`;
+
+            // Top 5 Most Clicked Items
+            const sortedItems = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const topListContainer = document.getElementById('top-clicked-list');
+            if (sortedItems.length === 0) {
+                topListContainer.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada aktivitas tercatat.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedItems.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-100">
+                        <span class="truncate pr-2 font-medium">${idx+1}. ${item.name}</span>
+                        <span class="bg-gold-100 text-amber-900 px-2 py-0.5 rounded font-mono font-bold">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // Render Log Table
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada data interaksi.</td></tr>`;
+            } else {
+                tbody.innerHTML = activityLog.map(item => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-bold text-gov-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            renderCategoryChart(catCounts);
+        }
+
+        function renderCategoryChart(catCounts) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            const labels = Object.keys(catCounts);
+            const data = Object.values(catCounts);
+
+            if (categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            if (labels.length === 0) return;
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#0d9488', '#f59e0b', '#6366f1', '#e11d48', '#0284c7', '#8b5cf6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function clearAnalyticsData() {
+            if (confirm('Apakah Anda yakin ingin mereset seluruh hitungan aktivitas belajar?')) {
+                activityLog = [];
+                localStorage.removeItem('gov_activity_log');
+                updateAnalyticsUI();
+                updateOnPageBadges();
+                showToastNotification('Data hitungan telah direset.');
+            }
+        }
+
+        function exportAnalyticsJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activityLog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Analitik_GoodGovernance_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
         }
     </script>
 </body>
