@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evolusi Ekstraksi Sumber Daya Alam</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.4rem .85rem;font-family:system-ui,sans-serif;font-size:.88rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small,.none,.hint{font-family:system-ui,sans-serif;color:var(--muted);font-size:.85rem}
+.hint{margin:.5rem 0 0}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:.6rem;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1;flex:none}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted)}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+#q{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.6rem 1rem;font:1rem system-ui,sans-serif}
+#q:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+.tw{overflow-x:auto}
+#tl{width:100%;min-width:680px;height:auto;display:block}
+#tl rect{cursor:pointer}
+#tl text{font:10.5px system-ui,sans-serif;fill:var(--ink);pointer-events:none}
+#tl .ax{fill:var(--muted)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:18%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Evolusi Ekstraksi Sumber Daya Alam</h1><p>Dari api dan pendulangan hingga truk otonom dan pelindian modern</p></header>
+<main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari metode, sumber daya, atau tokoh (mis. merkuri, Nobel, nikel)…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Linimasa munculnya metode</p><div class="tw"><svg id="tl" viewBox="0 0 960 425" role="img" aria-label="Linimasa metode ekstraksi"></svg></div><p class="hint">Skala waktu dipadatkan agar zaman kuno dan modern sama-sama terbaca. Batang menunjukkan masa metode itu menonjol; yang berakhir “kini” masih dipakai dalam bentuk yang berkembang. Klik batang untuk membuka detailnya.</p></section>
+<section class="card"><p class="label">Era</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Metode</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
+</main>
+<footer>Tahun adalah perkiraan munculnya atau menonjolnya metode, bukan penanda tunggal penemuan; tanda ± menunjukkan perkiraan. Materi disusun dari pengetahuan umum teknik pertambangan dan perlu dicek ke sumber teknis untuk rujukan resmi.</footer>
+<script>
+const G=["Dunia kuno (hingga ±500 M)","Pra-industri (±500–1700)","Revolusi Industri (±1700–1900)","Abad ke-20 (1900–1990)","Era digital & transisi (1990–kini)"];
+const GC=["#6a8f3f","#2f8f5b","#2aa198","#3d85c6","#1f6f9f"];
+// era|nama|jenis|mulai|akhir (2026=kini)|sumber daya|cara kerja|tonggak (^, Judul: isi)|dampak|kaitan Indonesia
+const D=`0|Pembakaran batuan (fire-setting)|Penambangan|-5000|1600|Tembaga, timah, emas, perak|Batuan dipanaskan dengan api lalu disiram air agar retak, sehingga bisa dipecah dengan alat batu dan logam.|±5000 SM — Tambang Rudna Glava: Tambang tembaga di Serbia memperlihatkan penambangan terorganisasi dengan teknik pemecahan batu.^1556 — De Re Metallica: Georgius Agricola merangkum teknik pertambangan Eropa dalam sebuah buku yang berpengaruh.|Sangat lambat dan berasap; udara tambang pengap dan berbahaya bagi penambang.|Nusantara punya sejarah panjang penambangan emas dan timah tradisional, tetapi bukti penggunaan teknik ini secara spesifik terbatas.
+0|Tungku bloomery (besi)|Peleburan|-1200|1400|Bijih besi|Bijih besi dipanaskan dengan arang dalam tungku kecil hingga menjadi gumpalan besi (bloom), lalu ditempa untuk mengeluarkan terak.|±1200 SM — Besi menyebar: Pengolahan besi meluas dari Anatolia ke wilayah sekitarnya.^Sekitar abad ke-1 — Tungku tinggi Tiongkok: Tiongkok mengembangkan tungku tinggi awal jauh lebih dulu dibanding Eropa.|Hasil sedikit dan butuh arang dalam jumlah besar, sehingga hutan banyak ditebang.|Pande besi dan pembuatan keris menunjukkan tradisi tempa logam di Nusantara yang bertahan hingga kini.
+0|Pendulangan emas|Penambangan aluvial|-3000|2026|Emas, timah|Material sungai diayak dengan air agar partikel berat seperti emas mengendap di dasar wadah.|±3000 SM — Emas aluvial: Emas sungai menjadi salah satu logam pertama yang dikumpulkan manusia.^1848 — Demam emas California: Pendulangan dan talang (sluice) menyebar seiring datangnya ratusan ribu pencari emas.|Murah dan sederhana, tetapi merusak sungai lewat sedimentasi dan sering memakai merkuri.|Pendulangan emas tradisional ada di banyak sungai, dan penambangan emas tanpa izin masih menjadi masalah lingkungan.
+0|Penguapan garam surya|Pengolahan|-6000|2026|Garam|Air laut dialirkan ke petak dangkal dan diuapkan oleh matahari dan angin hingga kristal garam terbentuk.|±6000 SM — Garam awal: Produksi garam tercatat di Tiongkok dan Eropa sejak masa prasejarah.^1930 — Salt March: Gandhi memprotes pajak garam kolonial Inggris dengan berjalan ke laut untuk membuat garam.|Hemat energi tetapi bergantung cuaca; air sisa (bittern) perlu dikelola.|Tambak garam di Madura, Jeneponto, dan pesisir Jawa menggunakan prinsip ini; Madura dijuluki Pulau Garam.
+0|Penambangan hidrolik Romawi|Penambangan|0|300|Emas, timah, tembaga|Air ditampung di waduk lalu dilepas deras untuk meruntuhkan bukit dan mencuci bijih, dikenal sebagai ruina montium.|±25 M — Las Médulas: Romawi menambang emas di Spanyol dengan air dari saluran sepanjang puluhan kilometer.^77 M — Naturalis Historia: Pliny the Elder menguraikan teknik runtuhan bukit dan pencucian bijih.|Cepat, tetapi menimbulkan sedimen besar dan mengubah bentang alam.|Prinsip semprotan air bertekanan dipakai kemudian dalam tambang semprot timah di Bangka.
+1|Amalgamasi merkuri|Pengolahan|1554|2026|Perak, emas|Merkuri dicampur dengan bijih halus sehingga logam mulia membentuk amalgam, lalu merkuri diuapkan.|1554 — Proses patio: Bartolomé de Medina mengembangkan amalgamasi untuk perak di Meksiko.^2013 — Konvensi Minamata: Perjanjian global untuk membatasi merkuri disepakati, dan Indonesia meratifikasinya lewat UU 11/2017.|Meningkatkan perolehan dari bijih berkadar rendah, tetapi merkuri sangat beracun dan mencemari sungai dan pekerja.|Dipakai luas di penambangan emas skala kecil, sehingga pencemaran merkuri menjadi isu serius.
+1|Peledakan mesiu|Penambangan|1627|1870|Batu bara, bijih logam|Lubang dibor, diisi mesiu hitam, lalu diledakkan untuk memecah batuan lebih cepat daripada api atau alat tangan.|1627 — Banská Štiavnica: Mesiu dipakai untuk peledakan tambang di wilayah yang kini Slovakia.^1831 — Sumbu pengaman Bickford: William Bickford menemukan sumbu pengaman yang mengurangi kecelakaan penyulutan.|Memangkas waktu kerja, tetapi ledakan sulit dikendalikan dan kecelakaan sering terjadi.|Bahan peledak masuk lewat tambang kolonial dan kemudian menjadi bagian tak terpisahkan dari tambang batu bara.
+1|Tanur tinggi (blast furnace)|Peleburan|1400|2026|Besi, baja|Udara dihembuskan ke tungku tinggi berisi bijih, kokas atau arang, dan batu kapur sehingga besi cair mengalir keluar.|1709 — Kokas Darby: Abraham Darby memakai kokas di Coalbrookdale dan melepaskan industri besi dari arang kayu.^1828 — Blast panas Neilson: James Beaumont Neilson memanaskan udara tiupan dan menurunkan konsumsi bahan bakar.|Memungkinkan produksi besi massal, tetapi emisi karbon industri baja sangat besar.|Industri baja nasional modern tumbuh sejak Krakatau Steel berdiri pada 1970 di Cilegon.
+2|Pompa uap & mesin tambang|Penambangan|1712|1900|Batu bara, timah, tembaga|Mesin uap menguras air dari tambang dalam dan kemudian menarik sangkar pengangkut bijih dan pekerja.|1712 — Mesin Newcomen: Thomas Newcomen memasang mesin uap untuk memompa air tambang.^1769 — Kondensor terpisah Watt: James Watt membuat mesin uap jauh lebih efisien.|Tambang bisa digali lebih dalam, tetapi debu batu bara dan runtuhan memicu penyakit paru dan kecelakaan.|Tambang kolonial seperti Ombilin memanfaatkan teknologi serupa dengan rel dan mesin dari Eropa.
+2|Dinamit|Penambangan|1867|2026|Batu bara, bijih, batu|Nitrogliserin yang distabilkan dengan tanah diatom sehingga bisa diangkut dan diledakkan dengan aman memakai detonator.|1867 — Paten Nobel: Alfred Nobel mematenkan dinamit.^1875 — Gelatin peledak: Nobel menemukan bahan peledak yang lebih kuat dan lebih stabil.|Memungkinkan terowongan, tambang terbuka, dan jalan raya dibangun jauh lebih cepat.|Bahan peledak turunan dinamit dipakai luas di tambang terbuka batu bara dan kuari.
+2|Pengeboran minyak (perkusi ke rotari)|Pengeboran|1859|2026|Minyak bumi, gas|Awalnya pahat dihantamkan berulang (perkusi); dengan bor rotari, mata bor berputar dan lumpur pengeboran mendinginkan serta menahan tekanan sumur.|1859 — Drake: Edwin Drake menembus minyak di Titusville dengan pengeboran kabel.^1901 — Spindletop: Semburan sumur di Texas menunjukkan keunggulan bor rotari dan membuka boom minyak.|Kedalaman dan laju pengeboran meningkat drastis, tetapi risiko semburan liar dan tumpahan minyak ikut naik.|Sumur Telaga Tiga di Langkat (1885) memulai industri minyak; lapangan besar Minas di Riau ditemukan pada 1944.
+2|Proses Bessemer & baja modern|Peleburan|1856|1960|Baja|Udara ditiup ke besi cair untuk membakar kelebihan karbon dan menghasilkan baja dalam hitungan menit.|1856 — Bessemer: Henry Bessemer mematenkan proses konverter untuk baja.^1950-an — Oksigen dasar (BOF): Proses dengan oksigen murni menggantikan Bessemer dan open hearth.|Baja murah memungkinkan rel, jembatan, dan gedung tinggi.|Industri baja modern Indonesia baru tumbuh setelah pendirian pabrik baja nasional pada 1970.
+2|Proses Bayer & Hall–Héroult|Pengolahan|1886|2026|Bauksit, aluminium|Bauksit dilarutkan dalam soda kaustik menjadi alumina (Bayer), lalu alumina dielektrolisis dalam kriolit cair menjadi aluminium (Hall–Héroult).|1886 — Hall dan Héroult: Charles Hall dan Paul Héroult menemukan elektrolisis aluminium secara terpisah di tahun yang sama.^1888 — Bayer: Karl Josef Bayer mematenkan cara memurnikan alumina dari bauksit.|Aluminium menjadi murah, tetapi peleburan sangat boros listrik dan menghasilkan lumpur merah (red mud).|Pemerintah mendorong pengolahan bauksit di dalam negeri sejak larangan ekspor bijih mentah pada 2023.
+2|Sianidasi emas|Pengolahan|1887|2026|Emas, perak|Bijih halus dilarutkan dalam larutan sianida yang mengikat emas, lalu emas diendapkan dari larutan.|1887 — MacArthur–Forrest: Proses sianida dipatenkan di Skotlandia dan segera dipakai di tambang Witwatersrand.^2000 — Baia Mare: Bendungan limbah sianida jebol di Rumania dan mencemari Sungai Tisza dan Danube.|Memungkinkan emas diambil dari bijih berkadar rendah, tetapi sianida beracun dan bendungan limbah berisiko.|Dipakai di tambang emas skala besar dengan pengelolaan limbah yang diatur pemerintah.
+3|Flotasi buih|Pengolahan|1905|2026|Tembaga, timbal, seng, emas|Bijih halus dicampur air dan reagen, lalu gelembung udara membuat mineral berharga menempel dan naik sebagai buih, sedangkan batuan sisa tenggelam.|±1905 — Paten flotasi: Teknik buih dipatenkan untuk memisahkan mineral sulfida.^Awal abad ke-20 — Tembaga berkadar rendah: Flotasi membuat bijih berkadar sekitar 1 persen layak diolah.|Menurunkan batas kadar yang menguntungkan, tetapi volume limbah halus (tailing) menjadi sangat besar.|Dipakai di pengolahan tembaga dan emas Grasberg di Papua Tengah yang menghasilkan konsentrat.
+3|Tambang terbuka skala besar|Penambangan|1906|2026|Tembaga, batu bara, bijih besi, nikel|Lapisan penutup dikupas dan bijih digali dengan sekop mekanis dan truk besar, dengan dinding berundak.|1906 — Bingham Canyon: Daniel Jackling membuka tambang tembaga terbuka berkadar rendah di Utah dengan sekop uap.^1960-an — Truk raksasa: Truk angkut ratusan ton mempercepat produksi dan menurunkan biaya.|Efisien dan lebih aman bagi pekerja dibanding bawah tanah, tetapi mengubah bentang alam dan menyisakan lubang tambang.|Dipakai pada tambang batu bara Kalimantan dan Sumatra, nikel di Sulawesi, dan Grasberg sebelum beralih ke bawah tanah.
+3|Rekah hidraulik & sumur horizontal|Pengeboran|1949|2026|Minyak serpih, gas serpih|Cairan bertekanan dipompa untuk meretakkan batuan serpih, dan sumur dibelokkan mendatar agar menjangkau lapisan lebih luas.|1947–1949 — Uji awal: Rekah hidraulik dicoba di Kansas dan dipakai komersial pada 1949.^2000-an — Revolusi serpih: Gabungan rekah hidraulik dan sumur horizontal mengubah Amerika Serikat menjadi produsen minyak dan gas besar.|Membuka cadangan baru, tetapi memunculkan kekhawatiran soal air, gempa terinduksi, dan emisi metana.|Potensi serpih Indonesia pernah dieksplorasi, tetapi pengembangannya masih terbatas dibanding Amerika Serikat.
+3|Pelindian tumpukan & SX-EW|Pengolahan (hidrometalurgi)|1968|2026|Tembaga, emas|Bijih ditumpuk di atas lapisan kedap dan disiram pelarut; larutan yang membawa logam diolah dengan ekstraksi pelarut dan elektrolisis (SX-EW) menjadi logam murni.|1968 — SX-EW tembaga: Pabrik komersial ekstraksi pelarut dan elektrolisis berdiri di Arizona.^1970-an — Pelindian emas: Heap leaching di Nevada membuat bijih emas berkadar rendah menguntungkan.|Biaya modal rendah dan tanpa pabrik pelebur, tetapi ada risiko kebocoran larutan dan waktu pelindian yang lama.|Metode serupa dipakai di sejumlah tambang emas di Indonesia.
+4|Pengeboran lepas pantai laut dalam|Pengeboran|1990|2026|Minyak, gas|Anjungan terapung dan kapal pengebor menjangkau sumur di kedalaman ribuan meter, dengan produksi lewat FPSO dan sistem bawah laut.|1988 — Anjungan Bullwinkle: Anjungan tetap di Teluk Meksiko beroperasi di sekitar 400 meter air.^2010 — Deepwater Horizon: Ledakan di Teluk Meksiko menewaskan 11 pekerja dan memicu tumpahan minyak besar.|Membuka cadangan baru, tetapi risikonya lebih tinggi dan penanganan darurat lebih sulit.|Pengembangan gas laut dalam di Selat Makassar menjadi salah satu proyek penting Indonesia.
+4|Nikel laterit (RKEF & HPAL)|Pengolahan|2010|2026|Nikel, kobalt|RKEF mengeringkan dan mengkalsinasi bijih lalu meleburnya di tungku listrik menjadi feronikel atau nickel pig iron. HPAL melarutkan bijih dengan asam sulfat pada tekanan dan suhu tinggi untuk menghasilkan nikel dan kobalt bagi baterai.|2014 dan 2020 — Larangan ekspor bijih: Indonesia mewajibkan bijih nikel diolah di dalam negeri.^2020-an — Gelombang HPAL: Proyek HPAL di Sulawesi dan Maluku Utara mulai memasok bahan baterai.|Menaikkan nilai tambah dan menarik investasi, tetapi RKEF boros listrik dan pengelolaan limbah tailing diperdebatkan.|Pusatnya di Morowali, Konawe, dan Halmahera, dengan produk baja nirkarat dan bahan baterai.
+4|Ekstraksi litium langsung (DLE)|Pengolahan|2015|2026|Litium|Larutan garam kaya litium dilewatkan pada penyerap atau membran yang menangkap litium secara selektif, tanpa kolam penguapan berbulan-bulan.|Cara lama — Kolam penguapan: Litium dari salar di Chile dan Argentina biasanya diambil lewat kolam penguapan besar selama lebih dari setahun.^2010-an hingga kini — Uji lapangan DLE: Banyak perusahaan menguji DLE, tetapi skala komersialnya masih terbatas dibanding evaporasi.|Berpotensi lebih cepat dan hemat air, tetapi masih berkembang dan biayanya belum terbukti luas.|Indonesia belum punya industri litium berbasis salar, jadi DLE lebih relevan di negara berlitium air asin.
+4|Truk tambang otonom & tambang pintar|Penambangan|2008|2026|Bijih besi, batu bara, tembaga|Truk angkut tanpa pengemudi dan bor otomatis dikendalikan dari ruang kendali memakai GPS dan sensor.|2008 — Pilbara: Rio Tinto memulai uji truk Komatsu tanpa awak di Australia Barat.^2010-an — Perluasan: Tambang besar memakai bor otonom, kereta tanpa masinis, dan pemantauan jarak jauh.|Menurunkan risiko kecelakaan manusia dan biaya, tetapi mengubah kebutuhan tenaga kerja.|Sebagian tambang besar di Indonesia menerapkan pemantauan jarak jauh dan uji coba otomasi.
+4|Penambangan dasar laut (eksperimental)|Penambangan|2020|2026|Nodul polimetalik (nikel, kobalt, mangan, tembaga)|Kendaraan pengumpul di dasar laut mengangkat nodul logam dari kedalaman ribuan meter ke kapal di permukaan.|1970-an — Uji awal: Konsorsium menguji pengumpulan nodul di Samudra Pasifik.^1994 — Otoritas Dasar Laut Internasional: ISA dibentuk di bawah UNCLOS untuk mengatur kegiatan di dasar laut internasional.|Menawarkan logam baterai tanpa tambang darat, tetapi dampak pada ekosistem dasar laut belum dipahami dan diperdebatkan.|Setahu saya belum ada penambangan dasar laut komersial; status aturannya cepat berubah, jadi cek perkembangan terbaru.`.split("\n").map(l=>{const a=l.split("|");return{g:+a[0],n:a[1],j:a[2],s:+a[3],e:+a[4],w:a[5],k:a[6],ev:a[7].split("^").map(x=>{const i=x.indexOf(": ");return[x.slice(0,i),x.slice(i+2)]}),d:a[8],i:a[9]}});
+
+const $=id=>document.getElementById(id);
+const yr=y=>y<0?Math.abs(y).toLocaleString("id-ID")+" SM":String(y);
+D.forEach(d=>d.t=yr(d.s)+" – "+(d.e>=2026?"kini":yr(d.e)));
+let grp=0,sel=D[0],cmpSet=[];
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function drawRegions(){const r=$("regions");r.innerHTML="";
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+    b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
+function drawProvs(){const r=$("provs");r.innerHTML="";
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+    b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
+function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function drawDetail(){const d=sel,inC=cmpSet.includes(d.n);
+  const P=[["Profil",[["Jenis",`<b>${d.j}</b>`,1],["Masa menonjol",`<b>${d.t}</b>`,0],["Sumber daya utama",d.w,0]]],
+    ["Cara Kerja",[["Prinsip dasar",d.k,1]]],
+    ["Tonggak Sejarah",d.ev.map(e=>[e[0],e[1],0])],
+    ["Dampak & Kaitan dengan Indonesia",[["Dampak dan risiko",d.d,0],["Kaitan dengan Indonesia",d.i,0]]]];
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+    P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll("#detail .sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll("#detail .sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)})}
+const AN=[[-10000,0],[-3000,150],[0,260],[1000,360],[1500,500],[1800,660],[1900,780],[2030,920]];
+const X=y=>{for(let i=1;i<AN.length;i++)if(y<=AN[i][0]){const a=AN[i-1],b=AN[i];return 10+a[1]+(y-a[0])/(b[0]-a[0])*(b[1]-a[1])}return 930};
+function drawTL(){let s="";
+  AN.slice(0,-1).forEach(a=>s+=`<line x1="${X(a[0])}" x2="${X(a[0])}" y1="0" y2="402" stroke="var(--line)" stroke-dasharray="3 5"/><text class="ax" x="${X(a[0])}" y="420" text-anchor="${a[0]===-10000?"start":"middle"}">${yr(a[0])}</text>`);
+  const S=D.map((d,i)=>[d,i]).sort((a,b)=>a[0].s-b[0].s);
+  S.forEach(([d,i],r)=>{const c=cmpSet.includes(d.n),on=d===sel,y=6+r*17,x0=X(d.s),x1=X(Math.min(d.e,2026));
+    s+=`<rect data-i="${i}" x="${x0}" y="${y}" width="${Math.max(4,x1-x0)}" height="12" rx="4" fill="${GC[d.g]}" stroke="${c?"var(--blue)":on?"var(--ink)":"none"}" stroke-width="2"${c?' stroke-dasharray="3 2"':''}><title>${d.n} (${d.t})</title></rect>`;
+    s+=x1>640?`<text x="${x0-6}" y="${y+10}" text-anchor="end">${d.n}</text>`:`<text x="${x1+6}" y="${y+10}">${d.n}</text>`});
+  $("tl").innerHTML=s}
+$("tl").onclick=e=>{const t=e.target.closest("rect");if(!t)return;sel=D[+t.dataset.i];grp=sel.g;drawAll()};
+function drawSearch(){const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.j,d.w,d.k,d.d,d.i,G[d.g],d.ev.map(e=>e.join(" ")).join(" ")].join(" ").toLowerCase().includes(q)).slice(0,12);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{sel=d;grp=d.g;$("q").value="";drawAll()};box.append(b)})}
+$("q").oninput=drawSearch;
+function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hidden=!L.length;if(!L.length)return;
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join("");
+  const rows=[["Era",txt(d=>G[d.g])],["Jenis",txt(d=>d.j)],["Masa menonjol",txt(d=>d.t)],["Sumber daya",txt(d=>d.w)],["Cara kerja",txt(d=>d.k)],["Tonggak",txt(d=>d.ev.map(e=>`<b>${e[0]}</b>`).join("<br><br>"))],["Dampak dan risiko",txt(d=>d.d)],["Kaitan Indonesia",txt(d=>d.i)]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu metode lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Bandingkan cara kerja, dampak, dan kaitannya dengan Indonesia."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawTL();drawCmp()}
+drawAll();
+</script>
+</body>
+</html>
