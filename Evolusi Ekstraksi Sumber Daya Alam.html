@@ -54,6 +54,17 @@ th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;verti
 th{color:var(--muted);font-weight:600;width:18%}
 thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
 thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+.st{flex:1}
+.sub.seen{box-shadow:inset 3px 0 0 var(--green)}
+.badge{margin-right:.2rem;font:600 .72rem system-ui,sans-serif;color:var(--green);background:var(--soft);border-radius:999px;padding:.1rem .55rem;flex:none}
+.pg{margin-left:.4rem;font-size:.72rem;opacity:.8}
+.chip.done{border-color:var(--green)}
+.bar{height:10px;background:var(--soft);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .3s}
+.stats{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.8rem;font:.85rem system-ui,sans-serif;color:var(--muted)}
+.stats b{display:block;font-size:1.4rem;color:var(--green)}
+#progress ol{margin:.2rem 0 0;padding-left:1.2rem;font:.88rem system-ui,sans-serif;color:var(--muted)}
+#progress ol b{color:var(--ink);font-weight:600}
 footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
 </style>
 </head>
@@ -61,7 +72,8 @@ footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padd
 <header><h1>Evolusi Ekstraksi Sumber Daya Alam</h1><p>Dari api dan pendulangan hingga truk otonom dan pelindian modern</p></header>
 <main>
 <section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari metode, sumber daya, atau tokoh (mis. merkuri, Nobel, nikel)…" autocomplete="off"><div class="row" id="qr"></div></section>
-<section class="card"><p class="label">Linimasa munculnya metode</p><div class="tw"><svg id="tl" viewBox="0 0 960 425" role="img" aria-label="Linimasa metode ekstraksi"></svg></div><p class="hint">Skala waktu dipadatkan agar zaman kuno dan modern sama-sama terbaca. Batang menunjukkan masa metode itu menonjol; yang berakhir “kini” masih dipakai dalam bentuk yang berkembang. Klik batang untuk membuka detailnya.</p></section>
+<section class="card"><p class="label">Linimasa munculnya metode</p><div class="tw"><svg id="tl" viewBox="0 0 960 425" role="img" aria-label="Linimasa metode ekstraksi"></svg></div><p class="hint">Skala waktu dipadatkan agar zaman kuno dan modern sama-sama terbaca. Batang menunjukkan masa metode itu menonjol; yang berakhir “kini” masih dipakai dalam bentuk yang berkembang. Klik batang untuk membuka detailnya. Batang makin pekat seiring materi metode itu kamu buka.</p></section>
+<section class="card" id="progress"></section>
 <section class="card"><p class="label">Era</p><div class="row" id="regions"></div></section>
 <section class="card"><p class="label">Metode</p><div class="row" id="provs"></div></section>
 <section class="card" id="detail"></section>
@@ -99,32 +111,43 @@ const D=`0|Pembakaran batuan (fire-setting)|Penambangan|-5000|1600|Tembaga, tima
 const $=id=>document.getElementById(id);
 const yr=y=>y<0?Math.abs(y).toLocaleString("id-ID")+" SM":String(y);
 D.forEach(d=>d.t=yr(d.s)+" – "+(d.e>=2026?"kini":yr(d.e)));
-let grp=0,sel=D[0],cmpSet=[];
+let grp=0,sel=D[0],cmpSet=[],rsArm=0;
+const SK="evo-ekstraksi-jejak-v1";let J={c:{},t:{}},stor=true;
+try{const r=localStorage.getItem(SK);if(r){const p=JSON.parse(r);if(p&&p.c&&p.t)J=p}}catch(e){stor=false}
+function save(){try{localStorage.setItem(SK,JSON.stringify(J))}catch(e){stor=false}}
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const subsOf=d=>["Jenis","Masa menonjol","Sumber daya utama","Prinsip dasar",...d.ev.map(e=>e[0]),"Dampak dan risiko","Kaitan dengan Indonesia"];
+const K=(d,t)=>d.n+"::"+t;
+const seen=d=>subsOf(d).filter(t=>J.c[K(d,t)]>0).length;
+const frac=d=>seen(d)/subsOf(d).length,done=d=>seen(d)===subsOf(d).length;
+const pgTag=L=>{let v=0,t=0;L.forEach(d=>{v+=seen(d);t+=subsOf(d).length});return `<span class="pg">${v}/${t}</span>`};
+function bumpK(k){J.c[k]=(J.c[k]||0)+1;J.t[k]=Date.now();save()}
 function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
 function drawRegions(){const r=$("regions");r.innerHTML="";
-  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.innerHTML=esc(g)+pgTag(D.filter(x=>x.g===i));b.setAttribute("aria-pressed",i===grp);
     b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
 function drawProvs(){const r=$("provs");r.innerHTML="";
-  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip"+(done(d)?" done":"");b.innerHTML=esc(d.n)+pgTag([d]);b.setAttribute("aria-pressed",d===sel);
     b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
-function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function sub(t,h,o){return `<div class="sub"><button aria-expanded="false" data-k="${esc(K(sel,t))}"><span class="st">${t}</span></button><div class="body">${h}</div></div>`}
 function drawDetail(){const d=sel,inC=cmpSet.includes(d.n);
   const P=[["Profil",[["Jenis",`<b>${d.j}</b>`,1],["Masa menonjol",`<b>${d.t}</b>`,0],["Sumber daya utama",d.w,0]]],
     ["Cara Kerja",[["Prinsip dasar",d.k,1]]],
     ["Tonggak Sejarah",d.ev.map(e=>[e[0],e[1],0])],
     ["Dampak & Kaitan dengan Indonesia",[["Dampak dan risiko",d.d,0],["Kaitan dengan Indonesia",d.i,0]]]];
-  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small id="dstat"></small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
     P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
-  const set=o=>document.querySelectorAll("#detail .sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  const set=o=>{document.querySelectorAll("#detail .sub").forEach(s=>{const was=s.classList.contains("open");s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o);if(o&&!was)bumpK(s.firstChild.dataset.k)});meta()};
   $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
-  document.querySelectorAll("#detail .sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)})}
+  document.querySelectorAll("#detail .sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o);if(o){bumpK(b.dataset.k);meta()}});
+  paintBadges()}
 const AN=[[-10000,0],[-3000,150],[0,260],[1000,360],[1500,500],[1800,660],[1900,780],[2030,920]];
 const X=y=>{for(let i=1;i<AN.length;i++)if(y<=AN[i][0]){const a=AN[i-1],b=AN[i];return 10+a[1]+(y-a[0])/(b[0]-a[0])*(b[1]-a[1])}return 930};
 function drawTL(){let s="";
   AN.slice(0,-1).forEach(a=>s+=`<line x1="${X(a[0])}" x2="${X(a[0])}" y1="0" y2="402" stroke="var(--line)" stroke-dasharray="3 5"/><text class="ax" x="${X(a[0])}" y="420" text-anchor="${a[0]===-10000?"start":"middle"}">${yr(a[0])}</text>`);
   const S=D.map((d,i)=>[d,i]).sort((a,b)=>a[0].s-b[0].s);
   S.forEach(([d,i],r)=>{const c=cmpSet.includes(d.n),on=d===sel,y=6+r*17,x0=X(d.s),x1=X(Math.min(d.e,2026));
-    s+=`<rect data-i="${i}" x="${x0}" y="${y}" width="${Math.max(4,x1-x0)}" height="12" rx="4" fill="${GC[d.g]}" stroke="${c?"var(--blue)":on?"var(--ink)":"none"}" stroke-width="2"${c?' stroke-dasharray="3 2"':''}><title>${d.n} (${d.t})</title></rect>`;
+    s+=`<rect data-i="${i}" x="${x0}" y="${y}" width="${Math.max(4,x1-x0)}" height="12" rx="4" fill="${GC[d.g]}" opacity="${(.45+.55*frac(d)).toFixed(2)}" stroke="${c?"var(--blue)":on?"var(--ink)":"none"}" stroke-width="2"${c?' stroke-dasharray="3 2"':''}><title>${d.n} (${d.t})</title></rect>`;
     s+=x1>640?`<text x="${x0-6}" y="${y+10}" text-anchor="end">${d.n}</text>`:`<text x="${x1+6}" y="${y+10}">${d.n}</text>`});
   $("tl").innerHTML=s}
 $("tl").onclick=e=>{const t=e.target.closest("rect");if(!t)return;sel=D[+t.dataset.i];grp=sel.g;drawAll()};
@@ -139,7 +162,20 @@ function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hi
   c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu metode lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Bandingkan cara kerja, dampak, dan kaitannya dengan Indonesia."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
   $("clr").onclick=()=>{cmpSet=[];drawAll()};
   c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
-function drawAll(){drawRegions();drawProvs();drawDetail();drawTL();drawCmp()}
+function paintBadges(){const d=sel;document.querySelectorAll("#detail .sub").forEach(s=>{const b=s.firstChild,c=J.c[b.dataset.k]||0;s.classList.toggle("seen",c>0);let g=b.querySelector(".badge");if(c){if(!g){g=document.createElement("span");g.className="badge";b.appendChild(g)}g.textContent="✓ "+c+"×"}else if(g)g.remove()});$("dstat").textContent=G[d.g]+" · dipelajari "+seen(d)+"/"+subsOf(d).length+" subpanel"}
+function meta(){paintBadges();drawProgress();drawRegions();drawProvs();drawTL()}
+function drawProgress(){let v=0,t=0,cl=0,dn=0;
+  D.forEach(d=>{subsOf(d).forEach(x=>{t++;const c=J.c[K(d,x)]||0;if(c){v++;cl+=c}});if(done(d))dn++});
+  const pct=t?Math.round(v/t*100):0,top=Object.entries(J.c).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5),last=Object.entries(J.t).sort((a,b)=>b[1]-a[1])[0];
+  const nm=k=>{const p=k.split("::");return `<b>${esc(p[0])}</b> — ${esc(p[1]||"")}`};
+  $("progress").innerHTML=`<p class="label">Jejak belajar</p><div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
+  <div class="stats"><div><b>${v}/${t}</b>subpanel dibuka (${pct}%)</div><div><b>${cl}</b>total klik</div><div><b>${dn}/${D.length}</b>metode tuntas</div></div>
+  <p class="label" style="margin-top:1rem">Paling sering dibuka</p>${top.length?`<ol>${top.map(e=>`<li>${nm(e[0])} (${e[1]}×)</li>`).join("")}</ol>`:'<span class="none">Belum ada. Buka sebuah subpanel untuk mulai meninggalkan jejak.</span>'}
+  ${last?`<p class="hint">Terakhir dibuka: ${nm(last[0])}</p>`:""}
+  <p class="hint">Setiap kali sebuah subpanel dibuka dihitung 1 klik (termasuk lewat “Buka semua”). Subpanel yang sudah dibuka diberi tanda hijau dan hitungan, dan angka kecil di tombol era dan metode menunjukkan kemajuanmu. ${stor?"Jejak tersimpan di peramban ini saja, tidak ikut berpindah ke perangkat lain.":"Peramban ini tidak mengizinkan penyimpanan, jadi jejak hilang saat halaman ditutup."}</p>
+  <div class="tools" style="margin-top:.6rem"><button id="rs">Reset jejak</button></div>`;
+  $("rs").onclick=()=>{if(!rsArm){rsArm=1;$("rs").textContent="Yakin? Klik sekali lagi";setTimeout(()=>{rsArm=0;const r=$("rs");if(r)r.textContent="Reset jejak"},4000)}else{rsArm=0;J={c:{},t:{}};save();drawAll()}}}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawTL();drawCmp();drawProgress()}
 drawAll();
 </script>
 </body>
