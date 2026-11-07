@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN for Learning Analytics Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         tailwind.config = {
@@ -120,10 +122,20 @@
                     <button onclick="switchTab('kuis')" id="btn-kuis" class="nav-tab px-3.5 py-2 rounded-xl transition flex items-center space-x-2 text-slate-300 hover:text-white hover:bg-slate-800">
                         <i class="fa-solid fa-wand-magic-sparkles"></i><span>Rekomendasi & Kuis</span>
                     </button>
+                    <!-- Learning Analytics Button in Header -->
+                    <button onclick="openAnalyticsModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black flex items-center space-x-2 shadow-lg transition ml-2">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Analitik Belajar</span>
+                        <span id="header-click-count" class="bg-slate-950 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-black">0 Klik</span>
+                    </button>
                 </nav>
 
                 <!-- Mobile Menu Button -->
                 <div class="flex items-center space-x-2 lg:hidden">
+                    <button onclick="openAnalyticsModal()" class="p-2 text-amber-400 bg-slate-800 rounded-xl relative">
+                        <i class="fa-solid fa-chart-pie text-lg"></i>
+                        <span id="mobile-analytics-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 font-black text-[9px] px-1 rounded-full">0</span>
+                    </button>
                     <button onclick="switchTab('komparasi')" class="relative p-2 text-amber-400 bg-slate-800 rounded-xl">
                         <i class="fa-solid fa-scale-balanced text-lg"></i>
                         <span id="mobile-compare-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
@@ -154,6 +166,9 @@
             </button>
             <button onclick="switchTab('kuis'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
                 <i class="fa-solid fa-wand-magic-sparkles w-6 text-yellow-400"></i><span>Rekomendasi & Kuis</span>
+            </button>
+            <button onclick="openAnalyticsModal(); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-amber-300 bg-amber-500/10 hover:bg-slate-800 flex items-center space-x-3 font-bold border border-amber-500/30">
+                <i class="fa-solid fa-chart-pie w-6 text-amber-400"></i><span>Panel Analitik Belajar</span>
             </button>
         </div>
     </header>
@@ -240,19 +255,19 @@
 
                 <!-- Grain Breakdown Cards -->
                 <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-5 space-y-3">
+                    <div onclick="trackActivity('Anatomi: Sekam (Kulit Gabah)', 'Anatomi & Sains')" class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-5 space-y-3 cursor-pointer hover:border-emerald-500 transition">
                         <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">1</div>
                         <h3 class="font-extrabold text-slate-900 text-base">Sekam (Kulit Gabah)</h3>
                         <p class="text-xs text-slate-600 leading-relaxed">Lapisan terluar pelindung bulir (sekitar 20% berat gabah). Kaya akan silika dan serat kasar, dilepas saat proses pecah kulit (milling).</p>
                     </div>
 
-                    <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 space-y-3">
+                    <div onclick="trackActivity('Anatomi: Bekatul & Lembaga', 'Anatomi & Sains')" class="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 space-y-3 cursor-pointer hover:border-amber-500 transition">
                         <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-lg">2</div>
                         <h3 class="font-extrabold text-slate-900 text-base">Bekatul & Lembaga (Bran & Germ)</h3>
                         <p class="text-xs text-slate-600 leading-relaxed">Lapisan kecokelatan kaya vitamin B, serat, dan antioksidan (antosianin pada padi merah/hitam). Pada beras putih sosoh, lapisan ini dikikis.</p>
                     </div>
 
-                    <div class="bg-sky-50/70 border border-sky-200 rounded-2xl p-5 space-y-3">
+                    <div onclick="trackActivity('Anatomi: Endosperma Pati', 'Anatomi & Sains')" class="bg-sky-50/70 border border-sky-200 rounded-2xl p-5 space-y-3 cursor-pointer hover:border-sky-500 transition">
                         <div class="w-10 h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center font-bold text-lg">3</div>
                         <h3 class="font-extrabold text-slate-900 text-base">Endosperma (Pati Utama)</h3>
                         <p class="text-xs text-slate-600 leading-relaxed">Bagian dalam berwarna putih transparan / bening yang mengandung pati karbohidrat (Amilosa & Amilopektin) pemberi energi utama saat dimakan.</p>
@@ -265,6 +280,16 @@
                         <div>
                             <h3 class="font-extrabold text-base text-amber-300">Spektrum Kadar Amilosa & Tekstur Nasi</h3>
                             <p class="text-xs text-slate-400">Kadar Amilosa menentukan seberapa lengket atau pera nasi saat ditanak.</p>
+                        </div>
+                    </div>
+
+                    <!-- Progress Graphic -->
+                    <div class="space-y-3 pt-2">
+                        <div class="h-4 w-full rounded-full bg-slate-800 flex overflow-hidden border border-slate-700">
+                            <div onclick="trackActivity('Spektrum: Ketan (<10% Amilosa)', 'Anatomi & Sains')" class="w-[20%] bg-rose-500 flex items-center justify-center text-[9px] font-black text-white cursor-pointer hover:opacity-80">0-10% (Ketan)</div>
+                            <div onclick="trackActivity('Spektrum: Pulen (12-20% Amilosa)', 'Anatomi & Sains')" class="w-[30%] bg-emerald-500 flex items-center justify-center text-[9px] font-black text-white cursor-pointer hover:opacity-80">12-20% (Pulen)</div>
+                            <div onclick="trackActivity('Spektrum: Pulen Sedang (20-25%)', 'Anatomi & Sains')" class="w-[30%] bg-amber-500 flex items-center justify-center text-[9px] font-black text-slate-950 cursor-pointer hover:opacity-80">20-25% (Pulen Sedang)</div>
+                            <div onclick="trackActivity('Spektrum: Pera (>25% Amilosa)', 'Anatomi & Sains')" class="w-[20%] bg-sky-500 flex items-center justify-center text-[9px] font-black text-white cursor-pointer hover:opacity-80">&gt;25% (Pera)</div>
                         </div>
                     </div>
 
@@ -613,21 +638,131 @@
 
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-emerald-900/40 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-            <div class="flex items-center justify-center space-x-2 text-white font-bold text-sm">
-                <i class="fa-solid fa-wheat-awn text-amber-400"></i>
-                <span>PadiNusantara — Platform Edukasi Varietas Padi Indonesia</span>
+    <!-- FLOATING ACTION BUTTON FOR LEARNING ANALYTICS -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end space-y-2">
+        <!-- Toast Notification Container -->
+        <div id="toast-container" class="space-y-2 pointer-events-none"></div>
+
+        <!-- FAB Button -->
+        <button onclick="openAnalyticsModal()" class="group bg-slate-900 hover:bg-slate-800 text-amber-400 border border-emerald-500/50 shadow-2xl p-3.5 rounded-full flex items-center space-x-3 transition transform hover:scale-105 active:scale-95">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-emerald-500 text-slate-950 flex items-center justify-center font-black text-sm">
+                <i class="fa-solid fa-chart-line"></i>
             </div>
-            <p class="max-w-xl mx-auto text-slate-400 leading-relaxed">
-                Dikembangkan berdasarkan data referensi Balai Besar Penelitian Tanaman Padi (BBPADI) Kementerian Pertanian Republik Indonesia.
-            </p>
-            <div class="text-slate-400 pt-2">
-                © 2026 PadiNusantara ID. Membangun Kedaulatan Pangan Bangsa.
+            <div class="text-left pr-2 hidden sm:block">
+                <span class="block text-[10px] text-slate-400 font-bold uppercase -mb-0.5">Aktivitas Belajar</span>
+                <span id="fab-click-counter" class="text-xs font-black text-white">0 Klik Tercatat</span>
+            </div>
+        </button>
+    </div>
+
+    <!-- LEARNING ANALYTICS MODAL PANEL -->
+    <div id="modal-analytics" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6 relative">
+            <div class="flex items-start justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-emerald-600 text-white flex items-center justify-center text-xl font-bold shadow-md">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Learning Analytics</span>
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">Panel Catatan & Analitik Interaksi Belajar</h3>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Top Summary Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
+                    <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider block">Total Interaksi</span>
+                    <strong id="an-total-clicks" class="text-2xl font-black text-slate-900">0</strong>
+                    <span class="text-[11px] text-emerald-700 block mt-0.5">Klik Tercatat</span>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                    <span class="text-[10px] font-extrabold text-amber-800 uppercase tracking-wider block">Materi Terjelajah</span>
+                    <strong id="an-unique-count" class="text-2xl font-black text-slate-900">0 / 25</strong>
+                    <span class="text-[11px] text-amber-700 block mt-0.5">Sub-Sub Topik</span>
+                </div>
+                <div class="bg-sky-50 p-4 rounded-2xl border border-sky-100">
+                    <span class="text-[10px] font-extrabold text-sky-800 uppercase tracking-wider block">Cakupan Modul</span>
+                    <strong id="an-progress-pct" class="text-2xl font-black text-slate-900">0%</strong>
+                    <span class="text-[11px] text-sky-700 block mt-0.5">Progress Belajar</span>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                    <span class="text-[10px] font-extrabold text-purple-800 uppercase tracking-wider block">Kategori Teraktif</span>
+                    <strong id="an-top-category" class="text-sm font-black text-slate-900 block truncate">-</strong>
+                    <span class="text-[11px] text-purple-700 block mt-0.5">Paling Banyak Diklik</span>
+                </div>
+            </div>
+
+            <!-- Exploration Progress Bar -->
+            <div class="space-y-1.5 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <div class="flex justify-between text-xs font-bold text-slate-700">
+                    <span>Kemajuan Eksplorasi Materi Belajar:</span>
+                    <span id="an-progress-text">0% Selesai</span>
+                </div>
+                <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                    <div id="an-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Charts & Top Items Grid -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Chart Container -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 flex flex-col justify-between">
+                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-3">Distribusi Klik Berdasarkan Kategori</h4>
+                    <div class="w-full h-56 flex items-center justify-center">
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top Explored Items -->
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                    <div id="an-top-list" class="space-y-2">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Log Table -->
+            <div class="space-y-3">
+                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Tabel Rekap Aktivitas Belajar Detailed Log</h4>
+                <div class="overflow-x-auto max-h-56 border border-slate-200 rounded-2xl">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-100 text-slate-700 font-extrabold sticky top-0">
+                            <tr>
+                                <th class="p-3">Nama Sub-Materi</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3 text-center">Jumlah Klik</th>
+                                <th class="p-3">Terakhir Diklik</th>
+                            </tr>
+                        </thead>
+                        <tbody id="an-log-table-body" class="divide-y divide-slate-100 bg-white">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
+                <div class="flex space-x-2">
+                    <button onclick="exportAnalyticsData()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-download"></i><span>Export Log (.JSON)</span>
+                    </button>
+                    <button onclick="resetAnalyticsData()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-rotate-right"></i><span>Reset Hitungan</span>
+                    </button>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">
+                    Tutup Panel
+                </button>
             </div>
         </div>
-    </footer>
+    </div>
 
     <!-- VARIETY DETAIL MODAL -->
     <div id="modal-variety" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
@@ -989,7 +1124,7 @@
             }
         ];
 
-        // --- 3. QUIZ DATABASE ---
+        // --- QUIZ DATABASE ---
         const QUIZ_DATA = [
             {
                 q: "Varietas padi unggul mana yang memiliki keunggulan tahan terhadap banjir/rendaman air hingga 14 hari?",
@@ -1028,6 +1163,229 @@
             }
         ];
 
+        // --- LEARNING ANALYTICS & EVENT TRACKER ENGINE ---
+        const TOTAL_EXPLORABLE_TOPICS = 25; // Standard total for progress %
+        let analyticsData = {
+            totalClicks: 0,
+            categories: {
+                "Anatomi & Sains": 0,
+                "Katalog Varietas": 0,
+                "Komparasi Padi": 0,
+                "Peta Wilayah": 0,
+                "Kalkulator Budidaya": 0,
+                "Rekomendasi & Kuis": 0
+            },
+            items: {} // key: itemName -> { count: 0, category: '', lastClicked: '' }
+        };
+
+        let analyticsChartInstance = null;
+
+        function initAnalytics() {
+            const saved = localStorage.getItem('padi_learning_analytics');
+            if (saved) {
+                try {
+                    analyticsData = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed loading saved analytics", e);
+                }
+            }
+            updateAnalyticsCounters();
+        }
+
+        function saveAnalytics() {
+            localStorage.setItem('padi_learning_analytics', JSON.stringify(analyticsData));
+            updateAnalyticsCounters();
+        }
+
+        function trackActivity(itemName, category) {
+            if (!itemName || !category) return;
+
+            analyticsData.totalClicks++;
+            if (analyticsData.categories[category] !== undefined) {
+                analyticsData.categories[category]++;
+            } else {
+                analyticsData.categories[category] = 1;
+            }
+
+            if (!analyticsData.items[itemName]) {
+                analyticsData.items[itemName] = {
+                    count: 0,
+                    category: category,
+                    lastClicked: ''
+                };
+            }
+            analyticsData.items[itemName].count++;
+            analyticsData.items[itemName].lastClicked = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            saveAnalytics();
+            showToast(`Aktivitas dicatat: +1 (${category}) - ${itemName}`);
+        }
+
+        function updateAnalyticsCounters() {
+            const countStr = `${analyticsData.totalClicks} Klik`;
+            document.getElementById('header-click-count').textContent = countStr;
+            document.getElementById('mobile-analytics-badge').textContent = analyticsData.totalClicks;
+            document.getElementById('fab-click-counter').textContent = `${analyticsData.totalClicks} Klik Tercatat`;
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900 text-amber-300 border border-emerald-500/50 shadow-2xl px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-0 opacity-100';
+            toast.innerHTML = `<i class="fa-solid fa-chart-line text-emerald-400"></i><span class="truncate max-w-xs">${message}</span>`;
+            
+            const container = document.getElementById('toast-container');
+            if (container) {
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-2');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
+        }
+
+        function openAnalyticsModal() {
+            renderAnalyticsPanel();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function renderAnalyticsPanel() {
+            const uniqueCount = Object.keys(analyticsData.items).length;
+            const progressPct = Math.min(100, Math.round((uniqueCount / TOTAL_EXPLORABLE_TOPICS) * 100));
+
+            document.getElementById('an-total-clicks').textContent = analyticsData.totalClicks;
+            document.getElementById('an-unique-count').textContent = `${uniqueCount} / ${TOTAL_EXPLORABLE_TOPICS}`;
+            document.getElementById('an-progress-pct').textContent = `${progressPct}%`;
+            document.getElementById('an-progress-text').textContent = `${progressPct}% Selesai`;
+            document.getElementById('an-progress-bar').style.width = `${progressPct}%`;
+
+            // Top Category
+            let topCat = "-";
+            let maxCatVal = -1;
+            Object.entries(analyticsData.categories).forEach(([cat, val]) => {
+                if (val > maxCatVal && val > 0) {
+                    maxCatVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('an-top-category').textContent = topCat;
+
+            // Top 5 Items List
+            const sortedItems = Object.entries(analyticsData.items)
+                .map(([name, data]) => ({ name, ...data }))
+                .sort((a, b) => b.count - a.count);
+
+            const top5List = document.getElementById('an-top-list');
+            top5List.innerHTML = '';
+            if (sortedItems.length === 0) {
+                top5List.innerHTML = `<div class="text-xs text-slate-400 italic p-3 text-center">Belum ada materi yang diklik.</div>`;
+            } else {
+                sortedItems.slice(0, 5).forEach((item, idx) => {
+                    const row = document.createElement('div');
+                    row.className = "flex items-center justify-between p-2.5 bg-white rounded-xl border border-slate-100 text-xs";
+                    row.innerHTML = `
+                        <div class="flex items-center space-x-2 truncate">
+                            <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[10px] flex items-center justify-center">${idx + 1}</span>
+                            <span class="font-bold text-slate-800 truncate">${item.name}</span>
+                        </div>
+                        <span class="font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 shrink-0">${item.count} Klik</span>
+                    `;
+                    top5List.appendChild(row);
+                });
+            }
+
+            // Detailed Log Table
+            const tableBody = document.getElementById('an-log-table-body');
+            tableBody.innerHTML = '';
+            if (sortedItems.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada riwayat klik.</td></tr>`;
+            } else {
+                sortedItems.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50";
+                    tr.innerHTML = `
+                        <td class="p-3 font-bold text-slate-800">${item.name}</td>
+                        <td class="p-3 text-slate-600">${item.category}</td>
+                        <td class="p-3 text-center font-black text-emerald-700">${item.count}</td>
+                        <td class="p-3 text-slate-500">${item.lastClicked || '-'}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }
+
+            // Render Chart.js
+            renderAnalyticsChart();
+        }
+
+        function renderAnalyticsChart() {
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+            }
+
+            const labels = Object.keys(analyticsData.categories);
+            const dataVals = Object.values(analyticsData.categories);
+
+            analyticsChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataVals,
+                        backgroundColor: [
+                            '#10b981', '#f59e0b', '#06b6d4', '#6366f1', '#8b5cf6', '#ec4899'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 10, family: 'Inter' },
+                                boxWidth: 12
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportAnalyticsData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analyticsData, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `Analitik_Belajar_Padi_${new Date().toISOString().slice(0,10)}.json`);
+            dlAnchorElem.click();
+        }
+
+        function resetAnalyticsData() {
+            if (confirm("Apakah Anda yakin ingin mereset seluruh data catatan belajar?")) {
+                analyticsData = {
+                    totalClicks: 0,
+                    categories: {
+                        "Anatomi & Sains": 0,
+                        "Katalog Varietas": 0,
+                        "Komparasi Padi": 0,
+                        "Peta Wilayah": 0,
+                        "Kalkulator Budidaya": 0,
+                        "Rekomendasi & Kuis": 0
+                    },
+                    items: {}
+                };
+                saveAnalytics();
+                renderAnalyticsPanel();
+                showToast("Data analitik belajar telah direset.");
+            }
+        }
+
         // --- STATE MANAGEMENT ---
         let selectedCompareIds = ['inpari32', 'ciherang'];
         let activeRegionId = 'jabar';
@@ -1036,6 +1394,7 @@
 
         // --- ON LOAD INITIALIZATION ---
         window.onload = function() {
+            initAnalytics();
             renderCatalog(RICE_DATABASE);
             renderComparisonTable();
             renderRegionNav();
@@ -1049,7 +1408,7 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
-        // --- TAB SWITCHER ---
+        // --- TAB SWITCHER WITH TRACKING ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -1065,6 +1424,25 @@
                 activeBtn.classList.remove('text-slate-300');
             }
 
+            const tabNames = {
+                'beranda': 'Beranda & Anatomi',
+                'katalog': 'Katalog Varietas',
+                'komparasi': 'Sandingkan Padi',
+                'wilayah': 'Peta Wilayah Tanam',
+                'kalkulator': 'Kalkulator Budidaya',
+                'kuis': 'Rekomendasi & Kuis'
+            };
+
+            const tabCategories = {
+                'beranda': 'Anatomi & Sains',
+                'katalog': 'Katalog Varietas',
+                'komparasi': 'Komparasi Padi',
+                'wilayah': 'Peta Wilayah',
+                'kalkulator': 'Kalkulator Budidaya',
+                'kuis': 'Rekomendasi & Kuis'
+            };
+
+            trackActivity(`Tab: ${tabNames[tabId] || tabId}`, tabCategories[tabId] || 'Umum');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1164,15 +1542,12 @@
                             <span>${isCompared ? 'Tersanding' : 'Sandingkan'}</span>
                         </button>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // --- MODAL DETIL VARIETAS ---
+        // --- MODAL DETIL VARIETAS WITH TRACKING ---
         function openModal(id) {
             const item = RICE_DATABASE.find(r => r.id === id);
             if(!item) return;
+
+            trackActivity(`Detail: ${item.name}`, 'Katalog Varietas');
 
             document.getElementById('m-code').textContent = item.code;
             document.getElementById('m-name').textContent = item.name;
@@ -1199,8 +1574,9 @@
             document.getElementById('modal-variety').classList.add('hidden');
         }
 
-        // --- KOMPARASI ENGINE ---
+        // --- KOMPARASI ENGINE WITH TRACKING ---
         function toggleCompare(id) {
+            const item = RICE_DATABASE.find(r => r.id === id);
             const idx = selectedCompareIds.indexOf(id);
             if(idx > -1) {
                 selectedCompareIds.splice(idx, 1);
@@ -1210,6 +1586,7 @@
                     return;
                 }
                 selectedCompareIds.push(id);
+                if (item) trackActivity(`Sandingkan: ${item.name}`, 'Komparasi Padi');
             }
 
             updateCompareBadges();
@@ -1226,6 +1603,7 @@
 
         function loadComparisonPreset(ids) {
             selectedCompareIds = [...ids];
+            trackActivity(`Preset Komparasi: ${ids.join(', ')}`, 'Komparasi Padi');
             updateCompareBadges();
             renderCatalog(RICE_DATABASE);
             renderComparisonTable();
@@ -1347,6 +1725,10 @@
             activeRegionId = id;
             renderRegionNav();
             const r = REGIONS_DATA.find(item => item.id === id);
+            if (r) {
+                trackActivity(`Eksplorasi Wilayah: ${r.name}`, 'Peta Wilayah');
+            }
+
             const container = document.getElementById('region-details-container');
 
             container.innerHTML = `
@@ -1397,12 +1779,13 @@
             const system = document.getElementById('calc-system').value;
             const priceGkp = parseFloat(document.getElementById('calc-price-gkp').value) || 0;
 
+            const variety = RICE_DATABASE.find(r => r.id === varietyId) || RICE_DATABASE[0];
+            trackActivity(`Kalkulator: ${variety.name} (${areaVal} ${areaUnit})`, 'Kalkulator Budidaya');
+
             // Convert Area to Hectares
             let areaHa = areaVal;
             if(areaUnit === 'ubin') areaHa = (areaVal * 14) / 10000;
             if(areaUnit === 'm2') areaHa = areaVal / 10000;
-
-            const variety = RICE_DATABASE.find(r => r.id === varietyId) || RICE_DATABASE[0];
 
             // System multiplier
             let systemMult = 1.0;
@@ -1428,11 +1811,13 @@
             document.getElementById('res-organic').textContent = organicTon + " Ton";
         }
 
-        // --- WIZARD RECOMMENDATION ENGINE ---
+        // --- WIZARD RECOMMENDATION ENGINE WITH TRACKING ---
         function runWizardRecommendation() {
             const lahan = document.getElementById('wiz-lahan').value;
             const goal = document.getElementById('wiz-goal').value;
             const durasi = document.getElementById('wiz-durasi').value;
+
+            trackActivity(`Wizard Rekomendasi: Lahan ${lahan} - Goal ${goal}`, 'Rekomendasi & Kuis');
 
             const scored = RICE_DATABASE.map(item => {
                 let score = 0;
@@ -1526,6 +1911,7 @@
 
         function selectQuizAns(idx) {
             quizAnswers[quizIndex] = idx;
+            trackActivity(`Kuis Soal #${quizIndex+1}: Opsi ${String.fromCharCode(65 + idx)}`, 'Rekomendasi & Kuis');
             renderQuizCard();
         }
 
