@@ -40,12 +40,6 @@
                             700: '#15803d',
                             800: '#166534',
                             900: '#14532d',
-                        },
-                        emas: {
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706',
-                            700: '#b45309',
                         }
                     },
                     fontFamily: {
@@ -153,7 +147,7 @@
                 <i class="fa-solid fa-seedling w-6 text-emerald-400"></i><span>Beranda & Anatomi Bulir</span>
             </button>
             <button onclick="switchTab('katalog'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
-                <i class="fa-solid fa-list-check w-6 text-amber-400"></i><span>Katalog 14+ Varietas</span>
+                <i class="fa-solid fa-list-check w-6 text-amber-400"></i><span>Katalog 15 Varietas</span>
             </button>
             <button onclick="switchTab('komparasi'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-xl text-slate-200 hover:bg-slate-800 flex items-center space-x-3">
                 <i class="fa-solid fa-scale-balanced w-6 text-sky-400"></i><span>Sandingkan Padi (Komparasi)</span>
@@ -212,7 +206,7 @@
                         <i class="fa-solid fa-seedling"></i>
                     </div>
                     <div>
-                        <div class="text-2xl font-black text-slate-900">14+</div>
+                        <div class="text-2xl font-black text-slate-900">15</div>
                         <div class="text-xs text-slate-500 font-semibold">Varietas Utama</div>
                     </div>
                 </div>
@@ -283,41 +277,30 @@
                         </div>
                     </div>
 
-                    <!-- Progress Graphic -->
                     <div class="space-y-3 pt-2">
-                        <div class="h-4 w-full rounded-full bg-slate-800 flex overflow-hidden border border-slate-700">
+                        <div class="h-5 w-full rounded-full bg-slate-800 flex overflow-hidden border border-slate-700">
                             <div onclick="trackActivity('Spektrum: Ketan (<10% Amilosa)', 'Anatomi & Sains')" class="w-[20%] bg-rose-500 flex items-center justify-center text-[9px] font-black text-white cursor-pointer hover:opacity-80">0-10% (Ketan)</div>
                             <div onclick="trackActivity('Spektrum: Pulen (12-20% Amilosa)', 'Anatomi & Sains')" class="w-[30%] bg-emerald-500 flex items-center justify-center text-[9px] font-black text-white cursor-pointer hover:opacity-80">12-20% (Pulen)</div>
-                            <div onclick="trackActivity('Spektrum: Pulen Sedang (20-25%)', 'Anatomi & Sains')" class="w-[30%] bg-amber-500 flex items-center justify-center text-[9px] font-black text-slate-950 cursor-pointer hover:opacity-80">20-25% (Pulen Sedang)</div>
+                            <div onclick="trackActivity('Spektrum: Pulen Sedang (20-25%)', 'Anatomi & Sains')" class="w-[30%] bg-amber-500 flex items-center justify-center text-[9px] font-black text-slate-950 cursor-pointer hover:opacity-80">20-25% (Sedang)</div>
                             <div onclick="trackActivity('Spektrum: Pera (>25% Amilosa)', 'Anatomi & Sains')" class="w-[20%] bg-sky-500 flex items-center justify-center text-[9px] font-black text-white cursor-pointer hover:opacity-80">&gt;25% (Pera)</div>
                         </div>
-                    </div>
 
-                    <!-- Progress Graphic -->
-                    <div class="space-y-3 pt-2">
-                        <div class="h-4 w-full rounded-full bg-slate-800 flex overflow-hidden border border-slate-700">
-                            <div class="w-[20%] bg-rose-500 flex items-center justify-center text-[9px] font-black text-white">0-10% (Ketan)</div>
-                            <div class="w-[30%] bg-emerald-500 flex items-center justify-center text-[9px] font-black text-white">12-20% (Pulen)</div>
-                            <div class="w-[30%] bg-amber-500 flex items-center justify-center text-[9px] font-black text-slate-950">20-25% (Pulen Sedang)</div>
-                            <div class="w-[20%] bg-sky-500 flex items-center justify-center text-[9px] font-black text-white">&gt;25% (Pera)</div>
-                        </div>
-
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs pt-1">
                             <div class="bg-slate-800 p-3 rounded-xl border border-rose-500/30">
                                 <span class="font-bold text-rose-400 block mb-1">Ketan (&lt;10% Amilosa)</span>
-                                <p class="text-[11px] text-slate-300">Sangat lengket, dominan Amilopektin. Contoh: Ketan Putih/Hitam.</p>
+                                <p class="text-[11px] text-slate-300">Sangat lengket, dominan Amilopektin. Contoh: Ketan Putih Cibeusi.</p>
                             </div>
                             <div class="bg-slate-800 p-3 rounded-xl border border-emerald-500/30">
                                 <span class="font-bold text-emerald-400 block mb-1">Pulen (12-20% Amilosa)</span>
-                                <p class="text-[11px] text-slate-300">Empuk, agak lengket, disukai mayoritas orang Indonesia (Rojolele, Pandanwangi).</p>
+                                <p class="text-[11px] text-slate-300">Empuk, agak lengket, disukai mayoritas (Rojolele, Pandanwangi, Mentik Susu).</p>
                             </div>
                             <div class="bg-slate-800 p-3 rounded-xl border border-amber-500/30">
                                 <span class="font-bold text-amber-400 block mb-1">Pulen Sedang (20-24%)</span>
-                                <p class="text-[11px] text-slate-300">Nasi sedang, tidak terlalu lengket (Inpari 32, Ciherang, IR64).</p>
+                                <p class="text-[11px] text-slate-300">Nasi pas, tidak lengket (Inpari 32, Ciherang, IR64, Mekongga).</p>
                             </div>
                             <div class="bg-slate-800 p-3 rounded-xl border border-sky-500/30">
                                 <span class="font-bold text-sky-400 block mb-1">Pera (&gt;25% Amilosa)</span>
-                                <p class="text-[11px] text-slate-300">Bulir terpisah, cocok untuk nasi goreng & ketupat (IR42, Inpara 3).</p>
+                                <p class="text-[11px] text-slate-300">Bulir terpisah, sangat cocok untuk nasi goreng & ketupat (Inpara 3).</p>
                             </div>
                         </div>
                     </div>
@@ -341,16 +324,16 @@
                 </div>
 
                 <!-- Controls Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                     <!-- Live Search -->
-                    <div class="relative">
+                    <div class="relative lg:col-span-2">
                         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
                         <input type="text" id="search-input" oninput="filterCatalog()" placeholder="Cari varietas (Inpari, Rojolele, Gogo...)" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     </div>
 
                     <!-- Filter Lahan -->
                     <div>
-                        <select id="filter-lahan" onchange="filterCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="filter-lahan" onchange="filterCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             <option value="ALL">Semua Tipe Lahan</option>
                             <option value="Irigasi">Sawah Irigasi / Tadah Hujan</option>
                             <option value="Gogo">Lahan Kering (Padi Gogo)</option>
@@ -360,24 +343,24 @@
 
                     <!-- Filter Tekstur -->
                     <div>
-                        <select id="filter-tekstur" onchange="filterCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="filter-tekstur" onchange="filterCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             <option value="ALL">Semua Tekstur Nasi</option>
                             <option value="Pulen">Pulen / Super Pulen</option>
                             <option value="Sedang">Pulen Sedang</option>
                             <option value="Pera">Pera (Cocok Nasi Goreng)</option>
                             <option value="Aromatik">Aromatik / Wangi Alami</option>
                             <option value="Kesehatan">Kesehatan (Padi Merah / Hitam)</option>
+                            <option value="Ketan">Ketan</option>
                         </select>
                     </div>
 
-                    <!-- Filter Hama -->
+                    <!-- Sort -->
                     <div>
-                        <select id="filter-hama" onchange="filterCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="ALL">Semua Ketahanan Hama</option>
-                            <option value="Wereng">Tahan Wereng Cokelat (WBC)</option>
-                            <option value="HDB">Tahan Hawar Daun Bakteri (HDB)</option>
-                            <option value="Blas">Tahan Penyakit Blas (Pyricularia)</option>
-                            <option value="Banjir">Tahan Rendaman Banjir</option>
+                        <select id="sort-catalog" onchange="filterCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="default">Urutkan: Rekomendasi</option>
+                            <option value="hasil">Hasil Panen (Tertinggi)</option>
+                            <option value="durasi">Masa Tanam (Tercepat)</option>
+                            <option value="nama">Nama (A-Z)</option>
                         </select>
                     </div>
                 </div>
@@ -493,8 +476,8 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Sistem Pola Tanam:</label>
                             <select id="calc-system" onchange="calculateYield()" class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-500">
-                                <option value="legowo21">Jajar Legowo 2 : 1 (+30% Populasi, Rekomendasi)</option>
-                                <option value="legowo41">Jajar Legowo 4 : 1 (+20% Populasi)</option>
+                                <option value="legowo21">Jajar Legowo 2 : 1 (+25% Populasi, Rekomendasi)</option>
+                                <option value="legowo41">Jajar Legowo 4 : 1 (+15% Populasi)</option>
                                 <option value="konvensional">Tegel Konvensional (25x25 cm)</option>
                                 <option value="tabela">Tabela (Tanam Benih Langsung / Dry)</option>
                             </select>
@@ -582,6 +565,7 @@
                             <option value="Rasa">Nasi Super Pulen & Aromatik (Premium)</option>
                             <option value="Hama">Ketahanan Maksimal Ganas Wereng/HDB</option>
                             <option value="Kesehatan">Beras Kesehatan (Kadar Gula Rendah / Merah)</option>
+                            <option value="Ketan">Olahan Beras Ketan</option>
                         </select>
                     </div>
 
@@ -639,12 +623,12 @@
     </main>
 
     <!-- FLOATING ACTION BUTTON FOR LEARNING ANALYTICS -->
-    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end space-y-2">
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end space-y-2 pointer-events-none">
         <!-- Toast Notification Container -->
         <div id="toast-container" class="space-y-2 pointer-events-none"></div>
 
         <!-- FAB Button -->
-        <button onclick="openAnalyticsModal()" class="group bg-slate-900 hover:bg-slate-800 text-amber-400 border border-emerald-500/50 shadow-2xl p-3.5 rounded-full flex items-center space-x-3 transition transform hover:scale-105 active:scale-95">
+        <button onclick="openAnalyticsModal()" class="pointer-events-auto group bg-slate-900 hover:bg-slate-800 text-amber-400 border border-emerald-500/50 shadow-2xl p-3.5 rounded-full flex items-center space-x-3 transition transform hover:scale-105 active:scale-95">
             <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-emerald-500 text-slate-950 flex items-center justify-center font-black text-sm">
                 <i class="fa-solid fa-chart-line"></i>
             </div>
@@ -829,7 +813,7 @@
 
     <!-- JAVASCRIPT LOGIC & DATABASE -->
     <script>
-        // --- 1. RICE VARIETIES DATABASE (14 REALISTIC VARIETIES) ---
+        // --- 1. RICE VARIETIES DATABASE (15 REALISTIC VARIETIES) ---
         const RICE_DATABASE = [
             {
                 id: "inpari32",
@@ -946,7 +930,7 @@
             {
                 id: "hitammelik",
                 code: "HITAM-MELIK",
-                name: "Padi Hitam Melik",
+                name: "Padi Hitam Sirampog / Melik",
                 lahanType: "Irigasi",
                 teksturType: "Kesehatan",
                 durasiDays: 130,
@@ -1024,19 +1008,19 @@
                 featured: false
             },
             {
-                id: "cisadane",
-                code: "CISADANE",
-                name: "Padi Cisadane",
+                id: "cibeusi",
+                code: "KETAN-CIBEUSI",
+                name: "Ketan Putih Cibeusi Subang",
                 lahanType: "Irigasi",
-                teksturType: "Pulen",
-                durasiDays: 135,
-                hasilTon: 7.0,
-                amilosaPct: 20.0,
-                hamaResist: [],
-                hamaText: "Toleran kondisi tanah kurang subur, bentuk rumpun tegap.",
-                lahanText: "Dataran rendah sawah irigasi tradisional.",
-                desc: "Varietas klasik populer era 1980-an yang masih dipertahankan di beberapa pelosok karena rasa nasi pulen manis yang khas.",
-                aroma: "Non-Aromatik",
+                teksturType: "Ketan",
+                durasiDays: 125,
+                hasilTon: 6.2,
+                amilosaPct: 8.5,
+                hamaResist: ["Blas"],
+                hamaText: "Toleran kelembaban tinggi, anakan cukup banyak.",
+                lahanText: "Dataran rendah Subang dan Jawa Barat.",
+                desc: "Beras ketan putih varietas lokal unggul Subang. Kadar amilosa sangat rendah (<9%) menghasilkan tekstur lengket kenyal sempurna untuk olahan uli, lemper, dan wajik.",
+                aroma: "Khas Ketan",
                 featured: false
             },
             {
@@ -1054,6 +1038,22 @@
                 desc: "Generasi Green Super Rice yang ramah lingkungan. Tetap berproduksi tinggi meskipun dengan efisiensi pemupukan rendah dan hemat air.",
                 aroma: "Non-Aromatik",
                 featured: true
+            },
+            {
+                id: "mentikwangi",
+                code: "MENTIK-WANGI",
+                name: "Mentik Wangi Organik",
+                lahanType: "Irigasi",
+                teksturType: "Aromatik",
+                durasiDays: 122,
+                hasilTon: 6.8,
+                amilosaPct: 16.8,
+                hamaResist: [],
+                hamaText: "Sangat responsif pada pemupukan organik/kompos, tahan rebah sedang.",
+                lahanText: "Lahan sawah irigasi tanah vulkanik subur.",
+                desc: "Padi aromatik rasa gurih alami tanpa bahan kimia synthesis. Menghasilkan pulen legit dengan keharuman alami saat dikukus.",
+                aroma: "Aromatik",
+                featured: false
             }
         ];
 
@@ -1062,7 +1062,7 @@
             {
                 id: "jabar",
                 name: "Jawa Barat & Banten",
-                fav: ["Pandanwangi Cianjur", "Inpari 32 HDB", "Ciherang"],
+                fav: ["Pandanwangi Cianjur", "Inpari 32 HDB", "Ciherang", "Ketan Cibeusi"],
                 elevation: "0 - 1.200 mdpl",
                 irrigation: "Irigasi Teknis Waduk Jatiluhur & Sungai Citarum",
                 wisdom: "Tradisi 'Seren Taun' masyarakat adat Sunda sebagai bentuk syukur panen padi.",
@@ -1156,15 +1156,15 @@
                 exp: "Rojolele Srinuk dikembangkan oleh Pemkab Klaten bersama BATAN untuk mempercepat umur tanam Rojolele dari 150 hari menjadi 115 hari."
             },
             {
-                q: "Sistem pola tanam padi yang direkomendasikan Kementan untuk meningkatkan populasi tanaman hingga 30% dan menambah hasil panen adalah:",
+                q: "Sistem pola tanam padi yang direkomendasikan Kementan untuk meningkatkan populasi tanaman hingga 25% dan menambah hasil panen adalah:",
                 opts: ["Sistem Tanam Monokultur Tabela", "Sistem Jajar Legowo (2:1 atau 4:1)", "Sistem Tegel Sembarangan", "Sistem Surjan Basah"],
                 ans: 1,
-                exp: "Sistem Jajar Legowo memberikan efek pinggir pada tanaman padi sehingga penerimaan sinar matahari maksimal dan hasil naik 15-30%."
+                exp: "Sistem Jajar Legowo memberikan efek pinggir pada tanaman padi sehingga penerimaan sinar matahari maksimal dan hasil naik 15-25%."
             }
         ];
 
         // --- LEARNING ANALYTICS & EVENT TRACKER ENGINE ---
-        const TOTAL_EXPLORABLE_TOPICS = 25; // Standard total for progress %
+        const TOTAL_EXPLORABLE_TOPICS = 25;
         let analyticsData = {
             totalClicks: 0,
             categories: {
@@ -1175,7 +1175,7 @@
                 "Kalkulator Budidaya": 0,
                 "Rekomendasi & Kuis": 0
             },
-            items: {} // key: itemName -> { count: 0, category: '', lastClicked: '' }
+            items: {}
         };
 
         let analyticsChartInstance = null;
@@ -1230,7 +1230,7 @@
 
         function showToast(message) {
             const toast = document.createElement('div');
-            toast.className = 'bg-slate-900 text-amber-300 border border-emerald-500/50 shadow-2xl px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-0 opacity-100';
+            toast.className = 'pointer-events-auto bg-slate-900 text-amber-300 border border-emerald-500/50 shadow-2xl px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-0 opacity-100';
             toast.innerHTML = `<i class="fa-solid fa-chart-line text-emerald-400"></i><span class="truncate max-w-xs">${message}</span>`;
             
             const container = document.getElementById('toast-container');
@@ -1262,7 +1262,6 @@
             document.getElementById('an-progress-text').textContent = `${progressPct}% Selesai`;
             document.getElementById('an-progress-bar').style.width = `${progressPct}%`;
 
-            // Top Category
             let topCat = "-";
             let maxCatVal = -1;
             Object.entries(analyticsData.categories).forEach(([cat, val]) => {
@@ -1273,7 +1272,6 @@
             });
             document.getElementById('an-top-category').textContent = topCat;
 
-            // Top 5 Items List
             const sortedItems = Object.entries(analyticsData.items)
                 .map(([name, data]) => ({ name, ...data }))
                 .sort((a, b) => b.count - a.count);
@@ -1297,7 +1295,6 @@
                 });
             }
 
-            // Detailed Log Table
             const tableBody = document.getElementById('an-log-table-body');
             tableBody.innerHTML = '';
             if (sortedItems.length === 0) {
@@ -1316,7 +1313,6 @@
                 });
             }
 
-            // Render Chart.js
             renderAnalyticsChart();
         }
 
@@ -1367,23 +1363,21 @@
         }
 
         function resetAnalyticsData() {
-            if (confirm("Apakah Anda yakin ingin mereset seluruh data catatan belajar?")) {
-                analyticsData = {
-                    totalClicks: 0,
-                    categories: {
-                        "Anatomi & Sains": 0,
-                        "Katalog Varietas": 0,
-                        "Komparasi Padi": 0,
-                        "Peta Wilayah": 0,
-                        "Kalkulator Budidaya": 0,
-                        "Rekomendasi & Kuis": 0
-                    },
-                    items: {}
-                };
-                saveAnalytics();
-                renderAnalyticsPanel();
-                showToast("Data analitik belajar telah direset.");
-            }
+            analyticsData = {
+                totalClicks: 0,
+                categories: {
+                    "Anatomi & Sains": 0,
+                    "Katalog Varietas": 0,
+                    "Komparasi Padi": 0,
+                    "Peta Wilayah": 0,
+                    "Kalkulator Budidaya": 0,
+                    "Rekomendasi & Kuis": 0
+                },
+                items: {}
+            };
+            saveAnalytics();
+            renderAnalyticsPanel();
+            showToast("Data analitik belajar telah direset.");
         }
 
         // --- STATE MANAGEMENT ---
@@ -1395,7 +1389,7 @@
         // --- ON LOAD INITIALIZATION ---
         window.onload = function() {
             initAnalytics();
-            renderCatalog(RICE_DATABASE);
+            filterCatalog();
             renderComparisonTable();
             renderRegionNav();
             renderRegionDetail('jabar');
@@ -1411,7 +1405,8 @@
         // --- TAB SWITCHER WITH TRACKING ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const target = document.getElementById('tab-' + tabId);
+            if(target) target.classList.remove('hidden');
 
             document.querySelectorAll('.nav-tab').forEach(btn => {
                 btn.classList.remove('bg-emerald-800', 'text-amber-300');
@@ -1451,22 +1446,24 @@
             const search = document.getElementById('search-input').value.toLowerCase().trim();
             const lahan = document.getElementById('filter-lahan').value;
             const tekstur = document.getElementById('filter-tekstur').value;
-            const hama = document.getElementById('filter-hama').value;
+            const sortVal = document.getElementById('sort-catalog').value;
 
-            const filtered = RICE_DATABASE.filter(item => {
+            let filtered = RICE_DATABASE.filter(item => {
                 const matchSearch = item.name.toLowerCase().includes(search) || 
                                     item.code.toLowerCase().includes(search) ||
                                     item.desc.toLowerCase().includes(search);
                 const matchLahan = (lahan === 'ALL') || (item.lahanType === lahan);
                 const matchTekstur = (tekstur === 'ALL') || (item.teksturType === tekstur);
-                
-                let matchHama = true;
-                if(hama !== 'ALL') {
-                    matchHama = item.hamaResist.includes(hama);
-                }
-
-                return matchSearch && matchLahan && matchTekstur && matchHama;
+                return matchSearch && matchLahan && matchTekstur;
             });
+
+            if(sortVal === 'hasil') {
+                filtered.sort((a,b) => b.hasilTon - a.hasilTon);
+            } else if(sortVal === 'durasi') {
+                filtered.sort((a,b) => a.durasiDays - b.durasiDays);
+            } else if(sortVal === 'nama') {
+                filtered.sort((a,b) => a.name.localeCompare(b.name));
+            }
 
             renderCatalog(filtered);
         }
@@ -1475,7 +1472,7 @@
             document.getElementById('search-input').value = '';
             document.getElementById('filter-lahan').value = 'ALL';
             document.getElementById('filter-tekstur').value = 'ALL';
-            document.getElementById('filter-hama').value = 'ALL';
+            document.getElementById('sort-catalog').value = 'default';
             filterCatalog();
         }
 
@@ -1506,7 +1503,7 @@
                                 item.lahanType === 'Irigasi' ? 'bg-emerald-100 text-emerald-800' :
                                 item.lahanType === 'Gogo' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'
                             }">
-                                ${item.lahanType === 'Irigasi' ? '🌊 Sawah Irigasi' : item.lahanType === 'Gogo' ? '⛰️ Lahan Kering / Gogo' : '🛶 Sawah Rawa'}
+                                ${item.lahanType === 'Irigasi' ? '🌊 Sawah Irigasi' : item.lahanType === 'Gogo' ? '⛰️ Lahan Kering' : '🛶 Sawah Rawa'}
                             </span>
                             ${item.featured ? '<span class="text-[10px] font-extrabold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200"><i class="fa-solid fa-star mr-1"></i>Unggulan</span>' : ''}
                         </div>
@@ -1517,7 +1514,6 @@
                             <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.desc}</p>
                         </div>
 
-                        <!-- Key Badges Grid -->
                         <div class="grid grid-cols-2 gap-2 text-[11px] pt-1">
                             <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
                                 <span class="text-slate-400 block text-[9px] font-bold uppercase">Potensi Hasil</span>
@@ -1542,7 +1538,12 @@
                             <span>${isCompared ? 'Tersanding' : 'Sandingkan'}</span>
                         </button>
                     </div>
-        // --- MODAL DETIL VARIETAS WITH TRACKING ---
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- MODAL DETIL VARIETAS ---
         function openModal(id) {
             const item = RICE_DATABASE.find(r => r.id === id);
             if(!item) return;
@@ -1574,7 +1575,7 @@
             document.getElementById('modal-variety').classList.add('hidden');
         }
 
-        // --- KOMPARASI ENGINE WITH TRACKING ---
+        // --- KOMPARASI ENGINE ---
         function toggleCompare(id) {
             const item = RICE_DATABASE.find(r => r.id === id);
             const idx = selectedCompareIds.indexOf(id);
@@ -1582,7 +1583,7 @@
                 selectedCompareIds.splice(idx, 1);
             } else {
                 if(selectedCompareIds.length >= 4) {
-                    alert('Maksimal 4 varietas padi untuk disandingkan sekaligus.');
+                    showToast('Maksimal 4 varietas padi disandingkan');
                     return;
                 }
                 selectedCompareIds.push(id);
@@ -1590,14 +1591,14 @@
             }
 
             updateCompareBadges();
-            renderCatalog(RICE_DATABASE);
+            filterCatalog();
             renderComparisonTable();
         }
 
         function clearComparison() {
             selectedCompareIds = [];
             updateCompareBadges();
-            renderCatalog(RICE_DATABASE);
+            filterCatalog();
             renderComparisonTable();
         }
 
@@ -1605,7 +1606,7 @@
             selectedCompareIds = [...ids];
             trackActivity(`Preset Komparasi: ${ids.join(', ')}`, 'Komparasi Padi');
             updateCompareBadges();
-            renderCatalog(RICE_DATABASE);
+            filterCatalog();
             renderComparisonTable();
             switchTab('komparasi');
         }
@@ -1643,7 +1644,6 @@
                 return;
             }
 
-            // Find best values for highlight
             const maxYield = Math.max(...items.map(i => i.hasilTon));
             const minDurasi = Math.min(...items.map(i => i.durasiDays));
 
@@ -1780,20 +1780,16 @@
             const priceGkp = parseFloat(document.getElementById('calc-price-gkp').value) || 0;
 
             const variety = RICE_DATABASE.find(r => r.id === varietyId) || RICE_DATABASE[0];
-            trackActivity(`Kalkulator: ${variety.name} (${areaVal} ${areaUnit})`, 'Kalkulator Budidaya');
 
-            // Convert Area to Hectares
             let areaHa = areaVal;
             if(areaUnit === 'ubin') areaHa = (areaVal * 14) / 10000;
             if(areaUnit === 'm2') areaHa = areaVal / 10000;
 
-            // System multiplier
             let systemMult = 1.0;
             if(system === 'legowo21') systemMult = 1.25;
             if(system === 'legowo41') systemMult = 1.15;
             if(system === 'tabela') systemMult = 0.95;
 
-            // Calculations
             const seedKg = Math.round(areaHa * 25);
             const estYieldTon = (areaHa * variety.hasilTon * systemMult).toFixed(2);
             const estMoneyRp = Math.round(estYieldTon * 1000 * priceGkp);
@@ -1802,7 +1798,6 @@
             const npkKg = Math.round(areaHa * 300);
             const organicTon = (areaHa * 2).toFixed(1);
 
-            // Display
             document.getElementById('res-seed-kg').textContent = seedKg + " Kg";
             document.getElementById('res-yield-ton').textContent = estYieldTon + " Ton";
             document.getElementById('res-yield-val').textContent = "~ Rp " + estMoneyRp.toLocaleString('id-ID');
@@ -1811,7 +1806,7 @@
             document.getElementById('res-organic').textContent = organicTon + " Ton";
         }
 
-        // --- WIZARD RECOMMENDATION ENGINE WITH TRACKING ---
+        // --- WIZARD RECOMMENDATION ENGINE ---
         function runWizardRecommendation() {
             const lahan = document.getElementById('wiz-lahan').value;
             const goal = document.getElementById('wiz-goal').value;
@@ -1827,6 +1822,7 @@
                 if(goal === 'Rasa' && (item.teksturType === 'Pulen' || item.aroma.includes('Aromatik'))) score += 30;
                 if(goal === 'Hama' && item.hamaResist.length >= 2) score += 30;
                 if(goal === 'Kesehatan' && item.teksturType === 'Kesehatan') score += 50;
+                if(goal === 'Ketan' && item.teksturType === 'Ketan') score += 50;
 
                 if(durasi === 'Genjah' && item.durasiDays <= 115) score += 20;
                 if(durasi === 'Sedang' && item.durasiDays > 115 && item.durasiDays <= 125) score += 20;
