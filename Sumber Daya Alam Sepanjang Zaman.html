@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sumber Daya Alam Sepanjang Zaman</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.4rem .85rem;font-family:system-ui,sans-serif;font-size:.88rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small,.none,.hint{font-family:system-ui,sans-serif;color:var(--muted);font-size:.85rem}
+.hint{margin:.5rem 0 0}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:.6rem;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1;flex:none}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted)}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+#q{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.6rem 1rem;font:1rem system-ui,sans-serif}
+#q:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+.tw{overflow-x:auto}
+#tl{width:100%;min-width:680px;height:auto;display:block}
+#tl rect{cursor:pointer}
+#tl text{font:10.5px system-ui,sans-serif;fill:var(--ink);pointer-events:none}
+#tl .ax{fill:var(--muted)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:18%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+td.best{color:var(--green);font-weight:700}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Sumber Daya Alam Sepanjang Zaman</h1><p>Dari batu obsidian hingga nikel dan tanah jarang</p></header>
+<main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari sumber daya, peristiwa, atau tempat (mis. VOC, Arun, baterai)…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Linimasa naik daunnya sumber daya</p><div class="tw"><svg id="tl" viewBox="0 0 960 380" role="img" aria-label="Linimasa sumber daya alam"></svg></div><p class="hint">Skala waktu dipadatkan agar zaman kuno dan modern sama-sama terbaca. Klik batang untuk membuka detailnya. Batang bergaris putus-putus sedang dibandingkan.</p></section>
+<section class="card"><p class="label">Era</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Sumber daya</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
+</main>
+<footer>Rentang tahun adalah perkiraan masa naik daun, bukan batas tegas; tanda ± menunjukkan perkiraan. Materi disusun dari pengetahuan umum sejarah dan perlu dicek ke sumber akademik untuk rujukan resmi.</footer>
+<script>
+const G=["Dunia kuno","Perdagangan global & kolonial","Revolusi Industri","Abad minyak & atom","Era digital & transisi energi"];
+const GC=["#6a8f3f","#2f8f5b","#2aa198","#3d85c6","#1f6f9f"];
+// era|nama|jenis|mulai|akhir (2026=kini)|wilayah|kegunaan|peristiwa (dipisah ^, format Judul: isi)|dampak|kaitan Indonesia
+const D=`0|Obsidian & Batu|Batuan vulkanik|-10000|-3000|Anatolia, Mediterania, Mesoamerika, Pasifik|Mata kapak, pisau, dan mata panah. Obsidian bisa dipecah menjadi sisi setajam kaca.|±9000 SM — Revolusi Neolitik: Pertanian dan permukiman menetap menumbuhkan perdagangan batu berkualitas jarak jauh.^Sejak ±11000 SM — Obsidian Melos: Obsidian dari Pulau Melos sudah diangkut lewat laut ke daratan Yunani.|Menjadi salah satu perdagangan jarak jauh tertua dan melahirkan spesialisasi pembuat alat.|Perkakas batu prasejarah ditemukan di Nusantara, misalnya di Sangiran dan Gua Liang Bua di Flores.
+0|Tembaga & Perunggu|Logam|-3300|-1200|Mesopotamia, Mesir, Lembah Indus, Tiongkok, Asia Tenggara|Senjata, perkakas, patung, dan bejana. Perunggu adalah paduan tembaga dan timah.|±3300 SM — Awal Zaman Perunggu: Paduan tembaga dan timah menyebar di Mesopotamia dan wilayah sekitarnya.^±1200 SM — Keruntuhan Zaman Perunggu Akhir: Jaringan perdagangan timah dan tembaga di Mediterania timur terganggu.|Muncul kerajaan besar dan jalur perdagangan timah; penguasa logam menguasai kekuatan militer.|Nekara perunggu budaya Dong Son ditemukan di Nusantara, dan Bangka-Belitung kelak menjadi penghasil timah besar.
+0|Besi|Logam|-1200|1850|Anatolia, Timur Tengah, India, Tiongkok, Afrika|Perkakas pertanian dan senjata yang lebih murah dan tahan lama dibanding perunggu.|±1200 SM — Awal Zaman Besi: Pengolahan besi menyebar setelah jaringan timah terganggu.^1709 — Tungku kokas Darby: Abraham Darby di Inggris melebur besi dengan kokas dan menurunkan biaya produksi.|Alat besi memperluas lahan pertanian dan kekuatan militer, lalu menjadi dasar rel kereta dan mesin.|Besi dipakai di Nusantara untuk perkakas dan senjata, termasuk keris yang ditempa dari besi dan baja berpamor.
+0|Kemenyan & Kapur Barus|Resin & aromatik|-1500|1400|Arab Selatan, Somalia, Sumatra (Barus)|Dupa ibadah, parfum, obat, dan bahan pengawet jenazah.|±1000 SM — Jalur Dupa: Kemenyan dari Arab Selatan diangkut kafilah melintasi Semenanjung Arab.^Sebelum abad ke-10 — Pelabuhan Barus: Kapur barus dari Sumatra diperdagangkan hingga India, Arab, dan Mediterania.|Kota kafilah dan pelabuhan penghubung tumbuh makmur karena perdagangan aromatik.|Barus di Sumatra Utara dan kemenyan Sumatra menjadi komoditas ekspor Nusantara sejak masa kuno.
+1|Rempah-rempah|Hasil hutan & kebun|1450|1800|Maluku (cengkih, pala), Sumatra (lada), India, Sri Lanka|Penyedap, pengawet, obat, dan wewangian.|1511 — Portugis merebut Malaka: Pencarian akses langsung ke sumber rempah memicu pelayaran Portugis ke Timur.^1602 — VOC berdiri: Perusahaan dagang Belanda membangun monopoli rempah, termasuk pala di Banda.|Memicu Zaman Penjelajahan, persaingan kolonial, dan perang memperebutkan jalur dagang.|Maluku dijuluki Kepulauan Rempah. Pada 1621 VOC menaklukkan Banda untuk memonopoli pala.
+1|Perak Dunia Baru|Logam mulia|1545|1800|Potosí (Bolivia), Zacatecas (Meksiko)|Mata uang, perdagangan dengan Tiongkok, dan pendanaan kerajaan Eropa.|1545 — Penemuan Potosí: Gunung perak di Bolivia mengalirkan perak dalam jumlah besar ke Spanyol.^1565 — Galleon Manila: Jalur pelayaran Manila–Acapulco mengangkut perak Amerika ke Asia.|Perak mengalir ke Tiongkok dan menghubungkan ekonomi dunia; di Eropa memicu inflasi harga.|Koin perak Spanyol beredar luas dalam perdagangan Asia, termasuk di pelabuhan Nusantara.
+1|Gula|Perkebunan|1600|1850|Karibia, Brasil, Jawa|Pemanis, pengawet, dan bahan baku rum.|±1650 — Boom gula Karibia: Perkebunan tebu skala besar bergantung pada tenaga kerja budak.^1807 dan 1833 — Inggris menghapus perdagangan budak dan perbudakan: Ekonomi perkebunan Karibia berubah.|Konsumsi gula menjadi massal, tetapi ditopang perbudakan transatlantik.|Tebu masuk program Tanam Paksa di Jawa (1830), dan Jawa kemudian menjadi produsen gula besar dunia.
+1|Kopi|Perkebunan|1700|1900|Ethiopia, Yaman, Jawa, Brasil|Minuman populer yang melahirkan budaya kafe dan diskusi.|1696–1711 — Kopi Jawa: VOC membawa bibit kopi ke Jawa dan mulai mengekspornya ke Eropa.^1860 — Max Havelaar: Multatuli mengkritik praktik tanam paksa dan penindasan petani di Jawa.|Kafe menjadi pusat diskusi di Eropa, dan Brasil kemudian menjadi pemasok terbesar dunia.|Kata “java” pernah menjadi sinonim kopi, dan Indonesia kini tetap salah satu produsen kopi besar.
+2|Batu Bara|Bahan bakar fosil|1760|1960|Inggris, Jerman (Ruhr), Amerika Serikat, Tiongkok|Bahan bakar mesin uap, pembangkit listrik, dan peleburan baja. Masih dipakai luas hingga kini.|1712 dan 1769 — Mesin uap Newcomen dan Watt: Mesin uap menggerakkan tambang dan pabrik.^1952 — Kabut Besar London: Polusi pembakaran batu bara menewaskan ribuan orang dan mendorong undang-undang udara bersih.|Melahirkan kota industri dan kerja pabrik, sekaligus emisi dan masalah lingkungan.|Tambang Ombilin di Sawahlunto dibuka pada 1892, dan Indonesia kini salah satu pengekspor batu bara terbesar.
+2|Karet|Perkebunan|1880|1950|Amazon, Malaya, Sumatra, Jawa|Ban, selang, segel, dan isolasi kabel.|1839 — Vulkanisasi Goodyear: Pemanasan karet dengan belerang membuatnya kuat dan tahan panas.^1888 — Ban udara Dunlop: Ban pneumatik mendorong permintaan karet saat sepeda dan mobil menyebar.|Boom karet Amazon disusul pindahnya produksi ke perkebunan Asia Tenggara.|Perkebunan karet berkembang di Sumatra dan Jawa pada awal abad ke-20, dan Indonesia menjadi salah satu produsen terbesar.
+2|Guano & Sendawa|Pupuk & bahan peledak|1840|1880|Pantai Peru, Chile (Atacama)|Pupuk fosfat dan nitrat, serta bahan mesiu.|1840-an — Demam guano: Kotoran burung laut dari Kepulauan Chincha di Peru diekspor sebagai pupuk.^1879–1883 — Perang Pasifik: Chile melawan Peru dan Bolivia memperebutkan nitrat di Atacama.|Pertanian Eropa lebih produktif; kemudian Proses Haber–Bosch (1909) menggantikan pasokan alami.|Pupuk modern masuk perkebunan kolonial, dan Pusri di Palembang berdiri pada 1959 sebagai pabrik pupuk urea pertama.
+2|Timah|Logam|1810|1950|Bangka-Belitung, Malaya, Cornwall|Kaleng pengawet makanan, solder, dan paduan logam.|1810 — Kaleng pengawet: Paten kaleng berlapis timah mendorong industri pengalengan makanan.^±1709 — Timah Bangka: Timah ditemukan di Pulau Bangka dan menarik pekerja tambang dari luar.|Tumbuh industri pengalengan, dan pekerja migran membentuk komunitas tambang.|Bangka-Belitung menjadi salah satu pusat timah dunia, dan Indonesia tetap produsen timah besar.
+3|Minyak Bumi|Bahan bakar fosil|1859|2026|Pennsylvania, Baku, Timur Tengah, Venezuela, Indonesia|Bahan bakar kendaraan, petrokimia, plastik, dan pelumas.|1859 — Sumur Drake: Pengeboran minyak komersial pertama di Titusville, Pennsylvania.^1973 — Embargo minyak OPEC: Harga melonjak dan memicu krisis energi di negara industri.|Melahirkan era mobil, penerbangan, petrokimia, dan geopolitik energi, sekaligus masalah emisi.|Sumur Telaga Tiga di Langkat (1885) menandai awal industri minyak Nusantara, dan Indonesia pernah menjadi anggota OPEC.
+3|Bauksit & Aluminium|Mineral|1886|2026|Guinea, Australia, Tiongkok, Indonesia|Pesawat, kemasan, kendaraan, dan kabel listrik.|1886 — Proses Hall–Héroult: Elektrolisis alumina membuat aluminium murah diproduksi.^1939–1945 — Perang Dunia II: Produksi pesawat tempur melambungkan permintaan aluminium.|Logam ringan mengubah industri penerbangan dan kemasan.|Bauksit ditambang di Bintan dan Kalimantan Barat, dan ekspor bijih mentah dilarang sejak 2023 untuk mendorong hilirisasi.
+3|Uranium|Mineral radioaktif|1942|2026|Kanada, Kazakhstan, Australia, Namibia|Senjata nuklir dan bahan bakar pembangkit listrik tenaga nuklir.|1942 — Proyek Manhattan: Amerika Serikat memulai program bom atom dan memburu uranium.^1954 — PLTN Obninsk: Uni Soviet mengoperasikan pembangkit nuklir pertama yang terhubung ke jaringan listrik.|Memicu perlombaan senjata Perang Dingin dan energi rendah karbon, dengan dilema limbah dan proliferasi.|Reaktor riset TRIGA di Bandung beroperasi sejak 1965; rencana PLTN komersial masih dalam pembahasan.
+3|Gas Alam & LNG|Bahan bakar fosil|1960|2026|Rusia, Qatar, Amerika Serikat, Indonesia, Malaysia|Pembangkit listrik, pupuk, bahan baku petrokimia, dan bahan bakar rumah tangga.|1964 — LNG komersial pertama: Pengiriman gas cair dari Aljazair ke Inggris membuka perdagangan LNG.^1977 — LNG Arun: Aceh mulai mengekspor LNG, dan Indonesia menjadi pengekspor LNG terbesar dunia pada era 1980-an dan 1990-an.|Pembangkit lebih bersih dibanding batu bara, tetapi memunculkan ketergantungan geopolitik pada pemasok.|Arun, Bontang, dan Tangguh menjadi proyek gas besar yang membentuk ekspor energi Indonesia.
+4|Silikon|Mineral|1960|2026|Tiongkok, Amerika Serikat, Taiwan, Korea Selatan|Cip komputer, sel surya, dan serat optik.|1959 — Sirkuit terpadu silikon: Robert Noyce di Fairchild mengembangkan sirkuit terpadu berbasis silikon.^1971 — Mikroprosesor Intel 4004: Mikroprosesor komersial pertama mempercepat era komputer.|Melahirkan komputer pribadi, internet, dan ponsel; rantai pasok cip kini rawan persaingan geopolitik.|Indonesia punya pasir kuarsa dan silika, tetapi industri cip bernilai tinggi masih terbatas.
+4|Litium|Logam ringan|1991|2026|Australia, Chile, Argentina, Tiongkok (pengolahan)|Baterai kendaraan listrik, ponsel, dan penyimpanan energi.|1991 — Baterai litium-ion komersial: Sony meluncurkan baterai litium-ion pertama.^2019 — Nobel Kimia: Goodenough, Whittingham, dan Yoshino dihargai atas pengembangan baterai litium-ion.|Mendorong kendaraan listrik dan penyimpanan energi, dengan isu dampak air dan tambang.|Indonesia bukan produsen litium utama, tetapi menyasar rantai baterai lewat nikel.
+4|Nikel|Logam|2014|2026|Indonesia, Filipina, Rusia, Kaledonia Baru|Baja nirkarat dan bahan katoda baterai kendaraan listrik.|2014 — Larangan awal ekspor bijih mentah: UU Minerba mewajibkan pengolahan di dalam negeri, kemudian aturannya dilonggarkan.^2020 — Larangan ekspor bijih nikel: Indonesia melarang ekspor bijih mentah untuk mendorong smelter dan hilirisasi.|Investasi smelter melonjak, sambil muncul kekhawatiran deforestasi dan polusi.|Indonesia produsen nikel terbesar dunia, dengan pusat di Morowali, Konawe, dan Halmahera.
+4|Tanah Jarang|Mineral|1990|2026|Tiongkok, Amerika Serikat, Myanmar, Australia|Magnet permanen untuk motor listrik dan turbin angin, layar, laser, dan peralatan militer.|1990-an — Dominasi Tiongkok: Tiongkok menguasai penambangan dan pemurnian tanah jarang dunia.^2010 — Pembatasan ekspor: Tiongkok mengurangi kuota ekspor, harga melonjak, dan pencarian pasokan alternatif dimulai.|Rantai pasok strategis yang dikuasai sedikit negara dan memicu persaingan teknologi.|Indonesia punya mineral ikutan seperti monasit dari penambangan timah, tetapi pengembangannya masih terbatas.`.split("\n").map(l=>{const a=l.split("|");return{g:+a[0],n:a[1],j:a[2],s:+a[3],e:+a[4],w:a[5],k:a[6],ev:a[7].split("^").map(x=>{const i=x.indexOf(": ");return[x.slice(0,i),x.slice(i+2)]}),d:a[8],i:a[9]}});
+
+const $=id=>document.getElementById(id);
+const yr=y=>y<0?Math.abs(y).toLocaleString("id-ID")+" SM":String(y);
+D.forEach(d=>d.t=yr(d.s)+" – "+(d.e>=2026?"kini":yr(d.e)));
+let grp=0,sel=D[0],cmpSet=[];
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function drawRegions(){const r=$("regions");r.innerHTML="";
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+    b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
+function drawProvs(){const r=$("provs");r.innerHTML="";
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+    b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
+function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function drawDetail(){const d=sel,inC=cmpSet.includes(d.n);
+  const P=[["Profil",[["Jenis",`<b>${d.j}</b>`,1],["Masa naik daun",`<b>${d.t}</b>`,0],["Wilayah utama",d.w,0]]],
+    ["Kegunaan",[["Untuk apa dipakai",d.k,1]]],
+    ["Peristiwa Sejarah yang Mengiringi",d.ev.map(e=>[e[0],e[1],0])],
+    ["Dampak & Kaitan dengan Indonesia",[["Dampak",d.d,0],["Kaitan dengan Indonesia",d.i,0]]]];
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+    P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll("#detail .sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll("#detail .sub>button").forEach(b=>b.onclick=()=>{const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)})}
+const AN=[[-10000,0],[-3000,150],[0,260],[1000,360],[1500,500],[1800,660],[1900,780],[2030,920]];
+const X=y=>{for(let i=1;i<AN.length;i++)if(y<=AN[i][0]){const a=AN[i-1],b=AN[i];return 10+a[1]+(y-a[0])/(b[0]-a[0])*(b[1]-a[1])}return 930};
+function drawTL(){let s="";
+  AN.slice(0,-1).forEach(a=>s+=`<line x1="${X(a[0])}" x2="${X(a[0])}" y1="0" y2="352" stroke="var(--line)" stroke-dasharray="3 5"/><text class="ax" x="${X(a[0])}" y="372" text-anchor="${a[0]===-10000?"start":"middle"}">${yr(a[0])}</text>`);
+  const S=D.map((d,i)=>[d,i]).sort((a,b)=>a[0].s-b[0].s);
+  S.forEach(([d,i],r)=>{const c=cmpSet.includes(d.n),on=d===sel,y=6+r*17,x0=X(d.s),x1=X(Math.min(d.e,2026));
+    s+=`<rect data-i="${i}" x="${x0}" y="${y}" width="${Math.max(4,x1-x0)}" height="12" rx="4" fill="${GC[d.g]}" stroke="${c?"var(--blue)":on?"var(--ink)":"none"}" stroke-width="2"${c?' stroke-dasharray="3 2"':''}><title>${d.n} (${d.t})</title></rect>`;
+    s+=x1>700?`<text x="${x0-6}" y="${y+10}" text-anchor="end">${d.n}</text>`:`<text x="${x1+6}" y="${y+10}">${d.n}</text>`});
+  $("tl").innerHTML=s}
+$("tl").onclick=e=>{const t=e.target.closest("rect");if(!t)return;sel=D[+t.dataset.i];grp=sel.g;drawAll()};
+function drawSearch(){const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.j,d.w,d.k,d.d,d.i,G[d.g],d.ev.map(e=>e.join(" ")).join(" ")].join(" ").toLowerCase().includes(q)).slice(0,12);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{sel=d;grp=d.g;$("q").value="";drawAll()};box.append(b)})}
+$("q").oninput=drawSearch;
+function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hidden=!L.length;if(!L.length)return;
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join("");
+  const rows=[["Era",txt(d=>G[d.g])],["Jenis",txt(d=>d.j)],["Masa naik daun",txt(d=>d.t)],["Wilayah utama",txt(d=>d.w)],["Kegunaan",txt(d=>d.k)],["Peristiwa",txt(d=>d.ev.map(e=>`<b>${e[0]}</b>`).join("<br><br>"))],["Dampak",txt(d=>d.d)],["Kaitan Indonesia",txt(d=>d.i)]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu sumber daya lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Bandingkan zaman, kegunaan, dan dampaknya."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawTL();drawCmp()}
+drawAll();
+</script>
+</body>
+</html>
