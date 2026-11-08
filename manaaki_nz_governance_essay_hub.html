@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manaaki NZ Governance & Essay Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nzgreen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#15803d',
+                            600: '#166534',
+                            700: '#056846',
+                            800: '#004b36',
+                            900: '#023829',
+                            950: '#01241a',
+                        },
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#0b192c',
+                        },
+                        sand: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .counter-badge {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: pulse-gold 0.4s ease-out;
+        }
+        @keyframes pulse-gold {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); filter: brightness(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-nzgreen-600 selection:text-white">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="bg-gradient-to-r from-navy-950 via-nzgreen-900 to-navy-900 text-white sticky top-0 z-40 shadow-xl border-b border-nzgreen-700/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="trackActivity('Header Logo', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sand-400 to-amber-600 text-navy-950 flex items-center justify-center font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">Manaaki NZ Hub</h1>
+                        <p class="text-[11px] text-nzgreen-100/90 font-medium">Governance & Essay Strategy Platform</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-white/10 text-white">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Beranda & Nilai</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-sand-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Modul NZ Governance', 'Navigasi Menu'); switchTab('modul')" id="nav-modul" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>9 Modul NZ</span>
+                        <span id="nav-count-modul" class="text-[10px] bg-sand-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Komparasi Matriks', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-sand-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Essay Strategy Builder', 'Navigasi Menu'); switchTab('essay')" id="nav-essay" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                        <span>Generator Esai</span>
+                        <span id="nav-count-essay" class="text-[10px] bg-sand-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Kuis Skenario', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-sand-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Analytics Header Button -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-sand-400 to-amber-500 hover:from-sand-500 hover:to-amber-600 text-navy-950 px-3.5 py-1.5 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-line text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-navy-950 text-sand-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ================= SECTION 1: BERANDA ================= -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-nzgreen-900 to-slate-900 text-white p-8 sm:p-12 shadow-2xl border border-nzgreen-700/40">
+                <div class="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
+                    <i class="fa-solid fa-mountain-sun text-9xl"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="bg-sand-400/20 text-sand-300 border border-sand-400/30 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase inline-block">
+                        Manaaki New Zealand Scholarships Preparation
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
+                        Kuasai Nilai & Tata Kelola New Zealand untuk Esai Beasiswa Manaaki
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Pelamar beasiswa Manaaki yang sukses tidak hanya menonjolkan prestasi akademis, melainkan mampu menghubungkan **sektor keahlian mereka di Indonesia** dengan **nilai-nilai inti New Zealand (Kaitiakitanga, Te Tiriti, LSF Wellbeing)**. Pelajari karakteristik governance NZ di sini dan buat draf kerangka esai Anda.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Pelajari 9 Modul', 'Materi Utama'); switchTab('modul')" class="bg-gradient-to-r from-sand-400 to-amber-500 hover:from-sand-500 hover:to-amber-600 text-navy-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-xl flex items-center space-x-2">
+                            <span>Eksplorasi 9 Modul Governance</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Buka Generator Esai', 'Fitur Interaktif'); switchTab('essay')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium px-5 py-3 rounded-xl text-sm transition backdrop-blur-md">
+                            Buat Kerangka Esai Manaaki
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Pillar Values New Zealand (Te Tiriti, Kaitiakitanga, Manaakitanga) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">3 Fondasi Nilai & Budaya Governance New Zealand</h3>
+                        <p class="text-slate-500 text-xs">Prinsip dasar yang wajib Anda pahami dan refleksikan dalam narasi kepemimpinan esai</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Pillar 1: Te Tiriti -->
+                    <div onclick="trackActivity('Pilar Nilai: Te Tiriti o Waitangi', 'Fondasi Nilai NZ'); openValueModal('tiriti')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-nzgreen-100 text-nzgreen-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-scroll"></i>
+                            </div>
+                            <span id="click-count-val-tiriti" class="counter-badge bg-slate-100 group-hover:bg-nzgreen-100 text-slate-600 group-hover:text-nzgreen-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-nzgreen-700 transition">1. Te Tiriti o Waitangi (Biculturalism)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Dokumen pendirian New Zealand yang melandasi **tata kelola bikultural (Co-governance)** antara Pemerintah (Crown) dan suku bangsa pribumi (Māori).
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Kawanatanga (Governance) & Rangatiratanga (Self-determination)</li>
+                            <li>• Kemitraan (Partnership), Perlindungan (Protection), & Partisipasi</li>
+                            <li>• Relevansi Esai: Inklusivitas kebijakan publik & hak masyarakat adat</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 2: Kaitiakitanga -->
+                    <div onclick="trackActivity('Pilar Nilai: Kaitiakitanga', 'Fondasi Nilai NZ'); openValueModal('kaitiakitanga')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-hand-holding-seeding"></i>
+                            </div>
+                            <span id="click-count-val-kaitiakitanga" class="counter-badge bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700 transition">2. Kaitiakitanga (Guardianship)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Konsep Māori mengenai **wali/pelindung lingkungan**. Manusia bukan pemilik alam, melainkan penanggung jawab kelestarian bumi demi generasi mendatang.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Orientasi pembangunan antargenerasi (Intergenerational Stewardship)</li>
+                            <li>• Kebijakan iklim Zero Carbon Act & Legal Personhood Alam</li>
+                            <li>• Relevansi Esai: Keberlanjutan lingkungan & transisi energi hijau</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 3: Manaakitanga & Whanaungatanga -->
+                    <div onclick="trackActivity('Pilar Nilai: Manaakitanga', 'Fondasi Nilai NZ'); openValueModal('manaakitanga')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-sand-100 text-amber-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-heart-hands-shield"></i>
+                            </div>
+                            <span id="click-count-val-manaakitanga" class="counter-badge bg-slate-100 group-hover:bg-sand-100 text-slate-600 group-hover:text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-amber-700 transition">3. Manaakitanga & Whanaungatanga</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            **Manaakitanga** adalah kehangatan, kepedulian, dan keramahan menyambut orang lain. **Whanaungatanga** adalah rasa kekeluargaan dan hubungan komunitas.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Etos dasar Beasiswa Manaaki New Zealand</li>
+                            <li>• Kepemimpinan empati, inklusif, dan berorientasi pelayanan publik</li>
+                            <li>• Relevansi Esai: Motivasi pemanfaatan beasiswa untuk kemajuan bersama</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Living Standards Framework (LSF) Treasury Box -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Living Standards Framework (LSF) & Wellbeing Budget</h4>
+                            <p class="text-slate-500 text-xs">Kerangka kerja The Treasury New Zealand mengukur kemajuan negara melampaui PDB (Beyond GDP)</p>
+                        </div>
+                    </div>
+                    <span id="click-count-mod-lsf" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x dipelajari
+                    </span>
+                </div>
+
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    New Zealand adalah pelopor dunia dalam menetapkan **Wellbeing Budget**, di mana pengalokasian anggaran negara diukur berdasarkan dampaknya terhadap **4 Modal (Capitals)** berikut:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                    <div onclick="trackActivity('LSF Capital: Natural Capital', 'Living Standards Framework')" class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100 cursor-pointer hover:bg-emerald-100/60 transition">
+                        <span class="text-xs font-bold text-emerald-800 block mb-1">1. Natural Capital</span>
+                        <p class="text-[11px] text-slate-600">Keanekaragaman hayati, air bersih, tanah, atmosfer, dan ekosistem darat/laut yang terjaga.</p>
+                    </div>
+                    <div onclick="trackActivity('LSF Capital: Human Capital', 'Living Standards Framework')" class="bg-blue-50/60 p-4 rounded-2xl border border-blue-100 cursor-pointer hover:bg-blue-100/60 transition">
+                        <span class="text-xs font-bold text-blue-800 block mb-1">2. Human Capital</span>
+                        <p class="text-[11px] text-slate-600">Kesehatan fisik/mental, tingkat pendidikan, keterampilan kerja, dan kapabilitas individu.</p>
+                    </div>
+                    <div onclick="trackActivity('LSF Capital: Social Capital', 'Living Standards Framework')" class="bg-amber-50/60 p-4 rounded-2xl border border-amber-100 cursor-pointer hover:bg-amber-100/60 transition">
+                        <span class="text-xs font-bold text-amber-800 block mb-1">3. Social Capital</span>
+                        <p class="text-[11px] text-slate-600">Kepercayaan publik pada institusi (Trust), norma sosial, inklusivitas budaya, dan kohesi warga.</p>
+                    </div>
+                    <div onclick="trackActivity('LSF Capital: Financial & Physical', 'Living Standards Framework')" class="bg-purple-50/60 p-4 rounded-2xl border border-purple-100 cursor-pointer hover:bg-purple-100/60 transition">
+                        <span class="text-xs font-bold text-purple-800 block mb-1">4. Financial & Physical</span>
+                        <p class="text-[11px] text-slate-600">Infrastruktur fisik modern, jaringan transportasi, rumah tinggal, dan aset keuangan negara.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: KATALOG 9 MODUL GOVERNANCE ================= -->
+        <section id="sec-modul" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">Katalog 9 Modul Tata Kelola & Karakteristik NZ</h3>
+                        <p class="text-slate-500 text-xs mt-1">Eksplorasi sistem politik, kebijakan publik, dan panduan langsung cara mengutipnya dalam esai Manaaki.</p>
+                    </div>
+                    <!-- Filter & Search -->
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <select id="module-category-filter" onchange="trackActivity('Filter Kategori Modul', 'Filter Modul'); filterModules()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-nzgreen-500">
+                            <option value="all">Semua Kategori</option>
+                            <option value="Sistem Politik & Kebijakan">Sistem Politik & Kebijakan</option>
+                            <option value="Lingkungan & Keberlanjutan">Lingkungan & Keberlanjutan</option>
+                            <option value="Sosial & Inovasi">Sosial, Gender & Ekonomi</option>
+                        </select>
+                        <div class="relative flex-grow sm:flex-grow-0 sm:w-48">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="module-search" oninput="trackActivity('Pencarian Modul', 'Filter Modul'); filterModules()" placeholder="Cari kata kunci / modul..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-nzgreen-500 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modules Grid -->
+            <div id="modules-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically Rendered -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: KOMPARASI MATRIKS ================= -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div>
+                    <h3 class="font-extrabold text-slate-800 text-xl">Matriks Komparasi Governance: New Zealand vs Indonesia / Standar Global</h3>
+                    <p class="text-slate-500 text-xs mt-1">Pilih 2 hingga 3 instrumen governance untuk menganalisis perbedaan mekanisme, keunggulan, dan potensi adaptasi kebijakan di Indonesia.</p>
+                </div>
+
+                <!-- Aspect Selectors -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Aspek Governance 1</label>
+                        <select id="cmp-aspect-1" onchange="trackActivity('Komparasi: Pilih Aspek 1', 'Matriks Komparasi'); updateAspectComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Aspek Governance 2</label>
+                        <select id="cmp-aspect-2" onchange="trackActivity('Komparasi: Pilih Aspek 2', 'Matriks Komparasi'); updateAspectComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Aspek Governance 3 (Opsional)</label>
+                        <select id="cmp-aspect-3" onchange="trackActivity('Komparasi: Pilih Aspek 3', 'Matriks Komparasi'); updateAspectComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                            <option value="">-- Pilih Aspek 3 --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table Container -->
+            <div id="aspect-comparison-wrapper" class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+                <!-- Rendered Table -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: GENERATOR STRATEGI ESAI MANAAKI ================= -->
+        <section id="sec-essay" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-2xl">Manaaki Essay Strategy Generator</h3>
+                        <p class="text-slate-500 text-xs">Susun alur nalar esai kepemimpinan & rencana kontribusi Anda dengan mengintegrasikan nilai-nilai New Zealand</p>
+                    </div>
+                    <span id="click-count-gen-essay" class="counter-badge bg-nzgreen-100 text-nzgreen-900 text-xs font-bold px-3 py-1.5 rounded-full border border-nzgreen-200">
+                        👁️ 0x generator digunakan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Form Input Options (5 Cols) -->
+                    <div class="lg:col-span-5 space-y-5">
+                        <!-- Step 1: Priority Sector -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">1. Sektor Prioritas Studi / Keahlian Anda</label>
+                            <select id="essay-sector" onchange="trackActivity('Generator: Pilih Sektor', 'Generator Esai'); generateManaakiEssay()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                                <option value="climate">Climate Change, Disaster Risk & Environment</option>
+                                <option value="energy">Renewable Energy & Green Transition</option>
+                                <option value="public_admin">Public Sector Management & Anti-Corruption</option>
+                                <option value="agri">Sustainable Agriculture & Agri-Tech</option>
+                                <option value="indigenous">Indigenous Rights, Social Equity & Inclusion</option>
+                            </select>
+                            <p class="text-[11px] text-slate-400">Sektor yang relevan dengan daftar Manaaki Priority Sectors.</p>
+                        </div>
+
+                        <!-- Step 2: NZ Governance Value to Adopt -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">2. Nilai NZ Governance Utama yang Diadopsi</label>
+                            <select id="essay-value" onchange="trackActivity('Generator: Pilih Nilai NZ', 'Generator Esai'); generateManaakiEssay()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                                <option value="kaitiakitanga">Kaitiakitanga (Guardianship & Antargenerasi)</option>
+                                <option value="wellbeing">Living Standards Framework & Wellbeing Budget</option>
+                                <option value="tiriti">Te Tiriti (Bicultural Co-governance & Inklusivitas)</option>
+                                <option value="transparency">Public Service Act & Transparansi CPI #1</option>
+                            </select>
+                        </div>
+
+                        <!-- Step 3: Target Impact in Indonesia -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">3. Target Dampak / Rencana Kontribusi di Indonesia</label>
+                            <select id="essay-impact" onchange="trackActivity('Generator: Pilih Target Dampak', 'Generator Esai'); generateManaakiEssay()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                                <option value="policy_reform">Reformasi Kebijakan & Peraturan Tingkat Daerah/Nasional</option>
+                                <option value="community_empowerment">Pemberdayaan Masyarakat Lokal & Komunitas Adat</option>
+                                <option value="tech_innovation">Inovasi Teknologi & Transisi Operasional Berkelanjutan</option>
+                                <option value="interagency_collab">Kerja Sama Antar-Lembaga & Akuntabilitas Publik</option>
+                            </select>
+                        </div>
+
+                        <!-- Step 4: Leadership Role Profile -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">4. Peran Kepemimpinan Anda Saat Ini / Nanti</label>
+                            <input type="text" id="essay-role" oninput="trackActivity('Generator: Input Peran', 'Generator Esai'); generateManaakiEssay()" value="Analis Kebijakan / Praktisi Sektor Publik" placeholder="Misal: Peneliti / Pegawai ASN / NGO Leader" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-nzgreen-500">
+                        </div>
+                    </div>
+
+                    <!-- Output Essay Outline Narrative (7 Cols) -->
+                    <div class="lg:col-span-7 bg-gradient-to-br from-navy-950 to-nzgreen-950 text-white rounded-2xl p-6 flex flex-col justify-between space-y-6 shadow-xl border border-nzgreen-700/40">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <div>
+                                <span class="text-xs font-mono text-sand-400 uppercase tracking-widest font-bold">Draf Kerangka Narasi Esai Manaaki</span>
+                                <h4 class="text-lg font-bold">Manaaki Scholarship Essay Outline</h4>
+                            </div>
+                            <button onclick="copyEssayDraft()" class="bg-white/10 hover:bg-white/20 text-sand-300 font-bold px-3 py-1.5 rounded-xl text-xs transition flex items-center space-x-1.5">
+                                <i class="fa-solid fa-copy"></i>
+                                <span>Salin Teks</span>
+                            </button>
+                        </div>
+
+                        <div id="essay-output-content" class="space-y-4 text-xs text-slate-200 leading-relaxed overflow-y-auto max-h-96 pr-2 custom-scrollbar">
+                            <!-- Dynamically generated text -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: KUIS SKENARIO GOVERNANCE ================= -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-xl">Kuis Skenario Governance & Values New Zealand</h3>
+                            <p class="text-slate-500 text-xs">Uji pemahaman Anda mengenai prinsip tata kelola dan implementasi nilainya dalam konteks kepemimpinan</p>
+                        </div>
+                    </div>
+                    <span id="click-count-quiz-nz" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x kuis dikerjakan
+                    </span>
+                </div>
+
+                <!-- Quiz Interactive Container -->
+                <div id="quiz-nz-container" class="max-w-3xl space-y-6">
+                    <!-- Dynamic Questions -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-md bg-sand-400 text-navy-950 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <span class="font-bold text-slate-200">Manaaki NZ Governance & Essay Hub © 2026</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Dirancang untuk membantu calon pelamar Manaaki New Zealand Scholarships memahami nilai & tata kelola NZ.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ANALYTICS BUTTON & MODAL ================= -->
+    <!-- Floating Counter FAB -->
+    <button onclick="openAnalyticsModal(); trackActivity('FAB Statistik Melayang', 'Navigasi Melayang')" class="fixed bottom-6 right-6 bg-gradient-to-r from-sand-400 via-amber-500 to-nzgreen-600 text-navy-950 p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-white/30">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-navy-950"></i>
+            <span id="fab-pulse-dot" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-navy-950">Aktivitas Belajar</span>
+            <span id="fab-click-total" class="font-extrabold text-sm font-mono leading-none text-navy-950">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ANALYTICS MODAL (POPUP) -->
+    <div id="modal-analytics" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navy-950 to-nzgreen-950 text-white p-5 flex items-center justify-between border-b border-nzgreen-700/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-sand-400 text-navy-950 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-nzgreen-200">Rekapitulasi lengkap interaksi eksplorasi pengguna</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Content Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- Summary Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-nzgreen-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Terlibat aktif di aplikasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-base text-slate-800 font-bold block truncate">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Area terbanyak dieksplorasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Cakupan Pembelajaran</span>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <div class="flex-grow bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-sand-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-bold text-slate-700">0%</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 block mt-1">Modul telah dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top Items Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart Doughnut Container -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Most Clicked Items -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-clicked-list" class="space-y-2 text-xs">
+                            <!-- Dynamic Top Items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="clearAnalyticsData()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-48 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Terakhir Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100">
+                                <!-- Log rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-nzgreen-700 hover:bg-nzgreen-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERAL INFO / DETAIL MODAL -->
+    <div id="modal-info" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="info-modal-header" class="p-6 text-white relative bg-gradient-to-r from-navy-950 to-nzgreen-950">
+                <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <!-- Dynamic Header -->
+            </div>
+            <div id="info-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 custom-scrollbar">
+                <!-- Dynamic Body -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+
+    <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
+    <script>
+        /* ----------------------------------------------------
+         * 1. DATA 9 MODUL GOVERNANCE & KARAKTERISTIK NZ
+         * ---------------------------------------------------- */
+        const NZ_MODULES = [
+            {
+                id: 'mmp-system',
+                title: '1. Mixed Member Proportional (MMP) & Inklusivitas',
+                category: 'Sistem Politik & Kebijakan',
+                icon: 'fa-check-to-slot',
+                color: 'from-blue-700 to-navy-900',
+                shortDesc: 'Sistem pemilu proporsional New Zealand sejak 1996 yang menjamin keterwakilan partai kecil, perempuan, dan minoritas suku dalam parlemen.',
+                highlights: 'Memberikan dua suara (Party Vote & Electorate Vote). Menghasilkan parlemen bikultural dan salah satu tingkat keterwakilan perempuan tertinggi di dunia (>50%).',
+                relevanceManaaki: 'Penting untuk menunjukkan pemahaman Anda mengenai bagaimana konsensus dan negosiasi koalisi politik dibentuk secara inklusif di NZ.',
+                essayTip: 'Bandingkan bagaimana sistem inklusif MMP dapat menginspirasi pembuatan kebijakan publik yang lebih kolaboratif dan berbasis konsensus multi-pihak di Indonesia.'
+            },
+            {
+                id: 'te-tiriti-governance',
+                title: '2. Te Tiriti o Waitangi & Bicultural Policy Making',
+                category: 'Sistem Politik & Kebijakan',
+                icon: 'fa-scroll',
+                color: 'from-nzgreen-700 to-nzgreen-950',
+                shortDesc: 'Perjanjian 1840 antara Crown dan suku Māori yang melandasi tata kelola bikulturalism dan Co-governance sumber daya.',
+                highlights: 'Mengharuskan setiap kebijakan publik memperhitungkan 3P (Partnership, Protection, Participation) serta pengakuan atas hak-hak adat.',
+                relevanceManaaki: 'Menunjukkan apresiasi mendalam terhadap hak masyarakat adat dan pemformulasian kebijakan berwawasan keadilan sosial.',
+                essayTip: 'Kutip Te Tiriti saat membahas rencana pemberdayaan masyarakat lokal/adat di Indonesia agar kebijakan publik bersifat inklusif.'
+            },
+            {
+                id: 'lsf-wellbeing-budget',
+                title: '3. Living Standards Framework (LSF) & Wellbeing Budget',
+                category: 'Sistem Politik & Kebijakan',
+                icon: 'fa-chart-pie',
+                color: 'from-amber-600 to-orange-800',
+                shortDesc: 'Inovasi The Treasury New Zealand yang mengukur keberhasilan pembangunan berbasis 4 Modal (Natural, Human, Social, Financial).',
+                highlights: 'Sejak 2019, penyusunan anggaran negara (Wellbeing Budget) tidak hanya berfokus pada pertumbuhan PDB, tetapi pada prioritas kesehatan mental, anak, dan iklim.',
+                relevanceManaaki: 'Konsep terpenting untuk pelamar bidang ekonomi, pembangunan, publik, dan kesehatan.',
+                essayTip: 'Gunakan kerangka LSF untuk menjelaskan bahwa program kerja/studi Anda di Indonesia bertujuan meningkatkan kesejahteraan holistik (multidimensional wellbeing) masyarakat.'
+            },
+            {
+                id: 'kaitiakitanga-climate',
+                title: '4. Kaitiakitanga & Zero Carbon Act 2050',
+                category: 'Lingkungan & Keberlanjutan',
+                icon: 'fa-tree',
+                color: 'from-emerald-700 to-nzgreen-900',
+                shortDesc: 'Komitmen New Zealand mencapai net-zero emisi karbon pada 2050 yang ditopang filosofi penjagaan alam (Kaitiakitanga).',
+                highlights: 'Membentuk Climate Change Commission independen dan menetapkan Carbon Budgets 5-tahunan yang mengikat pemerintah secara hukum.',
+                relevanceManaaki: 'Sangat krusial untuk pelamar sektor Climate Change, Forestry, Environmental Science, dan Renewable Energy.',
+                essayTip: 'Tunjukkan bagaimana prinsip Kaitiakitanga dan komitmen Zero Carbon Act menginspirasi Anda dalam merancang mitigasi perubahan iklim di daerah asal Indonesia.'
+            },
+            {
+                id: 'legal-personhood-nature',
+                title: '5. Entitas Hukum Bagi Alam (Whanganui & Te Urewera)',
+                category: 'Lingkungan & Keberlanjutan',
+                icon: 'fa-water',
+                color: 'from-cyan-700 to-blue-950',
+                shortDesc: 'Inovasi hukum dunia di mana Sungai Whanganui (Te Awa Tupua) dan Taman Nasional Te Urewera diakui sebagai subjek hukum yang memiliki hak seperti manusia.',
+                highlights: 'Alam tidak lagi diangap sebagai objek ekploitasi, melainkan entitas bernyawa yang diwakili oleh dewan wali bersama (Māori & Pemerintah).',
+                relevanceManaaki: 'Menunjukkan wawasan hukum lingkungan yang inovatif dan terdepan di tingkat global.',
+                essayTip: 'Kutip pendekatan Legal Personhood of Nature ini sebagai bukti keterbukaan Anda terhadap hukum konservasi adat yang progresif.'
+            },
+            {
+                id: 'public-service-anti-corruption',
+                title: '6. Public Service Act 2020 & Transparansi Anti-Korupsi',
+                category: 'Sistem Politik & Kebijakan',
+                icon: 'fa-shield-halved',
+                color: 'from-indigo-700 to-navy-950',
+                shortDesc: 'New Zealand konsisten menempati peringkat #1 dunia dalam Corruption Perceptions Index (CPI) oleh Transparency International.',
+                highlights: 'Public Service Act 2020 menegaskan etos integritas birokrasi, kewajiban melayani kepentingan publik, serta keterbukaan informasi (OIA).',
+                relevanceManaaki: 'Esensial untuk pelamar bidang Public Administration, Good Governance, Law, dan Public Sector Management.',
+                essayTip: 'Jelaskan keinginan Anda menyerap budaya birokrasi bernilai integritas tinggi dari NZ untuk memperkuat akuntabilitas instansi Anda di Indonesia.'
+            },
+            {
+                id: 'pacific-reset-foreign-policy',
+                title: '7. Pacific Reset & Kebijakan Luar Negeri Pasifik',
+                category: 'Sosial & Inovasi',
+                icon: 'fa-earth-oceania',
+                color: 'from-sky-600 to-indigo-900',
+                shortDesc: 'Strategi diplomasi New Zealand yang memprioritaskan kemitraan setara, ketahanan iklim, dan pembangunan kawasan Samudra Pasifik.',
+                highlights: 'Menekankan hubungan berbasis trust, kerendahan hati (humility), serta dukungan pembangunan berkelanjutan bagi negara kepulauan kecil.',
+                relevanceManaaki: 'Relevan bagi pelamar bidang Hubungan Internasional, Diplomacy, dan Ketahanan Bencana Kepulauan.',
+                essayTip: 'Hubungkan semangat Pacific Reset dengan posisi Indonesia sebagai negara kepulauan yang juga memiliki komitmen pembangunan di kawasan Pasifik Selatan.'
+            },
+            {
+                id: 'gender-inclusive-leadership',
+                title: '8. Kesetaraan Gender & Kepemimpinan Inklusif',
+                category: 'Sosial & Inovasi',
+                icon: 'fa-venus-mars',
+                color: 'from-purple-700 to-slate-900',
+                shortDesc: 'Negara pertama di dunia yang memberikan hak pilih bagi perempuan (1893) dan kini memimpin dalam representasi kesetaraan gender.',
+                highlights: 'Pernah dipimpin simultan oleh PM Perempuan, Gubernur Jenderal Perempuan, dan Ketua MA Perempuan. Pengesahan Equal Pay Amendment Act.',
+                relevanceManaaki: 'Penting untuk penulisan esai narasi kepemimpinan (Leadership Essay) yang inklusif dan ramah gender.',
+                essayTip: 'Gunakan contoh kepemimpinan empati dan inklusif NZ dalam mendeskripsikan gaya kepemimpinan Anda yang menghargai keberagaman.'
+            },
+            {
+                id: 'maori-economy-agritech',
+                title: '9. Māori Economy & Agrikultur Berkelanjutan',
+                category: 'Sosial & Inovasi',
+                icon: 'fa-seedling',
+                color: 'from-nzgreen-600 to-amber-700',
+                shortDesc: 'Ekonomi pribumi Māori bernilai $70+ Miliar yang memadukan ekspor produk primer dengan prinsip bisnis etis berkelanjutan.',
+                highlights: 'Inovasi Agri-Tech terdepan dunia dalam efisiensi peternakan/pertanian tanpa kompromi pada kualitas lingkungan.',
+                relevanceManaaki: 'Sangat cocok untuk pelamar sektor Agriculture, Renewable Food Systems, Supply Chain, dan Kewirausahaan.',
+                essayTip: 'Soroti bagaimana kombinasi teknologi pertanian modern NZ dan kearifan lokal Māori Economy dapat diterapkan pada sektor agrikultur di Indonesia.'
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 2. DATA KUIS SKENARIO
+         * ---------------------------------------------------- */
+        const QUIZ_NZ_DATA = [
+            {
+                q: "Sebagai seorang pemimpin tim di instansi publik Indonesia, Anda menghadapi konflik kepentingan antara pembangunan infrastruktur cepat dan keberlanjutan lingkungan sungai lokal. Manakah filosofi New Zealand yang paling tepat diterapkan dalam narasi esai Anda?",
+                options: [
+                    "Kaitiakitanga – Memposisikan diri sebagai guardian antargenerasi dan mengusulkan entitas perlindungan lingkungan sungai",
+                    "MMP System – Menghapus persetujuan komunitas dan membuat keputusan sepihak",
+                    "Pacific Reset – Mengalihkan dana pembangunan ke negara luar",
+                    "Public Service Act – Mengabaikan kajian lingkungan demi mengejar target anggaran tahunan"
+                ],
+                answer: 0,
+                explain: "Kaitiakitanga adalah filosofi penjagaan alam di mana pemulihan lingkungan dan keberlanjutan antargenerasi menjadi prioritas utama pengambilan keputusan."
+            },
+            {
+                q: "Bagaimanakah kerangka Living Standards Framework (LSF) milik The Treasury New Zealand dapat memperkaya esai Anda saat membahas kesuksesan suatu program publik?",
+                options: [
+                    "Mengukur kesuksesan hanya dari peningkatan pendapatan PDB semata",
+                    "Menjelaskan bahwa kesuksesan program publik diukur dari 4 Modal (Natural, Human, Social, Financial) untuk kesejahteraan holistik",
+                    "Membatasi penganggaran hanya pada sektor ekonomi komersial",
+                    "Menghapuskan evaluasi dampak sosial dari laporan anggaran"
+                ],
+                answer: 1,
+                explain: "LSF memandang kemajuan pembangunan secara holistik melampaui PDB (Beyond GDP) dengan menjaga keseimbangan 4 modal kesejahteraan."
+            },
+            {
+                q: "Dalam esai kepemimpinan Manaaki, bagaimana Anda mencerminkan prinsip Te Tiriti o Waitangi dalam konteks perancangan kebijakan di Indonesia?",
+                options: [
+                    "Memastikan kebijakan dibuat tanpa melibatkan masyarakat lokal agar prosesnya cepat",
+                    "Menerapkan prinsip Kemitraan (Partnership), Perlindungan, dan Partisipasi masyarakat adat/lokal dalam setiap tahap formulasi kebijakan",
+                    "Mengabaikan kebudayaan lokal demi menyeragamkan aturan nasional",
+                    "Menyerahkan seluruh wewenang kebijakan tanpa ada koordinasi dengan pemerintah pusat"
+                ],
+                answer: 1,
+                explain: "Te Tiriti melandasi prinsip bicultural governance dan Co-governance yang menghargai hak, partisipasi, dan kemitraan masyarakat adat."
+            },
+            {
+                q: "Sistem pemilu Mixed Member Proportional (MMP) di New Zealand terbukti menghasilkan parlemen yang inklusif. Pelajaran utama apakah yang dapat Anda kutip untuk tata kelola publik di Indonesia?",
+                options: [
+                    "Pentingnya membangun konsensus, negosiasi kolaboratif, dan keterwakilan perempuan serta minoritas dalam pengambilan keputusan",
+                    "Pemberlakuan partai tunggal untuk mempercepat keputusan politik",
+                    "Menghilangkan peran oposisi dalam pengawasan anggaran",
+                    "Pembatasan partisipasi kelompok sipil dalam konsultasi publik"
+                ],
+                answer: 0,
+                explain: "MMP mendorong terbentuknya budaya politik berbasis konsensus, keberagaman suara parlemen, dan keterwakilan kelompok yang adil."
+            },
+            {
+                q: "Mengapa reputasi New Zealand sebagai negara peringkat #1 dalam Corruption Perceptions Index (CPI) sangat relevan dikutip oleh pelamar beasiswa Manaaki dari sektor publik?",
+                options: [
+                    "Untuk membuktikan bahwa NZ tidak membutuhkan undang-undang keterbukaan informasi",
+                    "Sebagai komitmen pribadi untuk menyerap etos kerja Public Service Act 2020 yang menjunjung transparansi, akuntabilitas, dan pelayanan publik yang bersih",
+                    "Menunjukkan bahwa masalah korupsi tidak ada hubungannya dengan kesejahteraan masyarakat",
+                    "Mengusulkan penghapusan sistem audit keuangan internal di instansi Indonesia"
+                ],
+                answer: 1,
+                explain: "Komitmen NZ pada transparansi (CPI #1) dan Public Service Act 2020 menjadi inspirasi utama dalam membangun akuntabilitas birokrasi di negara asal."
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 3. APP STATE & PERSISTENCE
+         * ---------------------------------------------------- */
+        let activityLog = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+        let categoryChartInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityFromStorage();
+            updateOnPageBadges();
+            renderModulesGrid();
+            initAspectComparisonDropdowns();
+            generateManaakiEssay();
+            renderQuizQuestion();
+            updateAnalyticsUI();
+        });
+
+        function loadActivityFromStorage() {
+            const saved = localStorage.getItem('manaaki_nz_log');
+            if (saved) {
+                try {
+                    activityLog = JSON.parse(saved);
+                } catch(e) {
+                    activityLog = [];
+                }
+            }
+        }
+
+        function saveActivityToStorage() {
+            localStorage.setItem('manaaki_nz_log', JSON.stringify(activityLog));
+        }
+
+        /* CORE TRACKER FUNCTION */
+        function trackActivity(itemName, categoryName) {
+            const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let record = activityLog.find(item => item.name === itemName);
+
+            if (record) {
+                record.count += 1;
+                record.lastTime = now;
+            } else {
+                record = {
+                    id: 'act-' + Date.now() + '-' + Math.floor(Math.random()*1000),
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: now
+                };
+                activityLog.push(record);
+            }
+
+            saveActivityToStorage();
+            updateAnalyticsUI();
+            showToastNotification(`Aktivitas Dicatat: ${itemName} (+1)`);
+            updateOnPageBadges();
+        }
+
+        function getItemCount(itemName) {
+            const record = activityLog.find(item => item.name === itemName);
+            return record ? record.count : 0;
+        }
+
+        /* UI BADGES & TOAST */
+        function updateOnPageBadges() {
+            document.getElementById('nav-count-beranda').innerText = getItemCount('Tab Beranda');
+            document.getElementById('nav-count-modul').innerText = getItemCount('Tab Modul NZ Governance');
+            document.getElementById('nav-count-komparasi').innerText = getItemCount('Tab Komparasi Matriks');
+            document.getElementById('nav-count-essay').innerText = getItemCount('Tab Essay Strategy Builder');
+            document.getElementById('nav-count-kuis').innerText = getItemCount('Tab Kuis Skenario');
+
+            document.getElementById('click-count-val-tiriti').innerText = `👁️ ${getItemCount('Pilar Nilai: Te Tiriti o Waitangi')}x dipelajari`;
+            document.getElementById('click-count-val-kaitiakitanga').innerText = `👁️ ${getItemCount('Pilar Nilai: Kaitiakitanga')}x dipelajari`;
+            document.getElementById('click-count-val-manaakitanga').innerText = `👁️ ${getItemCount('Pilar Nilai: Manaakitanga')}x dipelajari`;
+            document.getElementById('click-count-mod-lsf').innerText = `👁️ ${getItemCount('LSF Capital: Natural Capital') + getItemCount('LSF Capital: Human Capital')}x dipelajari`;
+
+            document.getElementById('click-count-gen-essay').innerText = `👁️ ${getItemCount('Generator: Pilih Sektor') + getItemCount('Generator: Pilih Nilai NZ')}x digunakan`;
+            document.getElementById('click-count-quiz-nz').innerText = `👁️ ${getItemCount('Kuis: Jawab Soal')}x kuis dikerjakan`;
+
+            NZ_MODULES.forEach(mod => {
+                const badge = document.getElementById(`mod-badge-${mod.id}`);
+                if (badge) {
+                    badge.innerText = `👁️ ${getItemCount(`Modul NZ: ${mod.title}`)}x dipelajari`;
+                }
+            });
+        }
+
+        function showToastNotification(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-navy-950 text-sand-300 border border-sand-400/30 text-xs px-3.5 py-2 rounded-xl shadow-xl flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-bell text-sand-400"></i> <span>${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        /* NAVIGATION & TABS */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-white/10', 'text-white');
+                activeNav.classList.remove('text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ----------------------------------------------------
+         * 4. KATALOG 9 MODUL GOVERNANCE
+         * ---------------------------------------------------- */
+        function renderModulesGrid() {
+            const container = document.getElementById('modules-grid');
+            container.innerHTML = '';
+
+            const catFilter = document.getElementById('module-category-filter').value;
+            const searchTerm = (document.getElementById('module-search')?.value || '').toLowerCase();
+
+            const filtered = NZ_MODULES.filter(mod => {
+                const matchCat = catFilter === 'all' || mod.category === catFilter;
+                const matchSearch = mod.title.toLowerCase().includes(searchTerm) || mod.shortDesc.toLowerCase().includes(searchTerm) || mod.essayTip.toLowerCase().includes(searchTerm);
+                return matchCat && matchSearch;
+            });
+
+            filtered.forEach(mod => {
+                const count = getItemCount(`Modul NZ: ${mod.title}`);
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer";
+                card.onclick = () => openModuleModal(mod.id);
+
+                card.innerHTML = `
+                    <div class="h-28 bg-gradient-to-r ${mod.color} p-5 text-white relative flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <i class="fa-solid ${mod.icon} text-2xl"></i>
+                            <span id="mod-badge-${mod.id}" class="counter-badge bg-sand-400 text-navy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                👁️ ${count}x dipelajari
+                            </span>
+                        </div>
+                        <div>
+                            <span class="bg-black/30 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-sand-200 uppercase">
+                                ${mod.category}
+                            </span>
+                            <h4 class="font-extrabold text-base group-hover:translate-x-1 transition-transform mt-0.5 line-clamp-1">${mod.title}</h4>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                        <div>
+                            <p class="text-slate-600 leading-relaxed line-clamp-3">${mod.shortDesc}</p>
+                            <div class="mt-3 bg-nzgreen-50 p-2.5 rounded-xl border border-nzgreen-100">
+                                <span class="text-[10px] font-bold text-nzgreen-800 uppercase block">Tips Esai Manaaki:</span>
+                                <p class="text-[11px] text-slate-700 font-medium line-clamp-2">${mod.essayTip}</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-nzgreen-800 font-bold group-hover:underline">
+                            <span>Buka Panduan & Cara Mengutip</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterModules() {
+            renderModulesGrid();
+        }
+
+        function openModuleModal(id) {
+            const mod = NZ_MODULES.find(item => item.id === id);
+            if (!mod) return;
+
+            trackActivity(`Modul NZ: ${mod.title}`, 'Detail Modul Governance');
+
+            const header = document.getElementById('info-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${mod.color}`;
+            header.innerHTML = `
+                <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <i class="fa-solid ${mod.icon} text-3xl"></i>
+                    <div>
+                        <span class="bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[10px] font-bold text-sand-300 uppercase">
+                            ${mod.category}
+                        </span>
+                        <h3 class="text-xl font-extrabold">${mod.title}</h3>
+                    </div>
+                </div>
+                <div class="mt-3 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-lg inline-flex items-center space-x-2 text-xs font-mono text-sand-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah dipelajari sebanyak <strong>${getItemCount(`Modul NZ: ${mod.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('info-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Penjelasan Utama</h5>
+                    <p class="text-slate-600 leading-relaxed">${mod.shortDesc}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Fakta & Karakteristik Kunci:</h5>
+                    <p class="bg-nzgreen-50 text-nzgreen-900 p-3 rounded-xl border border-nzgreen-200 font-medium">${mod.highlights}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Relevansi untuk Pelamar Beasiswa Manaaki:</h5>
+                    <p class="bg-amber-50 text-amber-900 p-3 rounded-xl border border-amber-200 font-medium">${mod.relevanceManaaki}</p>
+                </div>
+
+                <div class="space-y-2 pt-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Cara Mengutip & Menghubungkan dalam Esai Manaaki:</h5>
+                    <p class="bg-indigo-50 text-indigo-900 p-3.5 rounded-xl border border-indigo-200 font-medium leading-relaxed">
+                        <i class="fa-solid fa-quote-left text-indigo-400 mr-2 text-sm"></i> ${mod.essayTip}
+                    </p>
+                </div>
+            `;
+
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function openValueModal(type) {
+            const header = document.getElementById('info-modal-header');
+            const body = document.getElementById('info-modal-body');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navy-950 via-nzgreen-900 to-navy-900";
+
+            if (type === 'tiriti') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-sand-400">Te Tiriti o Waitangi (Prinsip Bikultural)</h3>
+                    <p class="text-xs text-slate-300 mt-1">Perjanjian Pendirian & Co-Governance New Zealand</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Te Tiriti o Waitangi (1840) melandasi tata kelola pemerintahan bikultural antara Pemerintah (Crown) dan Māori. Dalam esai Manaaki, merujuk pada prinsip ini menunjukkan bahwa Anda menghargai pembuatan kebijakan yang konsensual, menghormati hak masyarakat adat, dan mengutamakan kemitraan (Partnership).</p>
+                `;
+            } else if (type === 'kaitiakitanga') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-emerald-400">Kaitiakitanga (Guardianship)</h3>
+                    <p class="text-xs text-slate-300 mt-1">Filosofi Penjagaan Alam & Pembangunan Antargenerasi</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Kaitiakitanga memposisikan manusia sebagai guardian (wali), bukan pemilik alam. Dalam esai Manaaki, mengaitkan proyek atau bidang studi Anda dengan Kaitiakitanga menunjukkan orientasi kepemimpinan berwawasan masa depan yang menjaga kelestarian ekosistem bagi generasi mendatang.</p>
+                `;
+            } else if (type === 'manaakitanga') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-amber-400">Manaakitanga & Whanaungatanga</h3>
+                    <p class="text-xs text-slate-300 mt-1">Kepedulian, Keramahan, & Kehangatan Komunitas</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Manaakitanga menekankan kepedulian dan kehangatan dalam melayani sesama, sementara Whanaungatanga membina hubungan komunitas yang erat. Dalam esai, prinsip ini mencerminkan komitmen Anda untuk memberikan kontribusi nyata bagi masyarakat setelah menyelesaikan studi di New Zealand.</p>
+                `;
+            }
+
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function closeInfoModal() {
+            document.getElementById('modal-info').classList.add('hidden');
+        }
+
+        /* ----------------------------------------------------
+         * 5. KOMPARASI ASPEK GOVERNANCE
+         * ---------------------------------------------------- */
+        function initAspectComparisonDropdowns() {
+            const s1 = document.getElementById('cmp-aspect-1');
+            const s2 = document.getElementById('cmp-aspect-2');
+            const s3 = document.getElementById('cmp-aspect-3');
+
+            s1.innerHTML = '';
+            s2.innerHTML = '';
+            s3.innerHTML = '<option value="">-- Pilih Aspek 3 --</option>';
+
+            NZ_MODULES.forEach(mod => {
+                const opt1 = document.createElement('option');
+                opt1.value = mod.id;
+                opt1.innerText = mod.title;
+                s1.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = mod.id;
+                opt2.innerText = mod.title;
+                s2.appendChild(opt2);
+
+                const opt3 = document.createElement('option');
+                opt3.value = mod.id;
+                opt3.innerText = mod.title;
+                s3.appendChild(opt3);
+            });
+
+            s1.value = 'lsf-wellbeing-budget';
+            s2.value = 'kaitiakitanga-climate';
+            s3.value = 'te-tiriti-governance';
+
+            updateAspectComparison();
+        }
+
+        function updateAspectComparison() {
+            const c1Id = document.getElementById('cmp-aspect-1').value;
+            const c2Id = document.getElementById('cmp-aspect-2').value;
+            const c3Id = document.getElementById('cmp-aspect-3').value;
+
+            const selectedIds = [c1Id, c2Id, c3Id].filter(Boolean);
+            const items = selectedIds.map(id => NZ_MODULES.find(mod => mod.id === id)).filter(Boolean);
+
+            const container = document.getElementById('aspect-comparison-wrapper');
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-6">Pilih aspek governance di atas untuk membandingkan.</p>`;
+                return;
+            }
+
+            let html = `
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                            <th class="p-3 w-36 font-bold">Dimensi Evaluasi</th>
+                            ${items.map(it => `<th class="p-3 font-extrabold text-nzgreen-900 text-sm">${it.title}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Kategori Governance</td>
+                            ${items.map(it => `<td class="p-3 font-bold text-nzgreen-700">${it.category}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Mekanisme Kunci NZ</td>
+                            ${items.map(it => `<td class="p-3 text-slate-600">${it.highlights}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Relevansi Beasiswa Manaaki</td>
+                            ${items.map(it => `<td class="p-3 font-semibold text-slate-800">${it.relevanceManaaki}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Tips Formulasi Esai</td>
+                            ${items.map(it => `<td class="p-3 font-medium text-indigo-900 bg-indigo-50/50">${it.essayTip}</td>`).join('')}
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        /* ----------------------------------------------------
+         * 6. GENERATOR STRATEGI ESAI MANAAKI
+         * ---------------------------------------------------- */
+        function generateManaakiEssay() {
+            const sector = document.getElementById('essay-sector').value;
+            const valueKey = document.getElementById('essay-value').value;
+            const impactKey = document.getElementById('essay-impact').value;
+            const role = document.getElementById('essay-role').value || 'Praktisi Sektor Publik';
+
+            const sectorNames = {
+                climate: 'Climate Change, Disaster Risk & Environment',
+                energy: 'Renewable Energy & Green Transition',
+                public_admin: 'Public Sector Management & Anti-Corruption',
+                agri: 'Sustainable Agriculture & Agri-Tech',
+                indigenous: 'Indigenous Rights, Social Equity & Inclusion'
+            };
+
+            const valueNames = {
+                kaitiakitanga: 'Kaitiakitanga (Guardianship & Antargenerasi)',
+                wellbeing: 'Living Standards Framework & Wellbeing Budget',
+                tiriti: 'Te Tiriti (Bicultural Co-governance & Inklusivitas)',
+                transparency: 'Public Service Act & Transparansi CPI #1'
+            };
+
+            const impactNames = {
+                policy_reform: 'Reformasi Kebijakan & Peraturan Tingkat Daerah/Nasional',
+                community_empowerment: 'Pemberdayaan Masyarakat Lokal & Komunitas Adat',
+                tech_innovation: 'Inovasi Teknologi & Transisi Operasional Berkelanjutan',
+                interagency_collab: 'Kerja Sama Antar-Lembaga & Akuntabilitas Publik'
+            };
+
+            const outputDiv = document.getElementById('essay-output-content');
+            outputDiv.innerHTML = `
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 space-y-2">
+                    <span class="text-[10px] text-sand-300 font-bold uppercase tracking-wider block">Bagian 1: Pernyataan Masalah & Kepemimpinan (${role})</span>
+                    <p>Sebagai seorang <strong>${role}</strong> di Indonesia, saya mengamati bahwa tantangan utama dalam sektor <strong>${sectorNames[sector]}</strong> di Indonesia adalah perlunya pendekatan holistik yang tidak hanya mengejar pertumbuhan ekonomi singkat, tetapi menjaga keberlanjutan sosial dan lingkungan secara jangka panjang.</p>
+                </div>
+
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 space-y-2">
+                    <span class="text-[10px] text-sand-300 font-bold uppercase tracking-wider block">Bagian 2: Mengapa New Zealand & Pembelajaran Nilai</span>
+                    <p>Studi di New Zealand menawarkan keunggulan unik bagi saya untuk mendalami prinsip <strong>${valueNames[valueKey]}</strong>. Kunjungan akademis di NZ akan memberikan saya kesempatan mempelajari secara praktis bagaimana New Zealand berhasil mengintegrasikan nilai-nilai ini dalam pembuatan kebijakan publik yang inklusif dan akuntabel.</p>
+                </div>
+
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10 space-y-2">
+                    <span class="text-[10px] text-sand-300 font-bold uppercase tracking-wider block">Bagian 3: Rencana Kontribusi di Indonesia (Reintegrasi)</span>
+                    <p>Sekembalinya ke Indonesia, ilmu dan wawasan governance ini akan saya transformasikan dalam bentuk <strong>${impactNames[impactKey]}</strong>. Dengan mengadaptasi etos <em>Manaakitanga</em> (kepedulian publik) dan kerangka kerja berkelanjutan dari New Zealand, saya berkomitmen menciptakan dampak nyata yang memperkuat ketahanan nasional Indonesia.</p>
+                </div>
+            `;
+        }
+
+        function copyEssayDraft() {
+            const content = document.getElementById('essay-output-content').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                showToastNotification('Draf Esai Manaaki berhasil disalin!');
+            }).catch(() => {
+                showToastNotification('Gagal menyalin teks.');
+            });
+        }
+
+        /* ----------------------------------------------------
+         * 7. KUIS SKENARIO GOVERNANCE
+         * ---------------------------------------------------- */
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-nz-container');
+            const q = QUIZ_NZ_DATA[quizIndex];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span>Pertanyaan ${quizIndex + 1} dari ${QUIZ_NZ_DATA.length}</span>
+                        <span>Skor Terkumpul: <strong class="text-nzgreen-800 font-mono">${quizScore}</strong></span>
+                    </div>
+                    <h4 class="font-extrabold text-slate-800 text-sm sm:text-base leading-snug">${q.q}</h4>
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="answerQuizQuestion(${idx})" class="w-full text-left bg-white hover:bg-nzgreen-50 border border-slate-200 hover:border-nzgreen-300 p-3.5 rounded-xl text-xs font-medium text-slate-700 transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-nzgreen-600 transition"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuizQuestion(optIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Skenario');
+            const q = QUIZ_NZ_DATA[quizIndex];
+            const isCorrect = optIdx === q.answer;
+
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-nz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-3.5 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' : 'bg-rose-100 text-rose-900 border border-rose-200'} text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-lg"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Benar! (+20 Poin)' : 'Jawaban Kurang Tepat.'}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed bg-white p-4 rounded-xl border border-slate-200">
+                        <strong>Pembahasan:</strong> ${q.explain}
+                    </p>
+                    <button onclick="nextQuizStep()" class="bg-nzgreen-700 hover:bg-nzgreen-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                        ${quizIndex < QUIZ_NZ_DATA.length - 1 ? 'Pertanyaan Berikutnya →' : 'Selesaikan Kuis'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuizStep() {
+            if (quizIndex < QUIZ_NZ_DATA.length - 1) {
+                quizIndex++;
+                renderQuizQuestion();
+            } else {
+                const container = document.getElementById('quiz-nz-container');
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-navy-950 to-nzgreen-950 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-nzgreen-700/40">
+                        <i class="fa-solid fa-trophy text-sand-400 text-5xl"></i>
+                        <h4 class="font-extrabold text-2xl">Kuis Selesai!</h4>
+                        <p class="text-xs text-slate-300">Skor Pemahaman Governance & Values NZ Anda: <strong class="text-sand-400 text-xl font-mono block mt-1">${quizScore} / 100</strong></p>
+                        <button onclick="quizIndex=0; quizScore=0; renderQuizQuestion();" class="bg-gradient-to-r from-sand-400 to-amber-500 hover:from-sand-500 hover:to-amber-600 text-navy-950 font-bold px-6 py-2.5 rounded-xl text-xs transition inline-block">
+                            Ulangi Kuis
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        /* ----------------------------------------------------
+         * 8. ANALYTICS MODAL & CHART MANAGER
+         * ---------------------------------------------------- */
+        function openAnalyticsModal() {
+            updateAnalyticsUI();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function updateAnalyticsUI() {
+            const totalClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            
+            document.getElementById('header-total-clicks').innerText = `${totalClicks} Klik`;
+            document.getElementById('fab-click-total').innerText = `${totalClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalClicks;
+
+            // Category Aggregation
+            const catCounts = {};
+            activityLog.forEach(item => {
+                catCounts[item.category] = (catCounts[item.category] || 0) + item.count;
+            });
+
+            let topCat = '-';
+            let maxCatCount = 0;
+            Object.keys(catCounts).forEach(cat => {
+                if (catCounts[cat] > maxCatCount) {
+                    maxCatCount = catCounts[cat];
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // Progress Bar (Visited Modules)
+            const visitedMod = activityLog.filter(i => i.category === 'Detail Modul Governance').length;
+            const percent = Math.min(100, Math.round((visitedMod / NZ_MODULES.length) * 100));
+            document.getElementById('modal-progress-bar').style.width = `${percent}%`;
+            document.getElementById('modal-progress-percent').innerText = `${percent}%`;
+
+            // Top 5 Items
+            const sortedItems = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const topListContainer = document.getElementById('top-clicked-list');
+            if (sortedItems.length === 0) {
+                topListContainer.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada aktivitas tercatat.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedItems.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-100">
+                        <span class="truncate pr-2 font-medium">${idx+1}. ${item.name}</span>
+                        <span class="bg-nzgreen-100 text-nzgreen-900 px-2 py-0.5 rounded font-mono font-bold">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // Render Log Table
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada data interaksi.</td></tr>`;
+            } else {
+                tbody.innerHTML = activityLog.map(item => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-bold text-nzgreen-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            renderCategoryChart(catCounts);
+        }
+
+        function renderCategoryChart(catCounts) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            const labels = Object.keys(catCounts);
+            const data = Object.values(catCounts);
+
+            if (categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            if (labels.length === 0) return;
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#056846', '#f59e0b', '#6366f1', '#e11d48', '#0284c7', '#8b5cf6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function clearAnalyticsData() {
+            if (confirm('Apakah Anda yakin ingin mereset seluruh hitungan aktivitas belajar?')) {
+                activityLog = [];
+                localStorage.removeItem('manaaki_nz_log');
+                updateAnalyticsUI();
+                updateOnPageBadges();
+                showToastNotification('Data hitungan telah direset.');
+            }
+        }
+
+        function exportAnalyticsJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activityLog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Analitik_ManaakiNZ_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
