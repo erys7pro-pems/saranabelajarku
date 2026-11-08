@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBanking Global - Interaktif Perbankan & Keuangan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#030712',
+                        },
+                        banking: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .counter-badge {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: pulse-emerald 0.4s ease-out;
+        }
+        @keyframes pulse-emerald {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); filter: brightness(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="bg-gradient-to-r from-navy-950 via-slate-900 to-banking-950 text-white sticky top-0 z-40 shadow-xl border-b border-emerald-600/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="trackActivity('Header Logo', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-gold-500 text-navy-950 flex items-center justify-center font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">EduBanking</h1>
+                        <p class="text-[11px] text-emerald-200/80 font-medium">Platform Tata Kelola Perbankan Global</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-white/10 text-white">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Beranda</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Katalog Perbankan', 'Navigasi Menu'); switchTab('sistem')" id="nav-sistem" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>9 Negara</span>
+                        <span id="nav-count-sistem" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Komparasi Perbankan', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Simulator Bank Sentral', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator Policy</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Analytics Header Button -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-emerald-400 to-gold-400 hover:from-emerald-500 hover:to-gold-500 text-navy-950 px-3.5 py-1.5 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-line text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-navy-950 text-gold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ================= SECTION 1: BERANDA ================= -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-slate-900 to-banking-900 text-white p-8 sm:p-12 shadow-2xl border border-emerald-600/30">
+                <div class="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
+                    <i class="fa-solid fa-vault text-9xl"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase inline-block">
+                        Studi Kebijakan Moneter & Stabilitas Perbankan
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
+                        Mengarungi Ekosistem Perbankan & Keuangan Global
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Sistem perbankan adalah jantung perekonomian suatu bangsa. Pelajari perbedaan fundamental antara **Skala Rentan/Krisis** (Hiperinflasi & Bank Run), **Skala Transisi** (QRIS/UPI, Inklusi Digital, Neobank), dan **Skala Sejahtera** (Private Banking, Sandbox Fintech, Open Banking).
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Pelajari 9 Negara', 'Materi Utama'); switchTab('sistem')" class="bg-gradient-to-r from-emerald-400 to-gold-400 hover:from-emerald-500 hover:to-gold-500 text-navy-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-xl flex items-center space-x-2">
+                            <span>Jelajahi 9 Sistem Perbankan Negara</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Uji Simulator Bank Sentral', 'Fitur Interaktif'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium px-5 py-3 rounded-xl text-sm transition backdrop-blur-md">
+                            Coba Simulator Kebijakan Regulator
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Spektrum Ekosistem Perbankan Dunia -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">3 Spektrum Ekosistem Perbankan Dunia</h3>
+                        <p class="text-slate-500 text-xs">Klasifikasi kesehatan dan maturitas sistem keuangan negara</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Spektrum 1: Vulnerable -->
+                    <div onclick="trackActivity('Spektrum 1: Rentan & Krisis Moneter', 'Modul Spektrum'); openInfoModal('vulnerable')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-burst"></i>
+                            </div>
+                            <span id="click-count-spektrum-vulnerable" class="counter-badge bg-slate-100 group-hover:bg-rose-100 text-slate-600 group-hover:text-rose-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-rose-700 transition">1. Skala Rentan / Krisis</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Mengalami krisis kepercayaannya pada mata uang, hiperinflasi ekstrem, fenomena *Bank Run*, NPL melonjak, dan pelarian modal (*Capital Flight*).
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Pencetakan uang berlebih & devaluasi</li>
+                            <li>• Pembatasan penarikan tunai (Cepo/Corralito)</li>
+                            <li>• Contoh: Venezuela, Argentina, Zimbabwe</li>
+                        </ul>
+                    </div>
+
+                    <!-- Spektrum 2: Transition -->
+                    <div onclick="trackActivity('Spektrum 2: Transisi & Digitalisasi', 'Modul Spektrum'); openInfoModal('transition')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-qrcode"></i>
+                            </div>
+                            <span id="click-count-spektrum-transition" class="counter-badge bg-slate-100 group-hover:bg-amber-100 text-slate-600 group-hover:text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-amber-700 transition">2. Skala Transisi / Berkembang</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Pertumbuhan pesat inklusi keuangan digital, otomatisasi QRIS/UPI/PIX, kebangkitan Neobank, dan penguatan permodalan bank (CAR).
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Pemangkasan unbanked via infrastruktur digital</li>
+                            <li>• Konsolidasi & pengawasan makroprudensial</li>
+                            <li>• Contoh: Indonesia, India, Brasil</li>
+                        </ul>
+                    </div>
+
+                    <!-- Spektrum 3: Prosperous -->
+                    <div onclick="trackActivity('Spektrum 3: Maju & Offshore Hub', 'Modul Spektrum'); openInfoModal('prosperous')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                            <span id="click-count-spektrum-prosperous" class="counter-badge bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700 transition">3. Skala Sejahtera / Maju</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Pusat keuangan dunia (*Financial Hub*), penerapan *Private Banking*, Open Banking API, lisensi bank digital penuh, serta masyarakat tanpa uang tunai (*Cashless*).
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Manajemen kekayaan global & aset offshore</li>
+                            <li>• FinTech Regulatory Sandbox yang matang</li>
+                            <li>• Contoh: Swiss, Singapura, Norwegia</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Modul Tematik Utama -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="trackActivity('Modul: Rasio Kesehatan Bank', 'Studi Konsep'); openInfoModal('health_ratio')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Rasio Kesehatan</span>
+                        <span id="click-count-modul-health" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-emerald-700 transition mb-1">Rasio Kunci Kesehatan Bank</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Memahami <strong>CAR</strong> (Kecukupan Modal), <strong>NPL</strong> (Kredit Macet), <strong>LDR</strong> (Likuiditas), dan <strong>NIM</strong> (Margin Bunga Bersih).</p>
+                </div>
+
+                <div onclick="trackActivity('Modul: Kebijakan Bank Sentral', 'Studi Konsep'); openInfoModal('central_bank')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Moneter & Makro</span>
+                        <span id="click-count-modul-cb" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-amber-700 transition mb-1">Peran & Alat Bank Sentral</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Pengaturan Suku Bunga Acuan (Policy Rate), Giro Wajib Minimum (GWM), Operasi Pasar Terbuka, serta peran *Lender of Last Resort*.</p>
+                </div>
+
+                <div onclick="trackActivity('Modul: Neobank & Open Banking', 'Studi Konsep'); openInfoModal('neobank')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Inovasi Digital</span>
+                        <span id="click-count-modul-neo" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-indigo-700 transition mb-1">Neobank & Revolusi Open API</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Bank tanpa cabang fisik, integrasi Open Banking API, lisensi bank digital, dan interoperabilitas pembayaran lintas negara.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: KATALOG 9 SISTEM PERBANKAN ================= -->
+        <section id="sec-sistem" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">Katalog 9 Sistem Perbankan Dunia</h3>
+                        <p class="text-slate-500 text-xs mt-1">Studi kasus mendalam mengenai kebijakan moneter, regulasi, dan inovasi keuangan tiap negara.</p>
+                    </div>
+                    <!-- Filter & Search -->
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <select id="country-tier-filter" onchange="trackActivity('Filter Kategori Perbankan', 'Filter Sistem'); filterCountries()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="all">Semua Skala Perbankan</option>
+                            <option value="Vulnerable">1. Rentan / Krisis Moneter</option>
+                            <option value="Transition">2. Transisi / Inklusi Digital</option>
+                            <option value="Prosperous">3. Maju / Financial Hub</option>
+                        </select>
+                        <div class="relative flex-grow sm:flex-grow-0 sm:w-48">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="country-search" oninput="trackActivity('Pencarian Perbankan Negara', 'Filter Sistem'); filterCountries()" placeholder="Cari negara/bank..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Country Cards Grid -->
+            <div id="countries-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically Rendered -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: KOMPARASI MATRIKS ================= -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div>
+                    <h3 class="font-extrabold text-slate-800 text-xl">Sandingkan Sistem Perbankan Negara</h3>
+                    <p class="text-slate-500 text-xs mt-1">Pilih 2 hingga 3 negara untuk membandingkan regulator, tingkat inflasi, inovasi digital, dan rasio kesehatan perbankannya.</p>
+                </div>
+
+                <!-- Country Selectors -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Sistem Perbankan 1</label>
+                        <select id="cmp-country-1" onchange="trackActivity('Komparasi: Pilih Negara 1', 'Matriks Komparasi'); updateCountryComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Sistem Perbankan 2</label>
+                        <select id="cmp-country-2" onchange="trackActivity('Komparasi: Pilih Negara 2', 'Matriks Komparasi'); updateCountryComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Sistem Perbankan 3 (Opsional)</label>
+                        <select id="cmp-country-3" onchange="trackActivity('Komparasi: Pilih Negara 3', 'Matriks Komparasi'); updateCountryComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                            <option value="">-- Pilih Negara 3 --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table Container -->
+            <div id="country-comparison-wrapper" class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+                <!-- Rendered Table -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: SIMULATOR REGULATOR BANK SENTRAL ================= -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-2xl">Simulator Kebijakan Bank Sentral & Regulator</h3>
+                        <p class="text-slate-500 text-xs">Simulasikan keputusan suku bunga, cadangan wajib, dan regulasi modal terhadap indikator ekonomi makro</p>
+                    </div>
+                    <span id="click-count-sim-policy" class="counter-badge bg-emerald-100 text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-200">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Policy Sliders Form (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">1. Suku Bunga Acuan / Policy Rate (%)</label>
+                                <span id="val-sim-rate" class="font-mono font-bold text-emerald-700">6.0%</span>
+                            </div>
+                            <input type="range" id="sim-rate" min="1.0" max="25.0" step="0.25" value="6.0" oninput="trackActivity('Slider: Suku Bunga Acuan', 'Simulator Perbankan'); calculatePolicyResults()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Instrumen moneter utama untuk mengendalikan inflasi dan gairah pinjaman kredit perbankan.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">2. Giro Wajib Minimum / GWM (%)</label>
+                                <span id="val-sim-gwm" class="font-mono font-bold text-emerald-700">9.0%</span>
+                            </div>
+                            <input type="range" id="sim-gwm" min="1.0" max="20.0" step="0.5" value="9.0" oninput="trackActivity('Slider: Giro Wajib Minimum', 'Simulator Perbankan'); calculatePolicyResults()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Persentase dana nasabah yang wajib ditahan di Bank Sentral sebagai penyangga likuiditas.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">3. Target Persyaratan Modal / CAR (%)</label>
+                                <span id="val-sim-car" class="font-mono font-bold text-emerald-700">18.0%</span>
+                            </div>
+                            <input type="range" id="sim-car" min="8.0" max="30.0" step="1.0" value="18.0" oninput="trackActivity('Slider: Target CAR', 'Simulator Perbankan'); calculatePolicyResults()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Batas minimum rasio kecukupan modal bank komersial untuk menyerap potensi kerugian kredit.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">4. Penetrasi Inklusi & Pembayaran Digital (%)</label>
+                                <span id="val-sim-digital" class="font-mono font-bold text-emerald-700">75%</span>
+                            </div>
+                            <input type="range" id="sim-digital" min="10" max="100" step="5" value="75" oninput="trackActivity('Slider: Inklusi Digital', 'Simulator Perbankan'); calculatePolicyResults()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Tingkat adopsi pembayaran QRIS, Open API, neobank, dan transaksi tanpa uang tunai.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">5. Batas Maksimum LTV / Rasio Pinjaman (%)</label>
+                                <span id="val-sim-ltv" class="font-mono font-bold text-emerald-700">85%</span>
+                            </div>
+                            <input type="range" id="sim-ltv" min="40" max="100" step="5" value="85" oninput="trackActivity('Slider: Batas LTV', 'Simulator Perbankan'); calculatePolicyResults()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Batas pinjaman terhadap nilai jaminan properti/aset untuk rem spekulasi properti.</p>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Output Box (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-navy-950 to-banking-950 text-white rounded-2xl p-6 flex flex-col justify-between space-y-6 shadow-xl border border-emerald-600/30">
+                        <div class="space-y-1">
+                            <span class="text-xs font-mono text-gold-400 uppercase tracking-widest font-bold">Proyeksi Ekonomi Makro</span>
+                            <h4 class="text-xl font-bold">Stabilitas Perbankan Nasional</h4>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Metric 1 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Skor Stabilitas Keuangan:</span>
+                                <strong id="sim-score-stability" class="text-2xl font-mono text-gold-400">82.5</strong>
+                            </div>
+
+                            <!-- Metric 2 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Proyeksi Inflasi Tahunan:</span>
+                                <strong id="sim-inflation" class="text-xs font-bold font-mono text-emerald-300">3.2%</strong>
+                            </div>
+
+                            <!-- Metric 3 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Proyeksi NPL (Kredit Macet):</span>
+                                <strong id="sim-npl" class="text-xs font-bold font-mono text-emerald-400">2.1%</strong>
+                            </div>
+
+                            <!-- Metric 4 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Pertumbuhan Kredit Bank:</span>
+                                <strong id="sim-credit-growth" class="text-xs font-bold font-mono text-emerald-300">+9.4%</strong>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <h5 class="font-bold text-gold-400 border-b border-white/10 pb-1">Evaluasi Kebijakan Moneter:</h5>
+                            <p id="sim-policy-eval" class="text-slate-300 leading-relaxed">
+                                Kebijakan moneter terkalibrasi dengan sangat baik. Inflasi terkendali tanpa mematikan laju pertumbuhan pinjaman riil.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: KUIS EVALUASI ================= -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-xl">Kuis Pemahaman Perbankan Global</h3>
+                            <p class="text-slate-500 text-xs">Uji pengetahuan Anda mengenai rasio keuangan, bank sentral, dan sistem keuangan negara</p>
+                        </div>
+                    </div>
+                    <span id="click-count-quiz-banking" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x kuis dikerjakan
+                    </span>
+                </div>
+
+                <!-- Quiz Interactive Container -->
+                <div id="quiz-banking-container" class="max-w-3xl space-y-6">
+                    <!-- Dynamic Questions -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-md bg-emerald-400 text-navy-950 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <span class="font-bold text-slate-200">EduBanking Global Governance © 2026</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Dikompilasi berdasarkan standar Basel III, Bank for International Settlements (BIS), dan Lembaga Penjamin Simpanan (LPS).
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ANALYTICS BUTTON & MODAL ================= -->
+    <!-- Floating Counter FAB -->
+    <button onclick="openAnalyticsModal(); trackActivity('FAB Statistik Melayang', 'Navigasi Melayang')" class="fixed bottom-6 right-6 bg-gradient-to-r from-emerald-400 via-emerald-500 to-gold-500 text-navy-950 p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-white/30">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-navy-950"></i>
+            <span id="fab-pulse-dot" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-navy-950">Aktivitas Belajar</span>
+            <span id="fab-click-total" class="font-extrabold text-sm font-mono leading-none text-navy-950">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ANALYTICS MODAL (POPUP) -->
+    <div id="modal-analytics" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navy-950 to-banking-950 text-white p-5 flex items-center justify-between border-b border-emerald-600/30">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-emerald-200">Rekapitulasi lengkap interaksi eksplorasi pengguna</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Content Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- Summary Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-emerald-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Terlibat aktif di aplikasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-base text-slate-800 font-bold block truncate">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Area terbanyak dieksplorasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Cakupan Pembelajaran</span>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <div class="flex-grow bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-gold-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-bold text-slate-700">0%</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 block mt-1">Sistem bank dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top Items Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart Doughnut Container -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Most Clicked Items -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-clicked-list" class="space-y-2 text-xs">
+                            <!-- Dynamic Top Items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="clearAnalyticsData()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-48 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Terakhir Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100">
+                                <!-- Log rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERAL INFO / DETAIL MODAL -->
+    <div id="modal-info" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="info-modal-header" class="p-6 text-white relative bg-gradient-to-r from-navy-950 to-banking-950">
+                <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <!-- Dynamic Header -->
+            </div>
+            <div id="info-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 custom-scrollbar">
+                <!-- Dynamic Body -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+
+    <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
+    <script>
+        /* ----------------------------------------------------
+         * 1. DATA 9 NEGARA SISTEM PERBANKAN
+         * ---------------------------------------------------- */
+        const BANKING_COUNTRIES = [
+            // TIER 1: VULNERABLE / RENTAN
+            {
+                id: 'venezuela',
+                name: 'Venezuela',
+                flag: '🇻🇪',
+                tier: 'Vulnerable',
+                tierLabel: '1. Rentan / Krisis Moneter',
+                centralBank: 'Banco Central de Venezuela (BCV)',
+                color: 'from-rose-700 to-red-900',
+                shortDesc: 'Hiperinflasi ekstrem dan kehancuran kepercayaan terhadap mata uang Bolívar memicu peralihan ke Dolar AS informal.',
+                strategy: 'Pencetakan uang tanpa kendali untuk menutup defisit anggaran dan kontrol harga bunga yang merusak likuiditas.',
+                impact: 'Tabungan rakyat hangus, rasio NPL menyamar dalam devaluasi, dan matinya akses kredit usaha riil.',
+                lessons: 'Bank Sentral harus independen dan dilarang mencetak uang untuk membiayai pengeluaran fiskal pemerintah.'
+            },
+            {
+                id: 'argentina',
+                name: 'Argentina',
+                flag: '🇦🇷',
+                tier: 'Vulnerable',
+                tierLabel: '1. Rentan / Krisis Moneter',
+                resource: 'Sistem Cepo Cambiario & Utang IMF',
+                color: 'from-amber-700 to-rose-900',
+                shortDesc: 'Krisis utang dan krisis mata uang Peso berulang yang ditandai kontrol valas ketat (Cepo) serta inflasi >100%.',
+                strategy: 'Penerapan pembatasan pembelian valas (Cepo), suku bunga acuan sangat tinggi (>70%), dan restrukturisasi utang.',
+                impact: 'Kemunculan pasar gelap Dolar (Blue Dollar), larinya simpanan warga ke luar negeri, dan ketiadaan pinjaman jangka panjang.',
+                lessons: 'Kontrol ketat valas justru menciptakan distorsi pasar baru jika inflasi dasar tidak ditangani.'
+            },
+            {
+                id: 'zimbabwe',
+                name: 'Zimbabwe',
+                flag: '🇿🇼',
+                tier: 'Vulnerable',
+                tierLabel: '1. Rentan / Krisis Moneter',
+                resource: 'Dolarisasi & ZiG Currency Reform',
+                color: 'from-orange-700 to-rose-900',
+                shortDesc: 'Kasus hiperinflasi paling terkenal (2008) yang memaksa pembongkaran mata uang lokal hingga adopsi uang berbasis emas (ZiG).',
+                strategy: 'Demonetisasi berkali-kali, adopsi Dolar AS sebagai instrumen pembayaran, dan penerbitan emas batangan digital.',
+                impact: 'Hilangnya aset dana pensiun dan perbankan lokal yang digantikan kewajiban beralih mata uang.',
+                lessons: 'Kepercayaan publik pada mata uang nasional memerlukan disiplin fiskal dan stabilitas politik berdekade.'
+            },
+
+            // TIER 2: TRANSITION / BERKEMBANG
+            {
+                id: 'indonesia',
+                name: 'Indonesia',
+                flag: '🇮🇩',
+                tier: 'Transition',
+                tierLabel: '2. Transisi / Inklusi Digital',
+                centralBank: 'Bank Indonesia (BI) & OJK & LPS',
+                color: 'from-emerald-600 to-banking-800',
+                shortDesc: 'Inovasi ekosistem pembayaran digital terdepan (QRIS & BI-FAST) dan ketahanan bank yang sangat kuat pasca-krisis 1998.',
+                strategy: 'Interoperabilitas sistem pembayaran (QRIS Cross-Border), konsolidasi bank modal inti, & penjaminan LPS.',
+                impact: 'Penetrasi pembayaran digital merata hingga UMKM dan rasio kecukupan modal bank (CAR) sangat sehat (~26%).',
+                lessons: 'Sinergi Bauran Kebijakan Moneter & Makroprudensial menjaga stabilitas tanpa mengorbankan inovasi fintech.'
+            },
+            {
+                id: 'india',
+                name: 'India',
+                flag: '🇮🇳',
+                tier: 'Transition',
+                tierLabel: '2. Transisi / Inklusi Digital',
+                centralBank: 'Reserve Bank of India (RBI)',
+                color: 'from-amber-600 to-orange-800',
+                shortDesc: 'Revolusi pembayaran instan terbesar dunia melalui Unified Payments Interface (UPI) dan program inklusi Jan Dhan.',
+                strategy: 'Infrastruktur publik digital (India Stack), pembukaan rekening tanpa biaya untuk ratusan juta warga miskin.',
+                impact: 'Memicu 40%+ dari seluruh transaksi pembayaran real-time di tingkat global dan pemangkasan perantara tunai.',
+                lessons: 'Infrastruktur sistem pembayaran publik berbasis Open API dapat mempercepat inklusi keuangan secara masif.'
+            },
+            {
+                id: 'brasil',
+                name: 'Brasil',
+                flag: '🇧🇷',
+                tier: 'Transition',
+                tierLabel: '2. Transisi / Inklusi Digital',
+                centralBank: 'Banco Central do Brasil (BCB)',
+                color: 'from-teal-600 to-emerald-800',
+                shortDesc: 'Peluncuran pembayaran gratis PIX oleh Bank Sentral dan pertumbuhan neobank ritel terbesar dunia (NuBank).',
+                strategy: 'Regulasi Open Banking wajib bagi bank besar dan penyediaan sistem rel pembayaran instan publik (PIX).',
+                impact: 'Memangkas biaya transfer perbankan, memungut puluhan juta nasabah baru, dan mengikis dominasi kartel 5 bank besar.',
+                lessons: 'Regulator yang pro-kompetisi mampu mendobrak struktur perbankan oligopoli menjadi efisien.'
+            },
+
+            // TIER 3: PROSPEROUS / MAJU
+            {
+                id: 'switzerland',
+                name: 'Swiss',
+                flag: '🇨🇭',
+                tier: 'Prosperous',
+                tierLabel: '3. Maju / Financial Hub',
+                centralBank: 'Swiss National Bank (SNB) & FINMA',
+                color: 'from-slate-700 to-navy-950',
+                shortDesc: 'Pusat manajemen kekayaan (*Private Banking*) dunia yang mengelola triliunan aset asing dengan standar FINMA ketat.',
+                strategy: 'Spesialisasi pada Wealth Management, stabilitas mata uang Swiss Franc (CHF), dan pengawasan risiko sistemik pasca-merger Credit Suisse.',
+                impact: 'Menjadi tempat perlindungan modal global (*Safe Haven*) terbesar di dunia.',
+                lessons: 'Stabilitas ekonomi dan jaminan kepastian hukum adalah aset tak ternilai untuk industri perbankan.'
+            },
+            {
+                id: 'singapore',
+                name: 'Singapura',
+                flag: '🇸🇬',
+                tier: 'Prosperous',
+                tierLabel: '3. Maju / Financial Hub',
+                centralBank: 'Monetary Authority of Singapore (MAS)',
+                color: 'from-indigo-600 to-navy-900',
+                shortDesc: 'Pusat perbankan dan fintech Asia Pasifik yang menggabungkan fungsi Bank Sentral dan Otoritas Jasa Keuangan.',
+                strategy: 'Penerbitan lisensi Full Digital Bank, Sandbox Regulatory FinTech yang fleksibel, dan koridor pembayaran lintas negara.',
+                impact: 'Menarik modal ventura global, ekspansi neobank kelas dunia, dan efisiensi settlement valuta asing.',
+                lessons: 'Kerangka regulasi yang adaptif dan Sandbox FinTech mampu menarik inovasi keuangan tanpa membahayakan sistem.'
+            },
+            {
+                id: 'norway',
+                name: 'Norwegia',
+                flag: '🇳🇴',
+                tier: 'Prosperous',
+                tierLabel: '3. Maju / Financial Hub',
+                centralBank: 'Norges Bank',
+                color: 'from-blue-700 to-navy-950',
+                shortDesc: 'Masyarakat hampir 100% tanpa uang tunai (*Cashless*) dan integrasi Open Banking Nordic (Vipps).',
+                strategy: 'Digitalisasi lengkap instrumen pembayaran nasional dan pengawasan makroprudensial pinjaman hipotek rumah.',
+                impact: 'Efisiensi transaksi perbankan sangat tinggi, pengikisan kejahatan uang tunai, namun rentan krisis siber.',
+                lessons: 'Ekosistem cashless mempercepat perputaran uang tetapi membutuhkan ketahanan infrastruktur siber mutlak.'
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 2. DATA KUIS PERBANKAN
+         * ---------------------------------------------------- */
+        const QUIZ_BANKING_DATA = [
+            {
+                q: "Rasio keuangan perbankan yang mengukur kecukupan modal bank untuk menyerap risiko kerugian kredit dinamakan...",
+                options: ["NPL (Non-Performing Loan)", "CAR (Capital Adequacy Ratio)", "LDR (Loan to Deposit Ratio)", "NIM (Net Interest Margin)"],
+                answer: 1,
+                explain: "CAR (Capital Adequacy Ratio) mengukur sejauh mana modal sendiri bank mampu menanggung risiko aset atau kredit macet."
+            },
+            {
+                q: "Sistem pembayaran instan terbuka buatan Bank Indonesia yang menggunakan QR Code standar nasional dinamakan...",
+                options: ["BI-FAST", "QRIS", "UPI", "PIX"],
+                answer: 1,
+                explain: "QRIS (Quick Response Code Indonesian Standard) menyatukan seluruh pembayaran berbasis QR di Indonesia."
+            },
+            {
+                q: "Apa yang dimaksud dengan fenomena 'Bank Run' dalam krisis perbankan?",
+                options: ["Bank ekspansi membuka cabang cepat", "Nasabah menarik simpanannya secara massal karena panik", "Bank memangkas suku bunga kredit secara agresif", "Proses digitalisasi aplikasi bank"],
+                answer: 1,
+                explain: "Bank Run terjadi ketika kepanikan publik membuat nasabah berbondong-bondong menarik dana tunai secara bersamaan hingga bank kehabisan likuiditas."
+            },
+            {
+                q: "Instrumen Bank Sentral yang mewajibkan bank komersial menahan sebagian persentase dana nasabah di Bank Sentral disebut...",
+                options: ["GWM (Giro Wajib Minimum)", "Suku Bunga Repositori", "Batas LTV", "Bail-in System"],
+                answer: 0,
+                explain: "GWM (Giro Wajib Minimum) adalah cadangan likuiditas wajib yang dititipkan bank di Bank Sentral."
+            },
+            {
+                q: "Negara yang sukses mendobrak kartel perbankan dengan pembayaran publik gratis bernama PIX dan neobank NuBank adalah...",
+                options: ["Brasil", "Swiss", "Argentina", "Norwegia"],
+                answer: 0,
+                explain: "Banco Central do Brasil meluncurkan PIX yang membebaskan biaya transfer dan mendorong revolusi fintech di Brasil."
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 3. APP STATE & PERSISTENT COUNTER SYSTEM
+         * ---------------------------------------------------- */
+        let activityLog = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+        let categoryChartInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityFromStorage();
+            updateOnPageBadges();
+            renderCountriesGrid();
+            initComparisonDropdowns();
+            calculatePolicyResults();
+            renderQuizQuestion();
+            updateAnalyticsUI();
+        });
+
+        function loadActivityFromStorage() {
+            const saved = localStorage.getItem('banking_activity_log');
+            if (saved) {
+                try {
+                    activityLog = JSON.parse(saved);
+                } catch(e) {
+                    activityLog = [];
+                }
+            }
+        }
+
+        function saveActivityToStorage() {
+            localStorage.setItem('banking_activity_log', JSON.stringify(activityLog));
+        }
+
+        /* CORE TRACKER FUNCTION */
+        function trackActivity(itemName, categoryName) {
+            const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let record = activityLog.find(item => item.name === itemName);
+
+            if (record) {
+                record.count += 1;
+                record.lastTime = now;
+            } else {
+                record = {
+                    id: 'act-' + Date.now() + '-' + Math.floor(Math.random()*1000),
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: now
+                };
+                activityLog.push(record);
+            }
+
+            saveActivityToStorage();
+            updateAnalyticsUI();
+            showToastNotification(`Aktivitas Dicatat: ${itemName} (+1)`);
+            updateOnPageBadges();
+        }
+
+        function getItemCount(itemName) {
+            const record = activityLog.find(item => item.name === itemName);
+            return record ? record.count : 0;
+        }
+
+        /* ----------------------------------------------------
+         * 4. UI UPDATERS & COUNTER BADGES
+         * ---------------------------------------------------- */
+        function updateOnPageBadges() {
+            // Update Nav counts
+            document.getElementById('nav-count-beranda').innerText = getItemCount('Tab Beranda');
+            document.getElementById('nav-count-sistem').innerText = getItemCount('Tab Katalog Perbankan');
+            document.getElementById('nav-count-komparasi').innerText = getItemCount('Tab Komparasi Perbankan');
+            document.getElementById('nav-count-simulator').innerText = getItemCount('Tab Simulator Bank Sentral');
+            document.getElementById('nav-count-kuis').innerText = getItemCount('Tab Kuis Evaluasi');
+
+            // Beranda Spektrum Counters
+            document.getElementById('click-count-spektrum-vulnerable').innerText = `👁️ ${getItemCount('Spektrum 1: Rentan & Krisis Moneter')}x dipelajari`;
+            document.getElementById('click-count-spektrum-transition').innerText = `👁️ ${getItemCount('Spektrum 2: Transisi & Digitalisasi')}x dipelajari`;
+            document.getElementById('click-count-spektrum-prosperous').innerText = `👁️ ${getItemCount('Spektrum 3: Maju & Offshore Hub')}x dipelajari`;
+
+            document.getElementById('click-count-modul-health').innerText = `👁️ ${getItemCount('Modul: Rasio Kesehatan Bank')}x dipelajari`;
+            document.getElementById('click-count-modul-cb').innerText = `👁️ ${getItemCount('Modul: Kebijakan Bank Sentral')}x dipelajari`;
+            document.getElementById('click-count-modul-neo').innerText = `👁️ ${getItemCount('Modul: Neobank & Open Banking')}x dipelajari`;
+
+            // Simulator & Quiz Counters
+            const totalSimUse = getItemCount('Slider: Suku Bunga Acuan') + getItemCount('Slider: Giro Wajib Minimum') + getItemCount('Slider: Target CAR') + getItemCount('Slider: Inklusi Digital') + getItemCount('Slider: Batas LTV');
+            document.getElementById('click-count-sim-policy').innerText = `👁️ ${totalSimUse}x simulasi dijalankan`;
+            document.getElementById('click-count-quiz-banking').innerText = `👁️ ${getItemCount('Kuis: Jawab Soal')}x kuis dikerjakan`;
+
+            // Country Badges
+            BANKING_COUNTRIES.forEach(c => {
+                const badge = document.getElementById(`country-badge-${c.id}`);
+                if (badge) {
+                    badge.innerText = `👁️ ${getItemCount(`Sistem Bank: ${c.name}`)}x dipelajari`;
+                }
+            });
+        }
+
+        function showToastNotification(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-navy-950 text-gold-400 border border-gold-400/30 text-xs px-3.5 py-2 rounded-xl shadow-xl flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-bell text-gold-400"></i> <span>${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        /* ----------------------------------------------------
+         * 5. NAVIGATION & TABS
+         * ---------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-white/10', 'text-white');
+                activeNav.classList.remove('text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ----------------------------------------------------
+         * 6. KATALOG 9 SISTEM PERBANKAN
+         * ---------------------------------------------------- */
+        function renderCountriesGrid() {
+            const container = document.getElementById('countries-grid');
+            container.innerHTML = '';
+
+            const tierFilter = document.getElementById('country-tier-filter').value;
+            const searchTerm = (document.getElementById('country-search')?.value || '').toLowerCase();
+
+            const filtered = BANKING_COUNTRIES.filter(c => {
+                const matchTier = tierFilter === 'all' || c.tier === tierFilter;
+                const matchSearch = c.name.toLowerCase().includes(searchTerm) || c.centralBank.toLowerCase().includes(searchTerm) || c.shortDesc.toLowerCase().includes(searchTerm);
+                return matchTier && matchSearch;
+            });
+
+            filtered.forEach(c => {
+                const count = getItemCount(`Sistem Bank: ${c.name}`);
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer";
+                card.onclick = () => openCountryModal(c.id);
+
+                card.innerHTML = `
+                    <div class="h-28 bg-gradient-to-r ${c.color} p-5 text-white relative flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">${c.flag}</span>
+                            <span id="country-badge-${c.id}" class="counter-badge bg-gold-400 text-navy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                👁️ ${count}x dipelajari
+                            </span>
+                        </div>
+                        <div>
+                            <span class="bg-black/30 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-emerald-200 uppercase">
+                                ${c.tierLabel}
+                            </span>
+                            <h4 class="font-extrabold text-xl group-hover:translate-x-1 transition-transform mt-0.5">${c.name}</h4>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                        <div>
+                            <span class="text-[10px] text-emerald-800 font-bold uppercase block mb-1">Regulator / Bank Sentral:</span>
+                            <strong class="text-slate-800 text-xs block">${c.centralBank}</strong>
+                            <p class="text-slate-600 leading-relaxed mt-2 line-clamp-3">${c.shortDesc}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-emerald-800 font-bold group-hover:underline">
+                            <span>Buka Detail Sistem & Kebijakan</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterCountries() {
+            renderCountriesGrid();
+        }
+
+        function openCountryModal(id) {
+            const c = BANKING_COUNTRIES.find(item => item.id === id);
+            if (!c) return;
+
+            trackActivity(`Sistem Bank: ${c.name}`, 'Detail Perbankan Negara');
+
+            const header = document.getElementById('info-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${c.color}`;
+            header.innerHTML = `
+                <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <span class="text-4xl">${c.flag}</span>
+                    <div>
+                        <span class="bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[10px] font-bold text-emerald-200 uppercase">
+                            ${c.tierLabel}
+                        </span>
+                        <h3 class="text-2xl font-extrabold">${c.name}</h3>
+                    </div>
+                </div>
+                <p class="text-xs text-emerald-200 mt-1">Otoritas Moneter: <strong>${c.centralBank}</strong></p>
+                <div class="mt-3 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-lg inline-flex items-center space-x-2 text-xs font-mono text-gold-400">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah dipelajari sebanyak <strong>${getItemCount(`Sistem Bank: ${c.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('info-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Ringkasan Ekosistem Perbankan</h5>
+                    <p class="text-slate-600 leading-relaxed">${c.shortDesc}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Strategi / Kebijakan Moneter Kunci:</h5>
+                    <p class="bg-emerald-50 text-emerald-900 p-3 rounded-xl border border-emerald-200 font-medium">${c.strategy}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Dampak Terhadap Stabilitas Keuangan:</h5>
+                    <p class="bg-amber-50 text-amber-900 p-3 rounded-xl border border-amber-200 font-medium">${c.impact}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Pelajaran Penting (Lessons Learned):</h5>
+                    <p class="bg-blue-50 text-blue-900 p-3 rounded-xl border border-blue-200 font-medium">
+                        <i class="fa-solid fa-lightbulb text-gold-500 mr-1"></i> ${c.lessons}
+                    </p>
+                </div>
+            `;
+
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function openInfoModal(topicType) {
+            const header = document.getElementById('info-modal-header');
+            const body = document.getElementById('info-modal-body');
+
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navy-950 via-slate-900 to-banking-950";
+
+            if (topicType === 'vulnerable') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-rose-400">Skala Rentan / Krisis Moneter</h3>
+                    <p class="text-xs text-slate-300 mt-1">Ciri & Risiko Krisis Keuangan Nasional</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Sistem perbankan di negara rentan umumnya mengalami krisis kepercayaan parah terhadap stabilitas uang lokal. Pencetakan uang berlebihan memicu hiperinflasi, nilai tukar mata uang runtuh, dan nasabah melakukan panik penarikan tunai massal (*Bank Run*).</p>
+                    <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 text-rose-900 font-semibold">
+                        <strong>Dampak Utama:</strong> Kebangkrutan bank komersial, pelarian modal asing (*Capital Flight*), dan terhentinya fungsi perbankan sebagai penyalur kredit usaha.
+                    </div>
+                `;
+            } else if (topicType === 'transition') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-amber-400">Skala Transisi & Digitalisasi</h3>
+                    <p class="text-xs text-slate-300 mt-1">Inklusi Keuangan & Akselerasi Fintech</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Negara dalam skala ini berfokus memperluas inklusi keuangan masyarakat melalui otomatisasi pembayaran (seperti QRIS di Indonesia, UPI di India, PIX di Brasil). Bank Sentral menerapkan bauran kebijakan makroprudensial dan konsolidasi modal perbankan.</p>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-amber-900 font-semibold">
+                        <strong>Dampak Utama:</strong> Penurunan drastis populasi *unbanked*, pertumbuhan transaksi tanpa tunai yang efisien, dan maraknya persaingan neobank digital.
+                    </div>
+                `;
+            } else if (topicType === 'prosperous') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-emerald-400">Skala Sejahtera & Offshore Hub</h3>
+                    <p class="text-xs text-slate-300 mt-1">Private Banking & FinTech Sandbox</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Ekosistem perbankan di negara maju memprioritaskan manajemen kekayaan global (*Wealth Management*), kepatuhan regulasi internasional (Basel III), Open Banking API, serta eksperimen fintech pada *Regulatory Sandbox*.</p>
+                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-emerald-900 font-semibold">
+                        <strong>Dampak Utama:</strong> Menjadi hub investasi dunia, dominasi transaksi tanpa tunai (*Cashless*), dan efisiensi pasar modal yang matang.
+                    </div>
+                `;
+            } else if (topicType === 'health_ratio') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-emerald-400">Rasio Kesehatan Utama Perbankan</h3>
+                    <p class="text-xs text-slate-300 mt-1">CAR, NPL, LDR, dan NIM</p>
+                `;
+                body.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-emerald-700 block">1. CAR (Capital Adequacy Ratio)</strong>
+                            <span>Kecukupan modal bank menyerap kerugian. Standar minimum Basel III: 8%-12%.</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-rose-700 block">2. NPL (Non-Performing Loan)</strong>
+                            <span>Rasio kredit macet. Batas aman regulator maksimal 5%.</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-amber-700 block">3. LDR (Loan to Deposit Ratio)</strong>
+                            <span>Rasio total kredit dibagikan dibanding simpanan dana nasabah (sehat: 80%-92%).</span>
+                        </div>
+                    </div>
+                `;
+            } else if (topicType === 'central_bank') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-amber-400">Peran & Kebijakan Bank Sentral</h3>
+                    <p class="text-xs text-slate-300 mt-1">Suku Bunga Acuan & Giro Wajib Minimum</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Bank Sentral bertanggung jawab menjaga stabilitas nilai mata uang dan inflasi. Ketika inflasi tinggi, Bank Sentral **menaikkan suku bunga acuan** dan **GWM** untuk menekan jumlah uang beredar. Saat ekonomi lesu, suku bunga dipangkas untuk mendorong kredit usaha.</p>
+                `;
+            } else if (topicType === 'neobank') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-indigo-400">Neobank & Open Banking API</h3>
+                    <p class="text-xs text-slate-300 mt-1">Masa Depan Layanan Keuangan Digital</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Neobank beroperasi 100% secara digital tanpa kantor cabang fisik, memberikan biaya operasional efisien dan pembukaan akun cepat. Open Banking API memungkinkan aplikasi pihak ketiga terhubung aman dengan akun bank nasabah atas izin terbuka.</p>
+                `;
+            }
+
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function closeInfoModal() {
+            document.getElementById('modal-info').classList.add('hidden');
+        }
+
+        /* ----------------------------------------------------
+         * 7. FITUR KOMPARASI PERBANKAN NEGARA
+         * ---------------------------------------------------- */
+        function initComparisonDropdowns() {
+            const s1 = document.getElementById('cmp-country-1');
+            const s2 = document.getElementById('cmp-country-2');
+            const s3 = document.getElementById('cmp-country-3');
+
+            s1.innerHTML = '';
+            s2.innerHTML = '';
+            s3.innerHTML = '<option value="">-- Pilih Negara 3 --</option>';
+
+            BANKING_COUNTRIES.forEach(c => {
+                const opt1 = document.createElement('option');
+                opt1.value = c.id;
+                opt1.innerText = `${c.flag} ${c.name} (${c.tier})`;
+                s1.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = c.id;
+                opt2.innerText = `${c.flag} ${c.name} (${c.tier})`;
+                s2.appendChild(opt2);
+
+                const opt3 = document.createElement('option');
+                opt3.value = c.id;
+                opt3.innerText = `${c.flag} ${c.name} (${c.tier})`;
+                s3.appendChild(opt3);
+            });
+
+            s1.value = 'switzerland';
+            s2.value = 'indonesia';
+            s3.value = 'venezuela';
+
+            updateCountryComparison();
+        }
+
+        function updateCountryComparison() {
+            const c1Id = document.getElementById('cmp-country-1').value;
+            const c2Id = document.getElementById('cmp-country-2').value;
+            const c3Id = document.getElementById('cmp-country-3').value;
+
+            const selectedIds = [c1Id, c2Id, c3Id].filter(Boolean);
+            const items = selectedIds.map(id => BANKING_COUNTRIES.find(c => c.id === id)).filter(Boolean);
+
+            const container = document.getElementById('country-comparison-wrapper');
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-6">Pilih negara di atas untuk membandingkan.</p>`;
+                return;
+            }
+
+            let html = `
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                            <th class="p-3 w-36 font-bold">Dimensi Perbankan</th>
+                            ${items.map(it => `<th class="p-3 font-extrabold text-emerald-900 text-sm">${it.flag} ${it.name}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Skala Maturitas</td>
+                            ${items.map(it => `<td class="p-3 font-bold text-emerald-700">${it.tierLabel}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Bank Sentral / Otoritas</td>
+                            ${items.map(it => `<td class="p-3 font-semibold text-slate-800">${it.centralBank}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Kebijakan Moneter Kunci</td>
+                            ${items.map(it => `<td class="p-3 text-slate-600">${it.strategy}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Dampak Stabilitas</td>
+                            ${items.map(it => `<td class="p-3 text-slate-600">${it.impact}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Pelajaran Utama</td>
+                            ${items.map(it => `<td class="p-3 font-medium text-emerald-800">${it.lessons}</td>`).join('')}
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        /* ----------------------------------------------------
+         * 8. SIMULATOR BANK SENTRAL / REGULATOR
+         * ---------------------------------------------------- */
+        function calculatePolicyResults() {
+            const rate = parseFloat(document.getElementById('sim-rate').value) || 6.0;
+            const gwm = parseFloat(document.getElementById('sim-gwm').value) || 9.0;
+            const car = parseFloat(document.getElementById('sim-car').value) || 18.0;
+            const digital = parseFloat(document.getElementById('sim-digital').value) || 75;
+            const ltv = parseFloat(document.getElementById('sim-ltv').value) || 85;
+
+            document.getElementById('val-sim-rate').innerText = `${rate.toFixed(2)}%`;
+            document.getElementById('val-sim-gwm').innerText = `${gwm.toFixed(1)}%`;
+            document.getElementById('val-sim-car').innerText = `${car.toFixed(1)}%`;
+            document.getElementById('val-sim-digital').innerText = `${digital}%`;
+            document.getElementById('val-sim-ltv').innerText = `${ltv}%`;
+
+            // Stability Calculation
+            const stabilityScore = ((car * 1.6) + (digital * 0.35) + (100 - Math.abs(rate - 6) * 4) * 0.25 + (100 - Math.abs(gwm - 8) * 3) * 0.2) / 2.5;
+            const roundedScore = Math.min(99.9, Math.max(30.0, stabilityScore)).toFixed(1);
+            document.getElementById('sim-score-stability').innerText = roundedScore;
+
+            // Proyeksi Inflasi (Suku bunga tinggi & GWM tinggi menekan inflasi)
+            const projInflation = Math.max(1.2, (12.5 - rate * 0.85 - gwm * 0.3)).toFixed(1);
+            document.getElementById('sim-inflation').innerText = `${projInflation}%`;
+
+            // Proyeksi NPL Kredit Macet (Suku bunga terlalu tinggi & LTV tinggi menaikkan NPL)
+            const projNPL = Math.max(1.1, (1.2 + (rate * 0.25) + ((ltv - 70) * 0.04) - (car * 0.04))).toFixed(1);
+            const nplElem = document.getElementById('sim-npl');
+            nplElem.innerText = `${projNPL}%`;
+            if (projNPL > 5.0) {
+                nplElem.className = "text-xs font-bold font-mono text-rose-400";
+            } else if (projNPL > 3.0) {
+                nplElem.className = "text-xs font-bold font-mono text-amber-300";
+            } else {
+                nplElem.className = "text-xs font-bold font-mono text-emerald-300";
+            }
+
+            // Pertumbuhan Kredit
+            const creditGrowth = (18.5 - (rate * 0.75) - (gwm * 0.4) + ((ltv - 50) * 0.12)).toFixed(1);
+            document.getElementById('sim-credit-growth').innerText = `${creditGrowth > 0 ? '+' : ''}${creditGrowth}%`;
+
+            // Policy Evaluation
+            const evalText = document.getElementById('sim-policy-eval');
+            if (rate > 14.0) {
+                evalText.innerText = 'Suku bunga acuan terlalu tinggi! Inflasi memang berhasil ditekan, namun pertumbuhan kredit macet mendaki dan ekonomi sektor riil mengalami stagnasi.';
+            } else if (car < 10.0) {
+                evalText.innerText = 'Batas CAR terlalu rendah! Bank-bank komersial sangat rentan mengalami kebangkrutan jika terjadi kejutan ekonomi atau kenaikan kredit macet NPL.';
+            } else if (stabilityScore >= 78) {
+                evalText.innerText = 'Kebijakan moneter & makroprudensial terkalibrasi dengan sangat baik. Inflasi terkendali tanpa mematikan laju pembiayaan sektor usaha riil.';
+            } else {
+                evalText.innerText = 'Kombinasi regulasi cukup stabil. Pertimbangkan meningkatkan penetrasi inklusi digital dan penyesuaian kecukupan modal bank (CAR).';
+            }
+
+            updateOnPageBadges();
+        }
+
+        /* ----------------------------------------------------
+         * 9. MINI QUIZ INTERAKTIF
+         * ---------------------------------------------------- */
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-banking-container');
+            const q = QUIZ_BANKING_DATA[quizIndex];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span>Pertanyaan ${quizIndex + 1} dari ${QUIZ_BANKING_DATA.length}</span>
+                        <span>Skor Terkumpul: <strong class="text-emerald-800 font-mono">${quizScore}</strong></span>
+                    </div>
+                    <h4 class="font-extrabold text-slate-800 text-sm sm:text-base leading-snug">${q.q}</h4>
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="answerQuizQuestion(${idx})" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 p-3.5 rounded-xl text-xs font-medium text-slate-700 transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-emerald-600 transition"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuizQuestion(optIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi');
+            const q = QUIZ_BANKING_DATA[quizIndex];
+            const isCorrect = optIdx === q.answer;
+
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-banking-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-3.5 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' : 'bg-rose-100 text-rose-900 border border-rose-200'} text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-lg"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Benar! (+20 Poin)' : 'Jawaban Kurang Tepat.'}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed bg-white p-4 rounded-xl border border-slate-200">
+                        <strong>Pembahasan:</strong> ${q.explain}
+                    </p>
+                    <button onclick="nextQuizStep()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                        ${quizIndex < QUIZ_BANKING_DATA.length - 1 ? 'Pertanyaan Berikutnya →' : 'Selesaikan Kuis'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuizStep() {
+            if (quizIndex < QUIZ_BANKING_DATA.length - 1) {
+                quizIndex++;
+                renderQuizQuestion();
+            } else {
+                const container = document.getElementById('quiz-banking-container');
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-navy-950 to-banking-950 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-emerald-600/30">
+                        <i class="fa-solid fa-trophy text-gold-400 text-5xl"></i>
+                        <h4 class="font-extrabold text-2xl">Kuis Selesai!</h4>
+                        <p class="text-xs text-slate-300">Skor Pemahaman Tata Kelola Perbankan Anda: <strong class="text-gold-400 text-xl font-mono block mt-1">${quizScore} / 100</strong></p>
+                        <button onclick="quizIndex=0; quizScore=0; renderQuizQuestion();" class="bg-gradient-to-r from-emerald-400 to-gold-400 hover:from-emerald-500 hover:to-gold-500 text-navy-950 font-bold px-6 py-2.5 rounded-xl text-xs transition inline-block">
+                            Ulangi Kuis
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        /* ----------------------------------------------------
+         * 10. ANALYTICS MODAL & CHART MANAGER
+         * ---------------------------------------------------- */
+        function openAnalyticsModal() {
+            updateAnalyticsUI();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function updateAnalyticsUI() {
+            const totalClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            
+            document.getElementById('header-total-clicks').innerText = `${totalClicks} Klik`;
+            document.getElementById('fab-click-total').innerText = `${totalClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalClicks;
+
+            // Category Aggregation
+            const catCounts = {};
+            activityLog.forEach(item => {
+                catCounts[item.category] = (catCounts[item.category] || 0) + item.count;
+            });
+
+            let topCat = '-';
+            let maxCatCount = 0;
+            Object.keys(catCounts).forEach(cat => {
+                if (catCounts[cat] > maxCatCount) {
+                    maxCatCount = catCounts[cat];
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // Progress Bar (Visited Countries)
+            const visitedCountries = activityLog.filter(i => i.category === 'Detail Perbankan Negara').length;
+            const percent = Math.min(100, Math.round((visitedCountries / BANKING_COUNTRIES.length) * 100));
+            document.getElementById('modal-progress-bar').style.width = `${percent}%`;
+            document.getElementById('modal-progress-percent').innerText = `${percent}%`;
+
+            // Top 5 Items
+            const sortedItems = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const topListContainer = document.getElementById('top-clicked-list');
+            if (sortedItems.length === 0) {
+                topListContainer.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada aktivitas tercatat.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedItems.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-100">
+                        <span class="truncate pr-2 font-medium">${idx+1}. ${item.name}</span>
+                        <span class="bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-mono font-bold">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // Render Log Table
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada data interaksi.</td></tr>`;
+            } else {
+                tbody.innerHTML = activityLog.map(item => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-bold text-emerald-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            renderCategoryChart(catCounts);
+        }
+
+        function renderCategoryChart(catCounts) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            const labels = Object.keys(catCounts);
+            const data = Object.values(catCounts);
+
+            if (categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            if (labels.length === 0) return;
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#059669', '#f59e0b', '#6366f1', '#e11d48', '#0284c7', '#8b5cf6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function clearAnalyticsData() {
+            activityLog = [];
+            localStorage.removeItem('banking_activity_log');
+            updateAnalyticsUI();
+            updateOnPageBadges();
+            showToastNotification('Data hitungan telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activityLog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Analitik_Perbankan_Global_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
