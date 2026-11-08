@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Struktur Pertamina dan Anak Perusahaan</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f8f6;--surface:#ffffff;--ink:#12332f;--muted:#5b7a74;--line:#d5e6e1;--green:#2f8f5b;--blue:#1f6f9f;--soft:#e4f2ee;--hero1:#1f6f9f;--hero2:#2f8f5b;--bad:#b3473b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43;--bad:#e58a7e}}
+:root[data-theme="dark"]{--bg:#0e1f1e;--surface:#152b29;--ink:#e6f2ef;--muted:#93b3ac;--line:#25433f;--green:#4cc08a;--blue:#5ab4e5;--soft:#1b3835;--hero1:#14506f;--hero2:#1d6b43;--bad:#e58a7e}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5}
+header{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:2rem 1.25rem 3.5rem;text-align:center}
+header h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:400;letter-spacing:.04em}
+header p{margin:.4rem 0 0;opacity:.88;font-family:system-ui,sans-serif;font-size:.95rem}
+main{max-width:920px;margin:-2rem auto 2rem;padding:0 1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(20,70,60,.08);margin-bottom:1rem}
+.label{font:600 .72rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+.reg,.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.4rem .85rem;font-family:system-ui,sans-serif;font-size:.88rem;transition:.15s}
+.reg:hover,.chip:hover{border-color:var(--green)}
+.reg[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.title{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.title h2{margin:0;font-size:1.7rem;font-weight:400}
+.title small,.none,.hint{font-family:system-ui,sans-serif;color:var(--muted);font-size:.85rem}
+.hint{margin:.5rem 0 0}
+.tools{display:flex;gap:.4rem;flex-wrap:wrap}
+.tools button{border:1px solid var(--line);background:none;border-radius:8px;padding:.3rem .7rem;font:.8rem system-ui,sans-serif;color:var(--muted)}
+.tools #cmp[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{border:1px solid var(--line);border-radius:12px;margin-top:.7rem;overflow:hidden}
+.panel>h3{margin:0;background:linear-gradient(90deg,var(--soft),transparent);padding:.6rem .9rem;font-size:1rem;font-weight:600;color:var(--blue)}
+.sub{border-top:1px solid var(--line)}
+.sub>button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:.6rem;background:none;border:0;padding:.65rem .9rem;text-align:left;font-family:system-ui,sans-serif;font-size:.92rem}
+.sub>button:hover{background:var(--soft)}
+.sub>button::after{content:"+";color:var(--green);font-size:1.2rem;line-height:1;flex:none}
+.sub>button[aria-expanded="true"]::after{content:"−"}
+.body{display:none;padding:0 .9rem .8rem;color:var(--muted)}
+.sub.open .body{display:block}
+.body b{color:var(--ink);font-weight:600}
+.lk{border:0;background:none;color:var(--blue);text-decoration:underline;padding:0;margin-right:.6rem;font:inherit}
+#q{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.6rem 1rem;font:1rem system-ui,sans-serif}
+#q:focus{outline:2px solid var(--green)}
+#qr{margin-top:.6rem}
+.tw{overflow-x:auto}
+#ch{width:100%;min-width:720px;height:auto;display:block}
+#ch g{cursor:pointer}
+#ch text{font:11px system-ui,sans-serif;pointer-events:none}
+.leg{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.6rem;font:.78rem system-ui,sans-serif;color:var(--muted)}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:.3rem;vertical-align:-2px;border:2.5px solid}
+.step{margin-top:.8rem;background:var(--soft);border-radius:12px;padding:.8rem 1rem;font-family:system-ui,sans-serif;font-size:.95rem}
+.step .dir{display:inline-block;background:var(--surface);border-radius:999px;padding:.1rem .6rem;font-size:.78rem;color:var(--blue);margin-bottom:.3rem}
+table{border-collapse:collapse;width:100%;min-width:520px;font-family:system-ui,sans-serif;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;width:18%}
+thead th{border-top:0;color:var(--blue);font:600 1rem Georgia,serif}
+thead button{border:0;background:none;color:var(--muted);margin-left:.3rem;font-size:1rem}
+.opt{display:block;width:100%;text-align:left;margin-top:.45rem;border:1px solid var(--line);background:none;border-radius:10px;padding:.55rem .8rem;font:.95rem system-ui,sans-serif}
+.opt:hover{border-color:var(--green)}
+.opt.ok{border-color:var(--green);background:var(--soft)}
+.opt.no{border-color:var(--bad)}
+footer{text-align:center;color:var(--muted);font:.8rem system-ui,sans-serif;padding:0 1rem 2rem}
+</style>
+</head>
+<body>
+<header><h1>Struktur Pertamina & Anak Perusahaan</h1><p>Holding, subholding, dan fungsi tiap entitas, berdasarkan perkembangan hingga 2026</p></header>
+<main>
+<section class="card"><p class="label">Cari</p><input id="q" type="search" placeholder="Cari entitas, fungsi, atau istilah (mis. kilang, PGN, panas bumi)…" autocomplete="off"><div class="row" id="qr"></div></section>
+<section class="card"><p class="label">Bagan struktur grup</p><div class="tw"><svg id="ch" viewBox="0 0 960 430" role="img" aria-label="Bagan struktur Pertamina dan anak perusahaan"></svg></div>
+<div class="leg"><span><i style="border-color:var(--ink)"></i>Dipilih</span><span><i style="border-color:#3d85c6"></i>Atasan langsung</span><span><i style="border-color:var(--green)"></i>Bawahan langsung</span><span><i style="border-color:#e0a100;border-style:dashed"></i>Koordinasi</span></div>
+<p class="hint">Garis abu-abu: hubungan induk dan anak atau garis komando. Garis putus-putus biru: pengawasan. Klik kotak mana pun untuk melihat detailnya.</p></section>
+<section class="card"><p class="label">Simulasi alur</p><div class="row" id="sc"></div><div id="sbox"><p class="hint">Pilih satu skenario untuk melihat alur bisnis atau keputusan di dalam grup, langkah demi langkah di bagan.</p></div></section>
+<section class="card"><p class="label">Perubahan struktur 2026</p><div id="hr"></div></section>
+<section class="card"><p class="label">Kelompok</p><div class="row" id="regions"></div></section>
+<section class="card"><p class="label">Entitas</p><div class="row" id="provs"></div></section>
+<section class="card" id="detail"></section>
+<section class="card" id="compare" hidden></section>
+<section class="card"><p class="label">Kuis singkat</p><div id="quiz"></div></section>
+</main>
+<footer>Struktur dan jumlah anak usaha Pertamina berubah cepat. Isi halaman disusun dari pemberitaan dan keterangan perusahaan Februari–September 2026 (per 8 November 2026) serta pengetahuan umum; ini bukan dokumen resmi. Periksa pertamina.com dan laporan tahunan untuk rujukan resmi.</footer>
+<script>
+const G=["Tata kelola","Holding","Subholding","Unit & anak usaha operasional","Pendukung"];
+const GC=["#6a8f3f","#2f8f5b","#2aa198","#3d85c6","#1f6f9f"];
+// id|kelompok|nama|label bagan|x|y|koordinasi|fungsi|kegiatan|aset dan produk|catatan status
+const D=`pemegang|0|Pemegang Saham (Danantara & BP BUMN)|Pemegang Saham/Danantara & BP BUMN|480|28|dir,kom|Pemilik yang menetapkan arah dan persetujuan strategis; dalam keterangan Pertamina 2026, Danantara dan BP BUMN disebut sebagai pemegang saham.|Mengarahkan penataan grup, menyetujui aksi korporasi besar seperti merger, serta mengangkat dan memberhentikan komisaris dan direksi.|Kewenangan tertinggi atas perusahaan sesuai anggaran dasar dan aturan BUMN.|Susunan pengelolaan BUMN berubah sejak 2025; periksa dokumen resmi untuk rincian hukumnya.
+kom|0|Dewan Komisaris|Dewan/Komisaris|160|100|pemegang,dir|Mengawasi direksi dan memberi nasihat tentang pengurusan Pertamina.|Mengawasi pelaksanaan strategi dan rencana kerja, menelaah laporan, dan memberi persetujuan sesuai anggaran dasar.|Wewenang pengawasan atas direksi menurut anggaran dasar.|Susunan komisaris dapat berubah; lihat situs resmi Pertamina.
+dir|0|Direksi Pertamina|Direksi/Pertamina|480|100|kom,holding|Menjalankan pengurusan Pertamina sebagai holding dan mewakilinya.|Menetapkan strategi grup, mengarahkan subholding, dan mempertanggungjawabkan kinerja kepada pemegang saham.|Dipimpin direktur utama dan membawahi direktorat korporat di holding, termasuk Logistik dan Infrastruktur serta Transformasi dan Keberlanjutan Bisnis.|Pemberitaan 2026 menyebut Simon Aloysius Mantiri sebagai direktur utama dan Oki Muraza sebagai wakil direktur utama; susunan dapat berubah.
+holding|1|PT Pertamina (Persero) sebagai Holding|Pertamina (Persero)/Holding|480|190|dir,sh_hulu,sh_hilir,sh_gas,sh_pnre|Perusahaan induk yang mengendalikan portofolio bisnis energi dan menyelaraskan strategi seluruh subholding.|Menetapkan strategi grup, mengalokasikan modal, mengoordinasikan pasokan dan permintaan lintas subholding, dan mengelola fungsi korporat bersama.|Pemegang saham subholding dan anak usaha; membawahi direktorat korporat.|Model holding-subholding dibentuk sekitar 2021 dengan enam subholding; pada 2026 jumlahnya menjadi empat.
+sh_hulu|2|Subholding Upstream (PT Pertamina Hulu Energi)|Subholding/Upstream (PHE)|90|290|hulu_ops,holding|Menjalankan bisnis hulu: eksplorasi dan produksi minyak dan gas bumi.|Mencari, mengembangkan, dan memproduksi migas di wilayah kerja dalam dan luar negeri, termasuk skema kerja sama operasi dan teknologi untuk struktur yang belum dimanfaatkan.|Pengelola wilayah kerja migas milik grup.|Pemerintah dan Danantara mendorong penyederhanaan entitas hulu menjadi satu perusahaan; per September 2026 hal ini masih rencana.
+sh_hilir|2|Subholding Downstream (PT Pertamina Patra Niaga)|Subholding/Downstream (PPN)|420|290|kilang,niaga,kapal,terminal,sh_gas|Mengintegrasikan hilir migas: pengolahan, perdagangan, distribusi, dan pelayaran dalam satu rantai.|Mengolah minyak mentah, memperdagangkan dan mendistribusikan BBM, LPG, dan produk lain, serta mengelola logistik pelayaran dan terminal.|PT Pertamina Patra Niaga adalah perusahaan penerima penggabungan dari Kilang Pertamina Internasional dan bisnis captive Pertamina International Shipping.|Efektif 1 Februari 2026. PT Pertamina Energy Terminal bergabung ke PPN pada 1 September 2026 sebagai tahap kedua restrukturisasi hilir.
+kilang|3|Pengolahan & Petrokimia (eks Kilang Pertamina Internasional)|Kilang/& Petrokimia|225|400|niaga,kapal,terminal|Mengolah minyak mentah menjadi BBM dan produk petrokimia.|Mengoperasikan kilang dan mengembangkan kapasitas serta produk petrokimia.|Kilang antara lain di Cilacap, Balikpapan, Dumai, Plaju, Balongan, dan Kasim (Sorong).|Dahulu subholding Refining & Petrochemical (PT Kilang Pertamina Internasional); sejak Februari 2026 digabung ke Subholding Downstream.
+niaga|3|Niaga & Distribusi|Niaga/& Distribusi|355|400|kilang,kapal,terminal|Memperdagangkan dan menyalurkan energi ke konsumen.|Pengadaan minyak mentah dan produk, serta distribusi BBM, LPG, dan avtur lewat depot, terminal, dan jaringan SPBU.|Jaringan distribusi dan penjualan produk energi ke masyarakat dan industri.|Bisnis komersial dan perdagangan tetap berjalan di bawah PPN sebagai penerima penggabungan.
+kapal|3|Pelayaran & Logistik Energi (eks PIS captive)|Pelayaran/Energi|485|400|kilang,niaga,terminal|Mengangkut minyak mentah, BBM, dan LNG lewat laut.|Mengoperasikan armada kapal tanker dan layanan logistik maritim untuk kebutuhan grup.|Armada tanker dan layanan pelayaran.|Bisnis captive PIS bergabung ke subholding hilir pada Februari 2026; bisnis non-captive direncanakan dipisahkan ke anak usaha PIS lainnya.
+terminal|3|Terminal & Penyimpanan (eks PET)|Terminal/Penyimpanan|615|400|kapal,niaga|Mengelola terminal dan tangki penyimpanan energi.|Menerima, menyimpan, dan menyalurkan minyak dan produk lewat terminal.|Terminal dan fasilitas penyimpanan.|PT Pertamina Energy Terminal bergabung ke PPN, efektif 1 September 2026.
+sh_gas|2|Subholding Gas (PT Perusahaan Gas Negara Tbk)|Subholding/Gas (PGN)|700|290|hulu_ops,sh_hilir,holding|Mengangkut dan menjual gas bumi.|Transmisi dan distribusi gas lewat pipa, niaga gas, serta LNG dan CNG untuk industri, pembangkit, dan rumah tangga.|Jaringan pipa gas bumi dan infrastruktur LNG; PGN adalah perusahaan tercatat di bursa.|Tetap menjadi subholding gas setelah penggabungan hilir; pemerintah menekankan peran gas dan LNG dalam pasokan energi nasional.
+sh_pnre|2|Subholding Power & NRE (PT Pertamina NRE)|Subholding/Power & NRE|860|290|pge,holding|Mengembangkan listrik dan energi baru terbarukan.|Mengembangkan panas bumi, surya, bioenergi, hidrogen, dan bisnis kelistrikan.|Portofolio pembangkit dan proyek transisi energi.|Pertamina menyebut dukungan pada target Net Zero Emission 2060.
+pge|3|Pertamina Geothermal Energy (PGE)|Panas Bumi/(PGE)|860|400|sh_pnre|Mengusahakan panas bumi untuk pembangkit listrik.|Mengeksplorasi dan mengoperasikan lapangan panas bumi dan pembangkitnya.|Wilayah kerja panas bumi dan pembangkit; perusahaan tercatat di bursa.|Bagian dari ekosistem PNRE; periksa dokumen resmi untuk struktur kepemilikan terbaru.
+hulu_ops|3|Entitas Hulu Operasional (mis. Hulu Rokan)|Entitas Hulu/(mis. Hulu Rokan)|90|400|sh_hulu,kapal|Perusahaan pengelola wilayah kerja migas di lapangan.|Mengebor, memproduksi, dan merawat sumur serta fasilitas produksi di wilayah kerja masing-masing.|Wilayah kerja seperti Blok Rokan di Riau (Pertamina Hulu Rokan).|Entitas hulu seperti Hulu Rokan direncanakan dikonsolidasikan menjadi satu perusahaan; status akhir belum final per September 2026.
+pendukung|4|Anak Usaha Pendukung & Jasa|Anak Usaha/Pendukung|800|190|holding|Melayani kebutuhan penunjang grup di luar bisnis inti energi.|Antara lain jasa hulu (Elnusa), pelumas (Pertamina Lubricants), penerbangan (Pelita Air), kesehatan, dan properti.|Perusahaan penunjang yang melayani grup dan pelanggan luar.|Masuk program penataan: lebih dari seratus entitas ditargetkan disederhanakan lewat merger, divestasi, atau likuidasi; induk langsung tiap entitas dapat berbeda.`.split("\n").map(l=>{const a=l.split("|");return{id:a[0],g:+a[1],n:a[2],lb:a[3],x:+a[4],y:+a[5],k:a[6].split(","),pr:a[7],tg:a[8],wk:a[9],ct:a[10]}});
+const B=Object.fromEntries(D.map(d=>[d.id,d]));
+const E="pemegang>dir>k,pemegang>kom>k,kom>dir>p,dir>holding>k,holding>sh_hulu>k,holding>sh_hilir>k,holding>sh_gas>k,holding>sh_pnre>k,holding>pendukung>k,sh_hulu>hulu_ops>k,sh_hilir>kilang>k,sh_hilir>niaga>k,sh_hilir>kapal>k,sh_hilir>terminal>k,sh_pnre>pge>k".split(",").map(s=>s.split(">"));
+const atas=id=>E.filter(e=>e[1]===id&&e[2]!=="p").map(e=>e[0]);
+const bawah=id=>E.filter(e=>e[0]===id&&e[2]!=="p").map(e=>e[1]);
+const SC=[
+["Dari sumur ke SPBU","a","hulu_ops:Minyak mentah diproduksi dari lapangan di wilayah kerja hulu.^kapal:Kapal tanker mengangkut minyak mentah ke kilang.^kilang:Kilang mengolah minyak mentah menjadi BBM dan produk lain.^terminal:Produk disimpan di terminal dan tangki sebelum disalurkan.^niaga:Niaga dan distribusi menyalurkan BBM lewat depot, truk, dan SPBU ke konsumen."],
+["Gas bumi ke pengguna","a","hulu_ops:Gas bumi diproduksi dari lapangan hulu.^holding:Holding menyelaraskan pasokan dan permintaan gas lintas subholding.^sh_gas:PGN mengangkut dan menyalurkan gas lewat pipa serta LNG ke industri, pembangkit, dan rumah tangga."],
+["Penggabungan subholding hilir","h","pemegang:Danantara dan BP BUMN mengarahkan penataan anak usaha agar struktur grup lebih ramping dan fokus.^dir:Direksi menyusun rencana dan jadwal penggabungan serta melaporkannya untuk disetujui.^holding:Holding mengoordinasikan tahapan, termasuk keseimbangan pasokan dan permintaan hilir.^sh_hilir:PPN menjadi perusahaan penerima penggabungan, efektif 1 Februari 2026.^kilang:Bisnis kilang dan petrokimia bergabung ke dalam subholding hilir.^kapal:Bisnis pelayaran captive ikut bergabung; terminal menyusul pada September 2026."]
+].map(s=>({n:s[0],m:s[1],st:s[2].split("^").map(x=>{const i=x.indexOf(":");return[x.slice(0,i),x.slice(i+1)]})}));
+const HR=[["Penataan holding-subholding","Pertamina membentuk model holding dengan enam subholding sekitar 2021. Pada 1 Februari 2026 tiga subholding hilir (Patra Niaga, Kilang Pertamina Internasional, dan bisnis captive Pertamina International Shipping) digabung menjadi Subholding Downstream, dengan PT Pertamina Patra Niaga sebagai perusahaan penerima. Subholding yang tersisa: Upstream (PHE), Downstream (PPN), Gas (PGN), dan Power & NRE."],
+["Tahap kedua restrukturisasi hilir","PT Pertamina Energy Terminal bergabung ke PT Pertamina Patra Niaga, efektif 1 September 2026, sebagai bagian dari tahap kedua restrukturisasi hilir."],
+["Penataan anak usaha","Pertamina menargetkan penataan 118 entitas pada 2026 lewat merger, divestasi bisnis nonin, dan likuidasi entitas tidak aktif. Dilaporkan 31 entitas selesai per Juni dan 48 ditargetkan per September. Laporan lain menyebut jumlah entitas yang berbeda (misalnya 124 atau 139), jadi angka sebaiknya dibaca sebagai perkiraan."],
+["Konsolidasi hulu","Kepala BP BUMN yang juga COO Danantara menyatakan entitas hulu seperti Hulu Rokan dan lainnya cukup digabung dalam satu perusahaan. Per 11 September 2026 hal ini masih berupa arahan dan rencana."]];
+const $=id=>document.getElementById(id);
+let grp=0,sel=B.sh_hilir,cmpSet=[],scn=null,cur=0;
+grp=sel.g;
+const nm=id=>`<button class="lk" data-go="${id}">${B[id].n}</button>`;
+function toggleCmp(n){const i=cmpSet.indexOf(n);if(i>=0)cmpSet.splice(i,1);else{cmpSet.push(n);if(cmpSet.length>3)cmpSet.shift()}}
+function go(id){sel=B[id];grp=sel.g;drawAll()}
+function drawRegions(){const r=$("regions");r.innerHTML="";
+  G.forEach((g,i)=>{const b=document.createElement("button");b.className="reg";b.textContent=g;b.setAttribute("aria-pressed",i===grp);
+    b.onclick=()=>{grp=i;sel=D.find(d=>d.g===i);drawAll()};r.append(b)})}
+function drawProvs(){const r=$("provs");r.innerHTML="";
+  D.filter(d=>d.g===grp).forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.setAttribute("aria-pressed",d===sel);
+    b.onclick=()=>{sel=d;drawAll()};r.append(b)})}
+function sub(t,h,o){return `<div class="sub${o?" open":""}"><button aria-expanded="${!!o}">${t}</button><div class="body">${h}</div></div>`}
+function drawDetail(){const d=sel,inC=cmpSet.includes(d.n),a=atas(d.id),b=bawah(d.id),aw=E.filter(e=>e[2]==="p");
+  const sup=E.filter(e=>e[2]==="p"&&e[1]===d.id).map(e=>nm(e[0])),sub_=E.filter(e=>e[2]==="p"&&e[0]===d.id).map(e=>nm(e[1]));
+  const rel=[["Induk / atasan",a.length?a.map(nm).join(""):"Berada di puncak struktur.",1],["Membawahi / anak usaha",b.length?b.map(nm).join(""):"Tidak membawahi unit lain.",1],["Berkoordinasi dengan",d.k.map(nm).join(""),0]];
+  if(sup.length)rel.push(["Diawasi oleh",sup.join(""),0]);if(sub_.length)rel.push(["Mengawasi",sub_.join(""),0]);
+  const P=[["Posisi & Fungsi",[["Kelompok",`<b>${G[d.g]}</b>`,0],["Fungsi",d.pr,1]]],["Hubungan",rel],["Kegiatan & Aset",[["Kegiatan utama",d.tg,0],["Aset dan produk",d.wk,0]]],["Catatan Status",[["Perubahan dan status terkini",d.ct,1]]]];
+  $("detail").innerHTML=`<div class="title"><div><h2>${d.n}</h2><small>${G[d.g]}</small></div><div class="tools"><button id="cmp" aria-pressed="${inC}">${inC?"✓ Dalam perbandingan":"+ Bandingkan"}</button><button id="ex">Buka semua</button><button id="co">Tutup semua</button></div></div>`+
+    P.map(p=>`<div class="panel"><h3>${p[0]}</h3>${p[1].map(s=>sub(s[0],s[1],s[2])).join("")}</div>`).join("");
+  const set=o=>document.querySelectorAll("#detail .sub").forEach(s=>{s.classList.toggle("open",o);s.firstChild.setAttribute("aria-expanded",o)});
+  $("cmp").onclick=()=>{toggleCmp(d.n);drawAll()};$("ex").onclick=()=>set(true);$("co").onclick=()=>set(false);
+  document.querySelectorAll("#detail .lk").forEach(x=>x.onclick=()=>go(x.dataset.go))}
+document.addEventListener("click",e=>{const b=e.target.closest(".sub>button");if(!b)return;const s=b.parentElement,o=s.classList.toggle("open");b.setAttribute("aria-expanded",o)});
+const W=124,H=40;
+function drawChart(){
+  let s=`<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e0a100"/></marker></defs>`;
+  E.forEach(([a,b,t])=>{const p=B[a],c=B[b];let d;
+    if(p.y===c.y){const k=c.x>p.x?1:-1;d=`M${p.x+k*W/2} ${p.y}H${c.x-k*W/2}`}
+    else{const y1=p.y+H/2,y2=c.y-H/2,ym=(y1+y2)/2;d=`M${p.x} ${y1}V${ym}H${c.x}V${y2}`}
+    const hot=a===sel.id||b===sel.id;
+    s+=`<path d="${d}" fill="none" stroke="${t==="p"?"var(--blue)":t==="m"?"var(--green)":"var(--muted)"}" stroke-width="${hot?2.6:1.4}"${t!=="k"?' stroke-dasharray="5 4"':''} opacity="${hot?1:.65}"/>`});
+  const A=atas(sel.id),Bw=bawah(sel.id);
+  D.forEach(d=>{const on=d===sel;let st="var(--line)",sw=1.5,da="";
+    if(on){st="var(--ink)";sw=3}else if(A.includes(d.id)){st="#3d85c6";sw=3}else if(Bw.includes(d.id)){st="var(--green)";sw=3}else if(sel.k.includes(d.id)){st="#e0a100";sw=2.5;da=' stroke-dasharray="5 3"'}
+    const ls=d.lb.split("/"),tc=on?"#fff":"var(--ink)";
+    s+=`<g data-id="${d.id}"><title>${d.n}</title><rect x="${d.x-W/2}" y="${d.y-H/2}" width="${W}" height="${H}" rx="8" fill="${on?GC[d.g]:"var(--surface)"}" stroke="${st}" stroke-width="${sw}"${da}/>`+
+      (ls.length===1?`<text x="${d.x}" y="${d.y+4}" text-anchor="middle" fill="${tc}" font-weight="600">${ls[0]}</text>`:`<text x="${d.x}" y="${d.y-3}" text-anchor="middle" fill="${tc}" font-weight="600">${ls[0]}</text><text x="${d.x}" y="${d.y+11}" text-anchor="middle" fill="${tc}" font-weight="600">${ls[1]}</text>`)+
+      `<rect x="${d.x-W/2}" y="${d.y-H/2}" width="6" height="${H}" rx="3" fill="${GC[d.g]}"/>`+(cmpSet.includes(d.n)?`<circle cx="${d.x-W/2+2}" cy="${d.y-H/2+2}" r="6" fill="#3d85c6"/><text x="${d.x-W/2+2}" y="${d.y-H/2+5.5}" text-anchor="middle" fill="#fff" font-size="9">✓</text>`:"")+`</g>`});
+  if(scn){const st=scn.st.slice(0,cur+1),edge=(ux,uy)=>Math.min(62/Math.max(Math.abs(ux),1e-6),20/Math.max(Math.abs(uy),1e-6));
+    for(let i=1;i<st.length;i++){const a=B[st[i-1][0]],b=B[st[i][0]];if(a===b)continue;const dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l,ea=edge(ux,uy),eb=edge(ux,uy);
+      s+=`<line x1="${(a.x+ux*(ea+2)).toFixed(1)}" y1="${(a.y+uy*(ea+2)).toFixed(1)}" x2="${(b.x-ux*(eb+7)).toFixed(1)}" y2="${(b.y-uy*(eb+7)).toFixed(1)}" stroke="#e0a100" stroke-width="2.8" marker-end="url(#ar)"/>`}
+    const cnt={};st.forEach((x,i)=>{const d=B[x[0]],k=cnt[d.id]=(cnt[d.id]||0)+1,cx=d.x+W/2-4-(k-1)*20;
+      if(i===cur)s+=`<rect x="${d.x-W/2-3}" y="${d.y-H/2-3}" width="${W+6}" height="${H+6}" rx="10" fill="none" stroke="#e0a100" stroke-width="3.5"/>`;
+      s+=`<circle cx="${cx}" cy="${d.y-H/2}" r="9" fill="#e0a100"/><text x="${cx}" y="${d.y-H/2+3.5}" text-anchor="middle" fill="#1b1b1b" font-weight="700">${i+1}</text>`})}
+  $("ch").innerHTML=s}
+$("ch").onclick=e=>{const g=e.target.closest("g[data-id]");if(g)go(g.dataset.id)};
+function drawScn(){const r=$("sc");r.innerHTML="";
+  SC.forEach(x=>{const b=document.createElement("button");b.className="chip";b.textContent=x.n;b.setAttribute("aria-pressed",scn===x);b.onclick=()=>{scn=scn===x?null:x;cur=0;drawAll()};r.append(b)});
+  const box=$("sbox");if(!scn){box.innerHTML='<p class="hint">Pilih satu skenario untuk melihat alur bisnis atau keputusan di dalam grup, langkah demi langkah di bagan.</p>';return}
+  const s=scn.st[cur],d=B[s[0]];let dir="Titik awal";
+  if(cur>0){const p=B[scn.st[cur-1][0]],dy=d.y-p.y;dir=scn.m==="a"?"→ Tahap berikutnya":p===d?"Tetap di unit yang sama":dy<-5?"↑ Naik ke atas":dy>5?"↓ Turun ke bawah":"↔ Menyamping"}
+  box.innerHTML=`<div class="step"><span class="dir">${dir}</span><br><b>Langkah ${cur+1} dari ${scn.st.length}: ${nm(d.id)}</b><br>${s[1]}</div><div class="tools" style="margin-top:.6rem"><button id="pv"${cur===0?" disabled":""}>← Sebelumnya</button><button id="nx"${cur===scn.st.length-1?" disabled":""}>Berikutnya →</button><button id="sx">Tutup skenario</button></div>`;
+  $("pv").onclick=()=>{cur--;drawAll()};$("nx").onclick=()=>{cur++;drawAll()};$("sx").onclick=()=>{scn=null;drawAll()};
+  box.querySelectorAll(".lk").forEach(x=>x.onclick=()=>go(x.dataset.go))}
+function drawHr(){$("hr").innerHTML=HR.map(h=>sub(h[0],h[1],0)).join("")}
+function drawSearch(){const q=$("q").value.trim().toLowerCase(),box=$("qr");box.innerHTML="";if(!q)return;
+  const m=D.filter(d=>[d.n,d.pr,d.tg,d.wk,d.ct,G[d.g]].join(" ").toLowerCase().includes(q)).slice(0,12);
+  if(!m.length){box.innerHTML='<span class="none">Tidak ditemukan.</span>';return}
+  m.forEach(d=>{const b=document.createElement("button");b.className="chip";b.textContent=d.n;b.onclick=()=>{$("q").value="";go(d.id)};box.append(b)})}
+$("q").oninput=drawSearch;
+function drawCmp(){const c=$("compare"),L=cmpSet.map(n=>D.find(d=>d.n===n));c.hidden=!L.length;if(!L.length)return;
+  const txt=f=>L.map(d=>`<td>${f(d)}</td>`).join("");const names=a=>a.length?a.map(i=>B[i].n).join(", "):"—";
+  const rows=[["Kelompok",txt(d=>G[d.g])],["Fungsi",txt(d=>d.pr)],["Induk",txt(d=>names(atas(d.id)))],["Membawahi",txt(d=>names(bawah(d.id)))],["Koordinasi",txt(d=>names(d.k))],["Kegiatan",txt(d=>d.tg)],["Aset dan produk",txt(d=>d.wk)],["Catatan status",txt(d=>d.ct)]];
+  c.innerHTML=`<div class="title"><div><h2>Perbandingan</h2><small>${L.length<2?"Pilih satu entitas lagi lewat tombol “+ Bandingkan”. Maksimal 3.":"Bandingkan fungsi, induk, dan cakupan bisnisnya."}</small></div><div class="tools"><button id="clr">Kosongkan</button></div></div><div class="tw"><table><thead><tr><th></th>${L.map(d=>`<th>${d.n}<button data-n="${d.n}" aria-label="Hapus ${d.n}">×</button></th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr><th>${r[0]}</th>${r[1]}</tr>`).join("")}</tbody></table></div>`;
+  $("clr").onclick=()=>{cmpSet=[];drawAll()};
+  c.querySelectorAll("thead button").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.n);drawAll()})}
+function drawAll(){drawRegions();drawProvs();drawDetail();drawChart();drawScn();drawCmp()}
+const Q=[["Subholding mana yang menjalankan eksplorasi dan produksi minyak dan gas bumi?",["Subholding Upstream (PHE)","Subholding Gas (PGN)","Subholding Power & NRE"],0],
+["Pada 1 Februari 2026, tiga subholding hilir digabung dengan siapa sebagai perusahaan penerima?",["Pertamina Hulu Energi","PT Pertamina Patra Niaga","Perusahaan Gas Negara"],1],
+["Apa fungsi utama PGN dalam grup Pertamina?",["Mengolah minyak di kilang","Mengangkut dan menyalurkan gas bumi","Mengelola panas bumi"],1],
+["Siapa yang mengawasi jalannya pengurusan oleh direksi?",["Dewan Komisaris","Subholding Gas","Tim kilang"],0],
+["Apa yang dikembangkan Subholding Power & NRE?",["Hanya kilang minyak","Listrik dan energi baru terbarukan, seperti panas bumi","Hanya pelayaran"],1]];
+let qi=0,sc=0;
+function drawQuiz(){const z=$("quiz");
+  if(qi>=Q.length){z.innerHTML=`<p>Skor kamu: <b>${sc} dari ${Q.length}</b></p><button class="opt" id="rs">Ulangi kuis</button>`;$("rs").onclick=()=>{qi=0;sc=0;drawQuiz()};return}
+  const q=Q[qi];z.innerHTML=`<p class="hint">Pertanyaan ${qi+1} dari ${Q.length}</p><p style="margin:.2rem 0">${q[0]}</p>`+q[1].map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  z.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;z.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.i===q[2])x.classList.add("ok")});
+    if(i===q[2])sc++;else b.classList.add("no");const n=document.createElement("button");n.className="opt";n.textContent=qi+1<Q.length?"Berikutnya":"Lihat skor";n.onclick=()=>{qi++;drawQuiz()};z.append(n)})}
+drawHr();drawAll();drawQuiz();
+</script>
+</body>
+</html>
