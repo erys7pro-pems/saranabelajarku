@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinology Business Ethics & Governance Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        crimson: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        },
+                        imperial: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        orient: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#090d16',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        hanzi: ['Noto Serif SC', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .counter-badge {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: pulse-gold 0.4s ease-out;
+        }
+        @keyframes pulse-gold {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); filter: brightness(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-crimson-800 selection:text-imperial-400">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="bg-gradient-to-r from-orient-950 via-crimson-950 to-orient-900 text-white sticky top-0 z-40 shadow-xl border-b border-imperial-500/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="trackActivity('Header Logo', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-imperial-400 via-amber-500 to-crimson-700 text-orient-950 flex items-center justify-center font-bold text-xl shadow-lg border border-imperial-400/50">
+                        <span class="font-hanzi font-bold text-lg">商</span>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white flex items-center gap-1.5">
+                            SinologyBiz <span class="text-xs bg-imperial-500/20 text-imperial-400 px-2 py-0.5 rounded-full border border-imperial-500/30">Governance</span>
+                        </h1>
+                        <p class="text-[11px] text-crimson-100/90 font-medium">Akar Sejarah & Etos Bisnis Etnis Tiongkok</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-white/10 text-white">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>Beranda & Filsafat</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-imperial-400 text-orient-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 9 Nilai Bisnis', 'Navigasi Menu'); switchTab('nilai')" id="nav-nilai" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scroll"></i>
+                        <span>9 Nilai Etos</span>
+                        <span id="nav-count-nilai" class="text-[10px] bg-imperial-400 text-orient-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Komparasi Budaya', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-imperial-400 text-orient-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Simulator Negosiasi', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-handshake"></i>
+                        <span>Simulator Guanxi</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-imperial-400 text-orient-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-imperial-400 text-orient-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Analytics Header Button -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-imperial-400 to-amber-500 hover:from-imperial-500 hover:to-amber-600 text-orient-950 px-3.5 py-1.5 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-line text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-orient-950 text-imperial-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ================= SECTION 1: BERANDA ================= -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orient-950 via-crimson-950 to-orient-900 text-white p-8 sm:p-12 shadow-2xl border border-imperial-500/40">
+                <div class="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
+                    <span class="font-hanzi text-[14rem] text-imperial-400 leading-none">儒</span>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="bg-imperial-400/20 text-imperial-300 border border-imperial-400/30 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase inline-block">
+                        Sinology & Corporate Governance Hub
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
+                        Dari Filsafat Klasik ke Diaspora & Raksasa Ekonomi Global
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Keberhasilan bisnis etnis Tiongkok — baikkonglomerasi diaspora di Asia Tenggara (*Bamboo Network*) maupun korporasi modern di daratan Tiongkok — tidak berdiri di atas ruang hampa. Etos bisnis mereka dibentuk oleh pemikiran filsafat ribuan tahun: **Konfusianisme, Taoisme, Legalisme, dan Strategi Sun Tzu**.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Pelajari 9 Nilai', 'Materi Utama'); switchTab('nilai')" class="bg-gradient-to-r from-imperial-400 to-amber-500 hover:from-imperial-500 hover:to-amber-600 text-orient-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-xl flex items-center space-x-2">
+                            <span>Eksplorasi 9 Nilai Etos Bisnis</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Buka Simulator Guanxi', 'Fitur Interaktif'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium px-5 py-3 rounded-xl text-sm transition backdrop-blur-md">
+                            Uji Simulator Negosiasi & Guanxi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Pilar Utama Filosofi Bisnis Tiongkok -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">4 Pilar Utama Fondasi Filsafat Bisnis</h3>
+                        <p class="text-slate-500 text-xs">Akar pemikiran klasik yang mengendalikan pengambilan keputusan & manajemen organisasi</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Pilar 1: Konfusianisme -->
+                    <div onclick="trackActivity('Pilar Filsafat: Konfusianisme (儒家)', 'Fondasi Filsafat'); openConceptModal('konfusianisme')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-crimson-100 text-crimson-800 flex items-center justify-center font-bold text-2xl font-hanzi">
+                                儒
+                            </div>
+                            <span id="click-count-pilar-konfucian" class="counter-badge bg-slate-100 group-hover:bg-crimson-100 text-slate-600 group-hover:text-crimson-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1 group-hover:text-crimson-700 transition">1. Konfusianisme (Rújiā)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Filsafat etika sosial. Menekankan **Ren (Kemanusiaan)**, **Li (Etiket/Ritual)**, **Xin (Kepercayaan)**, dan harmoni hirarkis keluarga & perusahaan.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Loyalitas & Bisnis Keluarga (Jiazu)</li>
+                            <li>• Menjaga Kehormatan (Mianzi)</li>
+                            <li>• Kepemimpinan Paternalistik</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pilar 2: Taoisme -->
+                    <div onclick="trackActivity('Pilar Filsafat: Taoisme (道家)', 'Fondasi Filsafat'); openConceptModal('taoisme')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-2xl font-hanzi">
+                                道
+                            </div>
+                            <span id="click-count-pilar-tao" class="counter-badge bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1 group-hover:text-emerald-700 transition">2. Taoisme (Dàojiā)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Filsafat keseimbangan & adaptabilitas alamiah. Prinsip **Wu Wei (Mengalir tanpa paksaan)** dan dinamika **Yin-Yang**.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Kelenturan dalam Negosiasi Krisis</li>
+                            <li>• Keseimbangan Keuntungan & Etika</li>
+                            <li>• Strategi Bisnis Berkelanjutan</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pilar 3: Legalisme -->
+                    <div onclick="trackActivity('Pilar Filsafat: Legalisme (法家)', 'Fondasi Filsafat'); openConceptModal('legalisme')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-2xl font-hanzi">
+                                法
+                            </div>
+                            <span id="click-count-pilar-legalism" class="counter-badge bg-slate-100 group-hover:bg-amber-100 text-slate-600 group-hover:text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1 group-hover:text-amber-700 transition">3. Legalisme (Fǎjiā)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Doktrin aturan ketat & struktur kewenangan baku. Menekankan tiga instrumen: **Fa (Hukum)**, **Shu (Taktik)**, dan **Shi (Kekuasaan)**.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Kontrol Operasional & KPI Ketat</li>
+                            <li>• Manajemen Risiko Korporasi</li>
+                            <li>• Disiplin Hirarki Manajerial</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pilar 4: Seni Perang Sun Tzu -->
+                    <div onclick="trackActivity('Pilar Filsafat: Sun Tzu (兵法)', 'Fondasi Filsafat'); openConceptModal('suntzu')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-2xl font-hanzi">
+                                兵
+                            </div>
+                            <span id="click-count-pilar-suntzu" class="counter-badge bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1 group-hover:text-indigo-700 transition">4. Seni Perang Sun Tzu (Bīngfǎ)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Aplikasi taktik persaingan pasar. Menekankan analisis informasi, **fleksibilitas strategi**, dan menang tanpa peperangan terbuka.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Mengenal Diri & Mitra Negosiasi</li>
+                            <li>• Kecepatan Respons Pasar (Agility)</li>
+                            <li>• Strategi Aliansi Bisnis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Modul Sejarah Perdagangan & Diaspora -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-crimson-100 text-crimson-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Sejarah Guild Dagang & Jaringan Diaspora (Bamboo Network)</h4>
+                            <p class="text-slate-500 text-xs">Transformasi sejarah perserikatan pedagang kuno hingga kejayaan ekonomi perantauan</p>
+                        </div>
+                    </div>
+                    <span id="click-count-mod-history" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x dipelajari
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                    <div onclick="trackActivity('Sejarah: Merchant Guilds (晋商/徽商)', 'Sejarah Dagang')" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-crimson-50/60 transition">
+                        <span class="text-xs font-bold text-crimson-800 block mb-1">1. Merchant Guilds (Jìnshāng & Huīshāng)</span>
+                        <p class="text-[11px] text-slate-600">Serikat pedagang Shanxi dan Anhui abad ke-14 yang meletakan dasar perbankan tradisional (*Piaohao*), surat hutang, dan kontrak integritas.</p>
+                    </div>
+                    <div onclick="trackActivity('Sejarah: Etos Chiku Nailao', 'Sejarah Dagang')" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-amber-50/60 transition">
+                        <span class="text-xs font-bold text-amber-800 block mb-1">2. Etos Work Ethic "Chiku Nailao"</span>
+                        <p class="text-[11px] text-slate-600">Filosofi "menelan kepahitan dan bertahan dalam kesulitan". Modal mental para migran imigran pertama dalam membangun usaha dari nol.</p>
+                    </div>
+                    <div onclick="trackActivity('Sejarah: Bamboo Network (竹网)', 'Sejarah Dagang')" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 cursor-pointer hover:bg-emerald-50/60 transition">
+                        <span class="text-xs font-bold text-emerald-800 block mb-1">3. Bamboo Network (Jaringan Bambu)</span>
+                        <p class="text-[11px] text-slate-600">Jaringan konglomerasi bisnis diaspora keluarga Tiongkok di Asia Tenggara (Indonesia, Singapura, Malaysia, Thailand) berbasis kepercayaan etnis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: KATALOG 9 NILAI ETOS ================= -->
+        <section id="sec-nilai" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">Katalog 9 Nilai Etos Bisnis & Etika Tiongkok</h3>
+                        <p class="text-slate-500 text-xs mt-1">Eksplorasi konsep Hanzi, akar sejarah, wujud modern, dan tips praktis bertransaksi bisnis.</p>
+                    </div>
+                    <!-- Filter & Search -->
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <select id="value-category-filter" onchange="trackActivity('Filter Kategori Nilai', 'Filter Nilai'); filterValues()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-crimson-600">
+                            <option value="all">Semua Kategori</option>
+                            <option value="Hubungan Interpersonal">Hubungan Interpersonal & Sosial</option>
+                            <option value="Integritas & Karakter">Integritas & Karakter Kerja</option>
+                            <option value="Struktur & Strategi">Struktur & Strategi Bisnis</option>
+                        </select>
+                        <div class="relative flex-grow sm:flex-grow-0 sm:w-48">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="value-search" oninput="trackActivity('Pencarian Nilai', 'Filter Nilai'); filterValues()" placeholder="Cari Hanzi / Pinyin / Arti..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-crimson-600 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values Grid -->
+            <div id="values-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically Rendered Cards -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: KOMPARASI BUDAYA ================= -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div>
+                    <h3 class="font-extrabold text-slate-800 text-xl">Matriks Komparasi Budaya Bisnis: Tiongkok vs Barat vs Indonesia</h3>
+                    <p class="text-slate-500 text-xs mt-1">Pilih dimensi budaya untuk membandingkan pendekatan hubungan, legalitas, kepemimpinan, dan gaya negosiasi.</p>
+                </div>
+
+                <!-- Dimension Selector -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Dimensi Komparasi 1</label>
+                        <select id="cmp-dim-1" onchange="trackActivity('Komparasi: Pilih Dimensi 1', 'Matriks Komparasi'); updateComparisonTable()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-crimson-600">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Dimensi Komparasi 2</label>
+                        <select id="cmp-dim-2" onchange="trackActivity('Komparasi: Pilih Dimensi 2', 'Matriks Komparasi'); updateComparisonTable()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-crimson-600">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Dimensi Komparasi 3 (Opsional)</label>
+                        <select id="cmp-dim-3" onchange="trackActivity('Komparasi: Pilih Dimensi 3', 'Matriks Komparasi'); updateComparisonTable()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-crimson-600">
+                            <option value="">-- Pilih Dimensi 3 --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table Container -->
+            <div id="comparison-table-wrapper" class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+                <!-- Rendered Table -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: SIMULATOR GUANXI & NEGOSIASI ================= -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-2xl">Simulator Strategi Negosiasi & Guanxi</h3>
+                        <p class="text-slate-500 text-xs">Simulasikan racikan strategi negosiasi Anda dengan mitra bisnis etnis Tiongkok</p>
+                    </div>
+                    <span id="click-count-sim-guanxi" class="counter-badge bg-crimson-100 text-crimson-900 text-xs font-bold px-3 py-1.5 rounded-full border border-crimson-200">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Policy Sliders Form (5 Cols) -->
+                    <div class="lg:col-span-5 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">1. Alokasi Investasi Guanxi Interpersonal (%)</label>
+                                <span id="val-sim-guanxi" class="font-mono font-bold text-crimson-700">65%</span>
+                            </div>
+                            <input type="range" id="sim-guanxi" min="0" max="100" value="65" oninput="trackActivity('Slider: Investasi Guanxi', 'Simulator Guanxi'); calculateSimulatorResults()" class="w-full accent-crimson-600">
+                            <p class="text-[11px] text-slate-400">Intensitas jamuan makan informal, pertukaran hadiah etis, dan perhatian keluarga mitra.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">2. Proteksi & Menjaga Mianzi Mitra (%)</label>
+                                <span id="val-sim-mianzi" class="font-mono font-bold text-crimson-700">80%</span>
+                            </div>
+                            <input type="range" id="sim-mianzi" min="0" max="100" value="80" oninput="trackActivity('Slider: Proteksi Mianzi', 'Simulator Guanxi'); calculateSimulatorResults()" class="w-full accent-crimson-600">
+                            <p class="text-[11px] text-slate-400">Pemberian pujian publik, menghindari konfrontasi langsung, dan penyampaian kritik tertutup.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">3. Kelincahan Taktis Sun Tzu (%)</label>
+                                <span id="val-sim-suntzu" class="font-mono font-bold text-crimson-700">50%</span>
+                            </div>
+                            <input type="range" id="sim-suntzu" min="0" max="100" value="50" oninput="trackActivity('Slider: Taktik Sun Tzu', 'Simulator Guanxi'); calculateSimulatorResults()" class="w-full accent-crimson-600">
+                            <p class="text-[11px] text-slate-400">Pemberian konsesi bertahap, penundaan keputusan taktis, dan fleksibilitas konsesi.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">4. Keterikatan Kontrak Legalisme Formal (%)</label>
+                                <span id="val-sim-legalism" class="font-mono font-bold text-crimson-700">40%</span>
+                            </div>
+                            <input type="range" id="sim-legalism" min="0" max="100" value="40" oninput="trackActivity('Slider: Kontrak Legalisme', 'Simulator Guanxi'); calculateSimulatorResults()" class="w-full accent-crimson-600">
+                            <p class="text-[11px] text-slate-400">Penekanan klausul hukuman hukum ketat versus fleksibilitas musyawarah kekeluargaan.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">5. Komitmen Visi Jangka Panjang (%)</label>
+                                <span id="val-sim-longterm" class="font-mono font-bold text-crimson-700">85%</span>
+                            </div>
+                            <input type="range" id="sim-longterm" min="0" max="100" value="85" oninput="trackActivity('Slider: Visi Jangka Panjang', 'Simulator Guanxi'); calculateSimulatorResults()" class="w-full accent-crimson-600">
+                            <p class="text-[11px] text-slate-400">Fokus pada pertumbuhan hubungan 5-10 tahun ke depan ketimbang margin keuntungan instan.</p>
+                        </div>
+                    </div>
+
+                    <!-- Output Results Box (7 Cols) -->
+                    <div class="lg:col-span-7 bg-gradient-to-br from-orient-950 via-crimson-950 to-orient-900 text-white rounded-2xl p-6 flex flex-col justify-between space-y-6 shadow-xl border border-imperial-500/40">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                            <div>
+                                <span class="text-xs font-mono text-imperial-400 uppercase tracking-widest font-bold">Hasil Evaluasi Simulasi Negosiasi</span>
+                                <h4 class="text-lg font-bold">Guanxi & Business Deal Outlook</h4>
+                            </div>
+                            <span id="sim-status-badge" class="bg-imperial-400 text-orient-950 font-extrabold text-xs px-3 py-1 rounded-full shadow">
+                                Kemitraan Sangat Prospektif
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                                <span class="text-[10px] text-slate-300 block">Skor Keberhasilan Deal</span>
+                                <strong id="sim-score-deal" class="text-3xl font-mono text-imperial-400">82.5</strong>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                                <span class="text-[10px] text-slate-300 block">Indeks Kepercayaan (Xinyong)</span>
+                                <strong id="sim-score-xinyong" class="text-3xl font-mono text-emerald-400">Kuat (88%)</strong>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                                <span class="text-[10px] text-slate-300 block">Risiko Kehilangan Mianzi</span>
+                                <strong id="sim-score-risk" class="text-3xl font-mono text-rose-400">Rendah (15%)</strong>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <h5 class="font-bold text-imperial-400 border-b border-white/10 pb-1">Analisis Strategis & Rekomendasi:</h5>
+                            <p id="sim-eval-narrative" class="text-slate-300 leading-relaxed">
+                                Strategi Anda sangat efektif! Keseimbangan antara investasi Guanxi, perlindungan Mianzi mitra, dan visi jangka panjang membangun pondasi Xinyong yang kokoh melebihi sekadar dokumen kontrak kertas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: KUIS EVALUASI ================= -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-crimson-100 text-crimson-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-xl">Kuis Skenario Etika Bisnis Tiongkok</h3>
+                            <p class="text-slate-500 text-xs">Uji wawasan Anda dalam menangani situasi nyata negosiasi & etiket bisnis</p>
+                        </div>
+                    </div>
+                    <span id="click-count-quiz-biz" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x kuis dikerjakan
+                    </span>
+                </div>
+
+                <!-- Quiz Interactive Container -->
+                <div id="quiz-biz-container" class="max-w-3xl space-y-6">
+                    <!-- Dynamic Questions -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-orient-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-md bg-imperial-400 text-orient-950 flex items-center justify-center font-bold text-xs font-hanzi">
+                    商
+                </div>
+                <span class="font-bold text-slate-200">SinologyBiz Governance © 2026</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Disusun berdasarkan kajian Sinologi, Etika Bisnis Konfusianisme, dan Studi Organisasi Diaspora.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ANALYTICS BUTTON & MODAL ================= -->
+    <!-- Floating Counter FAB -->
+    <button onclick="openAnalyticsModal(); trackActivity('FAB Statistik Melayang', 'Navigasi Melayang')" class="fixed bottom-6 right-6 bg-gradient-to-r from-imperial-400 via-amber-500 to-crimson-700 text-orient-950 p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-white/30">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-orient-950"></i>
+            <span id="fab-pulse-dot" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-crimson-600 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-orient-950">Aktivitas Belajar</span>
+            <span id="fab-click-total" class="font-extrabold text-sm font-mono leading-none text-orient-950">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ANALYTICS MODAL (POPUP) -->
+    <div id="modal-analytics" class="fixed inset-0 bg-orient-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-orient-950 to-crimson-950 text-white p-5 flex items-center justify-between border-b border-imperial-500/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-imperial-400 text-orient-950 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-crimson-200">Rekapitulasi lengkap interaksi eksplorasi pengguna</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Content Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- Summary Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-crimson-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Terlibat aktif di aplikasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-base text-slate-800 font-bold block truncate">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Area terbanyak dieksplorasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Cakupan Pembelajaran</span>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <div class="flex-grow bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-imperial-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-bold text-slate-700">0%</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 block mt-1">Nilai etos telah dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top Items Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart Doughnut Container -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Most Clicked Items -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-clicked-list" class="space-y-2 text-xs">
+                            <!-- Dynamic Top Items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="promptResetConfirmation()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-48 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Terakhir Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100">
+                                <!-- Log rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-crimson-800 hover:bg-crimson-900 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERAL DETAIL MODAL -->
+    <div id="modal-detail" class="fixed inset-0 bg-orient-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-orient-950 to-crimson-950">
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <!-- Dynamic Header -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 custom-scrollbar">
+                <!-- Dynamic Body -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRMATION MODAL (NO ALERT/CONFIRM) -->
+    <div id="modal-confirm-reset" class="fixed inset-0 bg-orient-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl border border-slate-200 text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-xl font-bold">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h4 class="font-extrabold text-slate-800 text-base">Konfirmasi Reset Hitungan</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">Apakah Anda yakin ingin mereset seluruh statistik dan log aktivitas belajar yang tersimpan?</p>
+            <div class="flex items-center justify-center space-x-3 pt-2">
+                <button onclick="confirmClearAnalytics()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Ya, Reset</button>
+                <button onclick="closeConfirmResetModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+
+    <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
+    <script>
+        /* ----------------------------------------------------
+         * 1. DATA 9 NILAI ETOS BISNIS TIONGKOK
+         * ---------------------------------------------------- */
+        const VALUES_DATA = [
+            {
+                id: 'guanxi',
+                title: '1. Guanxi (关系)',
+                pinyin: 'Guānxi',
+                category: 'Hubungan Interpersonal',
+                icon: 'fa-diagram-project',
+                color: 'from-crimson-800 to-orient-950',
+                shortDesc: 'Jaringan koneksi personal dan hubungan kepercayaan timbal balik yang melandasi seluruh transaksi bisnis.',
+                history: 'Akar dari Ajaran Konfusius mengenai pentingnya Lima Hubungan Hierarkis (Wǔlún) untuk menjaga keteraturan sosial.',
+                keyConcept: 'Bukan sekadar networking transaksional Barat, melainkan komitmen ikatan emosional dan rasa tanggung jawab sosial timbal balik (Bào / 报).',
+                modernApp: 'Mempercepat pengurusan perizinan, mendapatkan pasokan komoditas langka, dan menyelesaikan sengketa tanpa peradilan.',
+                negotiationTips: 'Jangan langsung membahas harga pada pertemuan pertama. Investasikan waktu dalam jamuan makan informal untuk membangun keterikatan personal.'
+            },
+            {
+                id: 'mianzi',
+                title: '2. Mianzi (面子)',
+                pinyin: 'Miànzi',
+                category: 'Hubungan Interpersonal',
+                icon: 'fa-mask',
+                color: 'from-amber-700 to-orient-950',
+                shortDesc: 'Konsep menjaga kehormatan, wibawa, gengsi, dan harga diri sosial di depan publik.',
+                history: 'Berakar dari etiket Li (礼) di mana posisi sosial dan penghormatan kolektif menentukan kedudukan individu dalam masyarakat.',
+                keyConcept: 'Dua dimensi: "Mianzi" (kehormatan yang diberikan orang lain) dan "Lian" (integritas moral dasar seseorang).',
+                modernApp: 'Mitra Tiongkok lebih memilih memberikan konsesi harga daripada harus menolak penawaran secara terang-terangan di depan umum.',
+                negotiationTips: 'Jangan pernah mempermalukan atau mengkritik mitra di depan timnya. Sampaikan perbedaan pendapat secara tertutup (privat).'
+            },
+            {
+                id: 'renqing',
+                title: '3. Renqing (人情)',
+                pinyin: 'Rénqíng',
+                category: 'Hubungan Interpersonal',
+                icon: 'fa-hand-holding-heart',
+                color: 'from-rose-700 to-crimson-950',
+                shortDesc: 'Kebaikan moral, empati sosial, dan kewajiban membalas utang budi dalam hubungan bisnis.',
+                history: 'Filosofi timbal balik Konfusianisme: jika seseorang membantumu saat kesulitan, Anda terikat kewajiban moral membantu balik saat ia membutuhkan.',
+                keyConcept: 'Tabungan nilai emosional. Memberikan favoritisme bisnis kepada pihak yang pernah menolong di masa lalu.',
+                modernApp: 'Mempermudah kelonggaran kredit atau jadwal pembayaran saat perusahaan mengalami krisis likuiditas.',
+                negotiationTips: 'Bantu mitra Anda dalam hal-hal kecil di luar urusan bisnis resmi (misal: memberikan rekomendasi atau bantuan keluarga).'
+            },
+            {
+                id: 'xinyong',
+                title: '4. Xinren & Xinyong (信任 & 信用)',
+                pinyin: 'Xìnrèn & Xìnyòng',
+                category: 'Integritas & Karakter',
+                icon: 'fa-certificate',
+                color: 'from-emerald-700 to-orient-950',
+                shortDesc: 'Integritas, kredibilitas pribadi, dan keandalan rekam jejak yang mengalahkan surat kontrak kertas.',
+                history: 'Ungkapan Konfusius: "Manusia tanpa kepercayaan tidak memiliki pijakan" (Rén ér wú xìn, bù zhī qí kě yě).',
+                keyConcept: 'Xinyong adalah modal sosial tak berwujud (*intangible credit*). Sekali Xinyong rusak, jaringan Guanxi akan menutup akses secara total.',
+                modernApp: 'Transaksi bernilai miliaran rupiah sering disepakati hanya melalui jabat tangan atau kata-kata lisannya pengusaha senior.',
+                negotiationTips: 'Tepati setiap janji sekecil apa pun. Jangan memberikan estimasi yang tidak mampu Anda penuhi.'
+            },
+            {
+                id: 'jiazu',
+                title: '5. Jiazu Qiye (家族企业)',
+                pinyin: 'Jiāzú Qǐyè',
+                category: 'Struktur & Strategi',
+                icon: 'fa-sitemap',
+                color: 'from-indigo-700 to-orient-950',
+                shortDesc: 'Struktur bisnis keluarga berlandaskan kepemimpinan paternalistik dan pengawasan ketat anggota keluarga inti.',
+                history: 'Tradisi patrimonialisme Tiongkok Kuno di mana keluarga adalah unit dasar perlindungan ekonomi dan sosial.',
+                keyConcept: 'Pengambilan keputusan terpusat di tangan pendiri/patriark (Paternalistic Leadership) dengan loyalitas keluarga tertinggi.',
+                modernApp: 'Tata kelola korporasi (Corporate Governance) memadukan profesionalisme luar dengan figur kunci keluarga di jajaran komisaris.',
+                negotiationTips: 'Pahami siapa figur pengambil keputusan utama (pemilik/keluarga inti), bukan sekadar eksekutif profesional yang ditunjuk.'
+            },
+            {
+                id: 'chiku',
+                title: '6. Chiku Nailao (吃苦耐劳)',
+                pinyin: 'Chīkǔ Nàiláo',
+                category: 'Integritas & Karakter',
+                icon: 'fa-dumbbell',
+                color: 'from-amber-600 to-crimson-900',
+                shortDesc: 'Etos kerja ulet, tahan banting, siap menderita, dan ketabahan menghadapi masa-masa sulit.',
+                history: 'Warisan kehidupan agraris dan sejarah panjang bertahan hidup imigran diaspora Tiongkok di berbagai belahan dunia.',
+                keyConcept: 'Kemampuan bekerja melebihi jam kerja normal (budaya 996) dan penghematan biaya demi investasi jangka panjang.',
+                modernApp: 'Ekspansi agresif perbankan, teknologi, dan manufaktur Tiongkok di pasar internasional dengan biaya efisien.',
+                negotiationTips: 'Tunjukkan kesiapan tim Anda untuk beradaptasi dengan kecepatan kerja dan daya tahan kerja mitra Tiongkok.'
+            },
+            {
+                id: 'zhongyong',
+                title: '7. Zhongyong (中庸)',
+                pinyin: 'Zhōngyōng',
+                category: 'Struktur & Strategi',
+                icon: 'fa-yin-yang',
+                color: 'from-purple-700 to-orient-950',
+                shortDesc: 'Doktrin Jalan Tengah (Doctrine of the Mean) untuk mengutamakan keharmonisan dan keseimbangan win-win.',
+                history: 'Teks klasik Konfusianisme "Zhongyong" yang mengajarkan menghindari tindakan ekstrem dalam konflik sosial.',
+                keyConcept: 'Negosiasi bukan tentang memenangkan 100% dan menghancurkan lawan, melainkan menyisakan keuntungan bagi kedua pihak.',
+                modernApp: 'Strategi kemitraan konsorsium dan joint venture antara BUMN Tiongkok dengan mitra lokal di berbagai negara.',
+                negotiationTips: 'Ajukan penawaran yang memberi ruang bagi kedua pihak untuk merasa menang dan mendapatkan keuntungan berimbang.'
+            },
+            {
+                id: 'bamboo',
+                title: '8. Bamboo Network (竹网)',
+                pinyin: 'Zhú Wǎng',
+                category: 'Struktur & Strategi',
+                icon: 'fa-network-wired',
+                color: 'from-teal-700 to-orient-950',
+                shortDesc: 'Jaringan bisnis diaspora perantauan etnis Tiongkok di Asia Tenggara yang saling terhubung secara lintas negara.',
+                history: 'Jaringan dagang imigran asal Fujian, Guangdong, dan Hainan yang bermigrasi ke Asia Tenggara sejak abad ke-19.',
+                keyConcept: 'Sinergi permodalan, akses pasar, dan informasi antar-keluarga diaspora melintasi batas negara.',
+                modernApp: 'Dominasi konglomerasi bisnis privat di Indonesia, Singapura, Malaysia, Thailand, dan Filipina.',
+                negotiationTips: 'Manfaatkan reputasi dan referensi dari sesama pengusaha terpercaya dalam jaringan untuk membuka pintu kemitraan.'
+            },
+            {
+                id: 'heqi',
+                title: '9. Heqi Shengcai (和气生财)',
+                pinyin: 'Héqì Shēngcái',
+                category: 'Hubungan Interpersonal',
+                icon: 'fa-face-smile-beam',
+                color: 'from-emerald-600 to-crimson-950',
+                shortDesc: 'Prinsip "Keharmonisan dan keramahan mendatangkan rezeki dan kemakmuran kekayaan".',
+                history: 'Pepatah rakyat kuno yang menggabungkan etika keharmonisan sosial dengan dorongan sukses ekonomi.',
+                keyConcept: 'Menghindari permusuhan sengit karena musuh hari ini bisa jadi merupakan sumber peluang di masa mendatang.',
+                modernApp: 'Fleksibilitas revisi kontrak bisnis ketika situasi lapangan berubah demi mempertahankan keharmonisan kemitraan.',
+                negotiationTips: 'Pelihara nada bicara yang tenang, ramah, dan solutif meskipun sedang mendiskusikan klausul krisis yang berat.'
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 2. DATA PILAR & KONSEP FILSAFAT
+         * ---------------------------------------------------- */
+        const CONCEPTS_DATA = {
+            konfusianisme: {
+                title: 'Konfusianisme dalam Budaya Bisnis (儒家思想)',
+                desc: 'Konfusianisme menetapkan hirarki sosial, etiket berinteraksi, dan kepemimpinan paternalistik. Dalam korporasi, pemimpin bertindak seperti sosok ayah yang mengayomi, sementara karyawan memberikan loyalitas.',
+                keyPoints: [
+                    'Ren (仁): Kemanusiaan dan kebajikan dalam memperlakukan karyawan & mitra.',
+                    'Li (礼): Penghormatan pada etiket, jamuan bisnis, dan tradisi pertukaran kartu nama.',
+                    'Xin (信): Kepercayaan sebagai fondasi validasi kredit dan komitmen bisnis.'
+                ]
+            },
+            taoisme: {
+                title: 'Taoisme & Kelenturan Negosiasi (道家思想)',
+                desc: 'Taoisme menekankan filosofi air: lembut namun mampu menembus batu keras. Dalam bisnis, pendekatan Taoist mengutamakan fleksibilitas taktis dan adaptasi pada perubahan iklim industri.',
+                keyPoints: [
+                    'Wu Wei (无为): Bertindak mengikuti alur tanpa memaksakan kehendak secara arogan.',
+                    'Yin-Yang (阴阳): Memandang krisis bisnis sebagai peluang tersembunyi.',
+                    'Harmoni Alam: Pembangunan bisnis yang selaras dengan ekosistem sekitar.'
+                ]
+            },
+            legalisme: {
+                title: 'Legalisme & Manajemen Risiko Korporasi (法家思想)',
+                desc: 'Legalisme menyumbangkan kontrol operasional yang tegas. Berbeda dengan Konfusianisme yang mengandalkan hubungan emosional, Legalisme menekankan aturan tertulis, KPI, dan sanksi.',
+                keyPoints: [
+                    'Fa (法): Aturan hukum dan SOP perusahaan yang jelas.',
+                    'Shu (术): Taktik manajerial untuk mengawasi efisiensi operasional.',
+                    'Shi (势): Wewenang posisi kepemimpinan dalam mengendalikan organisasi.'
+                ]
+            },
+            suntzu: {
+                title: 'Seni Perang Sun Tzu dalam Strategi Pasar (孙子兵法)',
+                desc: 'Buku Sun Tzu tidak hanya dibaca oleh jenderal militer, melainkan menjadi kitab wajib para eksekutif bisnis Tiongkok dalam memenangkan persaingan pasar global.',
+                keyPoints: [
+                    'Zhi Ji Zhi Bi (知己知彼): Mengenal kekuatan diri dan kelemahan pesaing.',
+                    'Kecepatan & Agilitas: Mengeksekusi peluang pasar sebelum kompetitor merespons.',
+                    'Menang Tanpa Perang: Menaklukkan pasar melalui aliansi dan diferensiasi produk.'
+                ]
+            }
+        };
+
+        /* ----------------------------------------------------
+         * 3. DATA KOMPARASI BUDAYA
+         * ---------------------------------------------------- */
+        const COMPARISON_DIMENSIONS = [
+            {
+                id: 'dim-relationship',
+                name: '1. Pendekatan Hubungan (Relationship)',
+                china: 'Guanxi First: Hubungan personal dibangun terlebih dahulu sebelum transaksi bisnis dimulai.',
+                west: 'Task First: Transaksi bisnis langsung dibahas; hubungan personal menyusul kemudian.',
+                indonesia: 'Relasional & Kekeluargaan: Mengutamakan silahturahmi dan keramahan sosial.'
+            },
+            {
+                id: 'dim-contract',
+                name: '2. Peran Kontrak Hukum (Contract)',
+                china: 'Awal Kemitraan: Kontrak dianggap sebagai poin dimulainya komitmen yang bisa disesuaikan fleksibel saat situasi berubah.',
+                west: 'Ikatan Final: Kontrak adalah dokumen hukum mengikat mutlak yang sulit diubah tanpa konsekuensi peradilan.',
+                indonesia: 'Landasan Formal: Kontrak disepakati namun penyelesaian sengketa diprioritaskan musyawarah mufakat.'
+            },
+            {
+                id: 'dim-mianzi',
+                name: '3. Komunikasi & Menjaga Kehormatan (Mianzi)',
+                china: 'Komunikasi Implisit (High Context): Hindari kata "Tidak" secara langsung demi menjaga Mianzi mitra.',
+                west: 'Komunikasi Eksplisit (Low Context): Lugas, berterus terang, dan langsung pada permasalahan (To the point).',
+                indonesia: 'Ewuh Pakeweh / Kesantunan: Menjaga perasaan lawan bicara dan menghindari teguran terbuka.'
+            },
+            {
+                id: 'dim-decision',
+                name: '4. Pengambilan Keputusan (Decision Making)',
+                china: 'Paternalistik Terpusat: Keputusan kunci berada di tangan bos pemilik (Patriark/Jiazu) setelah konsultasi privat.',
+                west: 'Delegatif & Matriks: Eksekutif profesional memiliki wewenang luas sesuai job description.',
+                indonesia: 'Musyawarah & Keputusan Atasan: Kombinasi masukan tim dengan keputusan akhir pimpinan puncak.'
+            },
+            {
+                id: 'dim-dispute',
+                name: '5. Penyelesaian Sengketa (Dispute Resolution)',
+                china: 'Mediasi Informal: Menyelesaikan konflik melalui bantuan perantara Guanxi atau musyawarah makan malam.',
+                west: 'Litigasi Peradilan: Menggunakan pengacara dan jalur hukum Pengadilan / Arbitrase formal.',
+                indonesia: 'Musyawarah Kekeluargaan: Mengutamakan jalur kekeluargaan sebelum penegakan hukum resmi.'
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 4. DATA KUIS SCENARIO-BASED
+         * ---------------------------------------------------- */
+        const QUIZ_BIZ_DATA = [
+            {
+                q: "Saat menghadiri jamuan makan malam (Banquet) dengan mitra bisnis senior dari Tiongkok, mitra tersebut menawarkan hidangan khas lokal yang kurang Anda sukai. Bagaimana tindakan yang paling bijaksana sesuai prinsip Mianzi?",
+                options: [
+                    "Menolak secara tegas di depan seluruh tamu dengan alasan tidak sesuai selera Anda.",
+                    "Menerima hidangan dengan sopan, mencicipi sedikit untuk menghargai mitra, dan mengucapkan terima kasih.",
+                    "Langsung memindahkan makanan tersebut ke piring orang lain di samping Anda tanpa bicara.",
+                    "Mengritik cara masak hidangan tersebut di depan koki dan mitra bisnis."
+                ],
+                answer: 1,
+                explain: "Mencicipi sedikit hidangan menjaga Mianzi (kehormatan) tuan rumah yang telah menjamu Anda. Menolak tegas secara terbuka akan membuat tuan rumah kehilangan muka di depan tamunya."
+            },
+            {
+                q: "Negosiasi harga produk mengalami kebuntuan karena mitra Tiongkok merasa harga yang Anda minta terlalu rendah. Taktik manakah yang sesuai dengan ajaran Zhongyong (Jalan Tengah) dan Sun Tzu?",
+                options: [
+                    "Menghentikan negosiasi seketika dan mengancam berpindah ke kompetitor utama mereka.",
+                    "Menawarkan opsi kompromi paket nilai tambah (misal: volume pemesanan lebih besar atau garansi lebih panjang) sehingga kedua pihak merasa menang.",
+                    "Memaksa mitra menerima harga Anda tanpa memberikan konsesi balik sama sekali.",
+                    "Mengabaikan mitra dan mempublikasikan kelemahan produk mereka ke media massa."
+                ],
+                answer: 1,
+                explain: "Prinsip Zhongyong mengutamakan win-win solution. Memberikan nilai tambah alternatif memungkinkan mitra mempertahankan margin dan Mianzi mereka tanpa merugikan bisnis Anda."
+            },
+            {
+                q: "Anda ingin membuka jalur kerja sama dengan perusahaan konglomerasi diaspora di Indonesia (Bamboo Network). Apakah langkah awal terbaik untuk membangun Guanxi?",
+                options: [
+                    "Mengirimkan draf kontrak hukum setebal 100 halaman via email tanpa perkenalan sebelumnya.",
+                    "Mencari perantara (Intermediary/Zhongjianren) terpercaya yang memiliki hubungan dekat dengan pemilik perusahaan untuk memfasilitasi perkenalan informal.",
+                    "Mendatangi kantor pemilik perusahaan tanpa membuat janji dan menuntut bertemu direksi.",
+                    "Menawar seluruh produk perusahaan tersebut dengan harga diskon 80% pada kontak pertama."
+                ],
+                answer: 1,
+                explain: "Penggunaan perantara terpercaya (Zhongjianren) adalah kunci utama membangun Guanxi awal dalam jaringan diaspora Tiongkok karena kepercayaan (Xinyong) ditransfer melalui rekomendasi perantara."
+            },
+            {
+                q: "Beberapa bulan setelah penandatanganan kontrak kerja sama, terjadi kenaikan harga bahan baku global yang tak terduga. Mitra Tiongkok meminta penyesuaian harga meskipun klausul kontrak belum berakhir. Bagaimana perspektif etika bisnis Tiongkok melihat situasi ini?",
+                options: [
+                    "Kontrak dianggap revisibel secara musyawarah karena situasi lingkungan berubah (Heqi Shengcai), demi menjaga keharmonisan jangka panjang.",
+                    "Mitra dianggap melanggar hukum dan harus langsung dituntut ke pengadilan arbitrase internasional.",
+                    "Memutus seluruh hubungan bisnis dan memasukkan mitra ke daftar hitam tanpa berdiskusi.",
+                    "Mengabaikan permintaan mitra dan menuntut pengiriman barang dengan harga lama secara sepihak."
+                ],
+                answer: 0,
+                explain: "Dalam tradisi bisnis Tiongkok, kontrak bukanlah dokumen mati melainkan petunjuk kemitraan. Ketika terjadi perubahan kondisi ekstrem, keharmonisan (Heqi Shengcai) dan kelangsungan hubungan jangka panjang mendasari fleksibilitas revisi."
+            },
+            {
+                q: "Manakah pernyataan yang paling tepat menggambarkan perbedaan konsep kepercayaan Xinren/Xinyong dibanding sistem kontrak Barat?",
+                options: [
+                    "Xinyong adalah jaminan hukum tertulis yang diterbitkan oleh klausul pengadilan negeri.",
+                    "Xinyong adalah modal sosial kredibilitas pribadi yang jika dilanggar akan menghancurkan reputasi pelaku usaha di seluruh jaringan bisnis.",
+                    "Xinyong hanya berlaku untuk transaksi berinvestasi di bawah Rp10 juta.",
+                    "Xinyong melarang penggunaan dokumen tertulis dalam seluruh aktivitas korporasi."
+                ],
+                answer: 1,
+                explain: "Xinyong adalah kredibilitas dan rekam jejak moral seseorang. Dalam komunitas bisnis Tiongkok, reputasi Xinyong yang rusak akan menutup pintu kerja sama dari seluruh anggota jaringan Guanxi."
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 5. APP STATE & PERSISTENCE
+         * ---------------------------------------------------- */
+        let activityLog = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+        let categoryChartInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityFromStorage();
+            updateOnPageBadges();
+            renderValuesGrid();
+            initComparisonDropdowns();
+            calculateSimulatorResults();
+            renderQuizQuestion();
+            updateAnalyticsUI();
+        });
+
+        function loadActivityFromStorage() {
+            const saved = localStorage.getItem('sinology_biz_log');
+            if (saved) {
+                try {
+                    activityLog = JSON.parse(saved);
+                } catch(e) {
+                    activityLog = [];
+                }
+            }
+        }
+
+        function saveActivityToStorage() {
+            localStorage.setItem('sinology_biz_log', JSON.stringify(activityLog));
+        }
+
+        /* CORE TRACKER FUNCTION */
+        function trackActivity(itemName, categoryName) {
+            const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let record = activityLog.find(item => item.name === itemName);
+
+            if (record) {
+                record.count += 1;
+                record.lastTime = now;
+            } else {
+                record = {
+                    id: 'act-' + Date.now() + '-' + Math.floor(Math.random()*1000),
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: now
+                };
+                activityLog.push(record);
+            }
+
+            saveActivityToStorage();
+            updateAnalyticsUI();
+            showToastNotification(`Aktivitas Dicatat: ${itemName} (+1)`);
+            updateOnPageBadges();
+        }
+
+        function getItemCount(itemName) {
+            const record = activityLog.find(item => item.name === itemName);
+            return record ? record.count : 0;
+        }
+
+        /* UI BADGES & TOAST */
+        function updateOnPageBadges() {
+            document.getElementById('nav-count-beranda').innerText = getItemCount('Tab Beranda');
+            document.getElementById('nav-count-nilai').innerText = getItemCount('Tab 9 Nilai Bisnis');
+            document.getElementById('nav-count-komparasi').innerText = getItemCount('Tab Komparasi Budaya');
+            document.getElementById('nav-count-simulator').innerText = getItemCount('Tab Simulator Negosiasi');
+            document.getElementById('nav-count-kuis').innerText = getItemCount('Tab Kuis Evaluasi');
+
+            document.getElementById('click-count-pilar-konfucian').innerText = `👁️ ${getItemCount('Pilar Filsafat: Konfusianisme (儒家)')}x dipelajari`;
+            document.getElementById('click-count-pilar-tao').innerText = `👁️ ${getItemCount('Pilar Filsafat: Taoisme (道家)')}x dipelajari`;
+            document.getElementById('click-count-pilar-legalism').innerText = `👁️ ${getItemCount('Pilar Filsafat: Legalisme (法家)')}x dipelajari`;
+            document.getElementById('click-count-pilar-suntzu').innerText = `👁️ ${getItemCount('Pilar Filsafat: Sun Tzu (兵法)')}x dipelajari`;
+
+            document.getElementById('click-count-mod-history').innerText = `👁️ ${getItemCount('Sejarah: Merchant Guilds (晋商/徽商)') + getItemCount('Sejarah: Etos Chiku Nailao')}x dipelajari`;
+            document.getElementById('click-count-sim-guanxi').innerText = `👁️ ${getItemCount('Slider: Investasi Guanxi') + getItemCount('Slider: Proteksi Mianzi')}x simulasi dijalankan`;
+            document.getElementById('click-count-quiz-biz').innerText = `👁️ ${getItemCount('Kuis: Jawab Soal')}x kuis dikerjakan`;
+
+            VALUES_DATA.forEach(val => {
+                const badge = document.getElementById(`val-badge-${val.id}`);
+                if (badge) {
+                    badge.innerText = `👁️ ${getItemCount(`Nilai: ${val.title}`)}x dipelajari`;
+                }
+            });
+        }
+
+        function showToastNotification(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-orient-950 text-imperial-400 border border-imperial-500/40 text-xs px-3.5 py-2 rounded-xl shadow-xl flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-bell text-imperial-400"></i> <span>${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        /* NAVIGATION & TABS */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-white/10', 'text-white');
+                activeNav.classList.remove('text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ----------------------------------------------------
+         * 6. KATALOG 9 NILAI ETOS
+         * ---------------------------------------------------- */
+        function renderValuesGrid() {
+            const container = document.getElementById('values-grid');
+            container.innerHTML = '';
+
+            const catFilter = document.getElementById('value-category-filter').value;
+            const searchTerm = (document.getElementById('value-search')?.value || '').toLowerCase();
+
+            const filtered = VALUES_DATA.filter(val => {
+                const matchCat = catFilter === 'all' || val.category === catFilter;
+                const matchSearch = val.title.toLowerCase().includes(searchTerm) || val.pinyin.toLowerCase().includes(searchTerm) || val.shortDesc.toLowerCase().includes(searchTerm);
+                return matchCat && matchSearch;
+            });
+
+            filtered.forEach(val => {
+                const count = getItemCount(`Nilai: ${val.title}`);
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer";
+                card.onclick = () => openValueModal(val.id);
+
+                card.innerHTML = `
+                    <div class="h-28 bg-gradient-to-r ${val.color} p-5 text-white relative flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <i class="fa-solid ${val.icon} text-2xl"></i>
+                            <span id="val-badge-${val.id}" class="counter-badge bg-imperial-400 text-orient-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                👁️ ${count}x dipelajari
+                            </span>
+                        </div>
+                        <div>
+                            <span class="bg-black/30 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-imperial-300 uppercase">
+                                ${val.category}
+                            </span>
+                            <h4 class="font-extrabold text-lg group-hover:translate-x-1 transition-transform mt-0.5">${val.title}</h4>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                        <div>
+                            <span class="text-[10px] text-crimson-800 font-mono block mb-1">Pinyin: <strong>${val.pinyin}</strong></span>
+                            <p class="text-slate-600 leading-relaxed line-clamp-3">${val.shortDesc}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-crimson-800 font-bold group-hover:underline">
+                            <span>Buka Sejarah & Tips Bertransaksi</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterValues() {
+            renderValuesGrid();
+        }
+
+        function openValueModal(id) {
+            const val = VALUES_DATA.find(item => item.id === id);
+            if (!val) return;
+
+            trackActivity(`Nilai: ${val.title}`, 'Detail Nilai Etos');
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${val.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <i class="fa-solid ${val.icon} text-3xl"></i>
+                    <div>
+                        <span class="bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[10px] font-bold text-imperial-300 uppercase">
+                            ${val.category}
+                        </span>
+                        <h3 class="text-2xl font-extrabold">${val.title}</h3>
+                    </div>
+                </div>
+                <div class="mt-3 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-lg inline-flex items-center space-x-2 text-xs font-mono text-imperial-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah dipelajari sebanyak <strong>${getItemCount(`Nilai: ${val.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Penjelasan Utama</h5>
+                    <p class="text-slate-600 leading-relaxed">${val.shortDesc}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Akar Sejarah & Pemikiran Klasik:</h5>
+                    <p class="bg-crimson-50 text-crimson-950 p-3 rounded-xl border border-crimson-200 font-medium">${val.history}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Konsep Esensial & Dinamika Sosial:</h5>
+                    <p class="bg-amber-50 text-amber-950 p-3 rounded-xl border border-amber-200 font-medium">${val.keyConcept}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Wujud Penerapan Bisnis Modern:</h5>
+                    <p class="bg-emerald-50 text-emerald-950 p-3 rounded-xl border border-emerald-200 font-medium">${val.modernApp}</p>
+                </div>
+
+                <div class="space-y-2 pt-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Tips Praktis Negosiasi & Etiket Bisnis:</h5>
+                    <p class="bg-indigo-50 text-indigo-950 p-3.5 rounded-xl border border-indigo-200 font-medium leading-relaxed">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i> ${val.negotiationTips}
+                    </p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function openConceptModal(conceptKey) {
+            const concept = CONCEPTS_DATA[conceptKey];
+            if (!concept) return;
+
+            const header = document.getElementById('detail-modal-header');
+            const body = document.getElementById('detail-modal-body');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-orient-950 via-crimson-950 to-orient-900";
+
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="text-xl font-bold text-imperial-400">${concept.title}</h3>
+                <p class="text-xs text-slate-300 mt-1">Ulasan Konsep Filsafat Klasik</p>
+            `;
+
+            body.innerHTML = `
+                <p class="leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">${concept.desc}</p>
+                <div class="space-y-2 pt-2">
+                    <h5 class="font-bold text-slate-800 text-sm">3 Pilar Utama Implementasi:</h5>
+                    <ul class="space-y-1.5 bg-crimson-50/60 border border-crimson-100 p-3.5 rounded-xl text-crimson-950">
+                        ${concept.keyPoints.map(pt => `<li class="flex items-start space-x-2"><i class="fa-solid fa-check text-crimson-600 mt-0.5"></i><span>${pt}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* ----------------------------------------------------
+         * 7. KOMPARASI BUDAYA BISNIS
+         * ---------------------------------------------------- */
+        function initComparisonDropdowns() {
+            const s1 = document.getElementById('cmp-dim-1');
+            const s2 = document.getElementById('cmp-dim-2');
+            const s3 = document.getElementById('cmp-dim-3');
+
+            s1.innerHTML = '';
+            s2.innerHTML = '';
+            s3.innerHTML = '<option value="">-- Pilih Dimensi 3 --</option>';
+
+            COMPARISON_DIMENSIONS.forEach(dim => {
+                const opt1 = document.createElement('option');
+                opt1.value = dim.id;
+                opt1.innerText = dim.name;
+                s1.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = dim.id;
+                opt2.innerText = dim.name;
+                s2.appendChild(opt2);
+
+                const opt3 = document.createElement('option');
+                opt3.value = dim.id;
+                opt3.innerText = dim.name;
+                s3.appendChild(opt3);
+            });
+
+            s1.value = 'dim-relationship';
+            s2.value = 'dim-contract';
+            s3.value = 'dim-mianzi';
+
+            updateComparisonTable();
+        }
+
+        function updateComparisonTable() {
+            const d1Id = document.getElementById('cmp-dim-1').value;
+            const d2Id = document.getElementById('cmp-dim-2').value;
+            const d3Id = document.getElementById('cmp-dim-3').value;
+
+            const selectedIds = [d1Id, d2Id, d3Id].filter(Boolean);
+            const items = selectedIds.map(id => COMPARISON_DIMENSIONS.find(dim => dim.id === id)).filter(Boolean);
+
+            const container = document.getElementById('comparison-table-wrapper');
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-6">Pilih dimensi komparasi di atas untuk membandingkan.</p>`;
+                return;
+            }
+
+            let html = `
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                            <th class="p-3 w-44 font-bold">Dimensi Budaya</th>
+                            <th class="p-3 font-extrabold text-crimson-900 bg-crimson-50/50">Budaya Bisnis Tiongkok</th>
+                            <th class="p-3 font-extrabold text-blue-900 bg-blue-50/50">Budaya Bisnis Barat</th>
+                            <th class="p-3 font-extrabold text-emerald-900 bg-emerald-50/50">Budaya Bisnis Indonesia</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        ${items.map(it => `
+                            <tr>
+                                <td class="p-3 font-semibold bg-slate-50">${it.name}</td>
+                                <td class="p-3 text-slate-800 bg-crimson-50/20 font-medium">${it.china}</td>
+                                <td class="p-3 text-slate-800 bg-blue-50/20 font-medium">${it.west}</td>
+                                <td class="p-3 text-slate-800 bg-emerald-50/20 font-medium">${it.indonesia}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        /* ----------------------------------------------------
+         * 8. SIMULATOR GUANXI & STRATEGI
+         * ---------------------------------------------------- */
+        function calculateSimulatorResults() {
+            const guanxi = parseInt(document.getElementById('sim-guanxi').value) || 65;
+            const mianzi = parseInt(document.getElementById('sim-mianzi').value) || 80;
+            const suntzu = parseInt(document.getElementById('sim-suntzu').value) || 50;
+            const legalism = parseInt(document.getElementById('sim-legalism').value) || 40;
+            const longterm = parseInt(document.getElementById('sim-longterm').value) || 85;
+
+            document.getElementById('val-sim-guanxi').innerText = `${guanxi}%`;
+            document.getElementById('val-sim-mianzi').innerText = `${mianzi}%`;
+            document.getElementById('val-sim-suntzu').innerText = `${suntzu}%`;
+            document.getElementById('val-sim-legalism').innerText = `${legalism}%`;
+            document.getElementById('val-sim-longterm').innerText = `${longterm}%`;
+
+            // Calculate Deal Score
+            const dealScore = ((guanxi * 0.30) + (mianzi * 0.25) + (longterm * 0.25) + (suntzu * 0.10) + ((100 - legalism) * 0.10)).toFixed(1);
+            document.getElementById('sim-score-deal').innerText = dealScore;
+
+            // Calculate Xinyong Trust Index
+            const xinyong = Math.min(100, Math.round((guanxi * 0.4) + (mianzi * 0.3) + (longterm * 0.3)));
+            document.getElementById('sim-score-xinyong').innerText = `Kuat (${xinyong}%)`;
+
+            // Calculate Mianzi Risk
+            const mianziRisk = Math.max(5, Math.round(100 - (mianzi * 0.8 + guanxi * 0.2)));
+            document.getElementById('sim-score-risk').innerText = `${mianziRisk <= 20 ? 'Rendah' : mianziRisk <= 50 ? 'Sedang' : 'Tinggi'} (${mianziRisk}%)`;
+
+            // Status Badge & Narrative
+            const badge = document.getElementById('sim-status-badge');
+            const evalNarrative = document.getElementById('sim-eval-narrative');
+
+            if (dealScore >= 75) {
+                badge.innerText = 'Kemitraan Sangat Prospektif';
+                badge.className = 'bg-emerald-500 text-white font-extrabold text-xs px-3 py-1 rounded-full shadow';
+                evalNarrative.innerText = 'Strategi Anda sangat efektif! Keseimbangan antara investasi Guanxi, perlindungan Mianzi mitra, dan komitmen jangka panjang membangun pondasi Xinyong yang kokoh melampaui sekadar dokumen kontrak kertas.';
+            } else if (dealScore >= 55) {
+                badge.innerText = 'Prospek Cukup Modis';
+                badge.className = 'bg-imperial-400 text-orient-950 font-extrabold text-xs px-3 py-1 rounded-full shadow';
+                evalNarrative.innerText = 'Strategi Anda cukup baik. Namun, pertimbangkan untuk mengurangi tekanan legalisme hukum formal di tahap awal dan tingkatkan perhatian pada jamuan informal untuk memperkuat Guanxi.';
+            } else {
+                badge.innerText = 'Risiko Gesekan Tinggi';
+                badge.className = 'bg-rose-500 text-white font-extrabold text-xs px-3 py-1 rounded-full shadow';
+                evalNarrative.innerText = 'Strategi Anda berisiko menimbulkan kebuntuan. Penekanan legalisme rigid yang terlalu dominan tanpa diimbangi perlindungan Mianzi dapat membuat mitra merasa kurang dipercaya.';
+            }
+
+            updateOnPageBadges();
+        }
+
+        /* ----------------------------------------------------
+         * 9. MINI QUIZ INTERAKTIF
+         * ---------------------------------------------------- */
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-biz-container');
+            const q = QUIZ_BIZ_DATA[quizIndex];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span>Pertanyaan ${quizIndex + 1} dari ${QUIZ_BIZ_DATA.length}</span>
+                        <span>Skor Terkumpul: <strong class="text-crimson-800 font-mono">${quizScore}</strong></span>
+                    </div>
+                    <h4 class="font-extrabold text-slate-800 text-sm sm:text-base leading-snug">${q.q}</h4>
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="answerQuizQuestion(${idx})" class="w-full text-left bg-white hover:bg-crimson-50 border border-slate-200 hover:border-crimson-300 p-3.5 rounded-xl text-xs font-medium text-slate-700 transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-crimson-600 transition"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuizQuestion(optIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi');
+            const q = QUIZ_BIZ_DATA[quizIndex];
+            const isCorrect = optIdx === q.answer;
+
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-biz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-3.5 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' : 'bg-rose-100 text-rose-900 border border-rose-200'} text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-lg"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Tepat! (+20 Poin)' : 'Jawaban Kurang Tepat.'}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed bg-white p-4 rounded-xl border border-slate-200">
+                        <strong>Pembahasan:</strong> ${q.explain}
+                    </p>
+                    <button onclick="nextQuizStep()" class="bg-crimson-800 hover:bg-crimson-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                        ${quizIndex < QUIZ_BIZ_DATA.length - 1 ? 'Pertanyaan Berikutnya →' : 'Selesaikan Kuis'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuizStep() {
+            if (quizIndex < QUIZ_BIZ_DATA.length - 1) {
+                quizIndex++;
+                renderQuizQuestion();
+            } else {
+                const container = document.getElementById('quiz-biz-container');
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-orient-950 to-crimson-950 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-imperial-500/40">
+                        <i class="fa-solid fa-trophy text-imperial-400 text-5xl"></i>
+                        <h4 class="font-extrabold text-2xl">Kuis Selesai!</h4>
+                        <p class="text-xs text-slate-300">Skor Pemahaman Etika Bisnis Tiongkok Anda: <strong class="text-imperial-400 text-xl font-mono block mt-1">${quizScore} / 100</strong></p>
+                        <button onclick="quizIndex=0; quizScore=0; renderQuizQuestion();" class="bg-gradient-to-r from-imperial-400 to-amber-500 hover:from-imperial-500 hover:to-amber-600 text-orient-950 font-bold px-6 py-2.5 rounded-xl text-xs transition inline-block">
+                            Ulangi Kuis
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        /* ----------------------------------------------------
+         * 10. ANALYTICS MODAL & CHART MANAGER
+         * ---------------------------------------------------- */
+        function openAnalyticsModal() {
+            updateAnalyticsUI();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function updateAnalyticsUI() {
+            const totalClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            
+            document.getElementById('header-total-clicks').innerText = `${totalClicks} Klik`;
+            document.getElementById('fab-click-total').innerText = `${totalClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalClicks;
+
+            // Category Aggregation
+            const catCounts = {};
+            activityLog.forEach(item => {
+                catCounts[item.category] = (catCounts[item.category] || 0) + item.count;
+            });
+
+            let topCat = '-';
+            let maxCatCount = 0;
+            Object.keys(catCounts).forEach(cat => {
+                if (catCounts[cat] > maxCatCount) {
+                    maxCatCount = catCounts[cat];
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // Progress Bar (Visited Values)
+            const visitedVal = activityLog.filter(i => i.category === 'Detail Nilai Etos').length;
+            const percent = Math.min(100, Math.round((visitedVal / VALUES_DATA.length) * 100));
+            document.getElementById('modal-progress-bar').style.width = `${percent}%`;
+            document.getElementById('modal-progress-percent').innerText = `${percent}%`;
+
+            // Top 5 Items
+            const sortedItems = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const topListContainer = document.getElementById('top-clicked-list');
+            if (sortedItems.length === 0) {
+                topListContainer.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada aktivitas tercatat.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedItems.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-100">
+                        <span class="truncate pr-2 font-medium">${idx+1}. ${item.name}</span>
+                        <span class="bg-imperial-100 text-crimson-900 px-2 py-0.5 rounded font-mono font-bold">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // Render Log Table
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada data interaksi.</td></tr>`;
+            } else {
+                tbody.innerHTML = activityLog.map(item => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-bold text-crimson-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            renderCategoryChart(catCounts);
+        }
+
+        function renderCategoryChart(catCounts) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            const labels = Object.keys(catCounts);
+            const data = Object.values(catCounts);
+
+            if (categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            if (labels.length === 0) return;
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#be123c', '#d97706', '#059669', '#6366f1', '#0284c7', '#8b5cf6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        /* CUSTOM RESET CONFIRMATION DIALOG (NO NATIVE CONFIRM) */
+        function promptResetConfirmation() {
+            document.getElementById('modal-confirm-reset').classList.remove('hidden');
+        }
+
+        function closeConfirmResetModal() {
+            document.getElementById('modal-confirm-reset').classList.add('hidden');
+        }
+
+        function confirmClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem('sinology_biz_log');
+            updateAnalyticsUI();
+            updateOnPageBadges();
+            closeConfirmResetModal();
+            showToastNotification('Data hitungan telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activityLog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Analitik_SinologyBiz_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
