@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFinance ID - Lembaga Keuangan Bank & Non-Bank</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#030712',
+                        },
+                        finance: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .counter-badge {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: pulse-gold 0.4s ease-out;
+        }
+        @keyframes pulse-gold {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); filter: brightness(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="bg-gradient-to-r from-navy-950 via-slate-900 to-finance-950 text-white sticky top-0 z-40 shadow-xl border-b border-emerald-600/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="trackActivity('Header Logo', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-gold-500 text-navy-950 flex items-center justify-center font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">EduFinance ID</h1>
+                        <p class="text-[11px] text-emerald-200/80 font-medium">Lembaga Keuangan Bank & Non-Bank</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-white/10 text-white">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Beranda</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Katalog Lembaga', 'Navigasi Menu'); switchTab('katalog')" id="nav-katalog" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>9 Lembaga</span>
+                        <span id="nav-count-katalog" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Komparasi Matriks', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Simulator Keuangan', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator Financial</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-gold-400 text-navy-950 px-1.5 py-0.5 rounded-full font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Analytics Header Button -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-emerald-400 to-gold-400 hover:from-emerald-500 hover:to-gold-500 text-navy-950 px-3.5 py-1.5 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-line text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-navy-950 text-gold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ================= SECTION 1: BERANDA ================= -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-slate-900 to-finance-900 text-white p-8 sm:p-12 shadow-2xl border border-emerald-600/30">
+                <div class="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
+                    <i class="fa-solid fa-piggy-bank text-9xl"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase inline-block">
+                        Edukasi & Governance Arsitektur Keuangan Indonesia
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">
+                        Memahami Ekosistem Lembaga Keuangan Bank & LKBB
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Lembaga keuangan mengalirkan modal dari pihak kelebihan dana (surplus) ke pihak yang membutuhkan dana (defisit). Pelajari perbedaan fundamental antara **Lembaga Keuangan Bank**, **Lembaga Keuangan Non-Bank (LKBB)**, serta peran pengawasan **OJK, Bank Indonesia, dan Penjaminan LPS**.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Pelajari 9 Lembaga', 'Materi Utama'); switchTab('katalog')" class="bg-gradient-to-r from-emerald-400 to-gold-400 hover:from-emerald-500 hover:to-gold-500 text-navy-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-xl flex items-center space-x-2">
+                            <span>Jelajahi 9 Lembaga Keuangan</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Uji Simulator Financial', 'Fitur Interaktif'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium px-5 py-3 rounded-xl text-sm transition backdrop-blur-md">
+                            Coba Financial Matchmaker
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Pilar Pengawas & Penjamin Keuangan (OJK, BI, LPS) -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">3 Regulator & Pengawas Keuangan Indonesia</h3>
+                        <p class="text-slate-500 text-xs">Komite Stabilitas Sistem Keuangan (KSSK) penjaga integritas pasar keuangan</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- OJK -->
+                    <div onclick="trackActivity('Pilar Regulator: OJK', 'Pilar Regulator'); openRegulatorModal('ojk')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <span id="click-count-reg-ojk" class="counter-badge bg-slate-100 group-hover:bg-rose-100 text-slate-600 group-hover:text-rose-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-rose-700 transition">1. Otoritas Jasa Keuangan (OJK)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Pengawas independen mikroprudensial atas seluruh kegiatan sektor perbankan, pasar modal, perasuransian, dana pensiun, dan fintech.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Regulasi & perizinan lembaga keuangan</li>
+                            <li>• Perlindungan konsumen & literasi keuangan</li>
+                            <li>• Penindakan investasi & pinjol ilegal</li>
+                        </ul>
+                    </div>
+
+                    <!-- BI -->
+                    <div onclick="trackActivity('Pilar Regulator: Bank Indonesia', 'Pilar Regulator'); openRegulatorModal('bi')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-coins"></i>
+                            </div>
+                            <span id="click-count-reg-bi" class="counter-badge bg-slate-100 group-hover:bg-amber-100 text-slate-600 group-hover:text-amber-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-amber-700 transition">2. Bank Indonesia (BI)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Bank Sentral pengatur stabilitas makroprudensial, stabilitas nilai Rupiah, kebijakan suku bunga, serta kelancaran Sistem Pembayaran.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Pengaturan Suku Bunga Acuan (BI-Rate)</li>
+                            <li>• Pengelolaan QRIS, BI-FAST, & Rupiah</li>
+                            <li>• Pengawasan Makroprudensial Likuiditas</li>
+                        </ul>
+                    </div>
+
+                    <!-- LPS -->
+                    <div onclick="trackActivity('Pilar Regulator: LPS', 'Pilar Regulator'); openRegulatorModal('lps')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition cursor-pointer relative group">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xl">
+                                <i class="fa-solid fa-vault"></i>
+                            </div>
+                            <span id="click-count-reg-lps" class="counter-badge bg-slate-100 group-hover:bg-emerald-100 text-slate-600 group-hover:text-emerald-900 text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1 group-hover:text-emerald-700 transition">3. Lembaga Penjamin Simpanan (LPS)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Lembaga independen yang menjamin simpanan nasabah di bank (hingga Rp2 Miliar per nasabah per bank) dan resolusi bank bermasalah.
+                        </p>
+                        <ul class="text-xs space-y-1 text-slate-500">
+                            <li>• Syarat Penjaminan 3T (Tercatat, Tidak melebihi bunga LPS, Tidak merugikan bank)</li>
+                            <li>• Penjaminan Polis Asuransi (Mandat Baru)</li>
+                            <li>• Pembubaran/Resolusi Bank Gagal</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Modul Tematik Utama -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="trackActivity('Modul: Fungsi Intermediasi Keuangan', 'Studi Konsep'); openInfoModal('intermediation')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Alokasi Modal</span>
+                        <span id="click-count-modul-interm" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-emerald-700 transition mb-1">Fungsi Intermediasi Keuangan</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Menghimpun simpanan masyarakat surplus dan menyalurkannya sebagai kredit/pembiayaan usaha produktif.</p>
+                </div>
+
+                <div onclick="trackActivity('Modul: Proteksi & Investasi Jangka Panjang', 'Studi Konsep'); openInfoModal('protection_invest')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Mitigasi & Wealth</span>
+                        <span id="click-count-modul-protect" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-amber-700 transition mb-1">Proteksi & Pertumbuhan Modal</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">Sinergi Asuransi (transfer risiko krisis) dan Pasar Modal/Dana Pensiun untuk akumulasi kekayaan jangka panjang.</p>
+                </div>
+
+                <div onclick="trackActivity('Modul: Inovasi Digital & Risk Management', 'Studi Konsep'); openInfoModal('digital_risk')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Fintech & Cyber</span>
+                        <span id="click-count-modul-risk" class="counter-badge text-[11px] text-slate-400">👁️ 0x dipelajari</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-base group-hover:text-indigo-700 transition mb-1">Inovasi Digital & Risk Management</h5>
+                    <p class="text-slate-500 text-xs leading-relaxed">P2P Lending, Securities Crowdfunding, sertifikasi e-KYC, pencegahan TPPU/AML, serta ketahanan siber perbankan.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: KATALOG 9 LEMBAGA KEUANGAN ================= -->
+        <section id="sec-katalog" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-xl">Katalog 9 Lembaga Keuangan Bank & LKBB</h3>
+                        <p class="text-slate-500 text-xs mt-1">Eksplorasi fungsi, produk unggulan, pengawasan OJK, dan syarat penjaminan simpanan.</p>
+                    </div>
+                    <!-- Filter & Search -->
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <select id="inst-category-filter" onchange="trackActivity('Filter Kategori Lembaga', 'Filter Katalog'); filterInstitutions()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="all">Semua Kategori</option>
+                            <option value="Bank">1. Sektor Perbankan (Bank)</option>
+                            <option value="Non-Bank / Investasi">2. Non-Bank & Investasi (LKBB)</option>
+                            <option value="Pembiayaan & Inovasi">3. Pembiayaan & Inovasi Digital</option>
+                        </select>
+                        <div class="relative flex-grow sm:flex-grow-0 sm:w-48">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="inst-search" oninput="trackActivity('Pencarian Lembaga', 'Filter Katalog'); filterInstitutions()" placeholder="Cari lembaga / produk..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Institutions Grid -->
+            <div id="institutions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically Rendered -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: KOMPARASI MATRIKS ================= -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div>
+                    <h3 class="font-extrabold text-slate-800 text-xl">Sandingkan Karakteristik Lembaga Keuangan</h3>
+                    <p class="text-slate-500 text-xs mt-1">Pilih 2 hingga 3 lembaga untuk membandingkan fungsi utama, tingkat risiko, potensi imbal hasil, dan skema penjaminan LPS/OJK.</p>
+                </div>
+
+                <!-- Institution Selectors -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Lembaga Keuangan 1</label>
+                        <select id="cmp-inst-1" onchange="trackActivity('Komparasi: Pilih Lembaga 1', 'Matriks Komparasi'); updateInstitutionComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Lembaga Keuangan 2</label>
+                        <select id="cmp-inst-2" onchange="trackActivity('Komparasi: Pilih Lembaga 2', 'Matriks Komparasi'); updateInstitutionComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Lembaga Keuangan 3 (Opsional)</label>
+                        <select id="cmp-inst-3" onchange="trackActivity('Komparasi: Pilih Lembaga 3', 'Matriks Komparasi'); updateInstitutionComparison()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                            <option value="">-- Pilih Lembaga 3 --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table Container -->
+            <div id="institution-comparison-wrapper" class="overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+                <!-- Rendered Table -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: SIMULATOR FINANCIAL MATCHMAKER ================= -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-2xl">Simulator Financial Matchmaker & Risk Selector</h3>
+                        <p class="text-slate-500 text-xs">Atur alokasi modal dan profil risiko Anda untuk mengukur tingkat ketahanan finansial & optimasi portofolio</p>
+                    </div>
+                    <span id="click-count-sim-fin" class="counter-badge bg-emerald-100 text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-full border border-emerald-200">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Form Sliders (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">1. Alokasi Tabungan & Deposito Bank (%)</label>
+                                <span id="val-sim-bank" class="font-mono font-bold text-emerald-700">40%</span>
+                            </div>
+                            <input type="range" id="sim-bank" min="0" max="100" step="5" value="40" oninput="trackActivity('Slider: Alokasi Bank', 'Simulator Financial'); calculateFinancialSim()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Likuiditas darurat & simpanan aman (Dijamin LPS hingga Rp2 Miliar).</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">2. Alokasi Premi Proteksi Asuransi (%)</label>
+                                <span id="val-sim-insurance" class="font-mono font-bold text-emerald-700">10%</span>
+                            </div>
+                            <input type="range" id="sim-insurance" min="0" max="30" step="1" value="10" oninput="trackActivity('Slider: Premi Asuransi', 'Simulator Financial'); calculateFinancialSim()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Jaring pengaman kesehatan & perlindungan risiko jiwa/aset keluarga.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">3. Alokasi Pasar Modal & Dana Pensiun (%)</label>
+                                <span id="val-sim-invest" class="font-mono font-bold text-emerald-700">35%</span>
+                            </div>
+                            <input type="range" id="sim-invest" min="0" max="100" step="5" value="35" oninput="trackActivity('Slider: Investasi Pasar Modal', 'Simulator Financial'); calculateFinancialSim()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Pertumbuhan nilai aset jangka panjang melalui Saham, Reksa Dana, Obligasi, & Dapen.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">4. Alokasi Finansial / Pinjaman & Fintech (%)</label>
+                                <span id="val-sim-fintech" class="font-mono font-bold text-emerald-700">15%</span>
+                            </div>
+                            <input type="range" id="sim-fintech" min="0" max="50" step="5" value="15" oninput="trackActivity('Slider: Alokasi Fintech/Leasing', 'Simulator Financial'); calculateFinancialSim()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">Pemanfaatan modal kerja leasing/fintech P2P lending atau instrumen alternatif.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-700">5. Toleransi Risiko Nasabah / Profil Risk (%)</label>
+                                <span id="val-sim-risk" class="font-mono font-bold text-emerald-700">50% (Moderat)</span>
+                            </div>
+                            <input type="range" id="sim-risk" min="10" max="100" step="10" value="50" oninput="trackActivity('Slider: Toleransi Risiko', 'Simulator Financial'); calculateFinancialSim()" class="w-full accent-emerald-600">
+                            <p class="text-[11px] text-slate-400">10% = Konservatif (Sangat Takut Kering), 50% = Moderat, 100% = Agresif.</p>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Output Box (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-navy-950 to-finance-950 text-white rounded-2xl p-6 flex flex-col justify-between space-y-6 shadow-xl border border-emerald-600/30">
+                        <div class="space-y-1">
+                            <span class="text-xs font-mono text-gold-400 uppercase tracking-widest font-bold">Hasil Evaluasi Portofolio</span>
+                            <h4 class="text-xl font-bold">Skor Ketahanan Finansial</h4>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Metric 1 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Skor Ketahanan Finansial:</span>
+                                <strong id="sim-resilience-score" class="text-2xl font-mono text-gold-400">84.5</strong>
+                            </div>
+
+                            <!-- Metric 2 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Indeks Risiko Portofolio:</span>
+                                <strong id="sim-risk-index" class="text-xs font-bold font-mono text-emerald-300">Moderat (38%)</strong>
+                            </div>
+
+                            <!-- Metric 3 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Status Proteksi Jiwa/Aset:</span>
+                                <strong id="sim-protection-status" class="text-xs font-bold font-mono text-emerald-300">Terproteksi Baik</strong>
+                            </div>
+
+                            <!-- Metric 4 -->
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-xs text-slate-300">Tingkat Penjaminan LPS:</span>
+                                <strong id="sim-lps-coverage" class="text-xs font-bold font-mono text-emerald-400">Tinggi (Aman)</strong>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <h5 class="font-bold text-gold-400 border-b border-white/10 pb-1">Rekomendasi Strategi Finansial:</h5>
+                            <p id="sim-eval-text" class="text-slate-300 leading-relaxed">
+                                Portofolio Anda seimbang. Dana darurat di bank dijamin LPS, didukung proteksi asuransi serta pertumbuhan dari instrumen pasar modal.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: KUIS EVALUASI ================= -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-xl">Kuis Pemahaman Lembaga Keuangan</h3>
+                            <p class="text-slate-500 text-xs">Uji wawasan Anda seputar fungsi bank, LKBB, regulasi OJK, dan syarat penjaminan LPS</p>
+                        </div>
+                    </div>
+                    <span id="click-count-quiz-fin" class="counter-badge bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full border">
+                        👁️ 0x kuis dikerjakan
+                    </span>
+                </div>
+
+                <!-- Quiz Interactive Container -->
+                <div id="quiz-fin-container" class="max-w-3xl space-y-6">
+                    <!-- Dynamic Questions -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-md bg-emerald-400 text-navy-950 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <span class="font-bold text-slate-200">EduFinance Indonesia © 2026</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Disusun berdasarkan Pedoman OJK, Bank Indonesia, dan Lembaga Penjamin Simpanan (LPS).
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ANALYTICS BUTTON & MODAL ================= -->
+    <!-- Floating Counter FAB -->
+    <button onclick="openAnalyticsModal(); trackActivity('FAB Statistik Melayang', 'Navigasi Melayang')" class="fixed bottom-6 right-6 bg-gradient-to-r from-emerald-400 via-emerald-500 to-gold-500 text-navy-950 p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-white/30">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-navy-950"></i>
+            <span id="fab-pulse-dot" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-navy-950">Aktivitas Belajar</span>
+            <span id="fab-click-total" class="font-extrabold text-sm font-mono leading-none text-navy-950">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ANALYTICS MODAL (POPUP) -->
+    <div id="modal-analytics" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navy-950 to-finance-950 text-white p-5 flex items-center justify-between border-b border-emerald-600/30">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gold-400 text-navy-950 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-emerald-200">Rekapitulasi lengkap interaksi eksplorasi pengguna</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Content Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- Summary Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-emerald-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Terlibat aktif di aplikasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-base text-slate-800 font-bold block truncate">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Area terbanyak dieksplorasi</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-medium block">Cakupan Pembelajaran</span>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <div class="flex-grow bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-gold-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-bold text-slate-700">0%</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 block mt-1">Lembaga telah dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top Items Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart Doughnut Container -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-bold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Most Clicked Items -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-clicked-list" class="space-y-2 text-xs">
+                            <!-- Dynamic Top Items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="clearAnalyticsData()" class="text-rose-600 hover:text-rose-700 text-xs font-semibold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-48 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Terakhir Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100">
+                                <!-- Log rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERAL INFO / DETAIL MODAL -->
+    <div id="modal-info" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="info-modal-header" class="p-6 text-white relative bg-gradient-to-r from-navy-950 to-finance-950">
+                <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <!-- Dynamic Header -->
+            </div>
+            <div id="info-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 custom-scrollbar">
+                <!-- Dynamic Body -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-20 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+
+    <!-- ================= JAVASCRIPT APPLICATION CODE ================= -->
+    <script>
+        /* ----------------------------------------------------
+         * 1. DATA 9 LEMBAGA KEUANGAN (BANK & LKBB)
+         * ---------------------------------------------------- */
+        const FINANCIAL_INSTITUTIONS = [
+            // KATEGORI 1: BANK
+            {
+                id: 'bank-umum',
+                name: 'Bank Umum Konvensional',
+                category: 'Bank',
+                icon: 'fa-building-columns',
+                color: 'from-emerald-700 to-navy-900',
+                shortDesc: 'Lembaga keuangan intermediasi utama penghimpun dana giral/deposito dan penyalur kredit usaha komersial.',
+                functions: 'Menghimpun dana simpanan, memberikan kredit/pinjaman, menerbitkan giro/cek, serta memfasilitasi lalu lintas pembayaran nasional/internasional.',
+                products: 'Tabungan Utama, Deposito Berjangka, Kredit Pemilikan Rumah (KPR), Kredit Modal Kerja, Kartu Kredit, Transfer Valas.',
+                regulation: 'Didaftarkan & diawasi penuh oleh OJK. Simpanan nasabah dijamin oleh LPS hingga Rp2 Miliar per nasabah per bank (Syarat 3T).',
+                riskLevel: 'Rendah (Ditolang Jaminan LPS & Cadangan CAR Tinggi)',
+                yieldPotential: 'Rendah - Moderat (Bunga Deposito ~3% - 5.5% p.a.)',
+                lessons: 'Penjaga likuiditas utama nasabah dengan keamanan terjamin penjaminan pemerintah.'
+            },
+            {
+                id: 'bank-syariah',
+                name: 'Bank Syariah (BUS / UUS)',
+                category: 'Bank',
+                icon: 'fa-kaaba',
+                color: 'from-teal-700 to-emerald-900',
+                shortDesc: 'Bank yang menjalankan kegiatan usahanya berdasarkan prinsip syariah Islam tanpa menerapkan sistem bunga (Riba).',
+                functions: 'Intermediasi keuangan bebas riba dengan akad bagi hasil (Mudharabah/Musyarakah) atau jual-beli (Murabahah/Ijarah).',
+                products: 'Tabungan Wadiah/Mudharabah, Pembiayaan Rumah Murabahah, Deposito Syariah, Kartu Pembiayaan Syariah.',
+                regulation: 'Diawasi oleh OJK dan Dewan Pengawas Syariah (DPS-MUI). Simpanan dijamin oleh LPS sesuai batas suku bunga penjaminan LPS Syariah.',
+                riskLevel: 'Rendah - Moderat (Bagi Hasil Sesuai Kinerja Usaha)',
+                yieldPotential: 'Moderat (Nisbah Bagi Hasil Kinerja Bank)',
+                lessons: 'Solusi keuangan etis transparan berbasis keadilan risiko bersama (risk-sharing).'
+            },
+            {
+                id: 'bpr',
+                name: 'Bank Perekonomian Rakyat (BPR)',
+                category: 'Bank',
+                icon: 'fa-shop',
+                color: 'from-amber-600 to-emerald-800',
+                shortDesc: 'Bank yang menerima simpanan hanya dalam bentuk deposito berjangka dan tabungan untuk melayani UMKM lokal.',
+                functions: 'Fokus melayani kebutuhan mikro usaha kecil desa/kecamatan. Dilarang menerima simpanan giro, lalu lintas giral, & valuta asing.',
+                products: 'Tabungan BPR, Deposito BPR (Suku Bunga Maksimal LPS BPR), Kredit Usaha Mikro / Pasar.',
+                regulation: 'Diawasi oleh OJK. Simpanan dijamin LPS dengan batas tingkat bunga penjaminan BPR (biasanya lebih tinggi dari Bank Umum).',
+                riskLevel: 'Rendah (Tergantung Jaminan LPS BPR)',
+                yieldPotential: 'Moderat - Tinggi (Bunga Deposito BPR ~5.5% - 6.75% p.a.)',
+                lessons: 'Penyokong pembiayaan akar rumput dengan imbal hasil deposito menarik yang dijamin undang-undang.'
+            },
+
+            // KATEGORI 2: NON-BANK / INVESTASI (LKBB)
+            {
+                id: 'asuransi',
+                name: 'Perusahaan Asuransi',
+                category: 'Non-Bank / Investasi',
+                icon: 'fa-shield-heart',
+                color: 'from-rose-600 to-navy-900',
+                shortDesc: 'Lembaga pengelola risiko yang memberikan ganti rugi finansial saat terjadi musibah atau krisis tak terduga.',
+                functions: 'Himpun premi dari tertanggung untuk mengumpulkan dana tanggungan bencana/risiko (risk pooling & transfer).',
+                products: 'Asuransi Kesehatan, Asuransi Jiwa, Asuransi Kendaraan/Properti, Asuransi Kredit Usaha.',
+                regulation: 'Diawasi oleh OJK (UU PPSK mengamanatkan LPS menjalankan Program Penjaminan Polis Asuransi bertahap).',
+                riskLevel: 'Rendah - Moderat (Bergantung pada RBC & Solvabilitas Asuransi)',
+                yieldPotential: 'Proteksi Risiko (Bukan Produk Proteksi Murni Investasi)',
+                lessons: 'Jaring pengaman keuangan terpenting agar tabungan tidak habis saat diterpa risiko krisis.'
+            },
+            {
+                id: 'dana-pensiun',
+                name: 'Dana Pensiun (Dapen)',
+                category: 'Non-Bank / Investasi',
+                icon: 'fa-umbrella text-amber-300',
+                color: 'from-indigo-700 to-slate-900',
+                shortDesc: 'Lembaga pengelola dana akumulasi iuran kerja untuk jaminan kesinambungan penghasilan hari tua.',
+                functions: 'Mengelola iuran pemberi kerja dan karyawan ke dalam portofolio investasi aman jangka panjang hingga usia pensiun tiba.',
+                products: 'DPLK (Dana Pensiun Lembaga Keuangan), DPPK (Dana Pensiun Pemberi Kerja), Program Anuitas Hari Tua.',
+                regulation: 'Diawasi ketat oleh OJK dengan arahan investasi konservatif aman (SBR/Surat Utang Negara/Deposito).',
+                riskLevel: 'Rendah (Investasi Jangka Panjang Terbuka & Teratur)',
+                yieldPotential: 'Moderat (Imbal Hasil Compounding Jangka Panjang)',
+                lessons: 'Kunci kemandirian finansial usia tua tanpa membebani generasi penerus (generasi sandwich).'
+            },
+            {
+                id: 'pasar-modal',
+                name: 'Pasar Modal & Sekuritas',
+                category: 'Non-Bank / Investasi',
+                icon: 'fa-chart-line',
+                color: 'from-blue-600 to-indigo-900',
+                shortDesc: 'Pusat pertemuan perusahaan pembeli modal (emiten) dengan investor penjual modal melalui efek keuangan.',
+                functions: 'Fasilitator pendanaan jangka panjang korporasi/negara dan sarana investasi apresiasi modal publik.',
+                products: 'Saham Korporasi, Reksa Dana, Obligasi Negara (ORI/SBR), Sukuk, ETF, Waran.',
+                regulation: 'Regulasi oleh OJK, BEI (Bursa Efek Indonesia), KSEI, KPEI, dan dilindungi SIPF (Indonesia Securities Investor Protection Fund).',
+                riskLevel: 'Moderat - Tinggi (Fluktuasi Harga Pasar Saham/Efek)',
+                yieldPotential: 'Tinggi (Capital Gain + Dividen p.a.)',
+                lessons: 'Mesin pertumbuhan kekayaan jangka panjang utama bagi investor yang memahami manajemen risiko.'
+            },
+
+            // KATEGORI 3: PEMBIAYAAN & INOVASI
+            {
+                id: 'pegadaian',
+                name: 'Pegadaian (Gadai)',
+                category: 'Pembiayaan & Inovasi',
+                icon: 'fa-scale-unbalanced-flip',
+                color: 'from-emerald-600 to-gold-600',
+                shortDesc: 'Lembaga pembiayaan cepat dengan memberikan pinjaman dana tunai berdasarkan agunan barang bergerak.',
+                functions: 'Menyediakan fasilitas pinjaman dana mendesak tanpa prosedur rumit bank cukup dengan menyertahkan barang jaminan.',
+                products: 'Gadai Emas/Perhiasan, Gadai Kendaraan, Tabungan Emas, Pembiayaan Porsi Haji.',
+                regulation: 'Diawasi oleh OJK. Penilaian barang agunan dilakukan oleh penilai independen terdistribusi resmi.',
+                riskLevel: 'Sangat Rendah (Bagi Peminjam karena Ada Agunan Fisik)',
+                yieldPotential: 'Bunga Pinjaman Terjangkau / Sewa Modal (Sewa Tempat)',
+                lessons: 'Penolong dana darurat paling cepat dan efisien tanpa risiko terjerat utang tanpa agunan.'
+            },
+            {
+                id: 'multifinance',
+                name: 'Multifinance / Leasing',
+                category: 'Pembiayaan & Inovasi',
+                icon: 'fa-truck-pickup',
+                color: 'from-amber-700 to-navy-950',
+                shortDesc: 'Perusahaan pembiayaan yang menyediakan dana pengadaan barang modal atau barang konsumsi kendaraan.',
+                functions: 'Membantu pembeli atau pengusaha mendapatkan alat berat/kendaraan tanpa harus membayar tunai 100% di awal.',
+                products: 'Sewa Guna Usaha (Leasing), Pembiayaan Konsumen (Mobil/Motor), Pembiayaan Anjak Piutang (Factoring).',
+                regulation: 'Diawasi oleh OJK & APPI. Penarikan agunan wajib mematuhi sertifikasi fidusia legal.',
+                riskLevel: 'Moderat (Risiko Wanprestasi Cicilan & Sita Jaminan)',
+                yieldPotential: 'Suku Bunga Pembiayaan Kendaraan Terstruktur',
+                lessons: 'Memudahkahkan kepemilikan aset produktif dengan jaminan surat sertifikat fidusia terdaftar.'
+            },
+            {
+                id: 'fintech-p2p',
+                name: 'Fintech P2P Lending & Crowdfunding',
+                category: 'Pembiayaan & Inovasi',
+                icon: 'fa-mobile-screen-button text-gold-300',
+                color: 'from-purple-700 to-navy-950',
+                shortDesc: 'Platform teknologi keuangan berbasis aplikasi yang mempertemukan pemberi pinjaman (lender) dan peminjam (borrower).',
+                functions: 'Pendanaan langsung lintas wilayah secara digital tanpa perantara bank fisik, termasuk Securities Crowdfunding (SCF).',
+                products: 'Pinjaman Produktif UMKM, Paylater Digital, Securities Crowdfunding (Saham/Obligasi UMKM).',
+                regulation: 'Diawasi ketat OJK & AFPI. (Penting: Dana lender di P2P Lending TIDAK DIJAMIN LPS jika borrower gagal bayar).',
+                riskLevel: 'Tinggi (Risiko Gagal Bayar Borrower Ditanggung Lender)',
+                yieldPotential: 'Sangat Tinggi (Bunga Pendanaan ~12% - 18% p.a.)',
+                lessons: 'Inovasi inklusi modal digital yang membutuhkan ketelitian diversifikasi risiko pendanaan.'
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 2. DATA KUIS EVALUASI
+         * ---------------------------------------------------- */
+        const QUIZ_FINANCE_DATA = [
+            {
+                q: "Manakah perbedaan mendasar antara Bank Perekonomian Rakyat (BPR) dan Bank Umum Konvensional?",
+                options: [
+                    "BPR dilarang menerima simpanan deposito",
+                    "BPR dilarang ikut lalu lintas pembayaran giral (cek/giro) & transaksi valas",
+                    "Simpanan di BPR tidak dijamin oleh Lembaga Penjamin Simpanan (LPS)",
+                    "BPR tidak diawasi oleh Otoritas Jasa Keuangan (OJK)"
+                ],
+                answer: 1,
+                explain: "BPR dirancang untuk usaha mikro lokal sehingga dilarang menerbitkan giro/cek, ikut lalu lintas giral, dan melakukan kegiatan valuta asing."
+            },
+            {
+                q: "Berikut ini yang MERUPAKAN salah satu syarat 3T agar simpanan nasabah di bank dijamin oleh LPS adalah...",
+                options: [
+                    "Telah mengendap minimum 5 tahun di bank",
+                    "Tercatat dalam pembukuan bank & tidak mendapat bunga di atas tingkat bunga penjaminan LPS",
+                    "Total simpanan bernilai di atas Rp 10 Miliar",
+                    "Menggunakan akad asuransi jiwa tambahan"
+                ],
+                answer: 1,
+                explain: "Syarat 3T LPS: 1. Tercatat pada pembukuan bank, 2. Tingkat bunga simpanan tidak melebihi bunga penjaminan LPS, 3. Tidak melakukan tindakan yang merugikan bank (kredit macet bermasalah)."
+            },
+            {
+                q: "Apa peran utama Otoritas Jasa Keuangan (OJK) yang membedakannya dari Bank Indonesia (BI)?",
+                options: [
+                    "OJK mencetak mata uang Rupiah",
+                    "OJK mengatur suku bunga acuan moneter nasional",
+                    "OJK fokus pada pengawasan mikroprudensial & perlindungan konsumen lembaga keuangan",
+                    "OJK mengelola cadangan devisa negara"
+                ],
+                answer: 2,
+                explain: "OJK menangani pengawasan mikroprudensial (lembaga keuangan & konsumen), sedangkan Bank Indonesia fokus pada makroprudensial, kebijakan moneter, dan sistem pembayaran."
+            },
+            {
+                q: "Manakah fakta yang TEPAT mengenai risiko pendanaan di platform Fintech P2P Lending yang berizin OJK?",
+                options: [
+                    "Simpanan pendana (lender) dijamin penuh oleh LPS hingga Rp2 Miliar",
+                    "Risiko gagal bayar peminjam (borrower) sepenuhnya menjadi tanggung jawab pemerintah",
+                    "Risiko gagal bayar borrower ditanggung lender (atau asuransi kredit mitra) dan TIDAK dijamin LPS",
+                    "Fintech P2P Lending berhak menerbitkan kartu kredit perbankan"
+                ],
+                answer: 2,
+                explain: "Pendanaan di P2P lending merupakan kegiatan investasi langsung. LPS hanya menjamin simpanan di sektor perbankan, bukan pendanaan P2P Lending."
+            },
+            {
+                q: "Lembaga Keuangan Non-Bank (LKBB) yang berfungsi memfasilitasi pengalihan risiko krisis keuangan akibat musibah kesehatan/jiwa adalah...",
+                options: [
+                    "Perusahaan Multifinance",
+                    "Perusahaan Asuransi",
+                    "Pegadaian",
+                    "Sekuritas Pasar Modal"
+                ],
+                answer: 1,
+                explain: "Perusahaan Asuransi bertindak sebagai pengelola risiko (risk pooling & transfer) untuk mengganti kerugian finansial saat timbul krisis."
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * 3. APP STATE & PERSISTENT COUNTER SYSTEM
+         * ---------------------------------------------------- */
+        let activityLog = [];
+        let quizIndex = 0;
+        let quizScore = 0;
+        let categoryChartInstance = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityFromStorage();
+            updateOnPageBadges();
+            renderInstitutionsGrid();
+            initComparisonDropdowns();
+            calculateFinancialSim();
+            renderQuizQuestion();
+            updateAnalyticsUI();
+        });
+
+        function loadActivityFromStorage() {
+            const saved = localStorage.getItem('edufin_activity_log');
+            if (saved) {
+                try {
+                    activityLog = JSON.parse(saved);
+                } catch(e) {
+                    activityLog = [];
+                }
+            }
+        }
+
+        function saveActivityToStorage() {
+            localStorage.setItem('edufin_activity_log', JSON.stringify(activityLog));
+        }
+
+        /* CORE TRACKER FUNCTION */
+        function trackActivity(itemName, categoryName) {
+            const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let record = activityLog.find(item => item.name === itemName);
+
+            if (record) {
+                record.count += 1;
+                record.lastTime = now;
+            } else {
+                record = {
+                    id: 'act-' + Date.now() + '-' + Math.floor(Math.random()*1000),
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: now
+                };
+                activityLog.push(record);
+            }
+
+            saveActivityToStorage();
+            updateAnalyticsUI();
+            showToastNotification(`Aktivitas Dicatat: ${itemName} (+1)`);
+            updateOnPageBadges();
+        }
+
+        function getItemCount(itemName) {
+            const record = activityLog.find(item => item.name === itemName);
+            return record ? record.count : 0;
+        }
+
+        /* ----------------------------------------------------
+         * 4. UI UPDATERS & COUNTER BADGES
+         * ---------------------------------------------------- */
+        function updateOnPageBadges() {
+            // Update Nav counts
+            document.getElementById('nav-count-beranda').innerText = getItemCount('Tab Beranda');
+            document.getElementById('nav-count-katalog').innerText = getItemCount('Tab Katalog Lembaga');
+            document.getElementById('nav-count-komparasi').innerText = getItemCount('Tab Komparasi Matriks');
+            document.getElementById('nav-count-simulator').innerText = getItemCount('Tab Simulator Keuangan');
+            document.getElementById('nav-count-kuis').innerText = getItemCount('Tab Kuis Evaluasi');
+
+            // Beranda Regulators Counters
+            document.getElementById('click-count-reg-ojk').innerText = `👁️ ${getItemCount('Pilar Regulator: OJK')}x dipelajari`;
+            document.getElementById('click-count-reg-bi').innerText = `👁️ ${getItemCount('Pilar Regulator: Bank Indonesia')}x dipelajari`;
+            document.getElementById('click-count-reg-lps').innerText = `👁️ ${getItemCount('Pilar Regulator: LPS')}x dipelajari`;
+
+            document.getElementById('click-count-modul-interm').innerText = `👁️ ${getItemCount('Modul: Fungsi Intermediasi Keuangan')}x dipelajari`;
+            document.getElementById('click-count-modul-protect').innerText = `👁️ ${getItemCount('Modul: Proteksi & Investasi Jangka Panjang')}x dipelajari`;
+            document.getElementById('click-count-modul-risk').innerText = `👁️ ${getItemCount('Modul: Inovasi Digital & Risk Management')}x dipelajari`;
+
+            // Simulator & Quiz Counters
+            const totalSimUse = getItemCount('Slider: Alokasi Bank') + getItemCount('Slider: Premi Asuransi') + getItemCount('Slider: Investasi Pasar Modal') + getItemCount('Slider: Alokasi Fintech/Leasing') + getItemCount('Slider: Toleransi Risiko');
+            document.getElementById('click-count-sim-fin').innerText = `👁️ ${totalSimUse}x simulasi dijalankan`;
+            document.getElementById('click-count-quiz-fin').innerText = `👁️ ${getItemCount('Kuis: Jawab Soal')}x kuis dikerjakan`;
+
+            // Institutions Badges
+            FINANCIAL_INSTITUTIONS.forEach(inst => {
+                const badge = document.getElementById(`inst-badge-${inst.id}`);
+                if (badge) {
+                    badge.innerText = `👁️ ${getItemCount(`Lembaga: ${inst.name}`)}x dipelajari`;
+                }
+            });
+        }
+
+        function showToastNotification(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-navy-950 text-gold-400 border border-gold-400/30 text-xs px-3.5 py-2 rounded-xl shadow-xl flex items-center space-x-2 transition-all transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-bell text-gold-400"></i> <span>${msg}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        /* ----------------------------------------------------
+         * 5. NAVIGATION & TABS
+         * ---------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white/10', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-white/10', 'text-white');
+                activeNav.classList.remove('text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ----------------------------------------------------
+         * 6. KATALOG 9 LEMBAGA KEUANGAN
+         * ---------------------------------------------------- */
+        function renderInstitutionsGrid() {
+            const container = document.getElementById('institutions-grid');
+            container.innerHTML = '';
+
+            const catFilter = document.getElementById('inst-category-filter').value;
+            const searchTerm = (document.getElementById('inst-search')?.value || '').toLowerCase();
+
+            const filtered = FINANCIAL_INSTITUTIONS.filter(inst => {
+                const matchCat = catFilter === 'all' || inst.category === catFilter;
+                const matchSearch = inst.name.toLowerCase().includes(searchTerm) || inst.products.toLowerCase().includes(searchTerm) || inst.shortDesc.toLowerCase().includes(searchTerm);
+                return matchCat && matchSearch;
+            });
+
+            filtered.forEach(inst => {
+                const count = getItemCount(`Lembaga: ${inst.name}`);
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer";
+                card.onclick = () => openInstitutionModal(inst.id);
+
+                card.innerHTML = `
+                    <div class="h-28 bg-gradient-to-r ${inst.color} p-5 text-white relative flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <i class="fa-solid ${inst.icon} text-2xl"></i>
+                            <span id="inst-badge-${inst.id}" class="counter-badge bg-gold-400 text-navy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                👁️ ${count}x dipelajari
+                            </span>
+                        </div>
+                        <div>
+                            <span class="bg-black/30 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-emerald-200 uppercase">
+                                ${inst.category}
+                            </span>
+                            <h4 class="font-extrabold text-xl group-hover:translate-x-1 transition-transform mt-0.5">${inst.name}</h4>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                        <div>
+                            <span class="text-[10px] text-emerald-800 font-bold uppercase block mb-1">Produk Populer:</span>
+                            <strong class="text-slate-800 text-xs block line-clamp-1">${inst.products}</strong>
+                            <p class="text-slate-600 leading-relaxed mt-2 line-clamp-3">${inst.shortDesc}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-emerald-800 font-bold group-hover:underline">
+                            <span>Detail Kebijakan & Risiko</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterInstitutions() {
+            renderInstitutionsGrid();
+        }
+
+        function openInstitutionModal(id) {
+            const inst = FINANCIAL_INSTITUTIONS.find(item => item.id === id);
+            if (!inst) return;
+
+            trackActivity(`Lembaga: ${inst.name}`, 'Detail Katalog Lembaga');
+
+            const header = document.getElementById('info-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${inst.color}`;
+            header.innerHTML = `
+                <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <i class="fa-solid ${inst.icon} text-3xl"></i>
+                    <div>
+                        <span class="bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded text-[10px] font-bold text-emerald-200 uppercase">
+                            ${inst.category}
+                        </span>
+                        <h3 class="text-2xl font-extrabold">${inst.name}</h3>
+                    </div>
+                </div>
+                <div class="mt-3 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-lg inline-flex items-center space-x-2 text-xs font-mono text-gold-400">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah dipelajari sebanyak <strong>${getItemCount(`Lembaga: ${inst.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('info-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Fungsi Utama</h5>
+                    <p class="text-slate-600 leading-relaxed">${inst.functions}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Produk / Layanan Populer:</h5>
+                    <p class="bg-emerald-50 text-emerald-900 p-3 rounded-xl border border-emerald-200 font-medium">${inst.products}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h5 class="font-bold text-slate-800 text-sm">Pengawasan Regulasi OJK / Penjaminan LPS:</h5>
+                    <p class="bg-amber-50 text-amber-900 p-3 rounded-xl border border-amber-200 font-medium">${inst.regulation}</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 space-y-1">
+                        <span class="text-[10px] font-bold text-rose-700 uppercase block">Profil Risiko Nasabah:</span>
+                        <strong class="text-slate-800 text-xs">${inst.riskLevel}</strong>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-xl border border-blue-200 space-y-1">
+                        <span class="text-[10px] font-bold text-blue-700 uppercase block">Potensi Imbal Hasil:</span>
+                        <strong class="text-slate-800 text-xs">${inst.yieldPotential}</strong>
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-1">
+                    <h5 class="font-bold text-slate-800 text-sm">Pelajaran Kunci (Lessons Learned):</h5>
+                    <p class="bg-indigo-50 text-indigo-900 p-3 rounded-xl border border-indigo-200 font-medium">
+                        <i class="fa-solid fa-lightbulb text-gold-500 mr-1"></i> ${inst.lessons}
+                    </p>
+                </div>
+            `;
+
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function openRegulatorModal(type) {
+            const header = document.getElementById('info-modal-header');
+            const body = document.getElementById('info-modal-body');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navy-950 via-slate-900 to-finance-950";
+
+            if (type === 'ojk') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-rose-400">Otoritas Jasa Keuangan (OJK)</h3>
+                    <p class="text-xs text-slate-300 mt-1">Pengawas Mikroprudensial & Konsumen Keuangan</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">OJK adalah lembaga independen yang bebas dari campur tangan pihak lain, yang mempunyai fungsi, tugas, dan wewenang pengaturan, pengawasan, pemeriksaan, dan penyidikan terhadap seluruh sektor jasa keuangan di Indonesia.</p>
+                    <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 text-rose-900 font-semibold space-y-1">
+                        <strong class="block">Cakupan Pengawasan:</strong>
+                        <span>• Perbankan (Bank Umum & BPR)<br>• Pasar Modal & Bursa Efek<br>• Perasuransian, Dana Pensiun, Multifinance<br>• Fintech P2P Lending & Financial Technology</span>
+                    </div>
+                `;
+            } else if (type === 'bi') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-amber-400">Bank Indonesia (BI)</h3>
+                    <p class="text-xs text-slate-300 mt-1">Bank Sentral & Pengatur Stabilitas Makroprudensial</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Bank Indonesia bertugas mencapai dan memelihara stabilitas nilai Rupiah melalui penetapan kebijakan moneter (suku bunga BI-Rate), pengaturan sistem pembayaran (QRIS, BI-FAST), serta kelancaran infrastruktur pasar uang.</p>
+                `;
+            } else if (type === 'lps') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-emerald-400">Lembaga Penjamin Simpanan (LPS)</h3>
+                    <p class="text-xs text-slate-300 mt-1">Penjamin Simpanan Nasabah & Resolusi Bank</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">LPS menjamin simpanan nasabah di bank hingga Rp2 Miliar per nasabah per bank dengan syarat 3T (Tercatat, Bunga tidak melebihi suku bunga LPS, Tidak merugikan bank). Berdasarkan UU PPSK, LPS juga memegang mandat baru penjaminan polis asuransi.</p>
+                `;
+            }
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function openInfoModal(type) {
+            const header = document.getElementById('info-modal-header');
+            const body = document.getElementById('info-modal-body');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navy-950 via-slate-900 to-finance-950";
+
+            if (type === 'intermediation') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-emerald-400">Fungsi Intermediasi Keuangan</h3>
+                    <p class="text-xs text-slate-300 mt-1">Pengaliran Modal Surplus ke Defisit</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Intermediasi keuangan adalah proses penyerapan dana dari unit surplus (masyarakat penabung/deposan) dan penyalurannya kembali kepada unit defisit (pengusaha/peminjam) untuk menggerakkan roda bisnis riil.</p>
+                `;
+            } else if (type === 'protection_invest') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-amber-400">Proteksi & Investasi Jangka Panjang</h3>
+                    <p class="text-xs text-slate-300 mt-1">Mitigasi Risiko & Akumulasi Aset</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Perencanaan keuangan membutuhkan dualitas: Proteksi (Asuransi) untuk membentengi kekayaan dari musibah, dan Investasi (Pasar Modal/Dapen) untuk menumbuhkan nilai aset melawan laju inflasi jangka panjang.</p>
+                `;
+            } else if (type === 'digital_risk') {
+                header.innerHTML = `
+                    <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 class="text-xl font-bold text-indigo-400">Inovasi Digital & Risk Management</h3>
+                    <p class="text-xs text-slate-300 mt-1">Fintech, e-KYC, & Siber</p>
+                `;
+                body.innerHTML = `
+                    <p class="leading-relaxed">Akselerasi produk digital (P2P Lending, Securities Crowdfunding) mempermudah akses modal namun memerlukan tata kelola ketat: e-KYC (Know Your Customer), Anti Money Laundering (AML/PPT), dan pertahanan siber.</p>
+                `;
+            }
+
+            document.getElementById('modal-info').classList.remove('hidden');
+        }
+
+        function closeInfoModal() {
+            document.getElementById('modal-info').classList.add('hidden');
+        }
+
+        /* ----------------------------------------------------
+         * 7. FITUR KOMPARASI MATRIKS LEMBAGA
+         * ---------------------------------------------------- */
+        function initComparisonDropdowns() {
+            const s1 = document.getElementById('cmp-inst-1');
+            const s2 = document.getElementById('cmp-inst-2');
+            const s3 = document.getElementById('cmp-inst-3');
+
+            s1.innerHTML = '';
+            s2.innerHTML = '';
+            s3.innerHTML = '<option value="">-- Pilih Lembaga 3 --</option>';
+
+            FINANCIAL_INSTITUTIONS.forEach(inst => {
+                const opt1 = document.createElement('option');
+                opt1.value = inst.id;
+                opt1.innerText = `${inst.name} (${inst.category})`;
+                s1.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = inst.id;
+                opt2.innerText = `${inst.name} (${inst.category})`;
+                s2.appendChild(opt2);
+
+                const opt3 = document.createElement('option');
+                opt3.value = inst.id;
+                opt3.innerText = `${inst.name} (${inst.category})`;
+                s3.appendChild(opt3);
+            });
+
+            s1.value = 'bank-umum';
+            s2.value = 'pasar-modal';
+            s3.value = 'asuransi';
+
+            updateInstitutionComparison();
+        }
+
+        function updateInstitutionComparison() {
+            const c1Id = document.getElementById('cmp-inst-1').value;
+            const c2Id = document.getElementById('cmp-inst-2').value;
+            const c3Id = document.getElementById('cmp-inst-3').value;
+
+            const selectedIds = [c1Id, c2Id, c3Id].filter(Boolean);
+            const items = selectedIds.map(id => FINANCIAL_INSTITUTIONS.find(inst => inst.id === id)).filter(Boolean);
+
+            const container = document.getElementById('institution-comparison-wrapper');
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 py-6">Pilih lembaga keuangan di atas untuk membandingkan.</p>`;
+                return;
+            }
+
+            let html = `
+                <table class="w-full text-left text-xs text-slate-700 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                            <th class="p-3 w-36 font-bold">Dimensi Evaluasi</th>
+                            ${items.map(it => `<th class="p-3 font-extrabold text-emerald-900 text-sm">${it.name}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Kategori Utama</td>
+                            ${items.map(it => `<td class="p-3 font-bold text-emerald-700">${it.category}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Fungsi Utama</td>
+                            ${items.map(it => `<td class="p-3 text-slate-600">${it.functions}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Produk Unggulan</td>
+                            ${items.map(it => `<td class="p-3 font-semibold text-slate-800">${it.products}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Tingkat Risiko Nasabah</td>
+                            ${items.map(it => `<td class="p-3 font-bold text-rose-700">${it.riskLevel}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Potensi Imbal Hasil</td>
+                            ${items.map(it => `<td class="p-3 font-semibold text-blue-700">${it.yieldPotential}</td>`).join('')}
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold bg-slate-50">Regulasi & LPS</td>
+                            ${items.map(it => `<td class="p-3 text-slate-600">${it.regulation}</td>`).join('')}
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        /* ----------------------------------------------------
+         * 8. SIMULATOR FINANCIAL MATCHMAKER
+         * ---------------------------------------------------- */
+        function calculateFinancialSim() {
+            const bankAlloc = parseInt(document.getElementById('sim-bank').value) || 40;
+            const insAlloc = parseInt(document.getElementById('sim-insurance').value) || 10;
+            const investAlloc = parseInt(document.getElementById('sim-invest').value) || 35;
+            const fintechAlloc = parseInt(document.getElementById('sim-fintech').value) || 15;
+            const userRisk = parseInt(document.getElementById('sim-risk').value) || 50;
+
+            document.getElementById('val-sim-bank').innerText = `${bankAlloc}%`;
+            document.getElementById('val-sim-insurance').innerText = `${insAlloc}%`;
+            document.getElementById('val-sim-invest').innerText = `${investAlloc}%`;
+            document.getElementById('val-sim-fintech').innerText = `${fintechAlloc}%`;
+            
+            let riskLabel = 'Moderat';
+            if (userRisk <= 20) riskLabel = 'Konservatif';
+            else if (userRisk >= 70) riskLabel = 'Agresif';
+            document.getElementById('val-sim-risk').innerText = `${userRisk}% (${riskLabel})`;
+
+            // Resilience Score calculation
+            const score = Math.min(99.5, Math.max(25.0, (bankAlloc * 0.35) + (insAlloc * 2.2) + (investAlloc * 0.3) - (fintechAlloc * 0.4) + (userRisk * 0.15))).toFixed(1);
+            document.getElementById('sim-resilience-score').innerText = score;
+
+            // Risk Index
+            const riskIndexVal = Math.round((investAlloc * 0.5) + (fintechAlloc * 0.9) + (userRisk * 0.3));
+            document.getElementById('sim-risk-index').innerText = `${riskIndexVal}% (${riskIndexVal > 55 ? 'Tinggi' : riskIndexVal > 30 ? 'Moderat' : 'Rendah'})`;
+
+            // Protection Status
+            const protElem = document.getElementById('sim-protection-status');
+            if (insAlloc >= 10) {
+                protElem.innerText = 'Terproteksi Baik';
+                protElem.className = 'text-xs font-bold font-mono text-emerald-400';
+            } else if (insAlloc >= 5) {
+                protElem.innerText = 'Proteksi Dasar';
+                protElem.className = 'text-xs font-bold font-mono text-amber-300';
+            } else {
+                protElem.innerText = 'Tanpa Asuransi (Rentan)';
+                protElem.className = 'text-xs font-bold font-mono text-rose-400';
+            }
+
+            // LPS Coverage
+            const lpsElem = document.getElementById('sim-lps-coverage');
+            if (bankAlloc >= 30) {
+                lpsElem.innerText = 'Tinggi (Dijamin LPS)';
+                lpsElem.className = 'text-xs font-bold font-mono text-emerald-400';
+            } else {
+                lpsElem.innerText = 'Rendah (Sedikit Likuiditas Bank)';
+                lpsElem.className = 'text-xs font-bold font-mono text-amber-300';
+            }
+
+            // Recommendation text
+            const evalElem = document.getElementById('sim-eval-text');
+            if (insAlloc < 5) {
+                evalElem.innerText = 'Portofolio Anda rentan krisis! Tanpa alokasi asuransi yang cukup, tabungan dan investasi Anda berisiko habis jika timbul sakit/musibah tak terduga.';
+            } else if (fintechAlloc > 30) {
+                evalElem.innerText = 'Alokasi ke Fintech/Leasing cukup tinggi. Ingat bahwa pendanaan Fintech P2P Lending tidak dijamin oleh LPS, pastikan diversifikasi pendanaan.';
+            } else if (score >= 75) {
+                evalElem.innerText = 'Struktur modal Anda sangat sehat! Fondasi tabungan likuid di bank dijamin LPS, terproteksi asuransi, dan bertumbuh di instrumen pasar modal.';
+            } else {
+                evalElem.innerText = 'Alokasi finansial cukup seimbang. Pertimbangkan untuk meningkatkan likuiditas simpanan bank atau investasi jangka panjang.';
+            }
+
+            updateOnPageBadges();
+        }
+
+        /* ----------------------------------------------------
+         * 9. MINI QUIZ INTERAKTIF
+         * ---------------------------------------------------- */
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-fin-container');
+            const q = QUIZ_FINANCE_DATA[quizIndex];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span>Pertanyaan ${quizIndex + 1} dari ${QUIZ_FINANCE_DATA.length}</span>
+                        <span>Skor Terkumpul: <strong class="text-emerald-800 font-mono">${quizScore}</strong></span>
+                    </div>
+                    <h4 class="font-extrabold text-slate-800 text-sm sm:text-base leading-snug">${q.q}</h4>
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="answerQuizQuestion(${idx})" class="w-full text-left bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 p-3.5 rounded-xl text-xs font-medium text-slate-700 transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-emerald-600 transition"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuizQuestion(optIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi');
+            const q = QUIZ_FINANCE_DATA[quizIndex];
+            const isCorrect = optIdx === q.answer;
+
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-fin-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-3.5 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-900 border border-emerald-200' : 'bg-rose-100 text-rose-900 border border-rose-200'} text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-lg"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Benar! (+20 Poin)' : 'Jawaban Kurang Tepat.'}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed bg-white p-4 rounded-xl border border-slate-200">
+                        <strong>Pembahasan:</strong> ${q.explain}
+                    </p>
+                    <button onclick="nextQuizStep()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                        ${quizIndex < QUIZ_FINANCE_DATA.length - 1 ? 'Pertanyaan Berikutnya →' : 'Selesaikan Kuis'}
+                    </button>
+                </div>
+            `;
+        }
+
+        function nextQuizStep() {
+            if (quizIndex < QUIZ_FINANCE_DATA.length - 1) {
+                quizIndex++;
+                renderQuizQuestion();
+            } else {
+                const container = document.getElementById('quiz-fin-container');
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-navy-950 to-finance-950 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-emerald-600/30">
+                        <i class="fa-solid fa-trophy text-gold-400 text-5xl"></i>
+                        <h4 class="font-extrabold text-2xl">Kuis Selesai!</h4>
+                        <p class="text-xs text-slate-300">Skor Pemahaman Lembaga Keuangan Anda: <strong class="text-gold-400 text-xl font-mono block mt-1">${quizScore} / 100</strong></p>
+                        <button onclick="quizIndex=0; quizScore=0; renderQuizQuestion();" class="bg-gradient-to-r from-emerald-400 to-gold-400 hover:from-emerald-500 hover:to-gold-500 text-navy-950 font-bold px-6 py-2.5 rounded-xl text-xs transition inline-block">
+                            Ulangi Kuis
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        /* ----------------------------------------------------
+         * 10. ANALYTICS MODAL & CHART MANAGER
+         * ---------------------------------------------------- */
+        function openAnalyticsModal() {
+            updateAnalyticsUI();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function updateAnalyticsUI() {
+            const totalClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            
+            document.getElementById('header-total-clicks').innerText = `${totalClicks} Klik`;
+            document.getElementById('fab-click-total').innerText = `${totalClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalClicks;
+
+            // Category Aggregation
+            const catCounts = {};
+            activityLog.forEach(item => {
+                catCounts[item.category] = (catCounts[item.category] || 0) + item.count;
+            });
+
+            let topCat = '-';
+            let maxCatCount = 0;
+            Object.keys(catCounts).forEach(cat => {
+                if (catCounts[cat] > maxCatCount) {
+                    maxCatCount = catCounts[cat];
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // Progress Bar (Visited Institutions)
+            const visitedInst = activityLog.filter(i => i.category === 'Detail Katalog Lembaga').length;
+            const percent = Math.min(100, Math.round((visitedInst / FINANCIAL_INSTITUTIONS.length) * 100));
+            document.getElementById('modal-progress-bar').style.width = `${percent}%`;
+            document.getElementById('modal-progress-percent').innerText = `${percent}%`;
+
+            // Top 5 Items
+            const sortedItems = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const topListContainer = document.getElementById('top-clicked-list');
+            if (sortedItems.length === 0) {
+                topListContainer.innerHTML = `<p class="text-slate-400 text-xs italic">Belum ada aktivitas tercatat.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedItems.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-100">
+                        <span class="truncate pr-2 font-medium">${idx+1}. ${item.name}</span>
+                        <span class="bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-mono font-bold">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // Render Log Table
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada data interaksi.</td></tr>`;
+            } else {
+                tbody.innerHTML = activityLog.map(item => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-bold text-emerald-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            renderCategoryChart(catCounts);
+        }
+
+        function renderCategoryChart(catCounts) {
+            const ctx = document.getElementById('categoryChart');
+            if (!ctx) return;
+
+            const labels = Object.keys(catCounts);
+            const data = Object.values(catCounts);
+
+            if (categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            if (labels.length === 0) return;
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#059669', '#f59e0b', '#6366f1', '#e11d48', '#0284c7', '#8b5cf6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function clearAnalyticsData() {
+            if (confirm('Apakah Anda yakin ingin mereset seluruh hitungan aktivitas belajar?')) {
+                activityLog = [];
+                localStorage.removeItem('edufin_activity_log');
+                updateAnalyticsUI();
+                updateOnPageBadges();
+                showToastNotification('Data hitungan telah direset.');
+            }
+        }
+
+        function exportAnalyticsJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activityLog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Analitik_LembagaKeuangan_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
