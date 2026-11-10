@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belajar Struktur Organisasi Ombudsman RI</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --text:#1d2433; --muted:#5b6578; --line:#e0e4ee;
+    --primary:#0f5c8c; --primary-soft:#e3f1fa; --accent:#c8871a; --ok:#1c8a4a; --bad:#c43b3b;
+    --shadow:0 2px 10px rgba(20,30,60,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#10141c; --card:#192030; --text:#e8ecf4; --muted:#9aa6bd; --line:#2b3550;
+      --primary:#5db4ea; --primary-soft:#16293b; --accent:#e5a846; --ok:#4cc27f; --bad:#ef7676;
+      --shadow:0 2px 10px rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  header{padding:28px 16px 12px;text-align:center}
+  header h1{margin:0 0 6px;font-size:clamp(1.4rem,4vw,2rem);color:var(--primary)}
+  header p{margin:0;color:var(--muted)}
+  main{max-width:960px;margin:0 auto;padding:0 16px 48px}
+  nav.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:18px 0}
+  nav.tabs button{border:1px solid var(--line);background:var(--card);color:var(--text);padding:9px 16px;border-radius:999px;cursor:pointer;font-size:.95rem;font-weight:600}
+  nav.tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+  section.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+  section.panel.active{display:block}
+  h2{margin-top:0;color:var(--primary)}
+  .hint{color:var(--muted);font-size:.92rem}
+
+  /* Bagan */
+  .chart{display:flex;flex-direction:column;align-items:center;gap:0;margin:20px 0}
+  .node{border:2px solid var(--primary);background:var(--primary-soft);color:var(--text);border-radius:12px;padding:10px 16px;cursor:pointer;font-weight:600;font-size:.95rem;text-align:center;min-width:150px;transition:.15s}
+  .node:hover,.node:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow);outline:none}
+  .node.sel{background:var(--primary);color:#fff}
+  .node small{display:block;font-weight:400;opacity:.8;font-size:.78rem}
+  .node.alt{border-color:var(--accent)}
+  .vline{width:2px;height:22px;background:var(--line)}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;padding-top:2px}
+  .grp-title{font-size:.8rem;color:var(--muted);margin:6px 0 4px;text-transform:uppercase;letter-spacing:.05em}
+  .detail{margin-top:18px;border-left:5px solid var(--accent);background:var(--bg);border-radius:10px;padding:14px 18px}
+  .detail h3{margin:0 0 6px}
+  .detail ul{margin:6px 0 0;padding-left:20px}
+
+  /* Info cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+  .card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg)}
+  .card h3{margin:0 0 6px;font-size:1.02rem}
+  details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:var(--bg)}
+  summary{cursor:pointer;font-weight:600}
+
+  /* Flashcard */
+  .flash{perspective:900px;max-width:460px;margin:16px auto}
+  .flip{position:relative;height:200px;transform-style:preserve-3d;transition:transform .5s;cursor:pointer}
+  .flip.on{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;border-radius:14px;border:2px solid var(--primary);background:var(--primary-soft);font-size:1.05rem}
+  .face.back{transform:rotateY(180deg);background:var(--card);border-color:var(--accent)}
+  .ctrl{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:10px}
+  .btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 16px;border-radius:10px;cursor:pointer;font-weight:600}
+  .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+  /* Kuis */
+  .q{font-weight:600;margin:10px 0}
+  .opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.98rem}
+  .opt:hover:not([disabled]){border-color:var(--primary)}
+  .opt.ok{background:color-mix(in srgb,var(--ok) 20%,transparent);border-color:var(--ok)}
+  .opt.bad{background:color-mix(in srgb,var(--bad) 20%,transparent);border-color:var(--bad)}
+  .explain{margin-top:8px;padding:10px 14px;border-radius:10px;background:var(--primary-soft);font-size:.93rem}
+  .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:10px}
+  .bar div{height:100%;background:var(--primary);width:0;transition:.3s}
+  .score{font-size:1.4rem;font-weight:700;text-align:center;margin:12px 0}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:24px}
+  .note{background:color-mix(in srgb,var(--accent) 15%,transparent);border-radius:10px;padding:10px 14px;font-size:.9rem;margin-top:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏛️ Struktur Organisasi Ombudsman RI</h1>
+  <p>Belajar interaktif: klik bagan, balik kartu, lalu uji pemahamanmu.</p>
+</header>
+
+<main>
+  <nav class="tabs" role="tablist">
+    <button class="active" data-tab="bagan">Bagan</button>
+    <button data-tab="dasar">Dasar &amp; Fungsi</button>
+    <button data-tab="flash">Flashcard</button>
+    <button data-tab="kuis">Kuis</button>
+  </nav>
+
+  <!-- BAGAN -->
+  <section id="bagan" class="panel active">
+    <h2>Bagan Organisasi</h2>
+    <p class="hint">Klik kotak mana pun untuk melihat penjelasannya.</p>
+    <div class="chart" id="chart"></div>
+    <div class="detail" id="detail"></div>
+    <div class="note">Catatan: bagan ini disederhanakan untuk belajar. Nama dan jumlah unit kerja (misalnya keasistenan) bisa berubah mengikuti peraturan internal Ombudsman. Cek <strong>ombudsman.go.id</strong> untuk versi terbaru.</div>
+  </section>
+
+  <!-- DASAR -->
+  <section id="dasar" class="panel">
+    <h2>Dasar Hukum &amp; Fungsi</h2>
+    <div class="grid">
+      <div class="card"><h3>📜 Dasar hukum</h3>Undang-Undang Nomor 37 Tahun 2008 tentang Ombudsman Republik Indonesia.</div>
+      <div class="card"><h3>🧭 Sifat lembaga</h3>Lembaga negara yang mandiri dan tidak memiliki hubungan organik dengan lembaga negara dan instansi pemerintah lainnya, serta bebas dari campur tangan kekuasaan lain.</div>
+      <div class="card"><h3>🎯 Fokus</h3>Mengawasi penyelenggaraan pelayanan publik, baik oleh penyelenggara negara/pemerintahan maupun badan swasta atau perorangan yang diberi tugas pelayanan publik tertentu.</div>
+      <div class="card"><h3>⚖️ Objek pengawasan</h3>Maladministrasi, yaitu perilaku atau perbuatan melawan hukum, melampaui wewenang, atau kelalaian dalam pelayanan publik.</div>
+    </div>
+    <h3>Pertanyaan umum</h3>
+    <details><summary>Bagaimana pimpinan Ombudsman dipilih?</summary>
+      <p>Ketua, Wakil Ketua, dan Anggota dipilih melalui proses seleksi, lalu dipilih oleh DPR dan ditetapkan dengan Keputusan Presiden.</p></details>
+    <details><summary>Berapa jumlah dan masa jabatannya?</summary>
+      <p>Ombudsman terdiri atas Ketua, Wakil Ketua, dan Anggota dengan jumlah keseluruhan 9 orang. Masa jabatannya 5 tahun dan dapat dipilih kembali hanya untuk satu kali masa jabatan berikutnya.</p></details>
+    <details><summary>Apa bedanya dengan pengadilan?</summary>
+      <p>Ombudsman tidak memutus perkara seperti pengadilan. Ombudsman memeriksa laporan maladministrasi dan menerbitkan rekomendasi kepada terlapor dan atasannya.</p></details>
+    <details><summary>Apakah ada perwakilan di daerah?</summary>
+      <p>Ya. Ombudsman dapat membentuk perwakilan di provinsi dan/atau kabupaten/kota agar pengawasan dan penerimaan laporan menjangkau daerah.</p></details>
+    <details><summary>Apa yang bisa dilaporkan masyarakat?</summary>
+      <p>Dugaan maladministrasi dalam pelayanan publik, misalnya penundaan berlarut, penyimpangan prosedur, tidak memberikan pelayanan, permintaan imbalan, atau penyalahgunaan wewenang.</p></details>
+  </section>
+
+  <!-- FLASHCARD -->
+  <section id="flash" class="panel">
+    <h2>Flashcard</h2>
+    <p class="hint">Klik kartu untuk membaliknya.</p>
+    <div class="flash"><div class="flip" id="flip"><div class="face" id="fq"></div><div class="face back" id="fa"></div></div></div>
+    <div class="ctrl">
+      <button class="btn" id="prev">← Sebelumnya</button>
+      <span id="fcount" class="hint"></span>
+      <button class="btn primary" id="next">Berikutnya →</button>
+      <button class="btn" id="shuf">🔀 Acak</button>
+    </div>
+  </section>
+
+  <!-- KUIS -->
+  <section id="kuis" class="panel">
+    <h2>Kuis</h2>
+    <div class="bar"><div id="qbar"></div></div>
+    <div id="quiz"></div>
+  </section>
+
+  <footer>Materi belajar mandiri, bukan dokumen resmi Ombudsman RI.</footer>
+</main>
+
+<script>
+/* ---------- Data ---------- */
+const NODES = {
+  pimpinan:{title:"Pimpinan Ombudsman",sub:"Ketua + Wakil Ketua + Anggota",
+    body:"Ombudsman terdiri atas Ketua, Wakil Ketua, dan Anggota dengan total 9 orang. Mereka memegang kepemimpinan bersifat kolektif dan menetapkan kebijakan serta keputusan atas laporan.",
+    points:["Dipilih DPR, ditetapkan Keputusan Presiden","Masa jabatan 5 tahun, dapat dipilih kembali satu kali","Bekerja mandiri dan tidak berada di bawah instansi lain"]},
+  ketua:{title:"Ketua",sub:"Memimpin lembaga",
+    body:"Ketua memimpin Ombudsman dan mewakili lembaga dalam hubungan kelembagaan.",
+    points:["Dipilih dari dan oleh Anggota","Mewakili Ombudsman ke luar"]},
+  wakil:{title:"Wakil Ketua",sub:"Mendampingi Ketua",
+    body:"Wakil Ketua membantu Ketua dalam memimpin lembaga dan dapat menggantikan peran Ketua bila berhalangan.",
+    points:["Dipilih dari dan oleh Anggota","Bagian dari 9 orang pimpinan"]},
+  anggota:{title:"Anggota",sub:"Pelaksana pembidangan",
+    body:"Anggota ikut mengambil keputusan dalam rapat pleno dan umumnya membawahi bidang kerja tertentu, misalnya penanganan laporan, pencegahan, atau pengawasan wilayah tertentu.",
+    points:["Berperan dalam rapat pleno","Pembagian bidang diatur secara internal"]},
+  sekjen:{title:"Sekretariat Jenderal",sub:"Dipimpin Sekretaris Jenderal",
+    body:"Sekretariat Jenderal memberi dukungan administratif dan teknis operasional bagi Ombudsman, seperti perencanaan, keuangan, SDM, hukum, dan umum.",
+    points:["Dipimpin Sekretaris Jenderal","Mengelola administrasi, anggaran, dan sumber daya","Mendukung kerja pimpinan dan keasistenan"]},
+  asisten:{title:"Keasistenan",sub:"Unit teknis penanganan",
+    body:"Keasistenan adalah unit teknis yang membantu Anggota menjalankan tugas pokok Ombudsman. Pola umum fungsinya mencakup tahapan berikut.",
+    points:["Penerimaan dan verifikasi laporan","Pemeriksaan laporan","Resolusi dan monitoring tindak lanjut","Pencegahan maladministrasi","Investigasi atas prakarsa sendiri"]},
+  perwakilan:{title:"Perwakilan Daerah",sub:"Di provinsi / kab-kota",
+    body:"Perwakilan menjangkau masyarakat di daerah. Perwakilan menerima laporan, memeriksa, dan melakukan pencegahan dengan menyesuaikan kondisi wilayah.",
+    points:["Dipimpin Kepala Perwakilan","Dibantu para asisten","Dibentuk di provinsi dan/atau kab-kota"]}
+};
+const CHART = [
+  [["pimpinan"]],
+  [["ketua","wakil","anggota"]],
+  [["sekjen","asisten","perwakilan"]]
+];
+const CARDS = [
+  ["Dasar hukum Ombudsman RI?","UU Nomor 37 Tahun 2008"],
+  ["Berapa jumlah pimpinan Ombudsman (Ketua, Wakil, Anggota)?","9 orang"],
+  ["Berapa masa jabatan pimpinan Ombudsman?","5 tahun, dapat dipilih kembali satu kali"],
+  ["Siapa yang memilih pimpinan Ombudsman?","DPR, lalu ditetapkan dengan Keputusan Presiden"],
+  ["Apa itu maladministrasi?","Perilaku melawan hukum, melampaui wewenang, atau kelalaian dalam pelayanan publik"],
+  ["Siapa yang memimpin Sekretariat Jenderal?","Sekretaris Jenderal"],
+  ["Unit teknis yang membantu Anggota menangani laporan?","Keasistenan"],
+  ["Apa fungsi Perwakilan Ombudsman?","Menjangkau masyarakat di daerah (provinsi/kab-kota) untuk menerima dan menangani laporan"],
+  ["Apakah Ombudsman memutus perkara seperti pengadilan?","Tidak. Ombudsman menerbitkan rekomendasi atas hasil pemeriksaan"],
+  ["Sifat kelembagaan Ombudsman?","Mandiri dan bebas dari campur tangan kekuasaan lain"]
+];
+const QUIZ = [
+  {q:"Undang-undang yang mengatur Ombudsman RI adalah…",o:["UU 25/2009","UU 37/2008","UU 30/2014","UU 14/2008"],a:1,e:"UU Nomor 37 Tahun 2008 tentang Ombudsman Republik Indonesia."},
+  {q:"Berapa total anggota pimpinan Ombudsman (termasuk Ketua dan Wakil Ketua)?",o:["5","7","9","11"],a:2,e:"Jumlahnya 9 orang."},
+  {q:"Siapa yang memilih pimpinan Ombudsman?",o:["Presiden langsung","DPR","Mahkamah Agung","Menteri PANRB"],a:1,e:"DPR memilih, lalu ditetapkan dengan Keputusan Presiden."},
+  {q:"Masa jabatan pimpinan Ombudsman adalah…",o:["3 tahun","4 tahun","5 tahun","7 tahun"],a:2,e:"5 tahun dan dapat dipilih kembali hanya satu kali."},
+  {q:"Unit yang memberi dukungan administratif dipimpin oleh…",o:["Kepala Asisten","Sekretaris Jenderal","Kepala Perwakilan","Ketua"],a:1,e:"Sekretariat Jenderal dipimpin Sekretaris Jenderal."},
+  {q:"Objek utama pengawasan Ombudsman adalah…",o:["Tindak pidana korupsi","Sengketa perdata","Maladministrasi pelayanan publik","Pemilu"],a:2,e:"Ombudsman mengawasi pelayanan publik dan menangani maladministrasi."},
+  {q:"Hasil akhir pemeriksaan Ombudsman biasanya berupa…",o:["Putusan hukuman penjara","Rekomendasi","Vonis perdata","Peraturan menteri"],a:1,e:"Ombudsman menerbitkan rekomendasi, bukan putusan pengadilan."},
+  {q:"Yang bertugas menjangkau masyarakat di provinsi/kab-kota adalah…",o:["Sekretariat Jenderal","Perwakilan Daerah","Pimpinan pusat","DPRD"],a:1,e:"Perwakilan Daerah memperluas jangkauan pelayanan Ombudsman."}
+];
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('section.panel').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); document.getElementById(b.dataset.tab).classList.add('active');
+});
+
+/* ---------- Bagan ---------- */
+const chart=document.getElementById('chart'), detail=document.getElementById('detail');
+function show(id){
+  const n=NODES[id];
+  document.querySelectorAll('.node').forEach(x=>x.classList.toggle('sel',x.dataset.id===id));
+  detail.innerHTML=`<h3>${n.title}</h3><p>${n.body}</p><ul>${n.points.map(p=>`<li>${p}</li>`).join('')}</ul>`;
+}
+CHART.forEach((level,i)=>{
+  if(i>0){const l=document.createElement('div');l.className='vline';chart.appendChild(l);}
+  const row=document.createElement('div');row.className='row';
+  level[0].forEach(id=>{
+    const b=document.createElement('button');
+    b.className='node'+(i===2?' alt':'');b.dataset.id=id;
+    b.innerHTML=`${NODES[id].title}<small>${NODES[id].sub}</small>`;
+    b.onclick=()=>show(id);row.appendChild(b);
+  });
+  chart.appendChild(row);
+});
+show('pimpinan');
+
+/* ---------- Flashcard ---------- */
+let deck=[...CARDS],ci=0;
+const flip=document.getElementById('flip');
+function card(){
+  flip.classList.remove('on');
+  document.getElementById('fq').textContent=deck[ci][0];
+  document.getElementById('fa').textContent=deck[ci][1];
+  document.getElementById('fcount').textContent=`${ci+1} / ${deck.length}`;
+}
+flip.onclick=()=>flip.classList.toggle('on');
+document.getElementById('next').onclick=()=>{ci=(ci+1)%deck.length;card();};
+document.getElementById('prev').onclick=()=>{ci=(ci-1+deck.length)%deck.length;card();};
+document.getElementById('shuf').onclick=()=>{
+  for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]];}
+  ci=0;card();
+};
+card();
+
+/* ---------- Kuis ---------- */
+let qi=0,score=0;
+const quiz=document.getElementById('quiz'),qbar=document.getElementById('qbar');
+function renderQ(){
+  qbar.style.width=(qi/QUIZ.length*100)+'%';
+  if(qi>=QUIZ.length){
+    const pct=Math.round(score/QUIZ.length*100);
+    quiz.innerHTML=`<div class="score">Skor: ${score} / ${QUIZ.length} (${pct}%)</div>
+      <p style="text-align:center">${pct>=80?'Mantap! 🎉':pct>=50?'Lumayan, coba ulangi untuk lebih mantap.':'Yuk pelajari lagi bagan dan flashcard-nya.'}</p>
+      <div class="ctrl"><button class="btn primary" id="again">Ulangi</button></div>`;
+    document.getElementById('again').onclick=()=>{qi=0;score=0;renderQ();};
+    return;
+  }
+  const it=QUIZ[qi];
+  quiz.innerHTML=`<div class="hint">Soal ${qi+1} dari ${QUIZ.length}</div><div class="q">${it.q}</div>`+
+    it.o.map((t,i)=>`<button class="opt" data-i="${i}">${t}</button>`).join('')+`<div id="exp"></div>`;
+  quiz.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const pick=+b.dataset.i;
+    quiz.querySelectorAll('.opt').forEach(x=>{x.disabled=true;
+      if(+x.dataset.i===it.a)x.classList.add('ok');});
+    if(pick===it.a){score++;}else b.classList.add('bad');
+    document.getElementById('exp').innerHTML=`<div class="explain">${pick===it.a?'✅ Benar. ':'❌ Kurang tepat. '}${it.e}</div>
+      <div class="ctrl"><button class="btn primary" id="nq">${qi===QUIZ.length-1?'Lihat skor':'Lanjut →'}</button></div>`;
+    document.getElementById('nq').onclick=()=>{qi++;renderQ();};
+  });
+}
+renderQ();
+</script>
+</body>
+</html>
