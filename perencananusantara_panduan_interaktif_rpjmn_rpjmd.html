@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerencanaNusantara - Panduan Interaktif RPJMN & RPJMD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        govnavy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#080d1a',
+                        },
+                        devemerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        visiongold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar untuk tabel dan modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Animasi denyut lencana hitungan klik */
+        .counter-badge {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: badgePulse 0.45s ease-out;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.25); background-color: #d97706; color: #ffffff; }
+            100% { transform: scale(1); }
+        }
+        /* Sembunyikan scrollbar horizontal pada menu mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-devemerald-600 selection:text-white">
+
+    <!-- ================= HEADER & NAVBAR STICKY ================= -->
+    <header class="bg-gradient-to-r from-govnavy-950 via-govnavy-900 to-slate-900 text-white sticky top-0 z-40 shadow-xl border-b border-devemerald-600/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Identitas Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="trackActivity('Logo Beranda PerencanaNusantara', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-devemerald-600 to-visiongold-600 text-white flex items-center justify-center font-extrabold text-lg shadow-lg group-hover:scale-105 transition">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">PerencanaNusantara</h1>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-devemerald-600/30 text-visiongold-400 border border-devemerald-500/40 px-2 py-0.5 rounded-full">UU 25/2004</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 font-medium">Panduan Interaktif RPJMN, RPJMD & APBD</p>
+                    </div>
+                </div>
+
+                <!-- Navigasi Desktop (5 Tab Utama) -->
+                <nav class="hidden lg:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab 1: Beranda & Arsitektur SPPN', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-devemerald-600 text-white shadow">
+                        <i class="fa-solid fa-sitemap"></i>
+                        <span>Arsitektur SPPN</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-govnavy-950 text-visiongold-400 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 2: 9 Pilar & Instrumen', 'Navigasi Menu'); switchTab('pilar')" id="nav-pilar" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>9 Pilar & Instrumen</span>
+                        <span id="nav-count-pilar" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 3: Matriks Komparasi', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-table-columns"></i>
+                        <span>Matriks Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 4: Simulator RPJMD', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator RPJMD</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 5: Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis Evaluasi</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Tombol Statistik Belajar -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-visiongold-500 to-visiongold-600 hover:from-visiongold-400 hover:to-visiongold-500 text-govnavy-950 px-3.5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-govnavy-950 text-visiongold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+
+            <!-- Navigasi Mobile & Tablet -->
+            <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-white/10 text-xs font-semibold">
+                <button onclick="trackActivity('Tab 1: Beranda & Arsitektur SPPN', 'Navigasi Menu'); switchTab('beranda')" id="mob-nav-beranda" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-devemerald-600 text-white">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <span>Arsitektur SPPN</span>
+                    <span id="mob-count-beranda" class="text-[10px] bg-govnavy-950 text-visiongold-400 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 2: 9 Pilar & Instrumen', 'Navigasi Menu'); switchTab('pilar')" id="mob-nav-pilar" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>9 Pilar & Instrumen</span>
+                    <span id="mob-count-pilar" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 3: Matriks Komparasi', 'Navigasi Menu'); switchTab('komparasi')" id="mob-nav-komparasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Matriks Komparasi</span>
+                    <span id="mob-count-komparasi" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 4: Simulator RPJMD', 'Navigasi Menu'); switchTab('simulator')" id="mob-nav-simulator" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Simulator RPJMD</span>
+                    <span id="mob-count-simulator" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 5: Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="mob-nav-kuis" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Kuis Evaluasi</span>
+                    <span id="mob-count-kuis" class="text-[10px] bg-visiongold-500 text-govnavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- =====================================================================
+             TAB 1: BERANDA & ARSITEKTUR SPPN
+             ===================================================================== -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-govnavy-950 via-govnavy-900 to-devemerald-900 text-white p-7 sm:p-11 shadow-2xl border border-devemerald-500/30">
+                <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-landmark-flag text-[15rem] text-visiongold-400"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-visiongold-500/20 text-visiongold-400 border border-visiongold-500/40 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+                            Indonesia Emas 2045 • Sistem Perencanaan Pembangunan Nasional
+                        </span>
+                        <span class="bg-devemerald-600/30 text-emerald-200 border border-devemerald-400/30 px-3 py-1 rounded-full text-xs font-semibold">
+                            UU 25/2004 • UU 23/2014 • Permendagri 86/2017
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+                        Menyelaraskan Visi Nasional & Daerah: Dari RPJPN, RPJMN, RPJMD hingga APBN/APBD
+                    </h2>
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                        Pembangunan yang efektif membutuhkan benang merah yang kokoh antara rencana jangka panjang (<strong>RPJPN 2025–2045</strong>), rencana menengah nasional (<strong>RPJMN 2025–2029</strong>), hingga operasionalisasi di tingkat provinsi dan kabupaten/kota melalui <strong>RPJMD, Renstra, RKPD, dan APBD</strong> berbasis prinsip <em>Money Follows Program</em>.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Eksplorasi 9 Pilar Perencanaan', 'Navigasi Cepat'); switchTab('pilar')" class="bg-gradient-to-r from-devemerald-600 to-devemerald-500 hover:from-devemerald-500 hover:to-devemerald-400 text-white font-extrabold px-5 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center space-x-2">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                            <span>Pelajari 9 Pilar & Instrumen</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Jalankan Simulator RPJMD', 'Navigasi Cepat'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold px-5 py-3 rounded-xl text-xs sm:text-sm transition backdrop-blur-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-visiongold-400"></i>
+                            <span>Simulasi Kualitas RPJMD Bappeda</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 1: 3 KARTU HORIZON WAKTU PERENCANAAN -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-devemerald-600">Hierarki Temporal SPPN</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">3 Horizon Waktu Perencanaan Pembangunan</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap kartu horizon waktu untuk membuka rincian regulasi, muatan, & keterkaitannya</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Horizon 1: Jangka Panjang 20 Tahun -->
+                    <div onclick="openHorizonModal('panjang')" class="bg-white p-6 rounded-2xl border-2 border-slate-200/90 hover:border-visiongold-600 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-visiongold-100 text-visiongold-700 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-binoculars"></i>
+                                </div>
+                                <span id="badge-horizon-panjang" class="counter-badge bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-visiongold-600">Horizon 1 • 20 Tahun (2025–2045)</span>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-visiongold-600 transition">Jangka Panjang: RPJPN & RPJPD</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Dokumen arah kebijakan makro lintas generasi menuju <strong>Indonesia Emas 2045</strong> (Negara Nusantara Berdaulat, Maju, dan Berkelanjutan).
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-slate-600 bg-visiongold-50/70 p-3 rounded-xl border border-visiongold-200/70">
+                                <li><strong class="text-slate-800">• Nasional (RPJPN):</strong> Ditetapkan melalui Undang-Undang (UU No. 59 Tahun 2024).</li>
+                                <li><strong class="text-slate-800">• Daerah (RPJPD):</strong> Ditetapkan melalui Peraturan Daerah (Perda) Provinsi/Kab/Kota.</li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-visiongold-600 group-hover:underline">
+                            <span>Buka Rincian RPJPN & RPJPD</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+
+                    <!-- Horizon 2: Jangka Menengah 5 Tahun -->
+                    <div onclick="openHorizonModal('menengah')" class="bg-white p-6 rounded-2xl border-2 border-slate-200/90 hover:border-devemerald-600 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-devemerald-100 text-devemerald-700 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-compass"></i>
+                                </div>
+                                <span id="badge-horizon-menengah" class="counter-badge bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-devemerald-600">Horizon 2 • 5 Tahun (Siklus Kepemimpinan)</span>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-devemerald-600 transition">Jangka Menengah: RPJMN, RPJMD & Renstra</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Penjabaran resmi <strong>Visi, Misi, dan Program Prioritas</strong> Presiden maupun Kepala Daerah terpilih selama 5 tahun masa jabatan.
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-slate-600 bg-devemerald-50/70 p-3 rounded-xl border border-devemerald-200/70">
+                                <li><strong class="text-slate-800">• RPJMN & RPJMD:</strong> Memuat strategi, kebijakan umum, kerangka ekonomi makro, & pagu indikatif.</li>
+                                <li><strong class="text-slate-800">• Renstra K/L & PD:</strong> Penjabaran teknis 5 tahunan di tiap Kementerian/OPD.</li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-devemerald-600 group-hover:underline">
+                            <span>Buka Rincian RPJMN, RPJMD & Renstra</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+
+                    <!-- Horizon 3: Jangka Pendek 1 Tahun -->
+                    <div onclick="openHorizonModal('pendek')" class="bg-white p-6 rounded-2xl border-2 border-slate-200/90 hover:border-govnavy-800 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-slate-200 text-govnavy-900 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <span id="badge-horizon-pendek" class="counter-badge bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-govnavy-800">Horizon 3 • Tahunan (Operasional Anggaran)</span>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-govnavy-900 transition">Jangka Pendek: RKP, RKPD & Renja</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Dokumen operasional tahunan yang menjadi jembatan langsung menuju penyusunan <strong>RAPBN (Kemenkeu)</strong> dan <strong>KUA-PPAS / RAPBD</strong>.
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-slate-600 bg-slate-100 p-3 rounded-xl border border-slate-200">
+                                <li><strong class="text-slate-800">• RKP & RKPD:</strong> Memuat tema tahunan, prioritas pembangunan, & kerangka pendanaan.</li>
+                                <li><strong class="text-slate-800">• Renja K/L & PD:</strong> Rincian sub-kegiatan, lokasi, target, dan pagu anggaran tahunan.</li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-govnavy-900 group-hover:underline">
+                            <span>Buka Rincian RKP, RKPD & Renja</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 2: VISUALISASI ALUR SINKRONISASI PERENCANAAN & PENGANGGARAN -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-devemerald-600">Siklus Tahunan Daerah (Permendagri 86/2017 & PP 12/2019)</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Alur Sinkronisasi Perencanaan & Penganggaran Daerah</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap tahapan di bawah ini (Tahap 1 s.d. Tahap 6) untuk melihat jadwal regulasi, aktor utama, & produk keluarannya.</p>
+                    </div>
+                    <span class="text-[11px] font-bold bg-visiongold-100 text-visiongold-700 px-3 py-1 rounded-full border border-visiongold-200 self-start sm:self-auto">
+                        Januari – Desember (Tahun n-1)
+                    </span>
+                </div>
+
+                <!-- 6 Tahapan Alur Sinkronisasi (Grid Interaktif) -->
+                <div id="sync-flow-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN 3: 3 MODUL KONSEP KUNCI SPPN -->
+            <div class="space-y-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-visiongold-600">Fondasi Metodologi & Regulasi</span>
+                    <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">3 Konsep Kunci Perencanaan Pembangunan</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Konsep (a): 4 Pendekatan Perencanaan SPPN -->
+                    <div onclick="openConceptModal('pendekatan')" class="bg-gradient-to-br from-govnavy-950 to-govnavy-900 text-white p-6 rounded-2xl border border-devemerald-500/30 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-devemerald-600/30 text-emerald-300 border border-devemerald-500/40 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Konsep Kunci (a)</span>
+                                <span id="badge-concept-pendekatan" class="counter-badge bg-visiongold-400 text-govnavy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <h4 class="font-extrabold text-lg text-white group-hover:text-visiongold-400 transition">4 Pendekatan Perencanaan SPPN</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Perencanaan pembangunan di Indonesia memadukan 4 pendekatan wajib secara simultan: <strong>Politik, Teknokratik, Partisipatif, serta Atas-Bawah (Top-Down) & Bawah-Atas (Bottom-Up)</strong>.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-visiongold-400 group-hover:underline">
+                            <span>Pelajari Detail 4 Pendekatan</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Konsep (b): Logika Cascading Kinerja / Pohon Kinerja -->
+                    <div onclick="openConceptModal('cascading')" class="bg-gradient-to-br from-devemerald-900 to-govnavy-950 text-white p-6 rounded-2xl border border-devemerald-400/30 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-visiongold-500/20 text-visiongold-300 border border-visiongold-400/40 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Konsep Kunci (b)</span>
+                                <span id="badge-concept-cascading" class="counter-badge bg-visiongold-400 text-govnavy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <h4 class="font-extrabold text-lg text-white group-hover:text-emerald-300 transition">Logika Cascading & Pohon Kinerja</h4>
+                            <p class="text-xs text-slate-200 leading-relaxed">
+                                Penurunan kinerja logis mulai dari <strong>Visi → Misi → Tujuan → Sasaran → Program → Kegiatan → Sub-Kegiatan</strong> untuk mewujudkan prinsip anggaran <em>Money Follows Program</em>.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-emerald-300 group-hover:underline">
+                            <span>Buka Struktur Pohon Kinerja</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Konsep (c): Timeline & Batas Waktu Penyusunan RPJMD -->
+                    <div onclick="openConceptModal('timeline')" class="bg-gradient-to-br from-slate-900 to-govnavy-950 text-white p-6 rounded-2xl border border-visiongold-500/30 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-rose-500/20 text-rose-300 border border-rose-400/40 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Konsep Kunci (c)</span>
+                                <span id="badge-concept-timeline" class="counter-badge bg-visiongold-400 text-govnavy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <h4 class="font-extrabold text-lg text-white group-hover:text-visiongold-400 transition">Timeline & Batas Waktu RPJMD (6 Bulan)</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Sesuai Pasal 264 UU 23/2014, Perda RPJMD wajib ditetapkan <strong>paling lama 6 (enam) bulan setelah Kepala Daerah dilantik</strong> melalui tahapan Ranwal, Musrenbang, & Evaluasi.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-visiongold-400 group-hover:underline">
+                            <span>Lihat Jadwal Kritis 6 Bulan</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 2: KATALOG 9 PILAR & INSTRUMEN RPJMN/RPJMD
+             ===================================================================== -->
+        <section id="sec-pilar" class="tab-content hidden space-y-6">
+            <!-- Header & Filter Pencarian -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-devemerald-600">Katalog Dokumen & Instrumen Teknokratik</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">9 Pilar & Instrumen Kunci RPJMN / RPJMD</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap kartu untuk mempelajari dasar hukum, substansi utama, tantangan implementasi, dan tips praktis penyusunannya.</p>
+                    </div>
+                    <!-- Filter Kategori & Search -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="pilar-cat-filter" onchange="trackActivity('Filter Kategori Pilar', 'Katalog 9 Pilar'); renderPilarsGrid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-devemerald-600">
+                            <option value="all">Semua Kategori (9 Pilar)</option>
+                            <option value="Makro & Regulasi">Makro & Regulasi</option>
+                            <option value="Teknokratik & Indikator">Teknokratik & Indikator</option>
+                            <option value="Penganggaran & Evaluasi">Penganggaran & Evaluasi</option>
+                        </select>
+                        <div class="relative sm:w-56">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="pilar-search" oninput="renderPilarsGrid()" placeholder="Cari instrumen, KLHS, SIPD..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-devemerald-600 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 9 Kartu Pilar -->
+            <div id="pilars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 3: MATRIKS KOMPARASI DOKUMEN PERENCANAAN
+             ===================================================================== -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-visiongold-600">Analisis Perbandingan Dokumen</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Matriks Komparasi Dokumen Perencanaan & Penganggaran</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih 2 hingga 3 dokumen di bawah ini untuk menyandingkan dasar hukum, horizon waktu, produk hukum, pejabat penetap, dan keterkaitan anggarannya.</p>
+                    </div>
+                    <!-- Toggle 2 vs 3 Dokumen -->
+                    <div class="flex items-center space-x-2 bg-slate-100 p-1 rounded-xl self-start sm:self-auto">
+                        <button onclick="setCompareColumnMode(2)" id="btn-mode-2" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-govnavy-900 text-white transition">2 Dokumen</button>
+                        <button onclick="setCompareColumnMode(3)" id="btn-mode-3" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">3 Dokumen</button>
+                    </div>
+                </div>
+
+                <!-- Dropdown Pemilih Dokumen -->
+                <div id="compare-selectors-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Kolom 1 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-govnavy-900 uppercase">Dokumen Pembanding 1</label>
+                            <span id="badge-comp-1" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-1" onchange="handleCompareSelect(1)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-devemerald-600">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 2 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-devemerald-700 uppercase">Dokumen Pembanding 2</label>
+                            <span id="badge-comp-2" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-2" onchange="handleCompareSelect(2)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-devemerald-600">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 3 -->
+                    <div id="comp-box-3" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-visiongold-700 uppercase">Dokumen Pembanding 3</label>
+                            <span id="badge-comp-3" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-3" onchange="handleCompareSelect(3)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-devemerald-600">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabel Matriks Perbandingan -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table id="compare-matrix-table" class="w-full text-left text-xs border-collapse">
+                        <!-- Di-render dinamis oleh JS -->
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 4: SIMULATOR PENYUSUNAN & PENYELARASAN RPJMD
+             ===================================================================== -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-devemerald-600">Simulasi Teknokratik Bappeda</span>
+                        <h3 class="font-extrabold text-slate-900 text-2xl">Simulator Penyusunan & Penyelarasan RPJMD</h3>
+                        <p class="text-xs text-slate-500 mt-1">Geser 5 parameter kebijakan Bappeda di bawah untuk memproyeksikan Skor Kualitas RPJMD, Status Evaluasi Kemendagri/Gubernur, & Indeks Efektivitas APBD.</p>
+                    </div>
+                    <span id="badge-simulator-count" class="counter-badge bg-devemerald-100 text-devemerald-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-devemerald-200 self-start sm:self-auto">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 5 Sliders Kebijakan Bappeda (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">1. Keselarasan Prioritas Nasional RPJMN (%)</label>
+                                <span id="val-sim-1" class="font-mono font-extrabold text-devemerald-700 bg-white px-2.5 py-0.5 rounded border">75%</span>
+                            </div>
+                            <input type="range" id="sim-slider-1" min="0" max="100" value="75" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Keselarasan Prioritas RPJMN', 'Simulator RPJMD'); updateSimulatorPreview()" class="w-full accent-devemerald-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Kesesuaian sasaran makro daerah dengan 8 Asta Cita / Prioritas Nasional dalam RPJMN 2025–2029 serta RPJPD.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">2. Kualitas Cascading Pohon Kinerja Teknokratik (%)</label>
+                                <span id="val-sim-2" class="font-mono font-extrabold text-devemerald-700 bg-white px-2.5 py-0.5 rounded border">65%</span>
+                            </div>
+                            <input type="range" id="sim-slider-2" min="0" max="100" value="65" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Cascading Pohon Kinerja', 'Simulator RPJMD'); updateSimulatorPreview()" class="w-full accent-devemerald-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Ketajaman indikator kinerja utama (IKU) berorientasi outcome/impact (bukan sekadar output administratif) dari Visi Misi ke Sub-Kegiatan.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">3. Alokasi Anggaran Money Follows Program (%)</label>
+                                <span id="val-sim-3" class="font-mono font-extrabold text-visiongold-700 bg-white px-2.5 py-0.5 rounded border">60%</span>
+                            </div>
+                            <input type="range" id="sim-slider-3" min="0" max="100" value="60" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Money Follows Program', 'Simulator RPJMD'); updateSimulatorPreview()" class="w-full accent-visiongold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Proporsi belanja APBD yang difokuskan pada program prioritas unggulan dibandingkan belanja rutin/operasional yang tersebar merata tanpa dampak.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">4. Validasi Partisipatif Musrenbang & SIPD-RI (%)</label>
+                                <span id="val-sim-4" class="font-mono font-extrabold text-visiongold-700 bg-white px-2.5 py-0.5 rounded border">70%</span>
+                            </div>
+                            <input type="range" id="sim-slider-4" min="0" max="100" value="70" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Validasi Musrenbang & SIPD', 'Simulator RPJMD'); updateSimulatorPreview()" class="w-full accent-visiongold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Keterpaduan usulan masyarakat (Musrenbang) dan Pokok-Pokok Pikiran (Pokir) DPRD yang terverifikasi kamus usulan di SIPD-RI.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">5. Integrasi KLHS & TPB/SDGs (%)</label>
+                                <span id="val-sim-5" class="font-mono font-extrabold text-devemerald-700 bg-white px-2.5 py-0.5 rounded border">68%</span>
+                            </div>
+                            <input type="range" id="sim-slider-5" min="0" max="100" value="68" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Integrasi KLHS & SDGs', 'Simulator RPJMD'); updateSimulatorPreview()" class="w-full accent-devemerald-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Pengarusutamaan Kajian Lingkungan Hidup Strategis (daya dukung & daya tampung lingkungan) serta target TPB/SDGs daerah.</p>
+                        </div>
+                    </div>
+
+                    <!-- Output Dashboard Panel (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-govnavy-950 via-govnavy-900 to-devemerald-950 text-white rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl border border-devemerald-500/30">
+                        <div class="space-y-1 border-b border-white/10 pb-3">
+                            <span class="text-[11px] font-mono text-visiongold-400 uppercase tracking-widest font-bold">Proyeksi Evaluasi Rancangan Akhir</span>
+                            <h4 class="text-xl font-extrabold">Dashboard Kualitas RPJMD</h4>
+                        </div>
+
+                        <!-- Score Big Box -->
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 text-center space-y-1">
+                            <span class="text-xs text-slate-300 block">Skor Kualitas Dokumen RPJMD (0 – 100)</span>
+                            <strong id="sim-res-score" class="text-5xl font-mono font-extrabold text-visiongold-400">67.6</strong>
+                            <div class="pt-2">
+                                <span id="sim-res-eval-badge" class="bg-visiongold-500 text-govnavy-950 font-extrabold text-xs px-3.5 py-1 rounded-full">
+                                    Lulus dengan Catatan Penyempurnaan
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-metrics -->
+                        <div class="space-y-2.5 text-xs">
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Indeks Efektivitas APBD:</span>
+                                <span id="sim-res-apbd" class="font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-visiongold-500/20 text-visiongold-300 border border-visiongold-500/40">66.0% (Moderat)</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Konsistensi SAKIP & Renstra PD:</span>
+                                <span id="sim-res-sakip" class="font-bold text-emerald-300">Predikat B (Baik)</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 space-y-1">
+                                <span class="text-slate-400 text-[11px] block">Hasil Evaluasi Kemendagri (Prov) / Gubernur (Kab/Kota):</span>
+                                <strong id="sim-res-status-text" class="text-visiongold-300 block">Disetujui dengan Syarat Penajaman Cascading & Pagu Indikatif</strong>
+                            </div>
+                        </div>
+
+                        <!-- Rekomendasi Teknokratik -->
+                        <div class="bg-devemerald-600/15 border border-devemerald-400/30 p-4 rounded-2xl space-y-1.5 text-xs">
+                            <h5 class="font-bold text-visiongold-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                <span>Rekomendasi Teknokratik Bappeda:</span>
+                            </h5>
+                            <p id="sim-res-recommendation" class="text-slate-200 leading-relaxed">
+                                Perkuat alokasi belanja berbasis Money Follows Program agar pagu indikatif OPD terkonsentrasi pada pencapaian IKU kepala daerah dan tidak terpecah ke belanja rutin non-prioritas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 5: KUIS EVALUASI 5 SOAL STUDI KASUS
+             ===================================================================== -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-govnavy-900 text-visiongold-400 flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-xl">Kuis Evaluasi Perencanaan (5 Soal Studi Kasus)</h3>
+                            <p class="text-xs text-slate-500">Uji pemahaman Anda mengenai batas waktu Perda RPJMD, Money Follows Program, SIPD-RI, KLHS, dan evaluasi RPJMD.</p>
+                        </div>
+                    </div>
+                    <span id="badge-quiz-count" class="counter-badge bg-slate-100 text-slate-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto">
+                        👁️ 0x soal dijawab
+                    </span>
+                </div>
+
+                <!-- Area Kuis Dinamis -->
+                <div id="quiz-container" class="max-w-3xl mx-auto">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-govnavy-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-devemerald-600 text-white flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                </div>
+                <span class="font-bold text-slate-200">PerencanaNusantara • Platform Edukasi Perencanaan Pembangunan</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Referensi: UU No. 25/2004 (SPPN), UU No. 23/2014 (Pemda), UU No. 59/2024 (RPJPN 2025-2045), & Permendagri No. 86/2017.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ACTION BUTTON (FAB) ANALITIK ================= -->
+    <button onclick="openAnalyticsModal(); trackActivity('Tombol Melayang Statistik Belajar', 'Navigasi Analitik')" class="fixed bottom-6 right-6 bg-gradient-to-r from-govnavy-950 via-govnavy-900 to-devemerald-800 text-white p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-visiongold-400/60">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-visiongold-400"></i>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-devemerald-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-visiongold-400">Panel Analitik</span>
+            <span id="fab-total-clicks" class="font-extrabold text-sm font-mono leading-none text-white">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ================= MODAL 1: PANEL ANALITIK AKTIVITAS BELAJAR ================= -->
+    <div id="modal-analytics" onclick="if(event.target===this) closeAnalyticsModal()" class="fixed inset-0 bg-govnavy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-govnavy-950 to-slate-900 text-white p-5 flex items-center justify-between border-b border-devemerald-600/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-visiongold-500 text-govnavy-950 flex items-center justify-center font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-slate-300">Rekapitulasi interaksi & progres eksplorasi RPJPN, RPJMN, RPJMD & APBD</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- 3 Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Total Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-devemerald-600 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Tersimpan di browser Anda</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-sm text-slate-800 font-extrabold block truncate mt-1">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Topik paling sering dipelajari</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Persentase Cakupan Materi</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <div class="flex-grow bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-devemerald-600 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-extrabold text-devemerald-700 font-mono">0%</span>
+                        </div>
+                        <span id="modal-coverage-detail" class="text-[11px] text-slate-400 block mt-1">0 dari 21 modul inti dipelajari</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top 5 Popular -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Doughnut Chart -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-extrabold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Interaksi Per Kategori</h4>
+                        <div class="w-48 h-48 relative flex items-center justify-center">
+                            <canvas id="analyticsChart"></canvas>
+                            <p id="chart-empty-msg" class="text-xs text-slate-400 italic text-center hidden">Belum ada data interaksi untuk grafik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Sub-Materi -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Terpopuler</h4>
+                        <div id="top-5-list" class="space-y-2 text-xs">
+                            <!-- Di-render dinamis -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline Custom Reset Confirmation Banner (Tanpa native confirm) -->
+                <div id="reset-confirm-box" class="hidden bg-rose-50 border border-rose-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2.5 text-rose-900 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600 text-base"></i>
+                        <span><strong>Konfirmasi Reset:</strong> Yakin ingin menghapus seluruh riwayat hitungan belajar Anda?</span>
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-auto">
+                        <button onclick="executeClearAnalytics()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Ya, Hapus Semua</button>
+                        <button onclick="toggleResetConfirm(false)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Batal</button>
+                    </div>
+                </div>
+
+                <!-- Activity Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="toggleResetConfirm(true)" class="text-rose-600 hover:text-rose-700 text-xs font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-52 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-800 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Waktu Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Di-render dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-export text-devemerald-600"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-govnavy-900 hover:bg-govnavy-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: DETAIL MATERI / PILAR / KONSEP ================= -->
+    <div id="modal-detail" onclick="if(event.target===this) closeDetailModal()" class="fixed inset-0 bg-govnavy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-govnavy-950 to-slate-900">
+                <!-- Di-render dinamis -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar flex-grow">
+                <!-- Di-render dinamis -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeDetailModal()" class="bg-govnavy-900 hover:bg-govnavy-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Detail
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed top-20 right-4 sm:right-6 z-50 space-y-2 pointer-events-none max-w-xs w-full"></div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. DATASET LENGKAP: HORIZON, ALUR SINKRONISASI, KONSEP, 9 PILAR, KOMPARASI, KUIS
+         * ------------------------------------------------------------------- */
+
+        // Data 3 Horizon Waktu Perencanaan
+        const HORIZONS_DATA = {
+            panjang: {
+                key: 'Horizon 1: Jangka Panjang 20 Tahun (RPJPN & RPJPD)',
+                badgeId: 'badge-horizon-panjang',
+                color: 'from-visiongold-700 to-govnavy-950',
+                icon: 'fa-binoculars',
+                subtitle: 'Pasal 4 & Pasal 5 UU No. 25 Tahun 2004 • UU No. 59 Tahun 2024',
+                sections: [
+                    {
+                        title: '1. RPJPN (Rencana Pembangunan Jangka Panjang Nasional 2025–2045)',
+                        color: 'bg-visiongold-50 border-visiongold-200 text-visiongold-950',
+                        items: [
+                            'Memuat visi, misi, dan arah pembangunan nasional selama 20 tahun untuk mewujudkan Indonesia Emas 2045 (Negara Nusantara Berdaulat, Maju, dan Berkelanjutan).',
+                            'Disusun oleh Kementerian PPN/Bappenas dan ditetapkan dengan Undang-Undang (UU No. 59 Tahun 2024).',
+                            'Dilaksanakan dalam 4 tahapan RPJMN masing-masing berjangka waktu 5 tahun.'
+                        ]
+                    },
+                    {
+                        title: '2. RPJPD (Rencana Pembangunan Jangka Panjang Daerah)',
+                        color: 'bg-slate-50 border-slate-200 text-slate-800',
+                        items: [
+                            'Penjabaran visi, misi, arah kebijakan, dan sasaran pokok pembangunan daerah selama 20 tahun dengan berpedoman pada RPJPN dan RTRW (Rencana Tata Ruang Wilayah).',
+                            'Disusun oleh Bappeda dan ditetapkan melalui Peraturan Daerah (Perda) Provinsi maupun Kabupaten/Kota.',
+                            'Menjadi pedoman wajib bagi seluruh calon Kepala Daerah dalam menyusun visi dan misi saat Pilkada.'
+                        ]
+                    }
+                ]
+            },
+            menengah: {
+                key: 'Horizon 2: Jangka Menengah 5 Tahun (RPJMN, RPJMD & Renstra)',
+                badgeId: 'badge-horizon-menengah',
+                color: 'from-devemerald-700 to-govnavy-950',
+                icon: 'fa-compass',
+                subtitle: 'Pasal 4 – 7 UU No. 25 Tahun 2004 • Pasal 263 – 264 UU No. 23 Tahun 2014',
+                sections: [
+                    {
+                        title: '1. RPJMN & RPJMD (5 Tahun Kepemimpinan Nasional/Daerah)',
+                        color: 'bg-devemerald-50 border-devemerald-200 text-devemerald-950',
+                        items: [
+                            'RPJMN (2025–2029) merupakan penjabaran visi, misi, dan program Presiden terpilih (Asta Cita) yang ditetapkan melalui Peraturan Presiden (Perpres) paling lambat 3 bulan setelah pelantikan.',
+                            'RPJMD merupakan penjabaran visi, misi, dan program Kepala Daerah terpilih yang memuat tujuan, sasaran, strategi, arah kebijakan, pembangunan daerah dan keuangan daerah, serta program Perangkat Daerah dan lintas Perangkat Daerah.',
+                            'Ditetapkan melalui Peraturan Daerah (Perda) paling lama 6 bulan setelah Kepala Daerah dilantik.'
+                        ]
+                    },
+                    {
+                        title: '2. Renstra K/L & Renstra Perangkat Daerah (5 Tahun Sektoral)',
+                        color: 'bg-teal-50 border-teal-200 text-teal-950',
+                        items: [
+                            'Renstra Kementerian/Lembaga berpedoman pada RPJMN; Renstra Perangkat Daerah (OPD) berpedoman pada RPJMD.',
+                            'Memuat tujuan, sasaran, program, dan kegiatan pembangunan dalam rangka pelaksanaan Urusan Pemerintahan Wajib dan/atau Pilihan sesuai tugas dan fungsi masing-masing OPD.',
+                            'Ditetapkan dengan Peraturan Kepala Daerah (Perkada) paling lambat 1 bulan setelah Perda RPJMD ditetapkan.'
+                        ]
+                    }
+                ]
+            },
+            pendek: {
+                key: 'Horizon 3: Jangka Pendek 1 Tahun (RKP, RKPD & Renja)',
+                badgeId: 'badge-horizon-pendek',
+                color: 'from-govnavy-800 to-govnavy-950',
+                icon: 'fa-calendar-check',
+                subtitle: 'Pasal 7 UU No. 25 Tahun 2004 • Permendagri No. 86 Tahun 2017',
+                sections: [
+                    {
+                        title: '1. RKP (Rencana Kerja Pemerintah) & RKPD (Rencana Kerja Pemerintah Daerah)',
+                        color: 'bg-slate-100 border-slate-300 text-slate-900',
+                        items: [
+                            'RKP merupakan penjabaran RPJMN untuk jangka waktu 1 tahun yang ditetapkan dengan Perpres pada bulan April/Mei tahun berjalan untuk tahun anggaran berikutnya.',
+                            'RKPD merupakan penjabaran dari RPJMD yang memuat rancangan kerangka ekonomi daerah, prioritas pembangunan daerah, serta rencana kerja dan pendanaan untuk jangka waktu 1 tahun dengan berpedoman pada RKP dan program strategis nasional.',
+                            'RKPD ditetapkan dengan Perkada (Pergub/Perbup/Perwali) paling lambat akhir bulan Mei (atau minggu ke-2 Juni) sebagai dasar penyusunan KUA-PPAS.'
+                        ]
+                    },
+                    {
+                        title: '2. Renja K/L & Renja Perangkat Daerah (Rencana Kerja Tahunan OPD)',
+                        color: 'bg-devemerald-50 border-devemerald-200 text-devemerald-950',
+                        items: [
+                            'Dokumen perencanaan Perangkat Daerah untuk periode 1 tahun yang memuat program, kegiatan, sub-kegiatan, lokasi, kelompok sasaran, indikator kinerja, dan pagu indikatif.',
+                            'Menjadi dasar langsung bagi OPD dalam menyusun Rencana Kerja dan Anggaran (RKA-SKPD).'
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Data 6 Tahapan Alur Sinkronisasi Perencanaan & Penganggaran Daerah
+        const SYNC_FLOW_DATA = [
+            {
+                step: 'Tahap 1 • Januari (Tahun n-1)',
+                title: 'Musrenbang Desa / Kelurahan',
+                icon: 'fa-people-group',
+                badgeColor: 'bg-devemerald-600 text-white',
+                summary: 'Penjaringan aspirasi partisipatif warga tingkat akar rumput untuk menyusun RKP Desa / usulan kelurahan ke kecamatan.',
+                actors: 'Kepala Desa/Lurah, BPD/LPM, Tokoh Masyarakat, Perwakilan Perempuan & Kelompok Rentan, Pendamping Desa.',
+                output: 'Berita Acara Musrenbang Desa/Kelurahan & Daftar Usulan Skala Prioritas diinput ke SIPD-RI.'
+            },
+            {
+                step: 'Tahap 2 • Februari (Tahun n-1)',
+                title: 'Musrenbang Kecamatan',
+                icon: 'fa-map-location-dot',
+                badgeColor: 'bg-devemerald-700 text-white',
+                summary: 'Penajaman, penyelarasan, dan klarifikasi usulan kegiatan pembangunan desa/kelurahan yang menjadi kewenangan daerah kabupaten/kota.',
+                actors: 'Camat, Delegasi Desa/Kelurahan, Anggota DPRD Dapil setempat, Bappeda, & Perwakilan OPD teknis.',
+                output: 'Daftar Prioritas Kegiatan Pembangunan Kecamatan per Urusan Pemerintahan yang terverifikasi.'
+            },
+            {
+                step: 'Tahap 3 • Februari – Maret',
+                title: 'Forum Perangkat Daerah / Lintas PD',
+                icon: 'fa-building-user',
+                badgeColor: 'bg-govnavy-800 text-white',
+                summary: 'Sinkronisasi hasil Musrenbang Kecamatan dan Pokok-Pokok Pikiran (Pokir) DPRD dengan Rancangan Renja Perangkat Daerah.',
+                actors: 'Kepala Perangkat Daerah (OPD), Bappeda, Delegasi Kecamatan, Pemangku Kepentingan Sektoral.',
+                output: 'Rancangan Renja Perangkat Daerah yang selaras dengan target kinerja Renstra & pagu indikatif.'
+            },
+            {
+                step: 'Tahap 4 • Maret – April (Kab/Kota & Prov)',
+                title: 'Musrenbang RKPD & Penetapan Perkada RKPD',
+                icon: 'fa-handshake-angle',
+                badgeColor: 'bg-govnavy-900 text-visiongold-400',
+                summary: 'Forum tertinggi penyepakatan prioritas pembangunan tahunan daerah sebelum RKPD ditetapkan dengan Peraturan Kepala Daerah.',
+                actors: 'Kepala Daerah, Bappeda, Seluruh Kepala OPD, DPRD, Kemenkeu/Bappenas (utk Prov), Akademisi, Dunia Usaha.',
+                output: 'Berita Acara Kesepakatan Musrenbang RKPD & Perkada tentang RKPD (paling lambat akhir Mei/awal Juni).'
+            },
+            {
+                step: 'Tahap 5 • Juli – Agustus (Tahun n-1)',
+                title: 'Penyusunan & Kesepakatan KUA-PPAS',
+                icon: 'fa-file-invoice-dollar',
+                badgeColor: 'bg-visiongold-600 text-white',
+                summary: 'Transisi dari dokumen perencanaan (RKPD) ke dokumen penganggaran (Kebijakan Umum APBD & Prioritas Plafon Anggaran Sementara).',
+                actors: 'TAPD (Tim Anggaran Pemerintah Daerah: Sekda, Bappeda, BPKAD) bersama Badan Anggaran (Banggar) DPRD.',
+                output: 'Nota Kesepakatan KUA dan PPAS antara Kepala Daerah dan Pimpinan DPRD (paling lambat minggu ke-2 Agustus).'
+            },
+            {
+                step: 'Tahap 6 • September – Desember (Tahun n-1)',
+                title: 'RKA-SKPD, RAPBD & Penetapan Perda APBD',
+                icon: 'fa-scale-balanced',
+                badgeColor: 'bg-visiongold-700 text-white',
+                summary: 'Penyusunan rincian belanja oleh OPD (RKA), pembahasan Raperda APBD, evaluasi Kemendagri/Gubernur, hingga penetapan Perda APBD.',
+                actors: 'Kepala Daerah, TAPD, Seluruh OPD, DPRD, serta Kemendagri (untuk APBD Prov) / Gubernur (untuk APBD Kab/Kota).',
+                output: 'Perda tentang APBD Tahun Anggaran Berkenaan (wajib disetujui bersama paling lambat 1 bulan sebelum tahun anggaran dimulai).'
+            }
+        ];
+
+        // Data 3 Modul Konsep Kunci SPPN
+        const CONCEPTS_DATA = {
+            pendekatan: {
+                key: 'Konsep (a): 4 Pendekatan Perencanaan SPPN',
+                badgeId: 'badge-concept-pendekatan',
+                color: 'from-govnavy-950 to-devemerald-900',
+                icon: 'fa-compass-drafting',
+                subtitle: 'Penjelasan Umum UU No. 25 Tahun 2004 & Pasal 7 Permendagri No. 86 Tahun 2017',
+                sections: [
+                    {
+                        title: '1. Pendekatan Politik',
+                        color: 'bg-visiongold-50 border-visiongold-200 text-visiongold-950',
+                        items: [
+                            'Memandang bahwa pemilihan Presiden / Kepala Daerah adalah proses penyusunan rencana, karena rakyat pemilih menentukan pilihannya berdasarkan program-program pembangunan yang ditawarkan masing-masing calon.',
+                            'Oleh karena itu, rencana pembangunan adalah penjabaran dari agenda-agenda pembangunan yang ditawarkan Presiden / Kepala Daerah pada saat kampanye ke dalam RPJMN / RPJMD.'
+                        ]
+                    },
+                    {
+                        title: '2. Pendekatan Teknokratik',
+                        color: 'bg-devemerald-50 border-devemerald-200 text-devemerald-950',
+                        items: [
+                            'Dilaksanakan dengan menggunakan metode dan kerangka berpikir ilmiah (berbasis data empiris, kajian risiko, proyeksi ekonomi makro, dan analisis akar masalah) untuk mencapai tujuan dan sasaran pembangunan.',
+                            'Diwujudkan melalui penyusunan Rancangan Teknokratik RPJMN/RPJMD oleh Bappenas/Bappeda sebelum pelantikan kepala daerah terpilih.'
+                        ]
+                    },
+                    {
+                        title: '3. Pendekatan Partisipatif',
+                        color: 'bg-slate-50 border-slate-200 text-slate-800',
+                        items: [
+                            'Dilaksanakan dengan melibatkan semua pemangku kepentingan (stakeholders) pembangunan melalui forum Musrenbang, konsultasi publik, dan penjaringan aspirasi kelompok rentan/disabilitas/perempuan.',
+                            'Bertujuan mendapatkan aspirasi dan menciptakan rasa memiliki (sense of ownership) masyarakat terhadap hasil pembangunan.'
+                        ]
+                    },
+                    {
+                        title: '4. Pendekatan Atas-Bawah (Top-Down) & Bawah-Atas (Bottom-Up)',
+                        color: 'bg-teal-50 border-teal-200 text-teal-950',
+                        items: [
+                            'Perencanaan Top-Down dan Bottom-Up dilaksanakan menurut jenjang pemerintahan (Pusat → Provinsi → Kabupaten/Kota → Kecamatan → Desa/Kelurahan).',
+                            'Rencana hasil proses atas-bawah dan bawah-atas diselaraskan melalui musyawarah yang dilaksanakan baik di tingkat Nasional, Provinsi, Kabupaten/Kota, Kecamatan, maupun Desa.'
+                        ]
+                    }
+                ]
+            },
+            cascading: {
+                key: 'Konsep (b): Logika Cascading Kinerja & Money Follows Program',
+                badgeId: 'badge-concept-cascading',
+                color: 'from-devemerald-800 to-govnavy-950',
+                icon: 'fa-diagram-project',
+                subtitle: 'Permendagri No. 86 Tahun 2017 & Permendagri No. 90 Tahun 2019 (Klasifikasi Kodefikasi)',
+                sections: [
+                    {
+                        title: 'Alur Pohon Kinerja (Logical Framework / Cascading)',
+                        color: 'bg-devemerald-50 border-devemerald-200 text-devemerald-950',
+                        items: [
+                            'Level 1 — VISI & MISI (RPJMD): Rumusan umum keadaan yang diinginkan pada akhir periode perencanaan (5 tahun) dan upaya umum mewujudkannya.',
+                            'Level 2 — TUJUAN (RPJMD): Sesuatu kondisi yang akan dicapai atau dihasilkan dalam jangka waktu 5 tahun dengan indikator dampak (Impact).',
+                            'Level 3 — SASARAN (RPJMD & Renstra PD): Rumusan kondisi yang menggambarkan tercapainya tujuan, berupa hasil pembangunan daerah/perangkat daerah yang diperoleh dari pencapaian hasil (Outcome) program.',
+                            'Level 4 — PROGRAM (RPJMD & Renstra PD): Instrumen kebijakan yang berisi satu atau lebih kegiatan yang dilaksanakan oleh Perangkat Daerah untuk mencapai sasaran dan tujuan dengan indikator hasil (Outcome).',
+                            'Level 5 — KEGIATAN & SUB-KEGIATAN (Renstra, RKPD, Renja, RKA): Bagian dari program yang dilaksanakan oleh satu atau beberapa unit kerja pada OPD dengan indikator keluaran (Output) yang terukur.'
+                        ]
+                    },
+                    {
+                        title: 'Prinsip Money Follows Program (Bukan Money Follows Function)',
+                        color: 'bg-visiongold-50 border-visiongold-200 text-visiongold-950',
+                        items: [
+                            'Pendekatan penganggaran yang memastikan bahwa anggaran hanya dialokasikan pada program/kegiatan yang benar-benar terbukti berkontribusi langsung terhadap pencapaian prioritas pembangunan (IKU).',
+                            'Menghilangkan praktik lama "bagi-bagi anggaran merata ke semua unit kerja" (money follows function) tanpa melihat keterkaitan dengan target kinerja utama daerah.'
+                        ]
+                    }
+                ]
+            },
+            timeline: {
+                key: 'Konsep (c): Timeline & Batas Waktu Penyusunan RPJMD (6 Bulan)',
+                badgeId: 'badge-concept-timeline',
+                color: 'from-slate-800 to-govnavy-950',
+                icon: 'fa-hourglass-half',
+                subtitle: 'Pasal 264 UU No. 23 Tahun 2014 & Pasal 41–71 Permendagri No. 86 Tahun 2017',
+                sections: [
+                    {
+                        title: 'Tahapan Kritis 6 Bulan Pasca-Pelantikan Kepala Daerah',
+                        color: 'bg-rose-50 border-rose-200 text-rose-950',
+                        items: [
+                            'Sebelum Pelantikan: Bappeda menyusun Rancangan Teknokratik RPJMD berbasis data dan capaian RPJMD sebelumnya.',
+                            'Minggu ke-1 s.d. Bulan ke-1: Pembentukan Tim Penyusun RPJMD & penyusunan Rancangan Awal (Ranwal) RPJMD dengan memadukan visi-misi Kepala Daerah terpilih.',
+                            'Paling Lambat 40 Hari Sejak Pelantikan: Penyampaian Ranwal RPJMD kepada DPRD untuk dibahas dan disepakati dalam Nota Kesepakatan bersama DPRD.',
+                            'Bulan ke-2 s.d. Bulan ke-3: Konsultasi Ranwal RPJMD ke Kemendagri (untuk Provinsi) atau Gubernur (untuk Kab/Kota), dilanjutkan penyusunan Rancangan RPJMD.',
+                            'Paling Lambat 75 Hari Sejak Pelantikan: Pelaksanaan Musrenbang RPJMD bersama seluruh pemangku kepentingan daerah.',
+                            'Bulan ke-4 s.d. Bulan ke-5: Perumusan Rancangan Akhir RPJMD, reviu APIP (Inspektorat), penyampaian Raperda RPJMD ke DPRD untuk persetujuan bersama, dan Evaluasi Raperda ke Kemendagri/Gubernur.',
+                            'BATAS MAKSIMAL 6 BULAN SEJAK PELANTIKAN: Penetapan Perda tentang RPJMD. Keterlambatan melewati 6 bulan dikenai sanksi administratif berupa tidak dibayarkannya hak-hak keuangan Kepala Daerah dan DPRD selama 3 bulan (Pasal 266 UU 23/2014).'
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Data 9 Pilar & Instrumen RPJMN/RPJMD
+        const PILARS_DATA = [
+            {
+                id: 'rpjpn_rpjmn',
+                name: '1. RPJPN 2025–2045 & RPJMN 2025–2029',
+                category: 'Makro & Regulasi',
+                icon: 'fa-flag',
+                color: 'from-govnavy-900 to-devemerald-800',
+                shortDesc: 'Kompas utama pembangunan nasional jangka panjang 20 tahun menuju Indonesia Emas 2045 dan tahap pertama RPJMN 2025–2029.',
+                legalBasis: 'UU No. 25 Tahun 2004 tentang SPPN, UU No. 59 Tahun 2024 tentang RPJPN 2025–2045, dan Perpres tentang RPJMN 2025–2029.',
+                coreSubstance: 'Memuat 8 Misi (Asta Cita), 17 Arah Pembangunan, dan 45 Indikator Utama Pembangunan (IUP) yang mencakup transformasi sosial, ekonomi, tata kelola, supremasi hukum, ketahanan sosial budaya & ekologi, serta pembangunan kewilayahan.',
+                challenges: 'Menyelaraskan target makro nasional (seperti pertumbuhan ekonomi tinggi, penurunan kemiskinan ekstrem menuju 0%, dan penurunan emisi GRK) agar diterjemahkan secara kontekstual sesuai potensi tiap provinsi/kabupaten.',
+                practicalTips: 'Saat menyusun RPJMD, petakan matriks penyelarasan (alignment matrix) antara sasaran RPJMD dengan sasaran pokok RPJPN/RPJMN untuk wilayah pulau/provinsi Anda agar mudah memperoleh dukungan pendanaan DAK maupun Dekonsentrasi.'
+            },
+            {
+                id: 'rpjmd',
+                name: '2. RPJMD Provinsi & Kabupaten/Kota',
+                category: 'Makro & Regulasi',
+                icon: 'fa-landmark',
+                color: 'from-devemerald-700 to-govnavy-950',
+                shortDesc: 'Dokumen perencanaan pembangunan daerah untuk periode 5 tahun sebagai penjabaran visi, misi, dan program Kepala Daerah terpilih.',
+                legalBasis: 'Pasal 263–266 UU No. 23 Tahun 2014 tentang Pemerintahan Daerah & Permendagri No. 86 Tahun 2017.',
+                coreSubstance: 'Berisi gambaran umum kondisi daerah, gambaran pengelolaan keuangan daerah & kerangka pendanaan, permasalahan & isu strategis daerah, visi-misi-tujuan-sasaran, strategi-arah kebijakan, serta kerangka pendanaan program perangkat daerah.',
+                challenges: 'Janji politik kampanye sering kali terlalu luas atau kurang terukur secara teknokratik, serta tekanan waktu penetapan Perda yang ketat (maksimal 6 bulan pasca pelantikan).',
+                practicalTips: 'Gunakan Rancangan Teknokratik Bappeda sebagai fondasi data, lalu terjemahkan janji politik Kepala Daerah ke dalam rumusan Sasaran dan Program Prioritas yang memiliki baseline data jelas serta pagu indikatif yang realistis.'
+            },
+            {
+                id: 'renstra_renja',
+                name: '3. Renstra & Renja Perangkat Daerah',
+                category: 'Teknokratik & Indikator',
+                icon: 'fa-building-columns',
+                color: 'from-teal-700 to-govnavy-950',
+                shortDesc: 'Instrumen perencanaan sektoral 5 tahunan (Renstra) dan tahunan (Renja) yang menjadi kompas kerja setiap OPD/Dinas.',
+                legalBasis: 'Pasal 272–273 UU No. 23 Tahun 2014 & Bab IV Permendagri No. 86 Tahun 2017.',
+                coreSubstance: 'Menjabarkan program prioritas RPJMD ke dalam matriks rencana program, kegiatan, sub-kegiatan (sesuai kodefikasi Permendagri 90/2019 & pemutakhirannya), indikator kinerja, kelompok sasaran, dan pagu indikatif per tahun.',
+                challenges: 'Masih adanya silo sektoral (ego antar-OPD) sehingga program lintas sektor seperti penurunan stunting, kemiskinan ekstrem, atau pengendalian inflasi kurang terintegrasi.',
+                practicalTips: 'Terapkan pendekatan tematik lintas OPD (Cross-Cutting Program) pada Renstra dan pastikan setiap Sub-Kegiatan di Renja terkunci langsung pada pohon kinerja sasaran Renstra.'
+            },
+            {
+                id: 'rkp_rkpd',
+                name: '4. RKP & RKPD (Rencana Kerja Tahunan)',
+                category: 'Makro & Regulasi',
+                icon: 'fa-calendar-days',
+                color: 'from-govnavy-800 to-slate-900',
+                shortDesc: 'Dokumen perencanaan tahunan nasional (RKP) dan daerah (RKPD) yang menghubungkan perencanaan menengah dengan siklus APBN/APBD.',
+                legalBasis: 'Pasal 263 ayat (4) UU No. 23 Tahun 2014 & Permendagri No. 86 Tahun 2017.',
+                coreSubstance: 'Memuat evaluasi pelaksanaan RKPD tahun lalu, rancangan kerangka ekonomi daerah beserta kerangka pendanaan, prioritas dan sasaran pembangunan tahunan, serta rencana program dan kegiatan prioritas daerah.',
+                challenges: 'Perubahan asumsi ekonomi makro (pendapatan transfer pusat/TKD dan PAD) sering memaksa penyesuaian pagu indikatif menjelang penyusunan KUA-PPAS.',
+                practicalTips: 'Tetapkan Perkada RKPD tepat waktu (akhir Mei) dan pastikan seluruh usulan kegiatan sudah terinput di SIPD-RI sebelum pembahasan KUA-PPAS agar tidak terjadi "kegiatan siluman" di luar dokumen perencanaan.'
+            },
+            {
+                id: 'musrenbang_sipd',
+                name: '5. Musrenbang & Pokir DPRD via SIPD-RI',
+                category: 'Penganggaran & Evaluasi',
+                icon: 'fa-laptop-file',
+                color: 'from-visiongold-700 to-govnavy-950',
+                shortDesc: 'Mekanisme penjaringan aspirasi masyarakat (Musrenbang) dan Pokok-Pokok Pikiran DPRD yang terintegrasi secara digital dalam SIPD-RI.',
+                legalBasis: 'Permendagri No. 86 Tahun 2017 & Permendagri No. 70 Tahun 2019 tentang Sistem Informasi Pemerintahan Daerah (SIPD).',
+                coreSubstance: 'Mengintegrasikan proses perencanaan pembangunan daerah, perencanaan keuangan daerah, dan pelaporan keuangan secara elektronik satu pintu (Single Source of Truth) mulai dari usulan desa/kelurahan hingga penetapan APBD.',
+                challenges: 'Ribuan usulan Musrenbang dan Pokir DPRD sering kali melebihi kapasitas fiskal daerah (APBD) atau tidak sesuai dengan kewenangan pemerintah daerah (misalnya jalan nasional atau aset privat).',
+                practicalTips: 'Terapkan sistem skoring otomatis dan verifikasi berlapis di SIPD-RI (verifikasi kelengkapan proposal, kesesuaian kewenangan, dan keselarasan dengan prioritas RKPD) sebelum Musrenbang RKPD.'
+            },
+            {
+                id: 'iku_makro',
+                name: '6. IKU & Indikator Makro Pembangunan',
+                category: 'Teknokratik & Indikator',
+                icon: 'fa-chart-line',
+                color: 'from-devemerald-800 to-govnavy-950',
+                shortDesc: 'Alat ukur keberhasilan kinerja Kepala Daerah meliputi Indeks Pembangunan Manusia (IPM), Kemiskinan, LPE, Gini Ratio, dan TPT.',
+                legalBasis: 'PP No. 8 Tahun 2008, PermenPAN-RB tentang IKU, & Permendagri No. 86 Tahun 2017.',
+                coreSubstance: 'Mengukur dampak nyata pembangunan: (1) IPM (Umur Harapan Hidup, HLS, RLS, Pengeluaran per Kapita), (2) Tingkat Kemiskinan & Kemiskinan Ekstrem, (3) Laju Pertumbuhan Ekonomi (LPE), (4) Indeks Gini (ketimpangan), dan (5) Tingkat Pengangguran Terbuka (TPT).',
+                challenges: 'Target indikator makro dalam RPJMD sering ditetapkan secara ambisius tanpa didukung perhitungan elastisitas pertumbuhan ekonomi atau intervensi belanja yang memadai.',
+                practicalTips: 'Gunakan metode SMART (Specific, Measurable, Achievable, Relevant, Time-bound) dan lakukan simulasi korelasi historis (regresi sederhana) dengan data BPS 5 tahun terakhir sebelum menetapkan target akhir RPJMD.'
+            },
+            {
+                id: 'klhs_sdgs',
+                name: '7. KLHS & Integrasi TPB/SDGs Daerah',
+                category: 'Teknokratik & Indikator',
+                icon: 'fa-leaf',
+                color: 'from-emerald-700 to-govnavy-950',
+                shortDesc: 'Kajian Lingkungan Hidup Strategis (KLHS) dan Tujuan Pembangunan Berkelanjutan (TPB/SDGs) sebagai syarat wajib validasi RPJMD.',
+                legalBasis: 'UU No. 32 Tahun 2009 tentang PPLH, PP No. 46 Tahun 2016 tentang Tata Cara Penyelenggaraan KLHS, & Perpres No. 111 Tahun 2022 tentang TPB.',
+                coreSubstance: 'Memastikan prinsip pembangunan berkelanjutan telah menjadi dasar dan terintegrasi dalam pembangunan wilayah melalui analisis 6 muatan KLHS (daya dukung & daya tampung air/pangan/lahan, jasa ekosistem, kerentanan perubahan iklim, keanekaragaman hayati) serta pencapaian 17 tujuan SDGs.',
+                challenges: 'Penyusunan KLHS kerap dianggap sekadar formalitas administratif di akhir proses sehingga rekomendasinya terlambat masuk ke dalam rumusan isu strategis dan program RPJMD.',
+                practicalTips: 'Susun KLHS RPJMD secara paralel sejak tahap Rancangan Teknokratik dan pastikan dokumen KLHS telah divalidasi oleh Kementerian LHK / Dinas LHK Provinsi sebelum Raperda RPJMD disetujui bersama DPRD.'
+            },
+            {
+                id: 'kuappas_apbd',
+                name: '8. Sinkronisasi KUA-PPAS & APBD',
+                category: 'Penganggaran & Evaluasi',
+                icon: 'fa-coins',
+                color: 'from-visiongold-600 to-govnavy-950',
+                shortDesc: 'Jembatan emas yang memastikan seluruh rencana dalam RKPD dan Renja diterjemahkan secara konsisten ke dalam pagu anggaran APBD.',
+                legalBasis: 'PP No. 12 Tahun 2019 tentang Pengelolaan Keuangan Daerah & Permendagri No. 77 Tahun 2020.',
+                coreSubstance: 'KUA (Kebijakan Umum APBD) memuat kondisi ekonomi makro daerah, asumsi penyusunan APBD, kebijakan pendapatan, belanja, dan pembiayaan. PPAS (Prioritas dan Plafon Anggaran Sementara) menentukan skala prioritas dan plafon anggaran per program/OPD.',
+                challenges: 'Terjadinya inkonsistensi antara RKPD dengan KUA-PPAS maupun APBD (misalnya munculnya sub-kegiatan baru saat pembahasan Banggar DPRD yang tidak ada dalam RKPD).',
+                practicalTips: 'Kunci database perencanaan dan penganggaran dalam SIPD-RI sehingga RKA-SKPD hanya dapat menarik kode sub-kegiatan dan pagu yang telah disepakati dalam Perkada RKPD dan Nota Kesepakatan KUA-PPAS.'
+            },
+            {
+                id: 'emonev_perubahan',
+                name: '9. Pengendalian, E-Monev & Perubahan RPJMD',
+                category: 'Penganggaran & Evaluasi',
+                icon: 'fa-magnifying-glass-chart',
+                color: 'from-slate-800 to-govnavy-950',
+                shortDesc: 'Mekanisme pemantauan dan evaluasi capaian kinerja triwulanan/tahunan (E-Monev) serta syarat hukum perubahan RPJMD.',
+                legalBasis: 'Pasal 275–277 UU No. 23 Tahun 2014 & Bab X Permendagri No. 86 Tahun 2017.',
+                coreSubstance: 'Pengendalian dan evaluasi meliputi evaluasi terhadap kebijakan perencanaan, pelaksanaan rencana (realisasi fisik & keuangan triwulanan melalui E-Monev), dan evaluasi hasil rencana (capaian IKU). Perubahan RPJMD hanya dapat dilakukan apabila terjadi perubahan mendasar (bencana alam/non-alam besar, perubahan kebijakan nasional, atau perubahan batas wilayah).',
+                challenges: 'Evaluasi sering terjebak hanya mengukur serapan anggaran (realisasi keuangan), bukan mengukur apakah output dan outcome benar-benar tercapai di lapangan.',
+                practicalTips: 'Lakukan rapat evaluasi triwulanan Bappeda bersama seluruh OPD dengan membandingkan kurva serapan anggaran terhadap capaian indikator kinerja, serta larang perubahan RPJMD jika sisa masa jabatan Kepala Daerah kurang dari 3 tahun (kecuali bencana besar/perubahan regulasi nasional).'
+            }
+        ];
+
+        // Data 6 Dokumen untuk Matriks Komparasi (Tab 3)
+        const COMPARE_DOCS_DATA = {
+            RPJPN: {
+                title: 'RPJPN (Nasional 20 Tahun)',
+                legalBasis: 'UU No. 25 Tahun 2004 (SPPN) & UU No. 59 Tahun 2024 (RPJPN 2025–2045)',
+                horizon: '20 Tahun (Jangka Panjang Nasional: 2025–2045)',
+                legalForm: 'Undang-Undang (UU)',
+                approver: 'Presiden bersama Dewan Perwakilan Rakyat (DPR RI)',
+                substance: 'Visi, misi, arah kebijakan makro, 17 arah pembangunan, dan 45 indikator utama menuju Indonesia Emas 2045.',
+                budgetLink: 'Pedoman makro penyusunan 4 periode RPJMN dan kerangka fiskal jangka panjang APBN.',
+                deadline: 'Ditetapkan sebelum periode RPJPN sebelumnya berakhir.'
+            },
+            RPJMN: {
+                title: 'RPJMN (Nasional 5 Tahun)',
+                legalBasis: 'Pasal 4 & Pasal 19 UU No. 25 Tahun 2004 tentang SPPN',
+                horizon: '5 Tahun (Jangka Menengah Nasional: 2025–2029)',
+                legalForm: 'Peraturan Presiden (Perpres)',
+                approver: 'Presiden Republik Indonesia (disusun oleh Kementerian PPN/Bappenas)',
+                substance: 'Penjabaran visi, misi, dan program Presiden terpilih (Asta Cita), prioritas nasional, proyek strategis, & kerangka ekonomi makro.',
+                budgetLink: 'Menjadi pedoman penyusunan RKP tahunan dan kerangka pengeluaran jangka menengah (KPJM) APBN.',
+                deadline: 'Paling lambat 3 (tiga) bulan setelah Presiden dilantik.'
+            },
+            RPJMD: {
+                title: 'RPJMD (Daerah 5 Tahun)',
+                legalBasis: 'Pasal 263–264 UU No. 23 Tahun 2014 & Permendagri No. 86 Tahun 2017',
+                horizon: '5 Tahun (Jangka Menengah Daerah Provinsi / Kab / Kota)',
+                legalForm: 'Peraturan Daerah (Perda)',
+                approver: 'Kepala Daerah (Gubernur / Bupati / Walikota) bersama DPRD',
+                substance: 'Penjabaran visi, misi, dan program Kepala Daerah terpilih, tujuan, sasaran, strategi, arah kebijakan, & kerangka pendanaan daerah.',
+                budgetLink: 'Pedoman penyusunan Renstra PD dan RKPD tahunan sebagai dasar penyusunan APBD selama 5 tahun.',
+                deadline: 'Paling lama 6 (enam) bulan setelah Kepala Daerah dilantik (Pasal 264 ayat 4 UU 23/2014).'
+            },
+            RENSTRA: {
+                title: 'Renstra Perangkat Daerah (5 Tahun)',
+                legalBasis: 'Pasal 272 UU No. 23 Tahun 2014 & Permendagri No. 86 Tahun 2017',
+                horizon: '5 Tahun (Jangka Menengah Sektoral OPD)',
+                legalForm: 'Peraturan Kepala Daerah (Perkada: Pergub / Perbup / Perwali)',
+                approver: 'Kepala Daerah (disusun oleh masing-masing Kepala Perangkat Daerah & diverifikasi Bappeda)',
+                substance: 'Tujuan, sasaran, program, kegiatan, sub-kegiatan, indikator kinerja, dan pagu indikatif sesuai tugas & fungsi OPD.',
+                budgetLink: 'Menjadi acuan penyusunan Renja Perangkat Daerah dan RKA-SKPD tahunan.',
+                deadline: 'Paling lambat 1 (satu) bulan setelah Perda tentang RPJMD ditetapkan.'
+            },
+            RKPD: {
+                title: 'RKPD (Rencana Kerja Daerah 1 Tahun)',
+                legalBasis: 'Pasal 263 ayat (4) UU No. 23 Tahun 2014 & Permendagri No. 86 Tahun 2017',
+                horizon: '1 Tahun (Jangka Pendek / Operasional Tahunan)',
+                legalForm: 'Peraturan Kepala Daerah (Perkada: Pergub / Perbup / Perwali)',
+                approver: 'Kepala Daerah (disusun oleh Bappeda melalui forum Musrenbang RKPD)',
+                substance: 'Rancangan kerangka ekonomi daerah, prioritas pembangunan daerah tahunan, & rencana kerja dan pendanaan.',
+                budgetLink: 'Pedoman wajib penyusunan KUA-PPAS dan Rancangan APBD (RAPBD) tahun berkenaan.',
+                deadline: 'Paling lambat akhir bulan Mei (atau minggu ke-2 Juni) tahun anggaran sebelumnya.'
+            },
+            KUAPPAS_APBD: {
+                title: 'KUA-PPAS & APBD (Penganggaran 1 Tahun)',
+                legalBasis: 'UU No. 23 Tahun 2014, PP No. 12 Tahun 2019, & Permendagri No. 77 Tahun 2020',
+                horizon: '1 Tahun Anggaran (1 Januari – 31 Desember)',
+                legalForm: 'Nota Kesepakatan (KUA-PPAS) & Peraturan Daerah (Perda APBD)',
+                approver: 'Kepala Daerah dan DPRD (melalui TAPD dan Badan Anggaran DPRD)',
+                substance: 'Target pendapatan daerah, alokasi belanja operasi, belanja modal, belanja tidak terduga, belanja transfer, & pembiayaan.',
+                budgetLink: 'Dokumen eksekusi keuangan daerah yang sah sebagai dasar penerbitan DPA-SKPD dan pencairan dana.',
+                deadline: 'KUA-PPAS disepakati minggu ke-2 Agustus; Perda APBD disetujui bersama paling lambat 1 bulan sebelum tahun anggaran dimulai (30 Nov).'
+            }
+        };
+
+        // Data 5 Soal Kuis Studi Kasus Perencanaan Pembangunan
+        const QUIZ_QUESTIONS = [
+            {
+                q: "Kepala Daerah Kabupaten X baru saja dilantik secara resmi. Berdasarkan Pasal 264 ayat (4) UU No. 23 Tahun 2014 tentang Pemerintahan Daerah, kapankah batas waktu maksimal penetapan Peraturan Daerah (Perda) tentang RPJMD?",
+                options: [
+                    "Paling lama 3 (tiga) bulan setelah Kepala Daerah dilantik.",
+                    "Paling lama 6 (enam) bulan setelah Kepala Daerah dilantik.",
+                    "Paling lama 12 (dua belas) bulan sejak tahun anggaran berjalan dimulai.",
+                    "Paling lama 1 (satu) bulan setelah Perkada RKPD ditetapkan."
+                ],
+                answer: 1,
+                explain: "Sesuai Pasal 264 ayat (4) UU No. 23 Tahun 2014, Perda tentang RPJMD wajib ditetapkan paling lama 6 (enam) bulan setelah Kepala Daerah dilantik. Apabila terlambat, Kepala Daerah dan DPRD dikenai sanksi administratif berupa tidak dibayarkannya hak-hak keuangan selama 3 bulan."
+            },
+            {
+                q: "Dalam penyusunan RPJMD dan APBD modern, pemerintah menerapkan prinsip 'Money Follows Program' menggantikan pola lama 'Money Follows Function'. Apa makna utama dari penerapan prinsip tersebut?",
+                options: [
+                    "Membagi anggaran daerah secara merata ke seluruh Perangkat Daerah tanpa melihat prioritas.",
+                    "Mengalokasikan anggaran hanya pada program dan kegiatan yang terbukti berkontribusi langsung terhadap pencapaian sasaran prioritas dan Indikator Kinerja Utama (IKU).",
+                    "Menyerahkan seluruh keputusan alokasi anggaran kepada masing-masing bendahara pengeluaran OPD.",
+                    "Mengutamakan belanja perjalanan dinas dan operasional rutin dibandingkan belanja modal pelayanan publik."
+                ],
+                answer: 1,
+                explain: "Money Follows Program memastikan bahwa anggaran mengikuti program prioritas yang memiliki daya ungkit nyata terhadap pencapaian outcome/impact RPJMD, sehingga anggaran tidak terpecah-pecah pada kegiatan rutin yang tidak berdampak."
+            },
+            {
+                q: "Dalam siklus tahunan perencanaan daerah, dokumen perencanaan manakah yang menjadi pedoman wajib bagi Tim Anggaran Pemerintah Daerah (TAPD) dan DPRD dalam menyusun Kebijakan Umum APBD dan Prioritas Plafon Anggaran Sementara (KUA-PPAS)?",
+                options: [
+                    "RPJPD (Rencana Pembangunan Jangka Panjang Daerah)",
+                    "RKPD (Rencana Kerja Pemerintah Daerah) yang telah ditetapkan dengan Perkada",
+                    "Laporan Keterangan Pertanggungjawaban (LKPJ) Akhir Tahun",
+                    "Rencana Tata Ruang Wilayah (RTRW) Nasional"
+                ],
+                answer: 1,
+                explain: "Berdasarkan PP No. 12 Tahun 2019 dan Permendagri No. 86 Tahun 2017, Kepala Daerah menyusun rancangan KUA dan rancangan PPAS berdasarkan Perkada tentang RKPD yang memuat prioritas pembangunan dan pagu indikatif tahunan."
+            },
+            {
+                q: "Sebelum Rancangan Peraturan Daerah (Raperda) tentang RPJMD disetujui bersama antara Kepala Daerah dan DPRD, dokumen kajian lingkungan wajib apakah yang harus disusun secara paralel dan divalidasi untuk memastikan prinsip pembangunan berkelanjutan?",
+                options: [
+                    "AMDAL (Analisis Mengenai Dampak Lingkungan) proyek jalan desa",
+                    "KLHS (Kajian Lingkungan Hidup Strategis) RPJMD",
+                    "UKL-UPL gedung kantor kecamatan",
+                    "Audit Laporan Keuangan BPK RI"
+                ],
+                answer: 1,
+                explain: "Sesuai UU No. 32 Tahun 2009 tentang PPLH dan PP No. 46 Tahun 2016, KLHS wajib dibuat dan dilaksanakan oleh pemerintah daerah ke dalam penyusunan/evaluasi RPJPD dan RPJMD untuk menjamin daya dukung dan daya tampung lingkungan hidup tetap terjaga."
+            },
+            {
+                q: "Seorang anggota DPRD mengusulkan Pokok-Pokok Pikiran (Pokir) berupa pembangunan jembatan desa melalui SIPD-RI saat proses penyusunan RKPD. Bagaimana mekanisme verifikasi teknokratik yang tepat menurut Permendagri No. 86 Tahun 2017?",
+                options: [
+                    "Langsung dimasukkan ke APBD tanpa verifikasi karena merupakan hak mutlak anggota dewan.",
+                    "Ditolak seluruhnya karena hanya usulan Musrenbang Desa yang boleh masuk RKPD.",
+                    "Ditelah dan diverifikasi oleh Bappeda bersama Perangkat Daerah terkait untuk memastikan kesesuaian dengan prioritas RKPD, kewenangan daerah, dan ketersediaan kapasitas fiskal.",
+                    "Dialihkan langsung menjadi hibah tunai ke rekening pribadi pengusul."
+                ],
+                answer: 2,
+                explain: "Pokok-Pokok Pikiran (Pokir) DPRD merupakan bagian dari pendekatan politik-partisipatif yang wajib diinput ke SIPD-RI sebelum Musrenbang RKPD, kemudian ditelaah dan diverifikasi oleh Bappeda bersama OPD teknis agar selaras dengan prioritas pembangunan, standar teknis, dan kemampuan keuangan daerah."
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. STATE APLIKASI & SISTEM EVENT COUNTER PERSISTEN (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'sppn_rpjmd_activity_log';
+        let activityLog = []; // Array of { name, category, count, lastTime }
+        let compareColumnMode = 3; // 2 atau 3 dokumen
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let analyticsChartInstance = null;
+
+        // Inisialisasi saat DOM siap
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityLog();
+            renderSyncFlowGrid();
+            renderPilarsGrid();
+            initCompareSelectors();
+            renderCompareTable();
+            updateSimulatorPreview();
+            renderQuiz();
+            refreshAllBadgesAndAnalytics();
+        });
+
+        // Muat data dari localStorage
+        function loadActivityLog() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) activityLog = parsed;
+                }
+            } catch (e) {
+                activityLog = [];
+            }
+        }
+
+        // Simpan data ke localStorage
+        function saveActivityLog() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(activityLog));
+            } catch (e) {
+                console.warn('Gagal menyimpan ke localStorage:', e);
+            }
+        }
+
+        // Pencatat aktivitas klik & pembaru lencana real-time
+        function trackActivity(itemName, categoryName, pulseBadgeId = null) {
+            const nowStr = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            let entry = activityLog.find(item => item.name === itemName);
+            if (entry) {
+                entry.count += 1;
+                entry.lastTime = nowStr;
+            } else {
+                entry = {
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: nowStr
+                };
+                activityLog.push(entry);
+            }
+
+            saveActivityLog();
+            refreshAllBadgesAndAnalytics();
+            showToast(`Aktivitas Dicatat: ${itemName} (+1)`);
+
+            if (pulseBadgeId) {
+                const badgeEl = document.getElementById(pulseBadgeId);
+                if (badgeEl) {
+                    badgeEl.classList.remove('counter-pulse');
+                    void badgeEl.offsetWidth;
+                    badgeEl.classList.add('counter-pulse');
+                }
+            }
+        }
+
+        function getCount(itemName) {
+            const found = activityLog.find(i => i.name === itemName);
+            return found ? found.count : 0;
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. PEMBARUAN SELURUH BADGE & PANEL ANALITIK
+         * ------------------------------------------------------------------- */
+        function refreshAllBadgesAndAnalytics() {
+            // 1. Update Nav Tab Counters (Desktop & Mobile)
+            const navMap = [
+                { key: 'Tab 1: Beranda & Arsitektur SPPN', desk: 'nav-count-beranda', mob: 'mob-count-beranda' },
+                { key: 'Tab 2: 9 Pilar & Instrumen', desk: 'nav-count-pilar', mob: 'mob-count-pilar' },
+                { key: 'Tab 3: Matriks Komparasi', desk: 'nav-count-komparasi', mob: 'mob-count-komparasi' },
+                { key: 'Tab 4: Simulator RPJMD', desk: 'nav-count-simulator', mob: 'mob-count-simulator' },
+                { key: 'Tab 5: Kuis Evaluasi', desk: 'nav-count-kuis', mob: 'mob-count-kuis' }
+            ];
+            navMap.forEach(n => {
+                const c = getCount(n.key);
+                const dEl = document.getElementById(n.desk);
+                const mEl = document.getElementById(n.mob);
+                if (dEl) dEl.innerText = c;
+                if (mEl) mEl.innerText = c;
+            });
+
+            // 2. Update 3 Horizon Badges
+            Object.values(HORIZONS_DATA).forEach(h => {
+                const el = document.getElementById(h.badgeId);
+                if (el) el.innerText = `👁️ ${getCount(h.key)}x dipelajari`;
+            });
+
+            // 3. Update 6 Tahap Alur Sinkronisasi Badges
+            SYNC_FLOW_DATA.forEach((st, idx) => {
+                const el = document.getElementById(`badge-sync-${idx}`);
+                if (el) el.innerText = `👁️ ${getCount(`Alur Sinkronisasi: ${st.title}`)}x dipelajari`;
+            });
+
+            // 4. Update 3 Konsep Kunci Badges
+            Object.values(CONCEPTS_DATA).forEach(c => {
+                const el = document.getElementById(c.badgeId);
+                if (el) el.innerText = `👁️ ${getCount(c.key)}x dipelajari`;
+            });
+
+            // 5. Update 9 Pilar Badges
+            PILARS_DATA.forEach(p => {
+                const el = document.getElementById(`badge-pilar-${p.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Pilar: ${p.name}`)}x dipelajari`;
+            });
+
+            // 6. Update Dropdown Komparasi Badges
+            [1, 2, 3].forEach(col => {
+                const el = document.getElementById(`badge-comp-${col}`);
+                if (el) el.innerText = `👁️ ${getCount(`Komparasi Dokumen Kolom ${col}`)}x dipelajari`;
+            });
+
+            // 7. Update Simulator & Kuis Badges
+            const simTotal = activityLog
+                .filter(i => i.category === 'Simulator RPJMD')
+                .reduce((acc, cur) => acc + cur.count, 0);
+            const simBadge = document.getElementById('badge-simulator-count');
+            if (simBadge) simBadge.innerText = `👁️ ${simTotal}x simulasi dijalankan`;
+
+            const quizTotal = getCount('Kuis: Jawab Soal');
+            const quizBadge = document.getElementById('badge-quiz-count');
+            if (quizBadge) quizBadge.innerText = `👁️ ${quizTotal}x soal dijawab`;
+
+            // 8. Total Klik Global (Header, FAB, Modal)
+            const totalAllClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('header-total-clicks').innerText = `${totalAllClicks} Klik`;
+            document.getElementById('fab-total-clicks').innerText = `${totalAllClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalAllClicks;
+
+            // 9. Kategori Teraktif
+            const catTotals = {};
+            activityLog.forEach(item => {
+                catTotals[item.category] = (catTotals[item.category] || 0) + item.count;
+            });
+            let topCat = '-';
+            let maxVal = 0;
+            Object.entries(catTotals).forEach(([cat, val]) => {
+                if (val > maxVal) {
+                    maxVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // 10. Persentase Cakupan Materi (21 modul inti: 3 horizon + 6 alur sync + 3 konsep + 9 pilar = 21 item)
+            const coreKeys = new Set([
+                ...Object.values(HORIZONS_DATA).map(h => h.key),
+                ...SYNC_FLOW_DATA.map(s => `Alur Sinkronisasi: ${s.title}`),
+                ...Object.values(CONCEPTS_DATA).map(c => c.key),
+                ...PILARS_DATA.map(p => `Pilar: ${p.name}`)
+            ]);
+            const exploredCoreCount = activityLog.filter(item => coreKeys.has(item.name)).length;
+            const totalCore = coreKeys.size; // 21
+            const coveragePct = Math.min(100, Math.round((exploredCoreCount / totalCore) * 100));
+
+            document.getElementById('modal-progress-bar').style.width = `${coveragePct}%`;
+            document.getElementById('modal-progress-percent').innerText = `${coveragePct}%`;
+            document.getElementById('modal-coverage-detail').innerText = `${exploredCoreCount} dari ${totalCore} modul inti dipelajari`;
+
+            // 11. Top 5 Sub-Materi Terpopuler
+            const top5 = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const top5El = document.getElementById('top-5-list');
+            if (top5.length === 0) {
+                top5El.innerHTML = `<p class="text-slate-400 italic py-4 text-center">Belum ada interaksi tercatat. Klik kartu materi untuk mulai belajar!</p>`;
+            } else {
+                top5El.innerHTML = top5.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                        <span class="truncate pr-2 font-semibold text-slate-700">
+                            <span class="inline-block w-5 text-devemerald-600 font-extrabold">#${idx + 1}</span> ${item.name}
+                        </span>
+                        <span class="bg-visiongold-100 text-visiongold-700 px-2 py-0.5 rounded-md font-mono font-extrabold shrink-0">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // 12. Tabel Log Interaksi Lengkap
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">Belum ada data aktivitas belajar.</td></tr>`;
+            } else {
+                const reversedLog = [...activityLog].reverse();
+                tbody.innerHTML = reversedLog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-extrabold text-devemerald-600 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 13. Grafik Doughnut Chart.js
+            renderDoughnutChart(catTotals);
+        }
+
+        function renderDoughnutChart(catTotals) {
+            const canvas = document.getElementById('analyticsChart');
+            const emptyMsg = document.getElementById('chart-empty-msg');
+            if (!canvas) return;
+
+            const labels = Object.keys(catTotals);
+            const values = Object.values(catTotals);
+
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+                analyticsChartInstance = null;
+            }
+
+            if (labels.length === 0) {
+                canvas.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyMsg.classList.add('hidden');
+
+            analyticsChartInstance = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#059669', // Emerald
+                            '#d97706', // Vision Gold
+                            '#0f172a', // Gov Navy
+                            '#0d9488', // Teal
+                            '#2563eb', // Royal Blue
+                            '#7c3aed', // Indigo
+                            '#e11d48'  // Rose
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ` ${ctx.label}: ${ctx.parsed} klik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Notifikasi Toast Melayang di Pojok Kanan Atas
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            while (container.children.length >= 3) {
+                container.removeChild(container.firstChild);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = "bg-govnavy-950/95 text-white border border-visiongold-500/50 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 transition-all duration-300 transform translate-x-4 opacity-0";
+            toast.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-devemerald-600 text-white flex items-center justify-center text-[10px] shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="truncate font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. NAVIGASI ANTAR TAB
+         * ------------------------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-devemerald-600', 'text-white', 'shadow');
+                btn.classList.add('text-slate-300');
+            });
+            const activeDesk = document.getElementById(`nav-${tabId}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-devemerald-600', 'text-white', 'shadow');
+                activeDesk.classList.remove('text-slate-300');
+            }
+
+            // Mobile nav styling
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-devemerald-600', 'text-white');
+                btn.classList.add('bg-white/5', 'text-slate-300');
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.classList.add('bg-devemerald-600', 'text-white');
+                activeMob.classList.remove('bg-white/5', 'text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. TAB 1 RENDER & MODAL (HORIZON, SINKRONISASI, KONSEP KUNCI)
+         * ------------------------------------------------------------------- */
+        function renderSyncFlowGrid() {
+            const container = document.getElementById('sync-flow-grid');
+            if (!container) return;
+
+            container.innerHTML = SYNC_FLOW_DATA.map((st, idx) => {
+                const count = getCount(`Alur Sinkronisasi: ${st.title}`);
+                return `
+                    <div onclick="openSyncStepModal(${idx})" class="bg-slate-50 hover:bg-white p-5 rounded-2xl border-2 border-slate-200/80 hover:border-devemerald-600 shadow-2xs hover:shadow-lg transition cursor-pointer flex flex-col justify-between space-y-3 group">
+                        <div class="space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="${st.badgeColor} text-[10px] font-extrabold px-2.5 py-1 rounded-full">
+                                    ${st.step}
+                                </span>
+                                <span id="badge-sync-${idx}" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-200 shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-devemerald-100 text-devemerald-700 flex items-center justify-center text-sm shrink-0">
+                                    <i class="fa-solid ${st.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-slate-900 text-sm group-hover:text-devemerald-700 transition leading-snug">${st.title}</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">${st.summary}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-200/70 flex items-center justify-between text-[11px] font-bold text-devemerald-700 group-hover:underline">
+                            <span>Lihat Aktor & Dokumen Keluaran</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openSyncStepModal(idx) {
+            const st = SYNC_FLOW_DATA[idx];
+            if (!st) return;
+
+            trackActivity(`Alur Sinkronisasi: ${st.title}`, 'Alur Sinkronisasi', `badge-sync-${idx}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-govnavy-950 via-govnavy-900 to-devemerald-800";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-visiongold-400">${st.step}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${st.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-visiongold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Alur Sinkronisasi: ${st.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
+                    <h5 class="font-extrabold text-slate-900 text-sm">Substansi Tahapan:</h5>
+                    <p class="text-slate-600 leading-relaxed">${st.summary}</p>
+                </div>
+                <div class="bg-devemerald-50 p-4 rounded-2xl border border-devemerald-200 space-y-1">
+                    <h5 class="font-extrabold text-devemerald-900 text-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-users-gear"></i>
+                        <span>Aktor & Pemangku Kepentingan Terlibat:</span>
+                    </h5>
+                    <p class="text-devemerald-950 leading-relaxed">${st.actors}</p>
+                </div>
+                <div class="bg-visiongold-50 p-4 rounded-2xl border border-visiongold-200 space-y-1">
+                    <h5 class="font-extrabold text-visiongold-900 text-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <span>Produk / Dokumen Keluaran Resmi:</span>
+                    </h5>
+                    <p class="text-visiongold-950 leading-relaxed font-semibold">${st.output}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function openHorizonModal(horizonKey) {
+            const h = HORIZONS_DATA[horizonKey];
+            if (!h) return;
+
+            trackActivity(h.key, 'Horizon Perencanaan', h.badgeId);
+            renderStructuredDetailModal(h, `Telah Anda pelajari sebanyak ${getCount(h.key)} kali`);
+        }
+
+        function openConceptModal(conceptKey) {
+            const c = CONCEPTS_DATA[conceptKey];
+            if (!c) return;
+
+            trackActivity(c.key, 'Konsep Kunci SPPN', c.badgeId);
+            renderStructuredDetailModal(c, `Telah Anda pelajari sebanyak ${getCount(c.key)} kali`);
+        }
+
+        function renderStructuredDetailModal(obj, countCaption) {
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${obj.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-xl">
+                        <i class="fa-solid ${obj.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-visiongold-300">${obj.subtitle}</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold">${obj.key}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-visiongold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>${countCaption}</span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = obj.sections.map(sec => `
+                <div class="p-4 rounded-2xl border ${sec.color} space-y-2">
+                    <h4 class="font-extrabold text-sm">${sec.title}</h4>
+                    <ul class="space-y-1.5 text-xs leading-relaxed">
+                        ${sec.items.map(it => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check mt-0.5 opacity-80"></i><span>${it}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. TAB 2 RENDER & MODAL 9 PILAR & INSTRUMEN RPJMN/RPJMD
+         * ------------------------------------------------------------------- */
+        function renderPilarsGrid() {
+            const container = document.getElementById('pilars-grid');
+            if (!container) return;
+
+            const catFilter = document.getElementById('pilar-cat-filter').value;
+            const searchQuery = (document.getElementById('pilar-search').value || '').toLowerCase();
+
+            const filtered = PILARS_DATA.filter(p => {
+                const matchCat = catFilter === 'all' || p.category === catFilter;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery) ||
+                    p.shortDesc.toLowerCase().includes(searchQuery) ||
+                    p.legalBasis.toLowerCase().includes(searchQuery) ||
+                    p.coreSubstance.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada pilar atau instrumen perencanaan yang cocok dengan kata kunci Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(p => {
+                const count = getCount(`Pilar: ${p.name}`);
+                return `
+                    <div onclick="openPilarModal('${p.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${p.color} text-white space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-white/15 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-white/20">
+                                    ${p.category}
+                                </span>
+                                <span id="badge-pilar-${p.id}" class="counter-badge bg-visiongold-400 text-govnavy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid ${p.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-base leading-snug group-hover:translate-x-1 transition-transform">${p.name}</h4>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                            <div class="space-y-3">
+                                <p class="text-slate-600 leading-relaxed">${p.shortDesc}</p>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
+                                    <span class="text-[10px] font-extrabold uppercase text-devemerald-700 block">Dasar Hukum Utama:</span>
+                                    <p class="text-slate-700 line-clamp-2">${p.legalBasis}</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-devemerald-700 font-extrabold group-hover:underline">
+                                <span>Buka Regulasi, Tantangan & Tips Praktis</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openPilarModal(pilarId) {
+            const p = PILARS_DATA.find(item => item.id === pilarId);
+            if (!p) return;
+
+            trackActivity(`Pilar: ${p.name}`, 'Katalog 9 Pilar', `badge-pilar-${p.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${p.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-2xl">
+                        <i class="fa-solid ${p.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="bg-white/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-visiongold-300">
+                            ${p.category}
+                        </span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${p.name}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-visiongold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Pilar: ${p.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1.5">
+                    <h4 class="font-extrabold text-govnavy-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-scale-balanced text-devemerald-600"></i>
+                        <span>1. Dasar Hukum & Regulasi</span>
+                    </h4>
+                    <p class="text-slate-700 leading-relaxed font-medium">${p.legalBasis}</p>
+                </div>
+
+                <div class="bg-devemerald-50 p-4 rounded-2xl border border-devemerald-200 space-y-1.5">
+                    <h4 class="font-extrabold text-devemerald-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-file-lines text-devemerald-700"></i>
+                        <span>2. Substansi Utama Dokumen / Instrumen</span>
+                    </h4>
+                    <p class="text-devemerald-950 leading-relaxed">${p.coreSubstance}</p>
+                </div>
+
+                <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200 space-y-1.5">
+                    <h4 class="font-extrabold text-rose-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                        <span>3. Tantangan Implementasi di Lapangan</span>
+                    </h4>
+                    <p class="text-rose-950 leading-relaxed">${p.challenges}</p>
+                </div>
+
+                <div class="bg-govnavy-900 text-white p-4 rounded-2xl border border-visiongold-500/40 space-y-1.5">
+                    <h4 class="font-extrabold text-visiongold-400 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>4. Tips Praktis Penyusunan & Penyelarasan</span>
+                    </h4>
+                    <p class="text-slate-200 leading-relaxed">${p.practicalTips}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. TAB 3: MATRIKS KOMPARASI DOKUMEN PERENCANAAN (2 ATAU 3 DOKUMEN)
+         * ------------------------------------------------------------------- */
+        function initCompareSelectors() {
+            const docKeys = Object.keys(COMPARE_DOCS_DATA);
+            const defaults = ['RPJMN', 'RPJMD', 'RKPD'];
+
+            [1, 2, 3].forEach((col, idx) => {
+                const sel = document.getElementById(`comp-select-${col}`);
+                if (!sel) return;
+                sel.innerHTML = docKeys.map(k => `<option value="${k}" ${k === defaults[idx] ? 'selected' : ''}>${COMPARE_DOCS_DATA[k].title}</option>`).join('');
+            });
+        }
+
+        function setCompareColumnMode(mode) {
+            compareColumnMode = mode;
+            const btn2 = document.getElementById('btn-mode-2');
+            const btn3 = document.getElementById('btn-mode-3');
+            const box3 = document.getElementById('comp-box-3');
+            const grid = document.getElementById('compare-selectors-grid');
+
+            if (mode === 2) {
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-govnavy-900 text-white transition";
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.add('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+            } else {
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-govnavy-900 text-white transition";
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.remove('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-3 gap-4";
+            }
+
+            trackActivity(`Mode Komparasi ${mode} Dokumen`, 'Matriks Komparasi');
+            renderCompareTable();
+        }
+
+        function handleCompareSelect(colNum) {
+            const sel = document.getElementById(`comp-select-${colNum}`);
+            const chosenDoc = COMPARE_DOCS_DATA[sel.value];
+            trackActivity(`Komparasi Dokumen Kolom ${colNum}`, 'Matriks Komparasi', `badge-comp-${colNum}`);
+            if (chosenDoc) {
+                trackActivity(`Lihat Komparasi: ${chosenDoc.title}`, 'Matriks Komparasi');
+            }
+            renderCompareTable();
+        }
+
+        function renderCompareTable() {
+            const table = document.getElementById('compare-matrix-table');
+            if (!table) return;
+
+            const d1 = COMPARE_DOCS_DATA[document.getElementById('comp-select-1').value];
+            const d2 = COMPARE_DOCS_DATA[document.getElementById('comp-select-2').value];
+            const d3 = compareColumnMode === 3 ? COMPARE_DOCS_DATA[document.getElementById('comp-select-3').value] : null;
+
+            const rows = [
+                { label: 'Dasar Hukum Utama', field: 'legalBasis' },
+                { label: 'Jangka Waktu / Horizon', field: 'horizon' },
+                { label: 'Bentuk Produk Hukum', field: 'legalForm' },
+                { label: 'Pejabat / Lembaga Penetap', field: 'approver' },
+                { label: 'Muatan Substansi Inti', field: 'substance' },
+                { label: 'Keterkaitan Anggaran (APBN/APBD)', field: 'budgetLink' },
+                { label: 'Batas Waktu Penetapan', field: 'deadline' }
+            ];
+
+            table.innerHTML = `
+                <thead>
+                    <tr class="bg-govnavy-900 text-white">
+                        <th class="p-3.5 font-extrabold w-48">Dimensi Perbandingan</th>
+                        <th class="p-3.5 font-extrabold bg-govnavy-800">${d1.title}</th>
+                        <th class="p-3.5 font-extrabold bg-devemerald-800">${d2.title}</th>
+                        ${d3 ? `<th class="p-3.5 font-extrabold bg-visiongold-700">${d3.title}</th>` : ''}
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    ${rows.map(r => `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-3.5 font-bold text-slate-800 bg-slate-50">${r.label}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed">${d1[r.field]}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed bg-devemerald-50/25">${d2[r.field]}</td>
+                            ${d3 ? `<td class="p-3.5 text-slate-700 leading-relaxed bg-visiongold-50/25">${d3[r.field]}</td>` : ''}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. TAB 4: SIMULATOR PENYUSUNAN & PENYELARASAN RPJMD
+         * ------------------------------------------------------------------- */
+        function updateSimulatorPreview() {
+            const s1 = parseInt(document.getElementById('sim-slider-1').value) || 0;
+            const s2 = parseInt(document.getElementById('sim-slider-2').value) || 0;
+            const s3 = parseInt(document.getElementById('sim-slider-3').value) || 0;
+            const s4 = parseInt(document.getElementById('sim-slider-4').value) || 0;
+            const s5 = parseInt(document.getElementById('sim-slider-5').value) || 0;
+
+            document.getElementById('val-sim-1').innerText = `${s1}%`;
+            document.getElementById('val-sim-2').innerText = `${s2}%`;
+            document.getElementById('val-sim-3').innerText = `${s3}%`;
+            document.getElementById('val-sim-4').innerText = `${s4}%`;
+            document.getElementById('val-sim-5').innerText = `${s5}%`;
+
+            // Hitung skor kualitas RPJMD (bobot seimbang & teknokratik)
+            const score = ((s1 * 0.20) + (s2 * 0.25) + (s3 * 0.25) + (s4 * 0.15) + (s5 * 0.15)).toFixed(1);
+            const apbdIndex = ((s2 * 0.40) + (s3 * 0.45) + (s4 * 0.15)).toFixed(1);
+
+            document.getElementById('sim-res-score').innerText = score;
+
+            const evalBadge = document.getElementById('sim-res-eval-badge');
+            const apbdEl = document.getElementById('sim-res-apbd');
+            const sakipEl = document.getElementById('sim-res-sakip');
+            const statusTextEl = document.getElementById('sim-res-status-text');
+            const recEl = document.getElementById('sim-res-recommendation');
+
+            // Cari parameter terlemah untuk rekomendasi teknokratik spesifik
+            const params = [
+                { val: s1, msg: 'Tingkatkan keselarasan target makro RPJMD dengan prioritas nasional dalam RPJMN 2025–2029 serta arah kebijakan RPJPD agar selaras lintas tingkatan pemerintahan.' },
+                { val: s2, msg: 'Pertajam logika cascading Pohon Kinerja (Tujuan → Sasaran → Program → Sub-Kegiatan) agar indikator berorientasi pada outcome/impact, bukan sekadar output administratif.' },
+                { val: s3, msg: 'Perkuat alokasi belanja berbasis Money Follows Program agar pagu indikatif OPD terkonsentrasi pada pencapaian IKU kepala daerah dan tidak terpecah ke belanja rutin non-prioritas.' },
+                { val: s4, msg: 'Perketat verifikasi usulan Musrenbang dan Pokir DPRD di SIPD-RI agar hanya usulan sesuai kewenangan daerah dan prioritas RKPD yang terakomodasi.' },
+                { val: s5, msg: 'Segera integrasikan rekomendasi 6 muatan KLHS dan target indikator TPB/SDGs sebelum Raperda RPJMD disetujui bersama DPRD agar lolos evaluasi Kemendagri/Gubernur.' }
+            ];
+            const weakest = params.reduce((min, p) => (p.val < min.val ? p : min), params[0]);
+
+            if (score >= 82) {
+                evalBadge.innerText = 'Lulus Evaluasi Tanpa Catatan Strategis';
+                evalBadge.className = 'bg-devemerald-500 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                apbdEl.innerText = `${apbdIndex}% (Sangat Efektif)`;
+                apbdEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-devemerald-500/20 text-emerald-300 border border-devemerald-500/40';
+                sakipEl.innerText = 'Predikat A / BB (Sangat Baik)';
+                sakipEl.className = 'font-bold text-emerald-300';
+                statusTextEl.innerText = 'Siap Ditetapkan Menjadi Perda RPJMD (< 6 Bulan) & Acuan Renstra PD';
+                recEl.innerText = `Kualitas dokumen RPJMD sangat solid. Sebagai penyempurnaan akhir, jaga konsistensi saat diturunkan ke RKPD dan KUA-PPAS tahunan. (${weakest.msg})`;
+            } else if (score >= 60) {
+                evalBadge.innerText = 'Lulus dengan Catatan Penyempurnaan';
+                evalBadge.className = 'bg-visiongold-500 text-govnavy-950 font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                apbdEl.innerText = `${apbdIndex}% (Moderat)`;
+                apbdEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-visiongold-500/20 text-visiongold-300 border border-visiongold-500/40';
+                sakipEl.innerText = 'Predikat B (Baik)';
+                sakipEl.className = 'font-bold text-visiongold-300';
+                statusTextEl.innerText = 'Disetujui dengan Syarat Penajaman Cascading & Pagu Indikatif';
+                recEl.innerText = weakest.msg;
+            } else {
+                evalBadge.innerText = 'Perlu Perbaikan Substansi Teknokratik';
+                evalBadge.className = 'bg-rose-600 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                apbdEl.innerText = `${apbdIndex}% (Rendah / Fragmented)`;
+                apbdEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40';
+                sakipEl.innerText = 'Predikat CC / C (Perlu Pembinaan)';
+                sakipEl.className = 'font-bold text-rose-400';
+                statusTextEl.innerText = 'Dikembalikan pada Tahap Evaluasi Raperda RPJMD untuk Revisi';
+                recEl.innerText = `Perhatian Kritis: ${weakest.msg}`;
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. TAB 5: KUIS EVALUASI 5 SOAL STUDI KASUS
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span class="bg-govnavy-900 text-white px-3 py-1 rounded-full">Studi Kasus ${currentQuizIdx + 1} dari ${QUIZ_QUESTIONS.length}</span>
+                        <span>Skor Sementara: <strong class="text-devemerald-700 font-mono text-sm">${quizScore} / 100</strong></span>
+                    </div>
+
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</h4>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left bg-white hover:bg-devemerald-50 border border-slate-200 hover:border-devemerald-600 p-4 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-between group shadow-2xs">
+                                <span class="pr-3"><strong class="text-devemerald-700 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-devemerald-600 transition shrink-0"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi', 'badge-quiz-count');
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-4 rounded-xl ${isCorrect ? 'bg-devemerald-100 text-devemerald-950 border border-devemerald-300' : 'bg-rose-100 text-rose-950 border border-rose-300'} text-xs font-extrabold flex items-center space-x-2.5">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-devemerald-600' : 'fa-circle-xmark text-rose-600'} text-xl"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Benar! (+20 Poin)' : `Jawaban Kurang Tepat. Jawaban benar: ${String.fromCharCode(65 + q.answer)}`}</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <strong class="text-govnavy-900 block">Pembahasan Regulasi & Teknokratik:</strong>
+                        <p>${q.explain}</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="advanceQuiz()" class="bg-devemerald-600 hover:bg-devemerald-700 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition shadow">
+                            ${currentQuizIdx < QUIZ_QUESTIONS.length - 1 ? 'Soal Studi Kasus Berikutnya →' : 'Lihat Hasil Akhir Kuis'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function advanceQuiz() {
+            if (currentQuizIdx < QUIZ_QUESTIONS.length - 1) {
+                currentQuizIdx++;
+                renderQuiz();
+            } else {
+                const container = document.getElementById('quiz-container');
+                let predicate = 'Terus Eksplorasi Modul SPPN & RPJMD!';
+                if (quizScore === 100) predicate = 'Sempurna! Perencana Pembangunan Andal';
+                else if (quizScore >= 80) predicate = 'Sangat Baik! Menguasai Sinkronisasi RPJMD-APBD';
+                else if (quizScore >= 60) predicate = 'Cukup Baik! Perkuat Detail Regulasi & Cascading';
+
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-govnavy-950 via-govnavy-900 to-devemerald-900 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-devemerald-500/40">
+                        <div class="w-16 h-16 rounded-2xl bg-visiongold-500/20 text-visiongold-400 border border-visiongold-400/40 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-visiongold-400 block">${predicate}</span>
+                        <h4 class="font-extrabold text-2xl">Kuis Evaluasi Selesai!</h4>
+                        <div class="py-2">
+                            <span class="text-xs text-slate-300 block">Skor Akhir Anda:</span>
+                            <strong class="text-4xl font-mono font-extrabold text-visiongold-400">${quizScore} / 100</strong>
+                        </div>
+                        <button onclick="restartQuiz()" class="bg-gradient-to-r from-devemerald-600 to-visiongold-600 hover:from-devemerald-500 hover:to-visiongold-500 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis Studi Kasus
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            trackActivity('Kuis: Ulangi Kuis', 'Kuis Evaluasi');
+            renderQuiz();
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. MODAL ANALITIK, KONFIRMASI RESET & EKSPOR JSON
+         * ------------------------------------------------------------------- */
+        function openAnalyticsModal() {
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function toggleResetConfirm(show) {
+            const box = document.getElementById('reset-confirm-box');
+            if (!box) return;
+            if (show) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function executeClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem(STORAGE_KEY);
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            showToast('Seluruh riwayat hitungan belajar telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const payload = {
+                aplikasi: 'PerencanaNusantara - Panduan Interaktif RPJMN & RPJMD',
+                waktuEkspor: new Date().toISOString(),
+                totalInteraksi: activityLog.reduce((s, i) => s + i.count, 0),
+                riwayatAktivitas: activityLog
+            };
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `Analitik_PerencanaNusantara_${Date.now()}.json`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Data analitik berhasil diekspor ke JSON.');
+        }
+    </script>
+</body>
+</html>
