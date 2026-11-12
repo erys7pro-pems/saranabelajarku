@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiagaNusantara - Sistem Penanggulangan Bencana & Tata Kelola Kebencanaan Nasional</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6.4.0 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#0b1329',
+                        },
+                        safety: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        },
+                        amber_alert: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        recovery: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar untuk kenyamanan membaca modal & tabel */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Animasi denyut visual pada counter badge saat diklik */
+        .counter-badge {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: badgePulse 0.45s ease-out;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.28); background-color: #f59e0b; color: #0b1329; }
+            100% { transform: scale(1); }
+        }
+        /* Hide scrollbar on mobile horizontal nav */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-safety-600 selection:text-white">
+
+    <!-- ================= HEADER & NAVIGASI UTAMA ================= -->
+    <header class="bg-gradient-to-r from-navy-950 via-navy-900 to-slate-900 text-white sticky top-0 z-40 shadow-xl border-b border-safety-600/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="trackActivity('Logo Beranda SiagaNusantara', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-safety-600 to-amber_alert-500 text-white flex items-center justify-center font-extrabold text-lg shadow-lg group-hover:scale-105 transition">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">SiagaNusantara</h1>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-safety-600/30 text-amber_alert-400 border border-safety-500/40 px-2 py-0.5 rounded-full">UU 24/2007</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 font-medium">Tata Kelola & Penanggulangan Bencana</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs (5 Tab Utama) -->
+                <nav class="hidden lg:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab 1: Beranda & 3 Fase', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-safety-600 text-white shadow">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>3 Fase & Status</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-navy-950 text-amber_alert-400 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 2: Katalog 9 Bencana & Alat', 'Navigasi Menu'); switchTab('bencana')" id="nav-bencana" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-volcano"></i>
+                        <span>Bencana & Alat</span>
+                        <span id="nav-count-bencana" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 3: Lembaga & Jalur Koordinasi', 'Navigasi Menu'); switchTab('koordinasi')" id="nav-koordinasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sitemap"></i>
+                        <span>Koordinasi & Lembaga</span>
+                        <span id="nav-count-koordinasi" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 4: Simulator Kesiapsiagaan', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 5: Kuis Kebencanaan', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Header Analytics Button -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-amber_alert-500 to-safety-600 hover:from-amber_alert-400 hover:to-safety-500 text-navy-950 px-3.5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-navy-950 text-amber_alert-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+
+            <!-- Mobile & Tablet Responsive Tab Bar -->
+            <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-white/10 text-xs font-semibold">
+                <button onclick="trackActivity('Tab 1: Beranda & 3 Fase', 'Navigasi Menu'); switchTab('beranda')" id="mob-nav-beranda" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-safety-600 text-white">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>3 Fase & Status</span>
+                    <span id="mob-count-beranda" class="text-[10px] bg-navy-950 text-amber_alert-400 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 2: Katalog 9 Bencana & Alat', 'Navigasi Menu'); switchTab('bencana')" id="mob-nav-bencana" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-volcano"></i>
+                    <span>9 Bencana & Alat</span>
+                    <span id="mob-count-bencana" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 3: Lembaga & Jalur Koordinasi', 'Navigasi Menu'); switchTab('koordinasi')" id="mob-nav-koordinasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <span>Koordinasi & Lembaga</span>
+                    <span id="mob-count-koordinasi" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 4: Simulator Kesiapsiagaan', 'Navigasi Menu'); switchTab('simulator')" id="mob-nav-simulator" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Simulator</span>
+                    <span id="mob-count-simulator" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 5: Kuis Kebencanaan', 'Navigasi Menu'); switchTab('kuis')" id="mob-nav-kuis" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Kuis</span>
+                    <span id="mob-count-kuis" class="text-[10px] bg-amber_alert-500 text-navy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- =====================================================================
+             TAB 1: BERANDA & MEKANISME 3 FASE (PRABENCANA, TANGGAP, PASCABENCANA)
+             ===================================================================== -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-navy-900 to-slate-800 text-white p-7 sm:p-11 shadow-2xl border border-safety-600/30">
+                <div class="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-helmet-safety text-[14rem] text-safety-500"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-safety-600/20 text-amber_alert-400 border border-safety-500/40 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+                            Manajemen Risiko Bencana Terpadu
+                        </span>
+                        <span class="bg-recovery-600/20 text-emerald-300 border border-recovery-500/40 px-3 py-1 rounded-full text-xs font-semibold">
+                            UU No. 24 Tahun 2007 & SKPDB
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+                        Memahami Siklus Penanggulangan Bencana, Peralatan & Komando Nasional
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Indonesia berada di pertemuan tiga lempeng tektonik aktif dan cincin api Pasifik (<em>Ring of Fire</em>). Pelajari bagaimana negara, lembaga teknis, dan masyarakat bekerja dalam satu rantai komando pada fase <strong>Prabencana</strong>, <strong>Tanggap Darurat</strong>, hingga <strong>Pascabencana (Build Back Better)</strong>.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Jelajahi Katalog Bencana', 'Navigasi Cepat'); switchTab('bencana')" class="bg-gradient-to-r from-safety-600 to-amber_alert-500 hover:from-safety-500 hover:to-amber_alert-400 text-white font-extrabold px-5 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center space-x-2">
+                            <i class="fa-solid fa-kit-medical"></i>
+                            <span>Pelajari 9 Bencana & SOP Alat</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Buka Jalur Koordinasi Negara', 'Navigasi Cepat'); switchTab('koordinasi')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold px-5 py-3 rounded-xl text-xs sm:text-sm transition backdrop-blur-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-sitemap text-amber_alert-400"></i>
+                            <span>Lihat Jalur Komando Presiden–Masyarakat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 FASE PENANGGULANGAN BENCANA -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-safety-600">Siklus Manajemen Bencana</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">3 Fase Penanggulangan Bencana</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap kartu fase untuk membuka rincian mekanisme & instrumen pelaksanaannya</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Fase 1: Prabencana -->
+                    <div onclick="openPhaseModal('prabencana')" class="bg-white p-6 rounded-2xl border-2 border-slate-200/90 hover:border-amber_alert-500 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-shield-virus"></i>
+                                </div>
+                                <span id="badge-phase-prabencana" class="counter-badge bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-amber_alert-600">Fase 1 • Sebelum Bencana</span>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-amber_alert-600 transition">Prabencana (Pencegahan & Kesiapsiagaan)</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Terbagi menjadi 2 kondisi utama sesuai Pasal 33 UU 24/2007:
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-slate-600 bg-amber-50/70 p-3 rounded-xl border border-amber-100">
+                                <li><strong class="text-slate-800">• Tidak Terjadi Bencana:</strong> RPB, tata ruang, mitigasi struktural/non-struktural, edukasi.</li>
+                                <li><strong class="text-slate-800">• Terdapat Potensi Bencana:</strong> Kesiapsiagaan, peringatan dini (EWS), rencana kontinjensi, gladi.</li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber_alert-600 group-hover:underline">
+                            <span>Buka Rincian Mekanisme Prabencana</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+
+                    <!-- Fase 2: Tanggap Darurat -->
+                    <div onclick="openPhaseModal('tanggap')" class="bg-white p-6 rounded-2xl border-2 border-slate-200/90 hover:border-safety-600 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-safety-100 text-safety-600 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-truck-medical"></i>
+                                </div>
+                                <span id="badge-phase-tanggap" class="counter-badge bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-safety-600">Fase 2 • Selama Bencana</span>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-safety-600 transition">Tanggap Darurat (Penyelamatan & SKPDB)</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Serangkaian kegiatan segera saat kejadian bencana untuk menangani dampak buruk yang ditimbulkan:
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-slate-600 bg-safety-50/80 p-3 rounded-xl border border-safety-100">
+                                <li><strong class="text-slate-800">• Operasi Cepat:</strong> Kaji cepat (Rapid Assessment), aktivasi SKPDB, pencarian & penyelamatan (SAR).</li>
+                                <li><strong class="text-slate-800">• Layanan Darurat:</strong> Kebutuhan dasar pengungsi, kelompok rentan, & pemulihan prasarana vital.</li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-safety-600 group-hover:underline">
+                            <span>Buka Rincian Mekanisme Darurat</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+
+                    <!-- Fase 3: Pascabencana -->
+                    <div onclick="openPhaseModal('pascabencana')" class="bg-white p-6 rounded-2xl border-2 border-slate-200/90 hover:border-recovery-600 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-12 h-12 rounded-xl bg-recovery-100 text-recovery-600 flex items-center justify-center text-xl font-bold">
+                                    <i class="fa-solid fa-city"></i>
+                                </div>
+                                <span id="badge-phase-pascabencana" class="counter-badge bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ 0x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-recovery-600">Fase 3 • Setelah Bencana</span>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-recovery-600 transition">Pascabencana (Rehabilitasi & Rekonstruksi)</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Pemulihan menyeluruh pasca-kedaruratan agar masyarakat kembali berdaya dan lebih tangguh:
+                            </p>
+                            <ul class="text-xs space-y-1.5 text-slate-600 bg-recovery-50/80 p-3 rounded-xl border border-recovery-100">
+                                <li><strong class="text-slate-800">• Rehabilitasi:</strong> Pemulihan lingkungan, sosial psikologis (trauma healing), & pelayanan publik.</li>
+                                <li><strong class="text-slate-800">• Rekonstruksi:</strong> Pembangunan kembali infrastruktur & kelembagaan (<em>Build Back Better</em>).</li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-recovery-600 group-hover:underline">
+                            <span>Buka Rincian Rehabilitasi & Rekonstruksi</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODUL KHUSUS: MEKANISME PENETAPAN STATUS BENCANA & ESKALASI DARURAT -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold text-safety-600 uppercase tracking-wider">Prosedur Legal & Anggaran</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Mekanisme Penetapan Status Bencana & Eskalasi Darurat</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap tingkatan status untuk memahami dasar penetapan SK, implikasi akses dana, dan mobilisasi sumber daya.</p>
+                    </div>
+                </div>
+
+                <!-- 3 Status Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Status 1: Siaga Darurat -->
+                    <div onclick="openStatusModal('siaga')" class="p-5 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50/40 border border-amber-200 hover:border-amber-500 shadow-sm hover:shadow-md transition cursor-pointer space-y-3 group">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-amber_alert-500 text-navy-950 font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase">Tahap 1 • Eskalasi</span>
+                            <span id="badge-status-siaga" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-900 text-base group-hover:text-amber_alert-600 transition">1. Status Siaga Darurat</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Ditetapkan ketika terdapat <strong>ancaman nyata bencana</strong> berdasarkan peringatan dini resmi BMKG / PVMBG yang berpotensi meluas.
+                        </p>
+                        <div class="text-[11px] font-semibold text-amber-800 pt-2 border-t border-amber-200/60 flex items-center justify-between">
+                            <span>Aktivasi Posko Siaga & Logistik</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Status 2: Tanggap Darurat -->
+                    <div onclick="openStatusModal('tanggap_status')" class="p-5 rounded-2xl bg-gradient-to-br from-rose-50 to-safety-50/60 border border-safety-200 hover:border-safety-600 shadow-sm hover:shadow-md transition cursor-pointer space-y-3 group">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-safety-600 text-white font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase">Tahap 2 • Kedaruratan</span>
+                            <span id="badge-status-tanggap_status" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-safety-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-900 text-base group-hover:text-safety-600 transition">2. Status Tanggap Darurat</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Bencana telah terjadi & mengganggu kehidupan. Ditetapkan via <strong>SK Bupati/Walikota, Gubernur, atau Presiden</strong>. Membuka akses <strong>Dana Siap Pakai (DSP)</strong>.
+                        </p>
+                        <div class="text-[11px] font-semibold text-safety-700 pt-2 border-t border-safety-200/60 flex items-center justify-between">
+                            <span>Kemudahan Akses & Komando</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Status 3: Transisi Darurat ke Pemulihan -->
+                    <div onclick="openStatusModal('transisi')" class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/40 border border-recovery-200 hover:border-recovery-600 shadow-sm hover:shadow-md transition cursor-pointer space-y-3 group">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-recovery-600 text-white font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase">Tahap 3 • Transisi</span>
+                            <span id="badge-status-transisi" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-recovery-200">
+                                👁️ 0x dipelajari
+                            </span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-900 text-base group-hover:text-recovery-600 transition">3. Transisi Darurat ke Pemulihan</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Ancaman darurat mereda, penyelamatan korban selesai. Fokus pada <strong>Hunian Sementara (Huntara)</strong> & pemulihan layanan dasar menuju Rehab-Rekon.
+                        </p>
+                        <div class="text-[11px] font-semibold text-recovery-700 pt-2 border-t border-recovery-200/60 flex items-center justify-between">
+                            <span>Jembatan Menuju Rehab-Rekon</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MATRIKS KRITERIA PENETAPAN STATUS BENCANA DAERAH VS NASIONAL (5 INDIKATOR UU 24/2007) -->
+                <div class="pt-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-extrabold text-slate-800 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-scale-balanced text-safety-600"></i>
+                            <span>Matriks Kriteria Penetapan Status Bencana (5 Indikator Pasal 7 UU No. 24/2007)</span>
+                        </h4>
+                        <span class="text-[11px] text-slate-400 hidden sm:inline">Klik baris indikator untuk mencatat pembelajaran</span>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-navy-900 text-white">
+                                    <th class="p-3.5 font-bold w-44">Indikator Penilaian</th>
+                                    <th class="p-3.5 font-bold bg-slate-800">Bencana Kab/Kota (SK Bupati/Walikota)</th>
+                                    <th class="p-3.5 font-bold bg-navy-800">Bencana Provinsi (SK Gubernur)</th>
+                                    <th class="p-3.5 font-bold bg-safety-700">Bencana Nasional (Keppres RI)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 bg-white">
+                                <tr onclick="trackActivity('Indikator Status: 1. Jumlah Korban', 'Matriks Kriteria UU 24/2007')" class="hover:bg-slate-50 cursor-pointer transition">
+                                    <td class="p-3.5 font-bold text-slate-800 bg-slate-50">1. Jumlah Korban Jiwa & Pengungsi</td>
+                                    <td class="p-3.5 text-slate-600">Terkonsentrasi pada tingkat lokal/kabupaten dan masih dapat ditangani fasilitas kesehatan daerah.</td>
+                                    <td class="p-3.5 text-slate-600">Korban massal melampaui kapasitas RS rujukan satu kabupaten sehingga butuh rujukan lintas daerah.</td>
+                                    <td class="p-3.5 text-slate-800 font-medium bg-safety-50/40">Korban jiwa & pengungsi sangat masif melumpuhkan sistem kesehatan dan pemakaman regional.</td>
+                                </tr>
+                                <tr onclick="trackActivity('Indikator Status: 2. Kerugian Harta Benda', 'Matriks Kriteria UU 24/2007')" class="hover:bg-slate-50 cursor-pointer transition">
+                                    <td class="p-3.5 font-bold text-slate-800 bg-slate-50">2. Kerugian Harta Benda</td>
+                                    <td class="p-3.5 text-slate-600">Kerugian aset warga & daerah dapat ditanggulangi menggunakan Belanja Tidak Terduga (BTT) Kab/Kota.</td>
+                                    <td class="p-3.5 text-slate-600">Kerugian ekonomi melampaui batas kemampuan fiskal BTT Kabupaten/Kota terdampak.</td>
+                                    <td class="p-3.5 text-slate-800 font-medium bg-safety-50/40">Kerugian material berskala raksasa yang memerlukan alokasi khusus APBN & Dana Siap Pakai Nasional.</td>
+                                </tr>
+                                <tr onclick="trackActivity('Indikator Status: 3. Kerusakan Prasarana/Sarana', 'Matriks Kriteria UU 24/2007')" class="hover:bg-slate-50 cursor-pointer transition">
+                                    <td class="p-3.5 font-bold text-slate-800 bg-slate-50">3. Kerusakan Prasarana & Sarana</td>
+                                    <td class="p-3.5 text-slate-600">Kerusakan jalan lokal, jembatan desa, atau sekolah tingkat kabupaten.</td>
+                                    <td class="p-3.5 text-slate-600">Terputusnya jalan provinsi, jaringan irigasi lintas kabupaten, atau pusat pemerintahan daerah.</td>
+                                    <td class="p-3.5 text-slate-800 font-medium bg-safety-50/40">Hancurnya infrastruktur strategis nasional (bandara utama, pelabuhan, jaringan listrik/telekomunikasi regional).</td>
+                                </tr>
+                                <tr onclick="trackActivity('Indikator Status: 4. Cakupan Luas Wilayah', 'Matriks Kriteria UU 24/2007')" class="hover:bg-slate-50 cursor-pointer transition">
+                                    <td class="p-3.5 font-bold text-slate-800 bg-slate-50">4. Cakupan Luas Wilayah Terkena</td>
+                                    <td class="p-3.5 text-slate-600">Mencakup satu atau beberapa kecamatan dalam satu wilayah Kabupaten/Kota.</td>
+                                    <td class="p-3.5 text-slate-600">Mencakup 2 (dua) atau lebih wilayah Kabupaten/Kota dalam satu Provinsi.</td>
+                                    <td class="p-3.5 text-slate-800 font-medium bg-safety-50/40">Mencakup lintas provinsi atau melumpuhkan hampir seluruh wilayah suatu provinsi secara total.</td>
+                                </tr>
+                                <tr onclick="trackActivity('Indikator Status: 5. Dampak Sosial-Ekonomi', 'Matriks Kriteria UU 24/2007')" class="hover:bg-slate-50 cursor-pointer transition">
+                                    <td class="p-3.5 font-bold text-slate-800 bg-slate-50">5. Dampak Sosial-Ekonomi</td>
+                                    <td class="p-3.5 text-slate-600">Roda pemerintahan & pelayanan publik kabupaten/kota masih berjalan dan terkendali.</td>
+                                    <td class="p-3.5 text-slate-600">Pemerintahan kabupaten lumpuh sementara sehingga Gubernur mengambil alih kendali koordinasi.</td>
+                                    <td class="p-3.5 text-slate-800 font-medium bg-safety-50/40">Lumpuhnya fungsi pemerintahan daerah secara luas & mengganggu stabilitas ekonomi/keamanan nasional.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 2: KATALOG BENCANA, MITIGASI & PERAWATAN PERALATAN (9 BENCANA)
+             ===================================================================== -->
+        <section id="sec-bencana" class="tab-content hidden space-y-6">
+            <!-- Header & Filter Bar -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-safety-600">Katalog Kebencanaan & Logistik</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">9 Jenis Bencana, Mitigasi & SOP Perawatan Peralatan</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap kartu bencana untuk membuka SOP mitigasi, daftar peralatan wajib (keluarga & tim siaga), dan jadwal kalibrasi/perawatannya.</p>
+                    </div>
+                    <!-- Filter & Live Search -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="disaster-cat-filter" onchange="trackActivity('Filter Kategori Bencana', 'Katalog Bencana'); renderDisastersGrid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-safety-600">
+                            <option value="all">Semua Kategori (9 Bencana)</option>
+                            <option value="Bencana Alam Geologi">Bencana Alam Geologi</option>
+                            <option value="Bencana Hidrometeorologi">Bencana Hidrometeorologi</option>
+                            <option value="Bencana Non-Alam & Sosial">Bencana Non-Alam & Sosial</option>
+                        </select>
+                        <div class="relative sm:w-56">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="disaster-search" oninput="renderDisastersGrid()" placeholder="Cari bencana atau peralatan..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-safety-600 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 9 Kartu Bencana -->
+            <div id="disasters-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 3: LEMBAGA PENANGANAN & JALUR KOORDINASI NEGARA
+             ===================================================================== -->
+        <section id="sec-koordinasi" class="tab-content hidden space-y-8">
+            <!-- Bagian A: Visualisasi Interaktif Jalur Koordinasi & Rantai Komando Nasional -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-safety-600">Struktur Komando & Tata Kelola</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Jalur Koordinasi & Rantai Komando Penanggulangan Bencana Nasional</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap level (Level 1 hingga Level 6) untuk memeriksa wewenang hukum, alur pelaporan, dan garis komando.</p>
+                    </div>
+                    <div class="flex items-center space-x-3 text-[11px] font-semibold">
+                        <span class="flex items-center space-x-1 text-safety-600"><span class="w-3 h-0.5 bg-safety-600 inline-block"></span> <span>Garis Komando</span></span>
+                        <span class="flex items-center space-x-1 text-recovery-600"><span class="w-3 h-0.5 border-t-2 border-dashed border-recovery-600 inline-block"></span> <span>Garis Koordinasi</span></span>
+                    </div>
+                </div>
+
+                <!-- Hierarchy Chain of Command Nodes -->
+                <div id="command-chain-container" class="max-w-4xl mx-auto space-y-3">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- Bagian B: Direktori 9 Lembaga Penanganan Bencana & Perannya -->
+            <div class="space-y-4">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-recovery-600">Klaster & Instansi Kebencanaan</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Direktori 9 Lembaga Penanganan Bencana & Perannya</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik kartu lembaga untuk melihat pembagian tugas pada fase Prabencana, Saat Bencana, dan Pascabencana.</p>
+                    </div>
+                    <select id="agency-role-filter" onchange="trackActivity('Filter Peran Lembaga', 'Direktori Lembaga'); renderAgenciesGrid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-recovery-600">
+                        <option value="all">Semua Peran & Klaster (9 Lembaga)</option>
+                        <option value="Komando & Koordinasi">Komando & Koordinasi Utama</option>
+                        <option value="Deteksi Dini & Sains">Deteksi Dini & Sains Kebumian</option>
+                        <option value="SAR & Keamanan">Operasi SAR & Keamanan</option>
+                        <option value="Klaster Logistik, Kesehatan & Pentahelix">Klaster Sosial, Kesehatan & Pentahelix</option>
+                    </select>
+                </div>
+
+                <div id="agencies-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 4: SIMULATOR KESIAPSIAGAAN & KOMANDO DARURAT
+             ===================================================================== -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-safety-600">Simulasi Kebijakan & Kesiapan Daerah</span>
+                        <h3 class="font-extrabold text-slate-900 text-2xl">Simulator Kesiapsiagaan & Komando Darurat</h3>
+                        <p class="text-xs text-slate-500 mt-1">Atur 5 parameter kesiapsiagaan daerah & komunitas untuk memproyeksikan Indeks Ketangguhan serta skenario penetapan status darurat.</p>
+                    </div>
+                    <span id="badge-simulator-count" class="counter-badge bg-safety-100 text-safety-700 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-safety-200 self-start sm:self-auto">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 5 Sliders Input (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">1. Kesiapan Tas Siaga & Kelengkapan Peralatan (%)</label>
+                                <span id="val-sim-1" class="font-mono font-extrabold text-safety-600 bg-white px-2 py-0.5 rounded border">65%</span>
+                            </div>
+                            <input type="range" id="sim-slider-1" min="0" max="100" value="65" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Kesiapan Tas Siaga & Alat', 'Simulator Kesiapsiagaan'); updateSimulatorPreview()" class="w-full accent-safety-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Ketersediaan Tas Siaga Bencana (TSB) keluarga, perahu evakuasi, APAR, masker N95, dan alat komunikasi HT.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">2. Disiplin Jadwal Perawatan & Kalibrasi Alat (%)</label>
+                                <span id="val-sim-2" class="font-mono font-extrabold text-safety-600 bg-white px-2 py-0.5 rounded border">60%</span>
+                            </div>
+                            <input type="range" id="sim-slider-2" min="0" max="100" value="60" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Disiplin Perawatan Alat', 'Simulator Kesiapsiagaan'); updateSimulatorPreview()" class="w-full accent-safety-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Kepatuhan audit APAR bulanan, rotasi logistik TSB tiap 6 bulan, uji sirine tanggal 26, & kalibrasi sensor EWS.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">3. Kecepatan Peringatan Dini & Jalur Koordinasi (%)</label>
+                                <span id="val-sim-3" class="font-mono font-extrabold text-safety-600 bg-white px-2 py-0.5 rounded border">75%</span>
+                            </div>
+                            <input type="range" id="sim-slider-3" min="0" max="100" value="75" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Kecepatan EWS & Koordinasi', 'Simulator Kesiapsiagaan'); updateSimulatorPreview()" class="w-full accent-safety-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Kecepatan diseminasi info BMKG/PVMBG ke BPBD & masyarakat, serta kejelasan SKPDB (Incident Commander).</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">4. Mitigasi Struktural & Tata Ruang Aman (%)</label>
+                                <span id="val-sim-4" class="font-mono font-extrabold text-recovery-600 bg-white px-2 py-0.5 rounded border">55%</span>
+                            </div>
+                            <input type="range" id="sim-slider-4" min="0" max="100" value="55" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Mitigasi Struktural', 'Simulator Kesiapsiagaan'); updateSimulatorPreview()" class="w-full accent-recovery-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Kepatuhan bangunan tahan gempa SNI, sabuk hijau mangrove, sabo dam lahar, normalisasi DAS, & bebas hunian sempadan.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">5. Partisipasi Masyarakat (Destana) & Kolaborasi Pentahelix (%)</label>
+                                <span id="val-sim-5" class="font-mono font-extrabold text-recovery-600 bg-white px-2 py-0.5 rounded border">70%</span>
+                            </div>
+                            <input type="range" id="sim-slider-5" min="0" max="100" value="70" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Partisipasi Destana & Pentahelix', 'Simulator Kesiapsiagaan'); updateSimulatorPreview()" class="w-full accent-recovery-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Keaktifan Desa Tangguh Bencana (Destana), gladi evakuasi mandiri rutin, serta sinergi relawan, akademisi & dunia usaha.</p>
+                        </div>
+                    </div>
+
+                    <!-- Output Dashboard Panel (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-navy-950 via-navy-900 to-slate-900 text-white rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl border border-safety-600/30">
+                        <div class="space-y-1 border-b border-white/10 pb-3">
+                            <span class="text-[11px] font-mono text-amber_alert-400 uppercase tracking-widest font-bold">Proyeksi Ketangguhan Daerah</span>
+                            <h4 class="text-xl font-extrabold">Dashboard Evaluasi Kesiapsiagaan</h4>
+                        </div>
+
+                        <!-- Score Big Box -->
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 text-center space-y-1">
+                            <span class="text-xs text-slate-300 block">Skor Indeks Ketangguhan (0 - 100)</span>
+                            <strong id="sim-res-score" class="text-5xl font-mono font-extrabold text-amber_alert-400">65.0</strong>
+                            <div class="pt-2">
+                                <span id="sim-res-tier-badge" class="bg-amber_alert-500 text-navy-950 font-extrabold text-xs px-3.5 py-1 rounded-full">
+                                    Ketangguhan Sedang (Siaga)
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-metrics -->
+                        <div class="space-y-2.5 text-xs">
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Tingkat Kerentanan & Risiko Korban:</span>
+                                <span id="sim-res-risk" class="font-bold px-2.5 py-0.5 rounded-full bg-amber_alert-500/20 text-amber_alert-400 border border-amber_alert-500/40">Sedang</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Kesiapan Operasi Komando & Alat:</span>
+                                <span id="sim-res-command" class="font-bold text-emerald-400">Siap dengan Catatan</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 space-y-1">
+                                <span class="text-slate-400 text-[11px] block">Simulasi Penetapan Status Darurat Saat Ancaman:</span>
+                                <strong id="sim-res-status-sim" class="text-amber_alert-300 block">Aktivasi Status Siaga Darurat & Audit Ulang Peralatan</strong>
+                            </div>
+                        </div>
+
+                        <!-- Priority Recommendation -->
+                        <div class="bg-safety-600/15 border border-safety-500/30 p-4 rounded-2xl space-y-1.5 text-xs">
+                            <h5 class="font-bold text-amber_alert-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                <span>Rekomendasi Tindakan Prioritas:</span>
+                            </h5>
+                            <p id="sim-res-recommendation" class="text-slate-200 leading-relaxed">
+                                Tingkatkan kepatuhan mitigasi struktural tata ruang serta disiplin jadwal perawatan peralatan (kalibrasi sensor & rotasi logistik TSB) agar tidak terjadi kegagalan alat saat puncak darurat.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 5: KUIS EVALUASI KEBENCANAAN (5 SOAL SKENARIO)
+             ===================================================================== -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-navy-900 text-amber_alert-400 flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-xl">Kuis Evaluasi Kebencanaan (5 Soal Skenario)</h3>
+                            <p class="text-xs text-slate-500">Uji pemahaman Anda mengenai status darurat, perawatan alat, wewenang lembaga, jalur komando, dan prinsip Build Back Better.</p>
+                        </div>
+                    </div>
+                    <span id="badge-quiz-count" class="counter-badge bg-slate-100 text-slate-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto">
+                        👁️ 0x soal dijawab
+                    </span>
+                </div>
+
+                <!-- Dynamic Quiz Area -->
+                <div id="quiz-container" class="max-w-3xl mx-auto">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-safety-600 text-white flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span class="font-bold text-slate-200">SiagaNusantara • Platform Edukasi Kebencanaan Nasional</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Referensi: UU No. 24 Tahun 2007 tentang Penanggulangan Bencana, Perka BNPB SKPDB, BMKG, PVMBG & BASARNAS.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ACTION BUTTON (FAB) ANALITIK ================= -->
+    <button onclick="openAnalyticsModal(); trackActivity('Tombol Melayang Statistik Belajar', 'Navigasi Analitik')" class="fixed bottom-6 right-6 bg-gradient-to-r from-navy-950 via-navy-900 to-safety-700 text-white p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-amber_alert-400/60">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-amber_alert-400"></i>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-safety-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-amber_alert-400">Panel Analitik</span>
+            <span id="fab-total-clicks" class="font-extrabold text-sm font-mono leading-none text-white">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ================= MODAL 1: PANEL ANALITIK AKTIVITAS BELAJAR ================= -->
+    <div id="modal-analytics" onclick="if(event.target===this) closeAnalyticsModal()" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navy-950 to-slate-900 text-white p-5 flex items-center justify-between border-b border-safety-600/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber_alert-500 text-navy-950 flex items-center justify-center font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-slate-300">Rekapitulasi interaksi & progres eksplorasi materi kebencanaan</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- 3 Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-safety-600 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Tersimpan di browser Anda</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-sm text-slate-800 font-extrabold block truncate mt-1">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Topik paling sering diklik</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Persentase Cakupan Belajar</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <div class="flex-grow bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-recovery-600 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-extrabold text-recovery-700 font-mono">0%</span>
+                        </div>
+                        <span id="modal-coverage-detail" class="text-[11px] text-slate-400 block mt-1">0 dari 30 modul inti dipelajari</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top 5 Popular -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Doughnut Chart -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-extrabold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Interaksi Per Kategori</h4>
+                        <div class="w-48 h-48 relative flex items-center justify-center">
+                            <canvas id="analyticsChart"></canvas>
+                            <p id="chart-empty-msg" class="text-xs text-slate-400 italic text-center hidden">Belum ada data klik untuk grafik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Sub-Materi -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Top 5 Materi Terpopuler</h4>
+                        <div id="top-5-list" class="space-y-2 text-xs">
+                            <!-- Di-render dinamis -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline Custom Reset Confirmation Banner (No native confirm/alert) -->
+                <div id="reset-confirm-box" class="hidden bg-rose-50 border border-rose-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2.5 text-rose-900 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600 text-base"></i>
+                        <span><strong>Konfirmasi Reset:</strong> Yakin ingin menghapus seluruh riwayat hitungan belajar?</span>
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-auto">
+                        <button onclick="executeClearAnalytics()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Ya, Hapus Semua</button>
+                        <button onclick="toggleResetConfirm(false)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Batal</button>
+                    </div>
+                </div>
+
+                <!-- Activity Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Tabel Log Aktivitas Lengkap</h4>
+                        <button onclick="toggleResetConfirm(true)" class="text-rose-600 hover:text-rose-700 text-xs font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-52 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-800 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Waktu Terakhir</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Di-render dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-export text-safety-600"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: DETAIL MATERI / BENCANA / LEMBAGA ================= -->
+    <div id="modal-detail" onclick="if(event.target===this) closeDetailModal()" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-navy-950 to-slate-900">
+                <!-- Di-render dinamis -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar flex-grow">
+                <!-- Di-render dinamis -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeDetailModal()" class="bg-navy-900 hover:bg-navy-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Detail
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed top-20 right-4 sm:right-6 z-50 space-y-2 pointer-events-none max-w-xs w-full"></div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. DATASET LENGKAP: 3 FASE, 3 STATUS, 9 BENCANA, 6 JALUR KOMANDO, 9 LEMBAGA, 5 KUIS
+         * ------------------------------------------------------------------- */
+
+        // Data Detail 3 Fase Penanggulangan Bencana
+        const PHASES_DATA = {
+            prabencana: {
+                key: 'Fase 1: Prabencana (Pencegahan & Kesiapsiagaan)',
+                badgeId: 'badge-phase-prabencana',
+                color: 'from-amber_alert-600 to-navy-900',
+                icon: 'fa-shield-virus',
+                subtitle: 'Pasal 33 – 47 UU No. 24 Tahun 2007 tentang Penanggulangan Bencana',
+                sections: [
+                    {
+                        title: 'A. Situasi Tidak Terjadi Bencana',
+                        color: 'bg-amber-50 border-amber-200 text-amber-950',
+                        items: [
+                            'Perencanaan Penanggulangan Bencana (RPB) terintegrasi ke dalam RPJMD/RPJMN.',
+                            'Pengurangan Risiko Bencana (PRB) & analisis risiko bencana daerah (Kajian Risiko Bencana / KRB).',
+                            'Pencegahan & pemaduan dalam perencanaan tata ruang (zonasi kawasan rawan bencana / KRB).',
+                            'Mitigasi Struktural (pembangunan fisik tahan bencana: sabo dam, tanggul, seawall, bangunan SNI) & Mitigasi Non-Struktural (regulasi, edukasi kebencanaan, kurikulum sekolah aman bencana).',
+                            'Persyaratan Analisis Risiko Bencana (ARB) untuk setiap izin pembangunan infrastruktur vital.'
+                        ]
+                    },
+                    {
+                        title: 'B. Situasi Terdapat Potensi Bencana',
+                        color: 'bg-orange-50 border-orange-200 text-orange-950',
+                        items: [
+                            'Kesiapsiagaan: penyusunan dan uji coba Rencana Penanggulangan Kedaruratan Bencana (RPKB) & Rencana Kontinjensi (Renkon).',
+                            'Pengorganisasian, pemasangan, dan pengujian sistem peringatan dini (Early Warning System / EWS).',
+                            'Penyediaan dan penyiapan barang pasokan pemenuhan kebutuhan dasar & logistik darurat.',
+                            'Penyiapan lokasi evakuasi, jalur evakuasi, titik kumpul, serta gladi/simulasi evakuasi rutin.'
+                        ]
+                    }
+                ]
+            },
+            tanggap: {
+                key: 'Fase 2: Tanggap Darurat (Penyelamatan & SKPDB)',
+                badgeId: 'badge-phase-tanggap',
+                color: 'from-safety-600 to-navy-950',
+                icon: 'fa-truck-medical',
+                subtitle: 'Pasal 48 – 56 UU No. 24 Tahun 2007 & Sistem Komando Penanganan Darurat Bencana',
+                sections: [
+                    {
+                        title: 'A. Operasi Cepat & Aktivasi Komando',
+                        color: 'bg-safety-50 border-safety-200 text-safety-950',
+                        items: [
+                            'Pengkajian secara cepat dan tepat (Rapid Assessment) terhadap lokasi, kerusakan, korban, dan sumber daya.',
+                            'Penentuan Status Keadaan Darurat Bencana oleh Kepala Daerah atau Presiden.',
+                            'Aktivasi Sistem Komando Penanganan Darurat Bencana (SKPDB) melalui pembentukan Pos Komando (Posko) & penunjukan Incident Commander.',
+                            'Pencarian, penyelamatan, dan evakuasi korban (Operasi SAR terpadu).'
+                        ]
+                    },
+                    {
+                        title: 'B. Pemenuhan Kebutuhan Dasar & Perlindungan',
+                        color: 'bg-rose-50 border-rose-200 text-rose-950',
+                        items: [
+                            'Pemenuhan kebutuhan dasar pengungsi: air bersih & sanitasi, pangan, sandang, pelayanan kesehatan, psikososial, serta penampungan/hunian sementara.',
+                            'Perlindungan terhadap kelompok rentan (bayi, balita, ibu hamil/menyusui, penyandang disabilitas, dan lansia).',
+                            'Pemulihan dengan segera prasarana dan sarana vital (listrik, air bersih, komunikasi, jembatan darurat Bailey).'
+                        ]
+                    }
+                ]
+            },
+            pascabencana: {
+                key: 'Fase 3: Pascabencana (Rehabilitasi & Rekonstruksi)',
+                badgeId: 'badge-phase-pascabencana',
+                color: 'from-recovery-700 to-navy-950',
+                icon: 'fa-city',
+                subtitle: 'Pasal 57 – 59 UU No. 24 Tahun 2007 & Prinsip Build Back Better',
+                sections: [
+                    {
+                        title: 'A. Rehabilitasi (Pemulihan Fungsi Dasar)',
+                        color: 'bg-recovery-50 border-recovery-200 text-recovery-950',
+                        items: [
+                            'Perbaikan lingkungan daerah bencana & pemulihan fungsi ekosistem.',
+                            'Perbaikan prasarana dan sarana umum agar kembali berfungsi normal.',
+                            'Pemberian bantuan perbaikan rumah masyarakat terdampak.',
+                            'Pemulihan sosial psikologis (trauma healing) & rekonsiliasi resolusi konflik.',
+                            'Pelayanan kesehatan, pemulihan keamanan/ketertiban, serta pemulihan fungsi pemerintahan dan pelayanan publik.'
+                        ]
+                    },
+                    {
+                        title: 'B. Rekonstruksi (Membangun Kembali Lebih Baik & Aman)',
+                        color: 'bg-teal-50 border-teal-200 text-teal-950',
+                        items: [
+                            'Pembangunan kembali prasarana dan sarana dengan standar ketahanan bencana lebih tinggi (Build Back Better, Safer, and Sustainable).',
+                            'Pembangunan kembali sarana sosial masyarakat & pembangkitan kembali kehidupan sosial budaya.',
+                            'Penerapan rancang bangun yang tepat serta penggunaan peralatan yang lebih baik dan tahan bencana.',
+                            'Peningkatan kondisi sosial, ekonomi, budaya, serta partisipasi masyarakat dalam perencanaan tata ruang baru.'
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Data Detail 3 Status Darurat
+        const STATUS_DATA = {
+            siaga: {
+                key: 'Status 1: Siaga Darurat Bencana',
+                badgeId: 'badge-status-siaga',
+                color: 'from-amber_alert-600 to-navy-900',
+                icon: 'fa-triangle-exclamation',
+                subtitle: 'Keadaan ketika potensi bencana mengarah pada terjadinya bencana berdasarkan peringatan dini resmi',
+                sections: [
+                    {
+                        title: 'Syarat & Dasar Penetapan',
+                        color: 'bg-amber-50 border-amber-200 text-amber-950',
+                        items: [
+                            'Terdapat peningkatan aktivitas ancaman nyata (contoh: kenaikan status gunung api ke Siaga/Level III, prakiraan cuaca ekstrem ekstrem BMKG, atau kekeringan meluas).',
+                            'Ditetapkan melalui Surat Keputusan (SK) Kepala Daerah berdasarkan rekomendasi teknis BMKG/PVMBG dan BPBD.'
+                        ]
+                    },
+                    {
+                        title: 'Implikasi Operasional & Anggaran',
+                        color: 'bg-slate-50 border-slate-200 text-slate-800',
+                        items: [
+                            'Aktivasi Posko Siaga Darurat 24/7 dan penyusunan Rencana Operasi Siaga.',
+                            'Penyiapan personel TRC (Tim Reaksi Cepat), peralatan evakuasi, serta pengisian stok logistik di titik-titik rawan.',
+                            'Dapat mengakses Belanja Tidak Terduga (BTT) daerah dan dukungan Dana Siap Pakai (DSP) BNPB untuk pencegahan dampak.'
+                        ]
+                    }
+                ]
+            },
+            tanggap_status: {
+                key: 'Status 2: Tanggap Darurat Bencana',
+                badgeId: 'badge-status-tanggap_status',
+                color: 'from-safety-600 to-navy-950',
+                icon: 'fa-siren-on',
+                subtitle: 'Keadaan ketika ancaman bencana terjadi dan telah mengganggu kehidupan dan penghidupan sekelompok orang',
+                sections: [
+                    {
+                        title: 'Syarat & Dasar Penetapan SK',
+                        color: 'bg-safety-50 border-safety-200 text-safety-950',
+                        items: [
+                            'Didahului oleh Kaji Cepat (Rapid Assessment) oleh Tim Reaksi Cepat (TRC) BPBD dalam waktu < 24 jam pasca-kejadian.',
+                            'Ditetapkan melalui SK Bupati/Walikota (skala Kab/Kota), SK Gubernur (skala Provinsi), atau Keputusan Presiden (Bencana Nasional).'
+                        ]
+                    },
+                    {
+                        title: 'Kemudahan Akses (Pasal 50 UU 24/2007)',
+                        color: 'bg-rose-50 border-rose-200 text-rose-950',
+                        items: [
+                            'Pengerahan sumber daya manusia (TNI/Polri, BASARNAS, Relawan) lintas sektor tanpa hambatan birokrasi.',
+                            'Pengerahan peralatan dan logistik serta pengadaan barang/jasa darurat secara cepat (penunjukan langsung darurat).',
+                            'Akses langsung pencairan Dana Siap Pakai (DSP) BNPB & BTT Daerah, serta kemudahan imigrasi/bea cukai bila bantuan internasional dibuka.'
+                        ]
+                    }
+                ]
+            },
+            transisi: {
+                key: 'Status 3: Transisi Darurat ke Pemulihan',
+                badgeId: 'badge-status-transisi',
+                color: 'from-recovery-600 to-navy-950',
+                icon: 'fa-arrows-turn-to-dots',
+                subtitle: 'Keadaan ketika ancaman bencana mulai mereda dan kegiatan penyelamatan darurat telah selesai',
+                sections: [
+                    {
+                        title: 'Fokus Kegiatan Transisi',
+                        color: 'bg-recovery-50 border-recovery-200 text-recovery-950',
+                        items: [
+                            'Pembangunan Hunian Sementara (Huntara) dan pemberian Dana Tunggu Hunian (DTH) bagi pengungsi yang rumahnya rusak berat.',
+                            'Pembersihan puing-puing material bencana dan normalisasi akses jalan utama.',
+                            'Pemulihan fungsi sekolah darurat, puskesmas, pasar darurat, dan jaringan air bersih komunal.'
+                        ]
+                    },
+                    {
+                        title: 'Penyusunan Dokumen Pascabencana',
+                        color: 'bg-teal-50 border-teal-200 text-teal-950',
+                        items: [
+                            'Pelaksanaan Pengkajian Kebutuhan Pascabencana (Jitupasna) untuk menghitung kerusakan dan kerugian.',
+                            'Penyusunan Rencana Rehabilitasi dan Rekonstruksi Pascabencana (R3P) sebagai dasar penganggaran tahun jamak.'
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Data 9 Jenis Bencana, Mitigasi, Peralatan & SOP Perawatan
+        const DISASTERS_DATA = [
+            {
+                id: 'gempa',
+                name: '1. Gempa Bumi & Sesar Aktif',
+                category: 'Bencana Alam Geologi',
+                icon: 'fa-house-crack',
+                color: 'from-safety-600 to-navy-950',
+                shortDesc: 'Guncangan bumi akibat pelepasan energi tumbukan lempeng atau pergerakan sesar aktif darat/laut secara tiba-tiba.',
+                characteristics: 'Terjadi mendadak tanpa tanda cuaca, getaran primer (P-wave) diikuti getaran merusak (S-wave), berpotensi memicu likuifaksi, longsor, dan tsunami jika berpusat di laut dangkal.',
+                mitigationStructural: 'Penerapan standar bangunan tahan gempa SNI 1726, perkuatan kolom/sloof rumah (retrofitting), dan pengencangan lemari/rak berat ke dinding.',
+                mitigationNonStructural: 'Pemetaan jalur sesar aktif (ZRB), latihan rutin Drop-Cover-Hold On (Berlutut-Lindungi Kepala-Bertahan), serta penetapan titik kumpul terbuka.',
+                equipmentFamily: 'Tas Siaga Bencana (TSB) berisi air minum 3 hari, makanan siap saji, dokumen penting kedap air, P3K, peluit darurat, senter & radio engkol/baterai, uang tunai.',
+                equipmentTeam: 'Seismograf & akselerograf EWS, helm keselamatan (safety helmet), dongkrak hidrolik, alat potong beton (concrete cutter), tandu evakuasi, dan alat deteksi korban reruntuhan.',
+                maintenanceSOP: 'Periksa baterai senter/radio & audit kelengkapan isi TSB setiap 6 bulan sekali; lakukan rotasi air minum & makanan kaleng sebelum tanggal kedaluwarsa; kalibrasi sensor seismograf secara berkala oleh BMKG.'
+            },
+            {
+                id: 'tsunami',
+                name: '2. Tsunami',
+                category: 'Bencana Alam Geologi',
+                icon: 'fa-water',
+                color: 'from-blue-700 to-navy-950',
+                shortDesc: 'Gelombang laut raksasa berkecepatan tinggi akibat gempa tektonik dasar laut, longsoran bawah laut, atau erupsi vulkanik laut.',
+                characteristics: 'Didahului gempa kuat/ayunan lama (>20 detik), air laut surut mendadak secara tidak wajar, terdengar suara gemuruh dari arah laut. Gelombang susulan bisa lebih besar.',
+                mitigationStructural: 'Penanaman sabuk hijau (greenbelt) mangrove & cemara laut, pembangunan pemecah gelombang (breakwater), dan gedung/bukit evakuasi vertikal (TES).',
+                mitigationNonStructural: 'Pemasangan rambu jalur evakuasi, edukasi prinsip 20-20-20 (jika gempa >20 detik, segera evakuasi dalam <20 menit ke ketinggian >20 meter), serta desa siaga tsunami (Tsunami Ready).',
+                equipmentFamily: 'Dry bag (tas kedap air), jaket pelampung (life jacket), peluit, senter tahan air, sepatu bertali kuat, dan obat-obatan pribadi.',
+                equipmentTeam: 'Buoy Tsunami (InaTEWS) & Tide Gauge (pengukur pasang surut), Sirine Peringatan Dini Tsunami pantai, perahu karet evakuasi, dan perangkat komunikasi satelit.',
+                maintenanceSOP: 'Uji bunyi sirine tsunami secara rutin setiap tanggal 26 pukul 10.00 waktu setempat; bilas jaket pelampung & dry bag dengan air tawar setelah terkena air laut lalu jemur teduh agar katup/bahan tidak berjamur atau getas.'
+            },
+            {
+                id: 'gunung_api',
+                name: '3. Erupsi Gunung Api',
+                category: 'Bencana Alam Geologi',
+                icon: 'fa-volcano',
+                color: 'from-red-700 to-navy-950',
+                shortDesc: 'Keluarnya magma, gas beracun, hujan abu vulkanik, awan panas guguran (wedhus gembel), dan ancaman lahar hujan.',
+                characteristics: 'Peningkatan kegempaan vulkanik, deformasi tubuh gunung, perubahan suhu kawah, serta kenaikan status resmi PVMBG (Normal -> Waspada -> Siaga -> Awas).',
+                mitigationStructural: 'Pembangunan Sabo Dam penahan aliran lahar dingin di alur sungai berhulu di puncak gunung, tanggul pengelak lahar, dan barak pengungsian permanen.',
+                mitigationNonStructural: 'Penetapan peta Kawasan Rawan Bencana (KRB I, II, dan III), larangan hunian permanen di KRB III, serta gladi evakuasi ternak & warga.',
+                equipmentFamily: 'Masker respirator N95 atau P100, kacamata pelindung rapat (goggles), pakaian lengan panjang, helm/topi pelindung, dan terpal plastik penutup sumur/toren air.',
+                equipmentTeam: 'Seismometer vulkanik, tiltmeter/GPS deformasi, drone pemantau kawah termal, detektor gas SO2/CO2, serta truk tangki air bersih.',
+                maintenanceSOP: 'Simpan masker N95/P100 dalam kemasan kedap udara yang kering & periksa elastisitas karet serta masa kedaluwarsa filter; bersihkan debu vulkanik pada filter kendaraan & instrumen pemantau secara berkala.'
+            },
+            {
+                id: 'banjir',
+                name: '4. Banjir & Banjir Bandang',
+                category: 'Bencana Hidrometeorologi',
+                icon: 'fa-house-flood-water',
+                color: 'from-cyan-700 to-navy-950',
+                shortDesc: 'Luapan air yang merendam daratan akibat curah hujan ekstrem, penyempitan Daerah Aliran Sungai (DAS), atau jebolnya bendungan alami.',
+                characteristics: 'Banjir bandang ditandai air keruh membawa material kayu/batu dari hulu secara tiba-tiba dengan arus sangat deras. Banjir genangan dipicu drainase buruk & pasang laut (rob).',
+                mitigationStructural: 'Pembangunan sumur resapan, lubang biopori, embung/kolam retensi, normalisasi sungai, tanggul banjir, serta sistem polder pompa.',
+                mitigationNonStructural: 'Larangan mendirikan bangunan di bantaran sungai, reboisasi hulu DAS, pengelolaan sampah terpadu, dan pemantauan Tinggi Muka Air (TMA).',
+                equipmentFamily: 'Sepatu boot karet tinggi, jas hujan ponco, senter tahan air, kantong plastik besar kedap air untuk elektronik/dokumen, dan kotak P3K anti-septik.',
+                equipmentTeam: 'Perahu karet (LCR) & perahu polyethylene (PE) lengkap dengan dayung/mesin tempel, pompa alkon penyedot air portabel, tali kernmantel, dan ring buoy.',
+                maintenanceSOP: 'Cuci perahu karet dengan air bersih setelah digunakan, keringkan sempurna di tempat teduh, lalu taburi bedak talk sebelum dilipat agar karet tidak lengket/getas; panaskan mesin pompa alkon & mesin tempel minimal setiap 2 minggu sekali.'
+            },
+            {
+                id: 'longsor',
+                name: '5. Tanah Longsor',
+                category: 'Bencana Alam Geologi',
+                icon: 'fa-hill-rockslide',
+                color: 'from-amber-800 to-navy-950',
+                shortDesc: 'Pergerakan massa tanah atau batuan menuruni lereng akibat curah hujan tinggi yang menjenuhkan tanah pada lereng terjal.',
+                characteristics: 'Munculnya retakan tapal kuda di lereng atas, mata air baru keruh mendadak, pohon/tiang listrik mulai miring, serta suara gemuruh dari tebing.',
+                mitigationStructural: 'Pembuatan terasering/sengkedan berdrainase baik, dinding penahan tanah (bronjong/talud), dan penanaman vegetasi berakar dalam & kuat (seperti rumput vetiver).',
+                mitigationNonStructural: 'Penutupan segera retakan tanah dengan tanah liat padat agar air hujan tidak masuk, serta relokasi hunian dari zona kemiringan >30 derajat.',
+                equipmentFamily: 'Senter kepala (headlamp), peluit darurat, sepatu anti-selip, jas hujan, dan tas siaga ringan untuk evakuasi cepat.',
+                equipmentTeam: 'Ekstensometer & Landslide Early Warning System (LEWS) berbasis penakar hujan, cangkul & sekop lipat, tandu lipat, serta Handy Talky (HT).',
+                maintenanceSOP: 'Bersihkan corong penakar hujan otomatis (tipping bucket) pada alat LEWS dari guguran daun/kotoran setiap minggu; lakukan kalibrasi baterai HT dan pengujian gelombang frekuensi komunikasi secara rutin.'
+            },
+            {
+                id: 'kebakaran',
+                name: '6. Kebakaran Hutan, Lahan & Pemukiman',
+                category: 'Bencana Hidrometeorologi',
+                icon: 'fa-fire-flame-curved',
+                color: 'from-orange-700 to-navy-950',
+                shortDesc: 'Api yang tidak terkendali pada kawasan hutan/lahan gambut (karhutla) maupun pemukiman padat dan gedung bertingkat.',
+                characteristics: 'Karhutla memicu kabut asap pekat (ISPA) dan sulit dipadamkan di lahan gambut karena api menjalar di bawah permukaan tanah.',
+                mitigationStructural: 'Pembuatan sekat bakar (firebreak), sekat kanal pembasahan gambut (rewetting), instalasi sistem hydrant, sprinkler, dan tangga darurat gedung.',
+                mitigationNonStructural: 'Larangan pembukaan lahan dengan membakar, patroli terpadu Manggala Agni/Masyarakat Peduli Api (MPA), serta audit keselamatan listrik rumah.',
+                equipmentFamily: 'APAR (Alat Pemadam Api Ringan) jenis ABC Dry Chemical Powder atau CO2, selimut api (fire blanket) di dapur, detektor asap, dan masker respirator.',
+                equipmentTeam: 'Pompa punggung (jet shooter), gepyok api, selang pemadam (fire hose), nozzle, mobil tangki pemadam, dan baju tahan panas.',
+                maintenanceSOP: 'Periksa jarum manometer APAR berada di zona hijau setiap bulan serta bolak-balik tabung APAR powder agar serbuk tidak menggumpal di dasar; cuci dan gulung selang pemadam dalam kondisi kering total agar tidak lapuk.'
+            },
+            {
+                id: 'kekeringan',
+                name: '7. Kekeringan & Cuaca Ekstrem / Puting Beliung',
+                category: 'Bencana Hidrometeorologi',
+                icon: 'fa-wind',
+                color: 'from-yellow-700 to-navy-950',
+                shortDesc: 'Defisit air berkepanjangan akibat anomali iklim (El Nino) serta angin kencang berputar (puting beliung) saat pancaroba.',
+                characteristics: 'Kekeringan menurunkan debit sumber air & memicu gagal panen; puting beliung ditandai awan Cumulonimbus gelap, penurunan suhu mendadak, dan angin berputar <1 jam.',
+                mitigationStructural: 'Pembangunan embung desa, sumur bor dalam, instalasi pemanenan air hujan (rainwater harvesting), serta penguatan struktur atap rumah.',
+                mitigationNonStructural: 'Pemangkasan dahan pohon tua/lapuk sebelum musim pancaroba, pola tanam hemat air, dan modifikasi cuaca (TMC) penyemaian awan.',
+                equipmentFamily: 'Toren/jerigen air lipat food-grade, filter air portabel, senter, dan pengaman jendela kaca.',
+                equipmentTeam: 'Gergaji mesin (chainsaw) untuk evakuasi pohon tumbang, terpal tugas berat (heavy duty) penutup atap rusak, dan truk tangki distribusi air bersih.',
+                maintenanceSOP: 'Kuras tangki penyimpanan & bersihkan membran filter air secara berkala agar bebas lumut/bakteri; asah ketajaman rantai chainsaw setelah pemakaian dan kosongkan tangki bensin jika mesin disimpan dalam waktu lama.'
+            },
+            {
+                id: 'wabah',
+                name: '8. Wabah Penyakit / Pandemi (Bencana Non-Alam)',
+                category: 'Bencana Non-Alam & Sosial',
+                icon: 'fa-virus-covid',
+                color: 'from-purple-700 to-navy-950',
+                shortDesc: 'Kejadian Luar Biasa (KLB) atau wabah penyakit menular yang meningkat cepat secara luas melampaui kapasitas layanan kesehatan normal.',
+                characteristics: 'Penularan eksponensial antarmanusia/vektor, berpotensi melumpuhkan fasilitas rumah sakit, rantai pasok pangan, dan aktivitas ekonomi sosial.',
+                mitigationStructural: 'Penyediaan ruang isolasi bertekanan negatif di RS rujukan, laboratorium BSL-2/BSL-3, serta fasilitas cuci tangan dan sanitasi publik.',
+                mitigationNonStructural: 'Surveilans epidemiologi dini, program imunisasi/vaksinasi massal, protokol perilaku hidup bersih sehat (PHBS), dan karantina wilayah terukur.',
+                equipmentFamily: 'Masker medis/N95, hand sanitizer berbasis alkohol >70%, termometer inframerah, pulse oximeter, disinfektan, dan kotak P3K keluarga lengkap.',
+                equipmentTeam: 'APD Hazmat lengkap (coverall, face shield, sarung tangan nitril), alat penyemprot disinfektan ULV, kit tes diagnostik cepat, dan ambulans infeksius.',
+                maintenanceSOP: 'Lakukan audit tanggal kedaluwarsa obat-obatan, reagen, dan cairan antiseptik setiap 3 bulan; simpan APD Hazmat di ruangan kering dengan suhu dan kelembaban terkontrol agar segel jahitan tidak rusak.'
+            },
+            {
+                id: 'teknologi_sosial',
+                name: '9. Kegagalan Teknologi & Konflik Sosial',
+                category: 'Bencana Non-Alam & Sosial',
+                icon: 'fa-industry',
+                color: 'from-slate-700 to-navy-950',
+                shortDesc: 'Kecelakaan industri/kebocoran bahan kimia berbahaya (B3) maupun kerusuhan/konflik sosial yang mengancam keselamatan warga.',
+                characteristics: 'Kegagalan teknologi melepaskan gas beracun/radiasi/ledakan mendadak; konflik sosial dipicu provokasi, kesenjangan, atau sengketa komunal yang bereskalasi cepat.',
+                mitigationStructural: 'Penetapan zona penyangga (buffer zone) antara kawasan industri B3 dan pemukiman, sistem pemutus otomatis (emergency shutdown), serta pos keamanan terpadu.',
+                mitigationNonStructural: 'Audit Keselamatan dan Kesehatan Kerja (K3) berkala, deteksi dini potensi konflik oleh FKDM/Forum Kerukunan Umat Beragama, dan mediasi dialog warga.',
+                equipmentFamily: 'Masker respirator kartrid kimia/asap, salinan digital dokumen identitas, peluit, dan nomor kontak darurat terpadu 112.',
+                equipmentTeam: 'Detektor multi-gas portabel (H2S, CO, O2, LEL), eyewash & safety shower station, selimut api (fire blanket), dan megafon arahan evakuasi.',
+                maintenanceSOP: 'Lakukan kalibrasi sensor detektor multi-gas setiap 6 bulan menggunakan gas standar; uji aliran air pada eyewash station setiap minggu agar saluran bebas karat dan endapan.'
+            }
+        ];
+
+        // Data 6 Level Jalur Koordinasi & Rantai Komando Negara
+        const COMMAND_CHAIN_DATA = [
+            {
+                level: 'Level 1 • Otoritas Tertinggi Negara',
+                title: 'Presiden Republik Indonesia',
+                icon: 'fa-landmark-dome',
+                badgeColor: 'bg-navy-950 text-amber_alert-400 border-amber_alert-500/40',
+                lineType: 'command',
+                lineLabel: 'Garis Komando Tertinggi & Kebijakan Strategis Nasional',
+                roleSummary: 'Pemegang tanggung jawab tertinggi penyelenggaraan penanggulangan bencana nasional (Pasal 5 UU No. 24/2007).',
+                details: [
+                    'Menetapkan status dan tingkatan Bencana Nasional melalui Keputusan Presiden (Keppres).',
+                    'Mengarahkan kebijakan strategis nasional, pengerahan sumber daya lintas kementerian/TNI/Polri, serta pembukaan akses bantuan internasional.',
+                    'Mendelegasikan fungsi koordinasi, komando, dan pelaksana penanganan darurat nasional kepada Kepala BNPB.'
+                ]
+            },
+            {
+                level: 'Level 2 • Koordinasi Lintas K/L & Komando Nasional',
+                title: 'Menko PMK & Kepala BNPB',
+                icon: 'fa-user-tie',
+                badgeColor: 'bg-safety-600 text-white border-safety-500',
+                lineType: 'command',
+                lineLabel: 'Garis Komando & Pendampingan Nasional ke Daerah',
+                roleSummary: 'Menko PMK mengoordinasikan lintas Kementerian/Lembaga; Kepala BNPB memegang fungsi koordinasi, komando, dan pelaksana (Pasal 10-12 UU 24/2007).',
+                details: [
+                    'Menko PMK memimpin rapat koordinasi tingkat menteri untuk sinkronisasi kebijakan prabencana, tanggap darurat, dan rehabilitasi-rekonstruksi.',
+                    'Kepala BNPB mengerahkan Tim Reaksi Cepat (TRC), mencairkan Dana Siap Pakai (DSP), serta memberikan pendampingan komando (Incident Command System) bila kapasitas daerah kewalahan.'
+                ]
+            },
+            {
+                level: 'Level 3 • Penanggung Jawab Pemerintahan Daerah',
+                title: 'Gubernur / Bupati / Walikota',
+                icon: 'fa-building-columns',
+                badgeColor: 'bg-amber_alert-500 text-navy-950 border-amber_alert-600',
+                lineType: 'command',
+                lineLabel: 'Garis Komando Penetapan Status & Mobilisasi OPD Daerah',
+                roleSummary: 'Penanggung jawab utama penanggulangan bencana di wilayah provinsi (Gubernur) atau kabupaten/kota (Bupati/Walikota).',
+                details: [
+                    'Menetapkan Status Siaga Darurat, Tanggap Darurat, atau Transisi Darurat ke Pemulihan tingkat daerah melalui Surat Keputusan (SK).',
+                    'Menunjuk Komandan Tanggap Darurat Bencana (Incident Commander) yang biasanya dijabat Kalaksa BPBD atau Komandan Korem/Kodim setempat.',
+                    'Memerintahkan seluruh Organisasi Perangkat Daerah (OPD/SKPD) mendukung operasi darurat.'
+                ]
+            },
+            {
+                level: 'Level 4 • Pelaksana & Pos Komando Lapangan',
+                title: 'BPBD & Komandan Tanggap Darurat (Incident Commander)',
+                icon: 'fa-walkie-talkie',
+                badgeColor: 'bg-safety-700 text-white border-safety-500',
+                lineType: 'coordination',
+                lineLabel: 'Garis Koordinasi Klaster & Operasi Lapangan',
+                roleSummary: 'Aktivasi Sistem Komando Penanganan Darurat Bencana (SKPDB) melalui Pos Komando (Posko) Utama & Pos Lapangan.',
+                details: [
+                    'Mengendalikan seluruh operasi lapangan secara terpadu (Perencanaan, Operasi, Logistik & Peralatan, serta Administrasi/Keuangan).',
+                    'Melakukan Kaji Cepat (Rapid Assessment), pendataan pengungsi terpilah, dan distribusi logistik satu pintu.',
+                    'Menjadi pusat informasi resmi media (Public Information Officer) agar tidak terjadi simpang siur berita.'
+                ]
+            },
+            {
+                level: 'Level 5 • Dukungan Teknis, SAR, Keamanan & Pentahelix',
+                title: 'Lembaga Teknis (BMKG, PVMBG, BASARNAS, TNI/Polri, K/L) & Pentahelix',
+                icon: 'fa-people-arrows',
+                badgeColor: 'bg-recovery-700 text-white border-recovery-500',
+                lineType: 'coordination',
+                lineLabel: 'Garis Sinergi Informasi, Evakuasi & Pemberdayaan Komunitas',
+                roleSummary: 'Pelaksana fungsi teknis berdasarkan klaster: Pencarian & Pertolongan, Kesehatan, Logistik & Pengungsian, Infrastruktur, serta Pemulihan.',
+                details: [
+                    'BMKG & PVMBG memasok data peringatan dini real-time ke Posko Komando.',
+                    'BASARNAS bersama TNI/Polri memimpin operasi pencarian dan evakuasi korban (SAR).',
+                    'Kemensos, Kemenkes, Dinas PU, PMI, Relawan, Akademisi, Dunia Usaha, dan Media (Pentahelix) mengisi klaster layanan darurat.'
+                ]
+            },
+            {
+                level: 'Level 6 • Garda Terdepan & Subjek Ketangguhan',
+                title: 'Masyarakat Terdampak & Desa Tangguh Bencana (Destana)',
+                icon: 'fa-house-user',
+                badgeColor: 'bg-emerald-800 text-emerald-100 border-emerald-500',
+                lineType: 'end',
+                lineLabel: '',
+                roleSummary: 'Pelaku evakuasi mandiri pertama (golden time), pelapor situasi lapangan riil, dan subjek utama pemulihan berbasis komunitas.',
+                details: [
+                    'Melaksanakan evakuasi mandiri segera saat tanda bahaya atau peringatan dini diterima sebelum bantuan luar tiba.',
+                    'Relawan lokal/Destana membantu pendataan warga rentan (lansia, difabel, ibu hamil) dan pengelolaan dapur umum komunitas.',
+                    'Berpartisipasi aktif dalam musyawarah perencanaan Rehabilitasi dan Rekonstruksi (Build Back Better).'
+                ]
+            }
+        ];
+
+        // Data 9 Lembaga Penanganan Bencana & Perannya
+        const AGENCIES_DATA = [
+            {
+                id: 'bnpb',
+                name: '1. BNPB',
+                fullName: 'Badan Nasional Penanggulangan Bencana',
+                roleCategory: 'Komando & Koordinasi',
+                icon: 'fa-shield-halved',
+                color: 'from-safety-600 to-navy-950',
+                summary: 'Lembaga pemerintah non-kementerian setingkat menteri yang memegang fungsi koordinasi, komando, dan pelaksana penanggulangan bencana nasional.',
+                prabencana: 'Menyusun Rencana Nasional Penanggulangan Bencana (Renas PB), standar minimum kebencanaan, dan membina BPBD.',
+                saatBencana: 'Memegang komando penanganan darurat nasional, mengerahkan TRC, dan menyalurkan Dana Siap Pakai (DSP) & logistik nasional.',
+                pascabencana: 'Mengoordinasikan penyusunan R3P (Rencana Rehabilitasi dan Rekonstruksi Pascabencana) lintas kementerian dan hibah pemulihan.'
+            },
+            {
+                id: 'bpbd',
+                name: '2. BPBD',
+                fullName: 'Badan Penanggulangan Bencana Daerah (Provinsi & Kab/Kota)',
+                roleCategory: 'Komando & Koordinasi',
+                icon: 'fa-map-location-dot',
+                color: 'from-amber_alert-600 to-navy-950',
+                summary: 'Perangkat daerah yang menjadi ujung tombak koordinasi dan pelaksanaan penanggulangan bencana di tingkat provinsi maupun kabupaten/kota.',
+                prabencana: 'Menyusun Kajian Risiko Bencana (KRB) daerah, Rencana Kontinjensi, gladi daerah, dan pembinaan Desa Tangguh Bencana (Destana).',
+                saatBencana: 'Melaksanakan kaji cepat, mengusulkan SK Status Darurat ke Kepala Daerah, dan mengoperasikan Pusdalops serta Posko Darurat.',
+                pascabencana: 'Melakukan pendataan Jitupasna daerah serta mengawal pelaksanaan rehabilitasi fisik dan sosial di tingkat lokal.'
+            },
+            {
+                id: 'basarnas',
+                name: '3. BASARNAS',
+                fullName: 'Badan Nasional Pencarian dan Pertolongan',
+                roleCategory: 'SAR & Keamanan',
+                icon: 'fa-life-ring',
+                color: 'from-orange-600 to-navy-950',
+                summary: 'Instansi khusus yang bertanggung jawab menyelenggarakan operasi pencarian, pertolongan, penyelamatan, dan evakuasi korban bencana maupun kecelakaan transportasi.',
+                prabencana: 'Siaga SAR 24/7 di seluruh kantor SAR daerah, pelatihan teknis rescue (urban SAR, water rescue, high angle rescue), dan pemeliharaan armada.',
+                saatBencana: 'Memimpin klaster Search and Rescue (SAR) untuk menemukan, mengevakuasi, dan menyelamatkan korban terjebak reruntuhan, banjir, atau laut.',
+                pascabencana: 'Evaluasi teknis operasi penyelamatan dan pemulihan kesiapan peralatan serta armada udara/laut.'
+            },
+            {
+                id: 'bmkg',
+                name: '4. BMKG',
+                fullName: 'Badan Meteorologi, Klimatologi, dan Geofisika',
+                roleCategory: 'Deteksi Dini & Sains',
+                icon: 'fa-satellite-dish',
+                color: 'from-sky-700 to-navy-950',
+                summary: 'Penyedia informasi peringatan dini resmi untuk bencana gempa bumi, tsunami (InaTEWS), cuaca ekstrem, banjir bandang, dan kekeringan.',
+                prabencana: 'Pemantauan jaringan seismograf, radar cuaca, buoy/tide gauge tsunami, serta edukasi Sekolah Lapang Gempa (SLG) & Sekolah Lapang Iklim (SLI).',
+                saatBencana: 'Merilis informasi parameter gempa dan peringatan dini tsunami dalam waktu < 3-5 menit, serta prakiraan cuaca lokasi terdampak untuk operasi SAR.',
+                pascabencana: 'Analisis sesar/patahan pascagempa dan pemetaan zona mikrozonasi gempa untuk rekomendasi tata ruang rekonstruksi aman.'
+            },
+            {
+                id: 'pvmbg',
+                name: '5. PVMBG / Badan Geologi',
+                fullName: 'Pusat Vulkanologi dan Mitigasi Bencana Geologi (Kementerian ESDM)',
+                roleCategory: 'Deteksi Dini & Sains',
+                icon: 'fa-volcano',
+                color: 'from-red-700 to-navy-950',
+                summary: 'Otoritas ilmiah pemantauan aktivitas gunung api, gerakan tanah (tanah longsor), dan pemetaan geologi kebencanaan.',
+                prabencana: 'Menyusun peta Kawasan Rawan Bencana (KRB) gunung api & zona kerentanan gerakan tanah, serta memantau pos pengamatan gunung api 24 jam.',
+                saatBencana: 'Menetapkan dan menaikkan/menurunkan tingkat aktivitas gunung api (Level I Normal hingga Level IV Awas) serta radius bahaya awan panas.',
+                pascabencana: 'Rekomendasi kelayakan geologi lahan relokasi hunian tetap (Huntap) agar tidak dibangun di atas sesar aktif atau lereng labil.'
+            },
+            {
+                id: 'tni_polri',
+                name: '6. TNI & POLRI',
+                fullName: 'Tentara Nasional Indonesia & Kepolisian Negara RI',
+                roleCategory: 'SAR & Keamanan',
+                icon: 'fa-person-military-rifle',
+                color: 'from-emerald-800 to-navy-950',
+                summary: 'Kekuatan utama mobilisasi cepat personel, alat berat Zeni, angkutan udara/laut militer, serta penegakan keamanan & identifikasi korban (DVI).',
+                prabencana: 'Karya bakti pembersihan sungai/mitigasi, latihan gabungan penanggulangan bencana, dan deteksi dini gangguan keamanan.',
+                saatBencana: 'Pengerahan pasukan reaksi cepat, jembatan darurat Bailey (Zeni TNI), tim Disaster Victim Identification (DVI Polri), dan pengamanan logistik/pengungsian.',
+                pascabencana: 'Membantu percepatan pembangunan huntara/huntap, pembersihan puing massal, dan pemulihan ketertiban masyarakat.'
+            },
+            {
+                id: 'kemensos',
+                name: '7. Kementerian Sosial (Tagana)',
+                fullName: 'Kementerian Sosial RI & Taruna Siaga Bencana',
+                roleCategory: 'Klaster Logistik, Kesehatan & Pentahelix',
+                icon: 'fa-utensils',
+                color: 'from-amber-700 to-navy-950',
+                summary: 'Koordinator Klaster Pengungsian dan Perlindungan Sosial, pengelola dapur umum lapangan, serta penyalur santunan korban bencana.',
+                prabencana: 'Pembinaan Kampung Siaga Bencana (KSB), pelatihan relawan Tagana, dan penyiapan gudang logistik buffer stock di daerah rawan.',
+                saatBencana: 'Mendirikan tenda pengungsian, mengoperasikan dapur umum lapangan, serta memberikan layanan dukungan psikososial (LDP) bagi pengungsi.',
+                pascabencana: 'Penyaluran santunan ahli waris korban meninggal, jaminan hidup (jadup), dan bantuan stimulan pemulihan ekonomi keluarga.'
+            },
+            {
+                id: 'kemenkes',
+                name: '8. Kementerian Kesehatan',
+                fullName: 'Pusat Krisis Kesehatan Kemenkes RI & Dinas Kesehatan',
+                roleCategory: 'Klaster Logistik, Kesehatan & Pentahelix',
+                icon: 'fa-hospital-user',
+                color: 'from-teal-700 to-navy-950',
+                summary: 'Koordinator Klaster Kesehatan yang menangani pelayanan medis darurat, pencegahan wabah di pengungsian, dan sanitasi lingkungan.',
+                prabencana: 'Penguatan Rumah Sakit Aman Bencana, pelatihan Emergency Medical Team (EMT), dan kesiapan stok obat-obatan darurat.',
+                saatBencana: 'Mobilisasi EMT, pendirian pos kesehatan lapangan/RS lapangan, triase korban luka, serta surveilans penyakit menular di kamp pengungsi.',
+                pascabencana: 'Rehabilitasi fasilitas puskesmas/RS rusak, layanan kesehatan jiwa lanjutan, dan program imunisasi pascabencana.'
+            },
+            {
+                id: 'pentahelix',
+                name: '9. PMI, Relawan & Dunia Usaha',
+                fullName: 'Model Kolaborasi Pentahelix (Pemerintah, Masyarakat, Akademisi, Bisnis, Media)',
+                roleCategory: 'Klaster Logistik, Kesehatan & Pentahelix',
+                icon: 'fa-hands-holding-circle',
+                color: 'from-indigo-700 to-navy-950',
+                summary: 'Sinergi multipihak non-pemerintah yang memperluas jangkauan bantuan kemanusiaan, riset kebencanaan, dan transparansi informasi publik.',
+                prabencana: 'Akademisi melakukan riset & pemetaan; PMI melatih Siaga Bencana Berbasis Masyarakat (SIBAT); Dunia Usaha menyusun rencana keberlanjutan bisnis (BCP).',
+                saatBencana: 'PMI & Relawan terverifikasi membantu evakuasi, donor darah, & distribusi air bersih; Dunia Usaha menyalurkan bantuan CSR; Media menyebarkan peringatan akurat.',
+                pascabencana: 'Kemitraan pemulihan mata pencaharian (livelihood), pembangunan fasilitas pendidikan/kesehatan berbasis CSR, dan dokumentasi pembelajaran.'
+            }
+        ];
+
+        // Data 5 Soal Kuis Skenario Kebencanaan
+        const QUIZ_QUESTIONS = [
+            {
+                q: "BMKG mengeluarkan peringatan dini cuaca ekstrem berintensitas sangat lebat selama 5 hari ke depan di Kabupaten X yang memiliki riwayat banjir bandang, namun banjir belum terjadi. Status darurat apakah yang paling tepat ditetapkan Bupati?",
+                options: [
+                    "Status Tanggap Darurat Bencana agar proyek infrastruktur segera dilelang.",
+                    "Status Siaga Darurat Bencana untuk mengaktifkan Posko Siaga dan menyiapkan peralatan/logistik.",
+                    "Status Transisi Darurat ke Pemulihan karena masyarakat belum mengungsi.",
+                    "Status Bencana Nasional karena curah hujan diprediksi tinggi."
+                ],
+                answer: 1,
+                explain: "Berdasarkan mekanisme UU 24/2007 & Perka BNPB, Status Siaga Darurat ditetapkan ketika terdapat ancaman nyata bencana berdasarkan peringatan dini resmi (BMKG/PVMBG) untuk meningkatkan kesiapsiagaan posko dan logistik sebelum bencana melanda."
+            },
+            {
+                q: "Dalam SOP perawatan peralatan kebencanaan, mengapa tabung APAR jenis Dry Chemical Powder harus dibolak-balik setiap bulan dan jarum manometernya diperiksa?",
+                options: [
+                    "Agar tekanan gas di dalam tabung berkurang sehingga tidak meledak saat panas.",
+                    "Untuk mencegah serbuk kimia pemadam menggumpal/membatu di dasar tabung dan memastikan tekanan pendorong berada di zona hijau siap pakai.",
+                    "Untuk mengganti jenis serbuk kimia menjadi cairan busa (foam) secara otomatis.",
+                    "Karena APAR hanya boleh digunakan satu kali dalam setiap tahun anggaran."
+                ],
+                answer: 1,
+                explain: "Serbuk Dry Chemical Powder cenderung mengendap dan memadat jika didiamkan terlalu lama. Membolak-balik tabung setiap bulan menjaga serbuk tetap gembur, sementara pengecekan manometer memastikan tekanan gas pendorong berada di zona hijau."
+            },
+            {
+                q: "Saat terjadi gempa besar yang meruntuhkan gedung bertingkat dan menimbun puluhan warga, lembaga manakah yang secara khusus memiliki mandat utama memimpin operasi pencarian, pertolongan, dan penyelamatan korban terjebak (Urban SAR)?",
+                options: [
+                    "PVMBG / Badan Geologi",
+                    "BASARNAS (Badan Nasional Pencarian dan Pertolongan)",
+                    "BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)",
+                    "Kementerian Keuangan"
+                ],
+                answer: 1,
+                explain: "BASARNAS adalah lembaga khusus yang bertugas memimpin klaster Search and Rescue (SAR) dalam operasi pencarian, pertolongan, dan penyelamatan korban bencana maupun kecelakaan."
+            },
+            {
+                q: "Ketika bencana melanda 2 (dua) kabupaten dalam satu provinsi dan melumpuhkan kapasitas pemerintahan kabupaten terdampak, bagaimanakah jalur penetapan status dan komando penanganan daruratnya?",
+                options: [
+                    "Presiden langsung mengambil alih komando tanpa melalui Gubernur.",
+                    "Gubernur menetapkan Status Tanggap Darurat Bencana tingkat Provinsi dan mengoordinasikan pengerahan sumber daya lintas kabupaten bersama BPBD Provinsi.",
+                    "Masyarakat setempat menetapkan status darurat secara mandiri melalui musyawarah desa.",
+                    "Penanganan darurat ditunda hingga masa pemilihan kepala daerah selesai."
+                ],
+                answer: 1,
+                explain: "Sesuai kriteria cakupan wilayah UU No. 24/2007, bencana yang melanda dua atau lebih kabupaten/kota dalam satu provinsi ditetapkan status daruratnya oleh Gubernur dengan koordinasi BPBD Provinsi, sementara BNPB memberikan pendampingan nasional."
+            },
+            {
+                q: "Pada fase Pascabencana, pembangunan kembali sekolah dan rumah warga di zona relokasi yang lebih aman dengan menerapkan standar struktur tahan gempa SNI yang lebih baik daripada kondisi sebelum bencana disebut prinsip...",
+                options: [
+                    "Rapid Assessment (Kaji Cepat)",
+                    "Build Back Better (Rekonstruksi Membangun Kembali Lebih Baik & Aman)",
+                    "Emergency Shutdown",
+                    "Status Siaga Darurat"
+                ],
+                answer: 1,
+                explain: "Rekonstruksi pada fase pascabencana wajib menerapkan prinsip Build Back Better, Safer, and Sustainable agar infrastruktur dan komunitas yang dibangun kembali memiliki ketangguhan lebih tinggi terhadap ancaman bencana di masa depan."
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. STATE APLIKASI & SISTEM EVENT COUNTER (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'kebencanaan_activity_log';
+        let activityLog = []; // Array of { name, category, count, lastTime }
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let analyticsChartInstance = null;
+
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityLog();
+            renderDisastersGrid();
+            renderCommandChain();
+            renderAgenciesGrid();
+            updateSimulatorPreview();
+            renderQuiz();
+            refreshAllBadgesAndAnalytics();
+        });
+
+        // Muat log dari localStorage
+        function loadActivityLog() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) activityLog = parsed;
+                }
+            } catch (e) {
+                activityLog = [];
+            }
+        }
+
+        // Simpan log ke localStorage
+        function saveActivityLog() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(activityLog));
+            } catch (e) {
+                console.warn('Gagal menyimpan ke localStorage:', e);
+            }
+        }
+
+        // Fungsi utama pencatat klik interaksi
+        function trackActivity(itemName, categoryName, pulseBadgeId = null) {
+            const nowStr = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            let entry = activityLog.find(item => item.name === itemName);
+            if (entry) {
+                entry.count += 1;
+                entry.lastTime = nowStr;
+            } else {
+                entry = {
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: nowStr
+                };
+                activityLog.push(entry);
+            }
+
+            saveActivityLog();
+            refreshAllBadgesAndAnalytics();
+            showToast(`Aktivitas Dicatat: ${itemName} (+1)`);
+
+            // Efek animasi pulse pada badge yang baru diklik
+            if (pulseBadgeId) {
+                const badgeEl = document.getElementById(pulseBadgeId);
+                if (badgeEl) {
+                    badgeEl.classList.remove('counter-pulse');
+                    void badgeEl.offsetWidth; // trigger reflow
+                    badgeEl.classList.add('counter-pulse');
+                }
+            }
+        }
+
+        function getCount(itemName) {
+            const found = activityLog.find(i => i.name === itemName);
+            return found ? found.count : 0;
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. PEMBARUAN LENCANA HITUNGAN (ON-COMPONENT COUNTERS) & ANALITIK
+         * ------------------------------------------------------------------- */
+        function refreshAllBadgesAndAnalytics() {
+            // 1. Update Nav Tab Counters (Desktop & Mobile)
+            const navMap = [
+                { key: 'Tab 1: Beranda & 3 Fase', desk: 'nav-count-beranda', mob: 'mob-count-beranda' },
+                { key: 'Tab 2: Katalog 9 Bencana & Alat', desk: 'nav-count-bencana', mob: 'mob-count-bencana' },
+                { key: 'Tab 3: Lembaga & Jalur Koordinasi', desk: 'nav-count-koordinasi', mob: 'mob-count-koordinasi' },
+                { key: 'Tab 4: Simulator Kesiapsiagaan', desk: 'nav-count-simulator', mob: 'mob-count-simulator' },
+                { key: 'Tab 5: Kuis Kebencanaan', desk: 'nav-count-kuis', mob: 'mob-count-kuis' }
+            ];
+            navMap.forEach(n => {
+                const c = getCount(n.key);
+                const dEl = document.getElementById(n.desk);
+                const mEl = document.getElementById(n.mob);
+                if (dEl) dEl.innerText = c;
+                if (mEl) mEl.innerText = c;
+            });
+
+            // 2. Update 3 Fase Badges
+            Object.values(PHASES_DATA).forEach(p => {
+                const el = document.getElementById(p.badgeId);
+                if (el) el.innerText = `👁️ ${getCount(p.key)}x dipelajari`;
+            });
+
+            // 3. Update 3 Status Badges
+            Object.values(STATUS_DATA).forEach(s => {
+                const el = document.getElementById(s.badgeId);
+                if (el) el.innerText = `👁️ ${getCount(s.key)}x dipelajari`;
+            });
+
+            // 4. Update 9 Bencana Badges
+            DISASTERS_DATA.forEach(d => {
+                const el = document.getElementById(`badge-disaster-${d.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Bencana: ${d.name}`)}x dipelajari`;
+            });
+
+            // 5. Update 6 Jalur Komando Badges
+            COMMAND_CHAIN_DATA.forEach((node, idx) => {
+                const el = document.getElementById(`badge-cmd-${idx}`);
+                if (el) el.innerText = `👁️ ${getCount(`Jalur Komando: ${node.title}`)}x dipelajari`;
+            });
+
+            // 6. Update 9 Lembaga Badges
+            AGENCIES_DATA.forEach(ag => {
+                const el = document.getElementById(`badge-agency-${ag.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Lembaga: ${ag.name}`)}x dipelajari`;
+            });
+
+            // 7. Update Simulator & Kuis Badges
+            const simTotal = activityLog
+                .filter(i => i.category === 'Simulator Kesiapsiagaan')
+                .reduce((acc, cur) => acc + cur.count, 0);
+            const simBadge = document.getElementById('badge-simulator-count');
+            if (simBadge) simBadge.innerText = `👁️ ${simTotal}x simulasi dijalankan`;
+
+            const quizTotal = getCount('Kuis: Jawab Soal');
+            const quizBadge = document.getElementById('badge-quiz-count');
+            if (quizBadge) quizBadge.innerText = `👁️ ${quizTotal}x soal dijawab`;
+
+            // 8. Update Global Totals (Header, FAB, Modal)
+            const totalAllClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('header-total-clicks').innerText = `${totalAllClicks} Klik`;
+            document.getElementById('fab-total-clicks').innerText = `${totalAllClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalAllClicks;
+
+            // 9. Kategori Teraktif
+            const catTotals = {};
+            activityLog.forEach(item => {
+                catTotals[item.category] = (catTotals[item.category] || 0) + item.count;
+            });
+            let topCat = '-';
+            let maxVal = 0;
+            Object.entries(catTotals).forEach(([cat, val]) => {
+                if (val > maxVal) {
+                    maxVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // 10. Persentase Cakupan Belajar (30 modul inti: 3 fase + 3 status + 9 bencana + 6 komando + 9 lembaga = 30 item)
+            const coreKeys = new Set([
+                ...Object.values(PHASES_DATA).map(p => p.key),
+                ...Object.values(STATUS_DATA).map(s => s.key),
+                ...DISASTERS_DATA.map(d => `Bencana: ${d.name}`),
+                ...COMMAND_CHAIN_DATA.map(n => `Jalur Komando: ${n.title}`),
+                ...AGENCIES_DATA.map(a => `Lembaga: ${a.name}`)
+            ]);
+            const exploredCoreCount = activityLog.filter(item => coreKeys.has(item.name)).length;
+            const totalCore = coreKeys.size; // 30
+            const coveragePct = Math.min(100, Math.round((exploredCoreCount / totalCore) * 100));
+
+            document.getElementById('modal-progress-bar').style.width = `${coveragePct}%`;
+            document.getElementById('modal-progress-percent').innerText = `${coveragePct}%`;
+            document.getElementById('modal-coverage-detail').innerText = `${exploredCoreCount} dari ${totalCore} modul inti dipelajari`;
+
+            // 11. Top 5 Materi Terpopuler
+            const top5 = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const top5El = document.getElementById('top-5-list');
+            if (top5.length === 0) {
+                top5El.innerHTML = `<p class="text-slate-400 italic py-4 text-center">Belum ada interaksi tercatat. Klik kartu materi untuk mulai belajar!</p>`;
+            } else {
+                top5El.innerHTML = top5.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                        <span class="truncate pr-2 font-semibold text-slate-700">
+                            <span class="inline-block w-5 text-safety-600 font-extrabold">#${idx + 1}</span> ${item.name}
+                        </span>
+                        <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md font-mono font-extrabold shrink-0">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // 12. Tabel Log Aktivitas Lengkap
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">Belum ada data aktivitas belajar.</td></tr>`;
+            } else {
+                const reversedLog = [...activityLog].reverse();
+                tbody.innerHTML = reversedLog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-extrabold text-safety-600 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 13. Render Grafik Doughnut Chart.js
+            renderDoughnutChart(catTotals);
+        }
+
+        function renderDoughnutChart(catTotals) {
+            const canvas = document.getElementById('analyticsChart');
+            const emptyMsg = document.getElementById('chart-empty-msg');
+            if (!canvas) return;
+
+            const labels = Object.keys(catTotals);
+            const values = Object.values(catTotals);
+
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+                analyticsChartInstance = null;
+            }
+
+            if (labels.length === 0) {
+                canvas.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyMsg.classList.add('hidden');
+
+            analyticsChartInstance = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#ea580c', // Safety Orange
+                            '#059669', // Emerald Recovery
+                            '#0f172a', // Deep Navy
+                            '#f59e0b', // Amber Alert
+                            '#0284c7', // Sky Blue
+                            '#7c3aed', // Purple
+                            '#e11d48'  // Crimson
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ` ${ctx.label}: ${ctx.parsed} klik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Notifikasi Toast Melayang
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            // Batasi maksimal 3 toast sekaligus agar layar tetap bersih
+            while (container.children.length >= 3) {
+                container.removeChild(container.firstChild);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = "bg-navy-950/95 text-white border border-amber_alert-500/50 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 transition-all duration-300 transform translate-x-4 opacity-0";
+            toast.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-safety-600 text-white flex items-center justify-center text-[10px] shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="truncate font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. NAVIGASI ANTAR TAB
+         * ------------------------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-safety-600', 'text-white', 'shadow');
+                btn.classList.add('text-slate-300');
+            });
+            const activeDesk = document.getElementById(`nav-${tabId}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-safety-600', 'text-white', 'shadow');
+                activeDesk.classList.remove('text-slate-300');
+            }
+
+            // Mobile nav styling
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-safety-600', 'text-white');
+                btn.classList.add('bg-white/5', 'text-slate-300');
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.classList.add('bg-safety-600', 'text-white');
+                activeMob.classList.remove('bg-white/5', 'text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. MODAL DETAIL (FASE, STATUS, BENCANA, JALUR KOMANDO, LEMBAGA)
+         * ------------------------------------------------------------------- */
+        function openPhaseModal(phaseKey) {
+            const p = PHASES_DATA[phaseKey];
+            if (!p) return;
+
+            trackActivity(p.key, '3 Fase Kebencanaan', p.badgeId);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${p.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-xl">
+                        <i class="fa-solid ${p.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-amber_alert-300">${p.subtitle}</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold">${p.key}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amber_alert-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(p.key)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = p.sections.map(sec => `
+                <div class="p-4 rounded-2xl border ${sec.color} space-y-2">
+                    <h4 class="font-extrabold text-sm">${sec.title}</h4>
+                    <ul class="space-y-1.5 text-xs leading-relaxed">
+                        ${sec.items.map(it => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check mt-0.5 opacity-80"></i><span>${it}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function openStatusModal(statusKey) {
+            const s = STATUS_DATA[statusKey];
+            if (!s) return;
+
+            trackActivity(s.key, 'Mekanisme Status Darurat', s.badgeId);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${s.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-xl">
+                        <i class="fa-solid ${s.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-semibold text-amber_alert-300">${s.subtitle}</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold">${s.key}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amber_alert-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(s.key)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = s.sections.map(sec => `
+                <div class="p-4 rounded-2xl border ${sec.color} space-y-2">
+                    <h4 class="font-extrabold text-sm">${sec.title}</h4>
+                    <ul class="space-y-1.5 text-xs leading-relaxed">
+                        ${sec.items.map(it => `<li class="flex items-start space-x-2"><i class="fa-solid fa-check mt-0.5 opacity-80"></i><span>${it}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. TAB 2: RENDER & MODAL 9 JENIS BENCANA
+         * ------------------------------------------------------------------- */
+        function renderDisastersGrid() {
+            const container = document.getElementById('disasters-grid');
+            if (!container) return;
+
+            const catFilter = document.getElementById('disaster-cat-filter').value;
+            const searchQuery = (document.getElementById('disaster-search').value || '').toLowerCase();
+
+            const filtered = DISASTERS_DATA.filter(d => {
+                const matchCat = catFilter === 'all' || d.category === catFilter;
+                const matchSearch = d.name.toLowerCase().includes(searchQuery) ||
+                    d.shortDesc.toLowerCase().includes(searchQuery) ||
+                    d.equipmentFamily.toLowerCase().includes(searchQuery) ||
+                    d.equipmentTeam.toLowerCase().includes(searchQuery) ||
+                    d.maintenanceSOP.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada jenis bencana atau peralatan yang cocok dengan pencarian Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(d => {
+                const count = getCount(`Bencana: ${d.name}`);
+                return `
+                    <div onclick="openDisasterModal('${d.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${d.color} text-white space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-white/15 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-white/20">
+                                    ${d.category}
+                                </span>
+                                <span id="badge-disaster-${d.id}" class="counter-badge bg-amber_alert-400 text-navy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid ${d.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-base leading-snug group-hover:translate-x-1 transition-transform">${d.name}</h4>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                            <div class="space-y-3">
+                                <p class="text-slate-600 leading-relaxed line-clamp-2">${d.shortDesc}</p>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1.5">
+                                    <div>
+                                        <span class="text-[10px] font-extrabold uppercase text-safety-600 block">Peralatan Wajib Utama:</span>
+                                        <p class="text-slate-700 line-clamp-2">${d.equipmentFamily}</p>
+                                    </div>
+                                    <div class="pt-1 border-t border-slate-200/70">
+                                        <span class="text-[10px] font-extrabold uppercase text-recovery-700 block">SOP Perawatan Kunci:</span>
+                                        <p class="text-slate-600 line-clamp-2">${d.maintenanceSOP}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-safety-600 font-extrabold group-hover:underline">
+                                <span>Buka Mitigasi, Alat & SOP Kalibrasi</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openDisasterModal(disasterId) {
+            const d = DISASTERS_DATA.find(item => item.id === disasterId);
+            if (!d) return;
+
+            trackActivity(`Bencana: ${d.name}`, 'Katalog Bencana & Alat', `badge-disaster-${d.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${d.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-2xl">
+                        <i class="fa-solid ${d.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="bg-white/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-amber_alert-300">
+                            ${d.category}
+                        </span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${d.name}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amber_alert-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Bencana: ${d.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <!-- (a) Karakteristik & Tanda Bahaya -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1.5">
+                    <h4 class="font-extrabold text-slate-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber_alert-600"></i>
+                        <span>(a) Karakteristik & Tanda Bahaya</span>
+                    </h4>
+                    <p class="text-slate-600 leading-relaxed">${d.shortDesc} ${d.characteristics}</p>
+                </div>
+
+                <!-- (b) Mitigasi Struktural & Non-Struktural -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-recovery-50 p-4 rounded-2xl border border-recovery-200 space-y-1.5">
+                        <h5 class="font-extrabold text-recovery-900 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-helmet-safety mr-1"></i> (b1) Mitigasi Struktural (Fisik)
+                        </h5>
+                        <p class="text-recovery-950 leading-relaxed">${d.mitigationStructural}</p>
+                    </div>
+                    <div class="bg-teal-50 p-4 rounded-2xl border border-teal-200 space-y-1.5">
+                        <h5 class="font-extrabold text-teal-900 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-book-open mr-1"></i> (b2) Mitigasi Non-Struktural
+                        </h5>
+                        <p class="text-teal-950 leading-relaxed">${d.mitigationNonStructural}</p>
+                    </div>
+                </div>
+
+                <!-- (c) Daftar Peralatan Wajib -->
+                <div class="bg-safety-50 p-4 rounded-2xl border border-safety-200 space-y-2.5">
+                    <h4 class="font-extrabold text-safety-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-toolbox text-safety-600"></i>
+                        <span>(c) Daftar Peralatan Wajib (Keluarga & Tim Siaga)</span>
+                    </h4>
+                    <div class="space-y-2 text-slate-800">
+                        <p class="bg-white/80 p-2.5 rounded-xl border border-safety-100">
+                            <strong class="text-safety-700">• Skala Keluarga / Individu:</strong> ${d.equipmentFamily}
+                        </p>
+                        <p class="bg-white/80 p-2.5 rounded-xl border border-safety-100">
+                            <strong class="text-navy-900">• Skala Tim Siaga / Posko:</strong> ${d.equipmentTeam}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- (d) SOP Perawatan & Kalibrasi Peralatan -->
+                <div class="bg-navy-900 text-white p-4 rounded-2xl border border-amber_alert-500/40 space-y-1.5">
+                    <h4 class="font-extrabold text-amber_alert-400 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <span>(d) SOP Perawatan, Uji Fungsi & Kalibrasi Peralatan</span>
+                    </h4>
+                    <p class="text-slate-200 leading-relaxed">${d.maintenanceSOP}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. TAB 3: JALUR KOORDINASI NEGARA & DIREKTORI 9 LEMBAGA
+         * ------------------------------------------------------------------- */
+        function renderCommandChain() {
+            const container = document.getElementById('command-chain-container');
+            if (!container) return;
+
+            container.innerHTML = COMMAND_CHAIN_DATA.map((node, idx) => {
+                const count = getCount(`Jalur Komando: ${node.title}`);
+                const hasConnector = idx < COMMAND_CHAIN_DATA.length - 1;
+                const isCommand = node.lineType === 'command';
+
+                return `
+                    <div class="relative">
+                        <!-- Node Card -->
+                        <div onclick="openCommandNodeModal(${idx})" class="bg-slate-50 hover:bg-white p-5 rounded-2xl border-2 border-slate-200 hover:border-safety-600 shadow-2xs hover:shadow-lg transition cursor-pointer group">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div class="flex items-start sm:items-center space-x-3.5">
+                                    <div class="w-12 h-12 rounded-2xl ${node.badgeColor} border flex items-center justify-center text-xl shrink-0 shadow">
+                                        <i class="fa-solid ${node.icon}"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-safety-600 block">${node.level}</span>
+                                        <h4 class="font-extrabold text-slate-900 text-base sm:text-lg group-hover:text-safety-600 transition">${node.title}</h4>
+                                        <p class="text-xs text-slate-600 mt-0.5">${node.roleSummary}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between sm:justify-end space-x-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200">
+                                    <span id="badge-cmd-${idx}" class="counter-badge bg-white text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                        👁️ ${count}x dipelajari
+                                    </span>
+                                    <span class="w-8 h-8 rounded-full bg-slate-200/70 group-hover:bg-safety-600 group-hover:text-white flex items-center justify-center text-slate-600 text-xs transition">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector Line to Next Level -->
+                        ${hasConnector ? `
+                            <div class="flex flex-col items-center py-1.5">
+                                <div class="h-5 w-0.5 ${isCommand ? 'bg-safety-600' : 'border-l-2 border-dashed border-recovery-600'}"></div>
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full ${isCommand ? 'bg-safety-100 text-safety-800 border border-safety-200' : 'bg-recovery-100 text-recovery-800 border border-recovery-200'}">
+                                    <i class="fa-solid fa-arrow-down mr-1"></i> ${node.lineLabel}
+                                </span>
+                                <div class="h-4 w-0.5 ${isCommand ? 'bg-safety-600' : 'border-l-2 border-dashed border-recovery-600'}"></div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCommandNodeModal(idx) {
+            const node = COMMAND_CHAIN_DATA[idx];
+            if (!node) return;
+
+            trackActivity(`Jalur Komando: ${node.title}`, 'Jalur Koordinasi Negara', `badge-cmd-${idx}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navy-950 via-navy-900 to-safety-800";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-amber_alert-400">${node.level}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${node.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amber_alert-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Jalur Komando: ${node.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <h5 class="font-extrabold text-slate-900 text-sm mb-1">Kedudukan & Tanggung Jawab Utama:</h5>
+                    <p class="text-slate-600 leading-relaxed">${node.roleSummary}</p>
+                </div>
+                <div class="space-y-2">
+                    <h5 class="font-extrabold text-slate-900 text-sm">Rincian Wewenang & Alur Komunikasi:</h5>
+                    <ul class="space-y-2 bg-safety-50/70 border border-safety-200 p-4 rounded-2xl text-slate-800">
+                        ${node.details.map(det => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-dot text-safety-600 mt-1"></i><span>${det}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function renderAgenciesGrid() {
+            const container = document.getElementById('agencies-grid');
+            if (!container) return;
+
+            const roleFilter = document.getElementById('agency-role-filter').value;
+            const filtered = AGENCIES_DATA.filter(ag => roleFilter === 'all' || ag.roleCategory === roleFilter);
+
+            container.innerHTML = filtered.map(ag => {
+                const count = getCount(`Lembaga: ${ag.name}`);
+                return `
+                    <div onclick="openAgencyModal('${ag.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${ag.color} text-white space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold border border-white/20">
+                                    ${ag.roleCategory}
+                                </span>
+                                <span id="badge-agency-${ag.id}" class="counter-badge bg-amber_alert-400 text-navy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid ${ag.icon}"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-base group-hover:translate-x-1 transition-transform">${ag.name}</h4>
+                                    <p class="text-[11px] text-slate-200 line-clamp-1">${ag.fullName}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                            <p class="text-slate-600 leading-relaxed">${ag.summary}</p>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-recovery-700 font-extrabold group-hover:underline">
+                                <span>Lihat Peran Prabencana, Darurat & Pasca</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openAgencyModal(agencyId) {
+            const ag = AGENCIES_DATA.find(item => item.id === agencyId);
+            if (!ag) return;
+
+            trackActivity(`Lembaga: ${ag.name}`, 'Direktori Lembaga', `badge-agency-${ag.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${ag.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="bg-white/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase text-amber_alert-300">${ag.roleCategory}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-1">${ag.name}</h3>
+                <p class="text-xs text-slate-200">${ag.fullName}</p>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amber_alert-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Lembaga: ${ag.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <p class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-slate-700 leading-relaxed">${ag.summary}</p>
+
+                <div class="space-y-3">
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                        <h5 class="font-extrabold text-amber-900 text-xs uppercase mb-1">1. Peran Fase Prabencana</h5>
+                        <p class="text-amber-950 leading-relaxed">${ag.prabencana}</p>
+                    </div>
+                    <div class="bg-safety-50 p-4 rounded-2xl border border-safety-200">
+                        <h5 class="font-extrabold text-safety-900 text-xs uppercase mb-1">2. Peran Fase Tanggap Darurat (Selama Bencana)</h5>
+                        <p class="text-safety-950 leading-relaxed">${ag.saatBencana}</p>
+                    </div>
+                    <div class="bg-recovery-50 p-4 rounded-2xl border border-recovery-200">
+                        <h5 class="font-extrabold text-recovery-900 text-xs uppercase mb-1">3. Peran Fase Pascabencana (Rehab-Rekon)</h5>
+                        <p class="text-recovery-950 leading-relaxed">${ag.pascabencana}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. TAB 4: SIMULATOR KESIAPSIAGAAN & KOMANDO DARURAT
+         * ------------------------------------------------------------------- */
+        function updateSimulatorPreview() {
+            const s1 = parseInt(document.getElementById('sim-slider-1').value) || 0;
+            const s2 = parseInt(document.getElementById('sim-slider-2').value) || 0;
+            const s3 = parseInt(document.getElementById('sim-slider-3').value) || 0;
+            const s4 = parseInt(document.getElementById('sim-slider-4').value) || 0;
+            const s5 = parseInt(document.getElementById('sim-slider-5').value) || 0;
+
+            document.getElementById('val-sim-1').innerText = `${s1}%`;
+            document.getElementById('val-sim-2').innerText = `${s2}%`;
+            document.getElementById('val-sim-3').innerText = `${s3}%`;
+            document.getElementById('val-sim-4').innerText = `${s4}%`;
+            document.getElementById('val-sim-5').innerText = `${s5}%`;
+
+            // Pembobotan terpadu
+            const score = ((s1 * 0.20) + (s2 * 0.20) + (s3 * 0.20) + (s4 * 0.20) + (s5 * 0.20)).toFixed(1);
+            document.getElementById('sim-res-score').innerText = score;
+
+            const tierBadge = document.getElementById('sim-res-tier-badge');
+            const riskEl = document.getElementById('sim-res-risk');
+            const cmdEl = document.getElementById('sim-res-command');
+            const statusSimEl = document.getElementById('sim-res-status-sim');
+            const recEl = document.getElementById('sim-res-recommendation');
+
+            if (score >= 80) {
+                tierBadge.innerText = 'Sangat Tangguh (Optimal / Mandiri)';
+                tierBadge.className = 'bg-recovery-500 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                riskEl.innerText = 'Rendah (Terkendali)';
+                riskEl.className = 'font-bold px-2.5 py-0.5 rounded-full bg-recovery-500/20 text-emerald-300 border border-recovery-500/40';
+                cmdEl.innerText = 'Siap Penuh (100% Terkalibrasi)';
+                cmdEl.className = 'font-bold text-emerald-400';
+                statusSimEl.innerText = 'Respon Cepat Terpadu & Evakuasi Mandiri Tanpa Kepanikan';
+                recEl.innerText = 'Pertahankan disiplin jadwal perawatan peralatan (APAR, perahu karet, EWS), laksanakan gladi berkala bersama Destana, dan dokumentasikan praktik baik ke tingkat nasional.';
+            } else if (score >= 55) {
+                tierBadge.innerText = 'Ketangguhan Sedang (Siaga)';
+                tierBadge.className = 'bg-amber_alert-500 text-navy-950 font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                riskEl.innerText = 'Sedang';
+                riskEl.className = 'font-bold px-2.5 py-0.5 rounded-full bg-amber_alert-500/20 text-amber_alert-300 border border-amber_alert-500/40';
+                cmdEl.innerText = 'Siap dengan Catatan';
+                cmdEl.className = 'font-bold text-amber_alert-400';
+                statusSimEl.innerText = 'Aktivasi Status Siaga Darurat & Audit Ulang Peralatan';
+                recEl.innerText = 'Perkuat kepatuhan mitigasi struktural tata ruang serta disiplin jadwal kalibrasi dan perawatan alat agar tidak terjadi kegagalan peralatan saat puncak darurat.';
+            } else {
+                tierBadge.innerText = 'Rentan / Kritis (Perlu Intervensi)';
+                tierBadge.className = 'bg-rose-600 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                riskEl.innerText = 'Tinggi (Kritis)';
+                riskEl.className = 'font-bold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40';
+                cmdEl.innerText = 'Belum Memadai (Risiko Hambatan)';
+                cmdEl.className = 'font-bold text-rose-400';
+                statusSimEl.innerText = 'Membutuhkan Pendampingan Intensif BNPB & Provinsi';
+                recEl.innerText = 'Segera bentuk Posko Siaga, lengkapi Tas Siaga Bencana keluarga, lakukan uji fungsi sirine/EWS, serta aktivasi Desa Tangguh Bencana (Destana) di zona merah.';
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. TAB 5: KUIS EVALUASI KEBENCANAAN (5 SOAL SKENARIO)
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span class="bg-navy-900 text-white px-3 py-1 rounded-full">Soal ${currentQuizIdx + 1} dari ${QUIZ_QUESTIONS.length}</span>
+                        <span>Skor Sementara: <strong class="text-safety-600 font-mono text-sm">${quizScore} / 100</strong></span>
+                    </div>
+
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</h4>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left bg-white hover:bg-safety-50 border border-slate-200 hover:border-safety-500 p-4 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-between group shadow-2xs">
+                                <span class="pr-3"><strong class="text-safety-600 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-safety-600 transition shrink-0"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Kebencanaan', 'badge-quiz-count');
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) quizScore += 20;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-4 rounded-xl ${isCorrect ? 'bg-recovery-100 text-recovery-900 border border-recovery-300' : 'bg-rose-100 text-rose-900 border border-rose-300'} text-xs font-extrabold flex items-center space-x-2.5">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-recovery-600' : 'fa-circle-xmark text-rose-600'} text-xl"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Benar! (+20 Poin)' : `Jawaban Kurang Tepat. Jawaban benar: ${String.fromCharCode(65 + q.answer)}`}</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <strong class="text-navy-900 block">Pembahasan Kebencanaan:</strong>
+                        <p>${q.explain}</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="advanceQuiz()" class="bg-safety-600 hover:bg-safety-700 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition shadow">
+                            ${currentQuizIdx < QUIZ_QUESTIONS.length - 1 ? 'Soal Berikutnya →' : 'Lihat Hasil Akhir Kuis'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function advanceQuiz() {
+            if (currentQuizIdx < QUIZ_QUESTIONS.length - 1) {
+                currentQuizIdx++;
+                renderQuiz();
+            } else {
+                const container = document.getElementById('quiz-container');
+                let predicate = 'Terus Pelajari Modul Kebencanaan!';
+                if (quizScore === 100) predicate = 'Sempurna! Komandan Siaga Bencana Teladan';
+                else if (quizScore >= 80) predicate = 'Sangat Baik! Pemahaman Tata Kelola Tangguh';
+                else if (quizScore >= 60) predicate = 'Cukup Baik! Perkuat Detail SOP & Koordinasi';
+
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-navy-950 via-navy-900 to-slate-900 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-safety-600/40">
+                        <div class="w-16 h-16 rounded-2xl bg-amber_alert-500/20 text-amber_alert-400 border border-amber_alert-400/40 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber_alert-400 block">${predicate}</span>
+                        <h4 class="font-extrabold text-2xl">Kuis Evaluasi Selesai!</h4>
+                        <div class="py-2">
+                            <span class="text-xs text-slate-300 block">Skor Akhir Anda:</span>
+                            <strong class="text-4xl font-mono font-extrabold text-amber_alert-400">${quizScore} / 100</strong>
+                        </div>
+                        <button onclick="restartQuiz()" class="bg-gradient-to-r from-safety-600 to-amber_alert-500 hover:from-safety-500 hover:to-amber_alert-400 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis Skenario
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            trackActivity('Kuis: Ulangi Kuis', 'Kuis Kebencanaan');
+            renderQuiz();
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. MODAL ANALITIK, RESET & EKSPOR JSON
+         * ------------------------------------------------------------------- */
+        function openAnalyticsModal() {
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function toggleResetConfirm(show) {
+            const box = document.getElementById('reset-confirm-box');
+            if (!box) return;
+            if (show) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function executeClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem(STORAGE_KEY);
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            showToast('Seluruh riwayat hitungan belajar telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const payload = {
+                aplikasi: 'SiagaNusantara - Sistem Penanggulangan Bencana Nasional',
+                waktuEkspor: new Date().toISOString(),
+                totalInteraksi: activityLog.reduce((s, i) => s + i.count, 0),
+                riwayatAktivitas: activityLog
+            };
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `Analitik_SiagaNusantara_${Date.now()}.json`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Data analitik berhasil diekspor ke JSON.');
+        }
+    </script>
+</body>
+</html>
