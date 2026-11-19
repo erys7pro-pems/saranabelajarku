@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtlasEropa - Eksplorasi Geografi, Sejarah, & Geopolitik Benua Eropa</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        euroMidnight: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#080e1e',
+                        },
+                        euroRoyal: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        },
+                        euroGold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar untuk tabel dan modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Animasi denyut visual pada counter badge */
+        .counter-badge {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: badgePulse 0.45s ease-out;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.25); background-color: #fbbf24; color: #0f172a; }
+            100% { transform: scale(1); }
+        }
+        /* Sembunyikan scrollbar horizontal pada menu mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-euroRoyal-800 selection:text-white">
+
+    <!-- ================= HEADER & NAVIGASI UTAMA ================= -->
+    <header class="bg-gradient-to-r from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-900 text-white sticky top-0 z-40 shadow-xl border-b border-euroGold-500/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Identitas Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="trackActivity('Logo Beranda AtlasEropa', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-euroRoyal-700 to-euroGold-600 text-white flex items-center justify-center font-extrabold text-lg shadow-lg border border-euroGold-400/40 group-hover:scale-105 transition">
+                        <i class="fa-solid fa-earth-europe"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">AtlasEropa</h1>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-euroRoyal-800/80 text-euroGold-400 border border-euroGold-400/40 px-2 py-0.5 rounded-full">Benua Biru</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 font-medium">Geografi, Sejarah & Geopolitik Eropa</p>
+                    </div>
+                </div>
+
+                <!-- Navigasi Desktop (5 Tab Utama) -->
+                <nav class="hidden lg:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab 1: Beranda & Profil', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-euroRoyal-700 text-white shadow">
+                        <i class="fa-solid fa-compass"></i>
+                        <span>Beranda & Profil</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-euroMidnight-950 text-euroGold-400 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 2: 4 Kawasan & 12 Negara', 'Navigasi Menu'); switchTab('negara')" id="nav-negara" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span>4 Kawasan & 12 Negara</span>
+                        <span id="nav-count-negara" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 3: Komparasi Negara', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Komparasi Negara</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 4: Simulator Kebijakan UE', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator Kebijakan UE</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 5: Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis Evaluasi</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Tombol Statistik Belajar -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-euroGold-400 to-euroGold-600 hover:from-euroGold-300 hover:to-euroGold-500 text-euroMidnight-950 px-3.5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-euroMidnight-950 text-euroGold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+
+            <!-- Navigasi Mobile & Tablet -->
+            <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-white/10 text-xs font-semibold">
+                <button onclick="trackActivity('Tab 1: Beranda & Profil', 'Navigasi Menu'); switchTab('beranda')" id="mob-nav-beranda" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-euroRoyal-700 text-white">
+                    <i class="fa-solid fa-compass"></i>
+                    <span>Beranda & Profil</span>
+                    <span id="mob-count-beranda" class="text-[10px] bg-euroMidnight-950 text-euroGold-400 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 2: 4 Kawasan & 12 Negara', 'Navigasi Menu'); switchTab('negara')" id="mob-nav-negara" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>4 Kawasan & 12 Negara</span>
+                    <span id="mob-count-negara" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 3: Komparasi Negara', 'Navigasi Menu'); switchTab('komparasi')" id="mob-nav-komparasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <span>Komparasi Negara</span>
+                    <span id="mob-count-komparasi" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 4: Simulator Kebijakan UE', 'Navigasi Menu'); switchTab('simulator')" id="mob-nav-simulator" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Simulator Kebijakan UE</span>
+                    <span id="mob-count-simulator" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 5: Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="mob-nav-kuis" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/5 text-slate-300">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Kuis Evaluasi</span>
+                    <span id="mob-count-kuis" class="text-[10px] bg-euroGold-400 text-euroMidnight-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- =====================================================================
+             TAB 1: BERANDA & PROFIL BENUA EROPA
+             ===================================================================== -->
+        <section id="sec-beranda" class="tab-content space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-900 text-white p-7 sm:p-11 shadow-2xl border border-euroGold-500/30">
+                <div class="absolute -right-8 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-earth-europe text-[16rem] text-euroGold-400"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-euroGold-400/20 text-euroGold-400 border border-euroGold-400/40 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+                            Eksplorasi "Benua Biru" • Eurasia Bagian Barat
+                        </span>
+                        <span class="bg-euroRoyal-700/50 text-blue-200 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-semibold">
+                            44 Negara Berdaulat • 4 Sub-Kawasan Utama
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+                        Persimpangan Peradaban Klasik, Bentang Alam Alpin & Integrasi Kawasan Modern
+                    </h2>
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                        Meski merupakan benua terkecil kedua di dunia secara luas daratan (~10,18 juta km²), <strong>Benua Eropa</strong> memiliki garis pantai paling berlekuk dengan tiga semenanjung besar di selatan, barisan pegunungan Alpen hingga Fjord Skandinavia, serta model integrasi supranasional paling maju di dunia melalui <strong>Uni Eropa, Zona Euro, dan Wilayah Schengen</strong>.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Jelajahi 4 Kawasan & 12 Negara', 'Navigasi Cepat'); switchTab('negara')" class="bg-gradient-to-r from-euroGold-500 to-euroGold-600 hover:from-euroGold-400 hover:to-euroGold-500 text-euroMidnight-950 font-extrabold px-5 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center space-x-2">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>Jelajahi 12 Negara Eropa</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Buka Simulator Kebijakan UE', 'Navigasi Cepat'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold px-5 py-3 rounded-xl text-xs sm:text-sm transition backdrop-blur-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-euroGold-400"></i>
+                            <span>Simulasi Kebijakan UE & Green Deal</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN A: 4 KARTU FAKTA GEOGRAFIS & ASTRONOMIS -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroRoyal-800">Karakteristik Fisik & Identitas</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">4 Fakta Geografis & Astronomis Benua Eropa</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap kartu fakta untuk membaca penjelasan rinci & mencatat aktivitas belajar</p>
+                </div>
+
+                <div id="geo-facts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN B: 4 KARTU KAWASAN UTAMA BENUA EROPA -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroGold-600">Pembagian Sub-Kawasan Geografis</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">4 Kawasan Utama Benua Eropa</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik kartu kawasan untuk membuka karakteristik iklim, bentang alam, dan negara anggotanya</p>
+                </div>
+
+                <div id="regions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN C: 3 MODUL PILAR SEJARAH & INTEGRASI -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroRoyal-800">Evolusi Peradaban & Geopolitik</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">3 Pilar Sejarah & Integrasi Kawasan Eropa</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap modul pilar untuk mendalami jejak sejarah hingga arsitektur Uni Eropa modern</p>
+                </div>
+
+                <div id="history-pillars-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 2: KATALOG 12 NEGARA IKONIK BENUA EROPA
+             ===================================================================== -->
+        <section id="sec-negara" class="tab-content hidden space-y-6">
+            <!-- Header & Filter Pencarian -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroRoyal-800">Direktori Negara Representatif (4 Kawasan)</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Katalog 12 Negara Ikonik Benua Eropa</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik kartu negara untuk membuka profil geografis, bentang alam, iklim, warisan budaya, sektor ekonomi, dan fakta uniknya.</p>
+                    </div>
+                    <!-- Filter Kawasan & Live Search -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="country-region-filter" onchange="trackActivity('Filter Kawasan: ' + this.value, 'Katalog Negara'); renderCountriesGrid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-euroRoyal-800">
+                            <option value="all">Semua Kawasan (12 Negara)</option>
+                            <option value="Eropa Barat">Eropa Barat (3 Negara)</option>
+                            <option value="Eropa Utara">Eropa Utara (3 Negara)</option>
+                            <option value="Eropa Selatan">Eropa Selatan (3 Negara)</option>
+                            <option value="Eropa Timur">Eropa Timur (3 Negara)</option>
+                        </select>
+                        <div class="relative sm:w-60">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="country-search" oninput="renderCountriesGrid()" placeholder="Cari negara, ibu kota, bentang alam..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-euroRoyal-800 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 12 Kartu Negara -->
+            <div id="countries-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 3: MATRIKS KOMPARASI NEGARA EROPA
+             ===================================================================== -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroGold-600">Analisis Komparatif Lintas Kawasan</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Matriks Komparasi Negara Eropa</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih 2 hingga 3 negara Eropa secara fleksibel untuk menyandingkan status UE/Eurozone/Schengen, bentang alam, iklim, ekonomi, & fakta uniknya.</p>
+                    </div>
+                    <!-- Toggle 2 vs 3 Negara -->
+                    <div class="flex items-center space-x-2 bg-slate-100 p-1 rounded-xl self-start sm:self-auto">
+                        <button onclick="setCompareMode(2)" id="btn-comp-mode-2" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">2 Negara</button>
+                        <button onclick="setCompareMode(3)" id="btn-comp-mode-3" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-euroMidnight-900 text-white transition">3 Negara</button>
+                    </div>
+                </div>
+
+                <!-- Dropdown Pemilih Negara -->
+                <div id="compare-selectors-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Kolom 1 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-euroMidnight-900 uppercase">Negara Pembanding 1</label>
+                            <span id="badge-comp-1" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-1" onchange="handleCompareChange(1)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-euroRoyal-800">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 2 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-euroRoyal-800 uppercase">Negara Pembanding 2</label>
+                            <span id="badge-comp-2" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-2" onchange="handleCompareChange(2)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-euroRoyal-800">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 3 -->
+                    <div id="comp-box-3" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-euroGold-700 uppercase">Negara Pembanding 3</label>
+                            <span id="badge-comp-3" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-3" onchange="handleCompareChange(3)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-euroRoyal-800">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabel Matriks Komparasi -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table id="compare-matrix-table" class="w-full text-left text-xs border-collapse">
+                        <!-- Di-render dinamis oleh JS -->
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 4: SIMULATOR INTEGRASI & KEBIJAKAN KAWASAN EROPA (EU & GREEN DEAL)
+             ===================================================================== -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroRoyal-800">Simulasi Tata Kelola Supranasional</span>
+                        <h3 class="font-extrabold text-slate-900 text-2xl">Simulator Integrasi & Kebijakan Kawasan Eropa (EU & Green Deal)</h3>
+                        <p class="text-xs text-slate-500 mt-1">Berperanlah sebagai perancang kebijakan kawasan Eropa. Atur 5 instrumen strategis untuk memproyeksikan kemakmuran, ketahanan iklim, dan mobilitas lintas batas.</p>
+                    </div>
+                    <span id="badge-simulator-count" class="counter-badge bg-euroRoyal-100 text-euroRoyal-900 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-euroRoyal-200 self-start sm:self-auto">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 5 Sliders Kebijakan Kawasan (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">1. Integrasi Pasar Tunggal & Zona Euro (%)</label>
+                                <span id="val-sim-1" class="font-mono font-extrabold text-euroRoyal-800 bg-white px-2.5 py-0.5 rounded border">75%</span>
+                            </div>
+                            <input type="range" id="sim-slider-1" min="0" max="100" value="75" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Integrasi Pasar Tunggal & Zona Euro', 'Simulator Kebijakan UE'); updateSimulatorPreview()" class="w-full accent-euroRoyal-800 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Harmonisasi tarif bea cukai, kebebasan arus barang/jasa/modal, dan stabilitas kebijakan moneter Bank Sentral Eropa (ECB).</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">2. Kebebasan Mobilitas Perbatasan Schengen (%)</label>
+                                <span id="val-sim-2" class="font-mono font-extrabold text-euroRoyal-800 bg-white px-2.5 py-0.5 rounded border">80%</span>
+                            </div>
+                            <input type="range" id="sim-slider-2" min="0" max="100" value="80" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Kebebasan Mobilitas Schengen', 'Simulator Kebijakan UE'); updateSimulatorPreview()" class="w-full accent-euroRoyal-800 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Penghapusan pemeriksaan paspor di perbatasan internal antar-negara anggota Schengen & pertukaran mahasiswa (Erasmus+).</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">3. Target Transisi Energi Hijau / European Green Deal (%)</label>
+                                <span id="val-sim-3" class="font-mono font-extrabold text-emerald-700 bg-white px-2.5 py-0.5 rounded border">70%</span>
+                            </div>
+                            <input type="range" id="sim-slider-3" min="0" max="100" value="70" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Target European Green Deal', 'Simulator Kebijakan UE'); updateSimulatorPreview()" class="w-full accent-emerald-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Investasi energi angin laut Utara, hidroelektrik/panas bumi Nordik, & target netralitas karbon (Net-Zero 2050).</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">4. Dana Kohesi & Pemerataan Infrastruktur Regional (%)</label>
+                                <span id="val-sim-4" class="font-mono font-extrabold text-euroGold-700 bg-white px-2.5 py-0.5 rounded border">65%</span>
+                            </div>
+                            <input type="range" id="sim-slider-4" min="0" max="100" value="65" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Dana Kohesi & Infrastruktur', 'Simulator Kebijakan UE'); updateSimulatorPreview()" class="w-full accent-euroGold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Transfer anggaran pembangunan kereta cepat trans-Eropa (TEN-T) dan konektivitas digital untuk Eropa Timur & Selatan.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">5. Proteksi Warisan Budaya & Pariwisata Berkelanjutan (%)</label>
+                                <span id="val-sim-5" class="font-mono font-extrabold text-euroGold-700 bg-white px-2.5 py-0.5 rounded border">72%</span>
+                            </div>
+                            <input type="range" id="sim-slider-5" min="0" max="100" value="72" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Proteksi Warisan Budaya & Pariwisata', 'Simulator Kebijakan UE'); updateSimulatorPreview()" class="w-full accent-euroGold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Pelestarian situs bersejarah Mediterania/Klasik, pengendalian overtourism, serta dukungan ekonomi kreatif Eropa.</p>
+                        </div>
+                    </div>
+
+                    <!-- Output Dashboard Panel (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-950 text-white rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl border border-euroGold-500/30">
+                        <div class="space-y-1 border-b border-white/10 pb-3">
+                            <span class="text-[11px] font-mono text-euroGold-400 uppercase tracking-widest font-bold">Proyeksi Geopolitik & Ekonomi Kawasan</span>
+                            <h4 class="text-xl font-extrabold">Dashboard Evaluasi Kebijakan UE</h4>
+                        </div>
+
+                        <!-- Big Score Box -->
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 text-center space-y-1">
+                            <span class="text-xs text-slate-300 block">Skor Integrasi & Kemakmuran (0 – 100)</span>
+                            <strong id="sim-res-score" class="text-5xl font-mono font-extrabold text-euroGold-400">72.4</strong>
+                            <div class="pt-2">
+                                <span id="sim-res-tier-badge" class="bg-euroGold-400 text-euroMidnight-950 font-extrabold text-xs px-3.5 py-1 rounded-full">
+                                    Integrasi Solid & Progresif
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-metrics -->
+                        <div class="space-y-2.5 text-xs">
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Indeks Ketahanan Iklim & Energi:</span>
+                                <span id="sim-res-climate" class="font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">71.0% (Transisi Aktif)</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Status Mobilitas & Daya Tarik Global:</span>
+                                <span id="sim-res-mobility" class="font-bold text-euroGold-300">Tinggi (Akses Schengen Lancar)</span>
+                            </div>
+                        </div>
+
+                        <!-- Narrative Evaluation -->
+                        <div class="bg-euroRoyal-800/30 border border-euroGold-400/30 p-4 rounded-2xl space-y-1.5 text-xs">
+                            <h5 class="font-bold text-euroGold-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                                <span>Narasi Evaluasi Kebijakan Kawasan:</span>
+                            </h5>
+                            <p id="sim-res-narrative" class="text-slate-200 leading-relaxed">
+                                Keseimbangan antara keterbukaan pasar tunggal, mobilitas Schengen, dan transisi energi hijau menjaga daya saing global Eropa. Tingkatkan Dana Kohesi agar disparitas infrastruktur antara Eropa Barat dan Eropa Timur semakin menyempit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 5: KUIS EVALUASI GEOGRAFI & SEJARAH EROPA (6 SOAL)
+             ===================================================================== -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-euroMidnight-900 text-euroGold-400 flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-xl">Kuis Evaluasi Geografi & Sejarah Eropa (6 Soal)</h3>
+                            <p class="text-xs text-slate-500">Uji pemahaman konsep Anda mengenai batas Eropa-Asia, Gulf Stream, UE vs Schengen vs Eurozone, Fjord, Semenanjung Selatan, & Renaisans.</p>
+                        </div>
+                    </div>
+                    <span id="badge-quiz-count" class="counter-badge bg-slate-100 text-slate-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto">
+                        👁️ 0x soal dijawab
+                    </span>
+                </div>
+
+                <!-- Area Kuis Dinamis -->
+                <div id="quiz-container" class="max-w-3xl mx-auto">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-euroMidnight-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-euroRoyal-800 text-euroGold-400 border border-euroGold-400/30 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-earth-europe"></i>
+                </div>
+                <span class="font-bold text-slate-200">AtlasEropa • Eksplorasi Geografi, Sejarah & Geopolitik Benua Eropa</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Modul Pembelajaran Interaktif Wilayah Dunia • Dilengkapi Pelacak Progres Belajar Real-Time.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ACTION BUTTON (FAB) ANALITIK ================= -->
+    <button onclick="openAnalyticsModal(); trackActivity('Tombol Melayang Statistik Belajar', 'Navigasi Analitik')" class="fixed bottom-6 right-6 bg-gradient-to-r from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-900 text-white p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-euroGold-400/60">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-euroGold-400"></i>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-euroGold-400 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-euroGold-400">Panel Analitik</span>
+            <span id="fab-total-clicks" class="font-extrabold text-sm font-mono leading-none text-white">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ================= MODAL 1: PANEL ANALITIK AKTIVITAS BELAJAR ================= -->
+    <div id="modal-analytics" onclick="if(event.target===this) closeAnalyticsModal()" class="fixed inset-0 bg-euroMidnight-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-euroMidnight-950 to-euroRoyal-900 text-white p-5 flex items-center justify-between border-b border-euroGold-500/30">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-euroGold-400 text-euroMidnight-950 flex items-center justify-center font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-slate-300">Rekapitulasi interaksi & cakupan eksplorasi 12 negara Benua Eropa</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- 3 Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-euroRoyal-800 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Tersimpan di browser Anda</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-sm text-slate-800 font-extrabold block truncate mt-1">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Topik paling sering diklik</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Persentase Cakupan Negara</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <div class="flex-grow bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-euroRoyal-700 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-extrabold text-euroRoyal-800 font-mono">0%</span>
+                        </div>
+                        <span id="modal-coverage-detail" class="text-[11px] text-slate-400 block mt-1">0 dari 12 negara dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top 5 Popular -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Doughnut Chart -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-extrabold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative flex items-center justify-center">
+                            <canvas id="analyticsChart"></canvas>
+                            <p id="chart-empty-msg" class="text-xs text-slate-400 italic text-center hidden">Belum ada data klik untuk grafik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Sub-Materi -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-5-list" class="space-y-2 text-xs">
+                            <!-- Di-render dinamis -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline Custom Reset Confirmation Banner (Tanpa window.confirm / window.alert) -->
+                <div id="reset-confirm-box" class="hidden bg-rose-50 border border-rose-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2.5 text-rose-900 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600 text-base"></i>
+                        <span><strong>Konfirmasi Reset:</strong> Yakin ingin menghapus seluruh riwayat hitungan belajar Anda?</span>
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-auto">
+                        <button onclick="executeClearAnalytics()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Ya, Hapus Semua</button>
+                        <button onclick="toggleResetConfirm(false)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Batal</button>
+                    </div>
+                </div>
+
+                <!-- Activity Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="toggleResetConfirm(true)" class="text-rose-600 hover:text-rose-700 text-xs font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-52 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-800 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Waktu Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Di-render dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-export text-euroRoyal-800"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-euroMidnight-900 hover:bg-euroMidnight-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: DETAIL MATERI / KAWASAN / NEGARA ================= -->
+    <div id="modal-detail" onclick="if(event.target===this) closeDetailModal()" class="fixed inset-0 bg-euroMidnight-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-euroMidnight-950 to-euroRoyal-900">
+                <!-- Di-render dinamis -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar flex-grow">
+                <!-- Di-render dinamis -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeDetailModal()" class="bg-euroMidnight-900 hover:bg-euroMidnight-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Detail
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed top-20 right-4 sm:right-6 z-50 space-y-2 pointer-events-none max-w-xs w-full"></div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. DATASET LENGKAP BENUA EROPA:
+         *    4 Fakta Geografis, 4 Kawasan, 3 Pilar Sejarah, 12 Negara, 6 Soal Kuis
+         * ------------------------------------------------------------------- */
+
+        // 4 Kartu Fakta Geografis & Astronomis
+        const GEO_FACTS_DATA = [
+            {
+                id: 'astronomis_batas',
+                title: 'Letak Astronomis & Batas Alam',
+                icon: 'fa-compass',
+                highlight: '35° LU – 71° LU & 9° BB – 66° BT',
+                shortDesc: 'Secara fisik menyatu dengan Asia (Eurasia), dipisahkan oleh Pegunungan Ural, Laut Kaspia, & Kaukasus.',
+                details: [
+                    'Letak Astronomis: 35° LU – 71° LU (hampir seluruhnya berada di belahan bumi utara beriklim sedang hingga subarktik) dan 9° BB – 66° BT.',
+                    'Batas Utara: Samudra Arktik & Laut Barents.',
+                    'Batas Timur: Pegunungan Ural, Sungai Ural, dan Laut Kaspia yang memisahkannya dari Benua Asia.',
+                    'Batas Selatan: Pegunungan Kaukasus, Laut Hitam, Selat Bosporus-Dardanella, Laut Mediterania (Laut Tengah), dan Selat Gibraltar.',
+                    'Batas Barat: Samudra Atlantik.'
+                ]
+            },
+            {
+                id: 'luas_wilayah',
+                title: 'Luas Wilayah & Semenanjung',
+                icon: 'fa-ruler-combined',
+                highlight: '~10,18 Juta km² (Terkecil Ke-2)',
+                shortDesc: 'Benua terkecil kedua setelah Australia (~6,8% daratan bumi), namun berbentuk "semenanjung dari semenanjung".',
+                details: [
+                    'Luas Daratan: Sekitar 10,18 juta km² yang dihuni oleh lebih dari 740 juta jiwa di 44 negara berdaulat.',
+                    'Garis Pantai Sangat Panjang: Memiliki banyak teluk, laut pedalaman, dan semenanjung utama (Skandinavia, Jutlandia, Iberia, Apenina/Italia, dan Balkan).',
+                    'Kondisi geografis yang berlekuk ini mendorong lahirnya peradaban maritim, pelabuhan dagang global, serta konektivitas perairan sungai pedalaman seperti Sungai Rhine dan Sungai Danube.'
+                ]
+            },
+            {
+                id: 'gulf_stream',
+                title: 'Pengaruh Arus Teluk (Gulf Stream)',
+                icon: 'fa-water',
+                highlight: 'Iklim Hangat di Lintang Tinggi',
+                shortDesc: 'Arus laut hangat dari Teluk Meksiko membuat pelabuhan Eropa Barat & Norwegia bebas es sepanjang tahun.',
+                details: [
+                    'Arus Teluk (Gulf Stream) dan lanjutan Arus Atlantik Utara (North Atlantic Drift) membawa massa air hangat dari kawasan tropis Teluk Meksiko melintasi Samudra Atlantik menuju pesisir Eropa Barat dan Utara.',
+                    'Dampak Iklim: Kota-kota di lintang tinggi seperti Bergen (Norwegia, 60° LU) atau London (51° LU) memiliki suhu musim dingin yang jauh lebih hangat dibandingkan wilayah lintang sejajar di Kanada atau Siberia.',
+                    'Menjadikan pelabuhan-pelabuhan utama di Laut Utara dan pesisir Norwegia tetap bebas dari pembekuan es (ice-free) sepanjang musim dingin.'
+                ]
+            },
+            {
+                id: 'benua_biru',
+                title: 'Julukan "Benua Biru"',
+                icon: 'fa-crown',
+                highlight: 'Mata Biru & Tradisi Darah Biru',
+                shortDesc: 'Dua alasan historis-antropologis mengapa Eropa dikenal luas di seluruh dunia sebagai Benua Biru.',
+                details: [
+                    '1. Karakteristik Fisik Penduduk Asli: Mayoritas penduduk asli Eropa (ras Kaukasoid sub-ras Nordik, Alpin, dan Mediterania) memiliki bola mata berwarna biru cerah.',
+                    '2. Tradisi Darah Biru (Blue Blood): Sejak era kerajaan abad pertengahan di Spanyol dan Eropa Barat, kalangan bangsawan/ningrat disebut berdarah biru ("sangre azul") karena kulit mereka yang terang membuat pembuluh vena tampak kebiruan dibandingkan pekerja lapangan.',
+                    'Warna biru juga menjadi warna resmi bendera Uni Eropa dan Dewan Eropa dengan lingkaran 12 bintang emas.'
+                ]
+            }
+        ];
+
+        // 4 Kartu Kawasan Utama Benua Eropa
+        const REGIONS_DATA = [
+            {
+                id: 'eropa_barat',
+                name: 'Eropa Barat',
+                icon: 'fa-tower-observation',
+                color: 'from-euroRoyal-800 to-euroMidnight-950',
+                climate: 'Iklim Laut Sedang (Oceanic) yang lembap dengan curah hujan merata sepanjang tahun akibat pengaruh Samudra Atlantik dan Arus Teluk.',
+                landforms: 'Dataran Rendah Eropa Utara, Cekungan Paris, Pegunungan Alpen bagian barat (Mont Blanc), serta lembah sungai pelayaran vital Sungai Rhine, Seine, dan Loire.',
+                countries: 'Prancis, Jerman, Belanda, Belgia, Luksemburg, Swiss, Austria, Monako, Liechtenstein.',
+                economicNotes: 'Pusat industri teknologi tinggi, otomotif, dirgantara, perbankan global, serta motor utama integrasi Uni Eropa.'
+            },
+            {
+                id: 'eropa_utara',
+                name: 'Eropa Utara (Nordik & Skandinavia)',
+                icon: 'fa-snowflake',
+                color: 'from-sky-800 to-euroMidnight-950',
+                climate: 'Iklim Subarktik hingga Tundra di lingkar Arktik, serta iklim laut sejuk di pesisir barat berkat Arus Atlantik Utara.',
+                landforms: 'Pegunungan Skandinavia, Fjord (lembah glasial curam terisi air laut di Norwegia), ribuan danau glasial di Finlandia/Swedia, serta pulau vulkanik & geyser di Islandia.',
+                countries: 'Norwegia, Swedia, Finlandia, Denmark, Islandia, serta negara Baltik (Estonia, Latvia, Lituania).',
+                economicNotes: 'Pelopor energi terbarukan (hidroelektrik & panas bumi), perikanan modern, teknologi telekomunikasi, dan indeks kesejahteraan sosial tertinggi di dunia.'
+            },
+            {
+                id: 'eropa_selatan',
+                name: 'Eropa Selatan (Mediterania)',
+                icon: 'fa-sun',
+                color: 'from-amber-700 to-euroMidnight-950',
+                climate: 'Iklim Mediterania dengan musim panas yang hangat-kering dan musim dingin yang sejuk-basah.',
+                landforms: 'Tiga semenanjung besar (Iberia, Apenina, Balkan), Pegunungan Pirenia, Pegunungan Apenina, gunung api aktif (Vesuvius, Etna), serta ribuan pulau di Laut Aegea dan Mediterania.',
+                countries: 'Italia, Spanyol, Yunani, Portugal, Kroasia, Slovenia, Malta, Siprus, Vatikan, San Marino, Andorra.',
+                economicNotes: 'Tempat lahirnya peradaban klasik Yunani-Romawi dan Renaisans; unggulan pariwisata budaya dunia, agrikultur zaitun/anggur, serta manufaktur mode dan desain.'
+            },
+            {
+                id: 'eropa_timur',
+                name: 'Eropa Timur',
+                icon: 'fa-wheat-awn',
+                color: 'from-indigo-800 to-euroMidnight-950',
+                climate: 'Iklim Kontinental Lembap dengan perbedaan suhu ekstrem antara musim panas yang hangat dan musim dingin yang sangat dingin bersalju.',
+                landforms: 'Dataran Rendah Eropa Timur yang sangat luas dan subur (tanah hitam Chernozem), Pegunungan Carpathia, Dataran Tinggi Bohemia, serta lembah Sungai Danube, Vistula, dan Dnieper.',
+                countries: 'Polandia, Ukraina, Ceko, Slowakia, Hungaria, Rumania, Bulgaria, Moldova, Belarus, Rusia bagian Eropa.',
+                economicNotes: 'Lumbung pangan gandum dan bunga matahari Eropa, pusat manufaktur industri Eropa Tengah-Timur, dan kaya sumber daya mineral.'
+            }
+        ];
+
+        // 3 Modul Pilar Sejarah & Integrasi
+        const HISTORY_PILLARS_DATA = [
+            {
+                id: 'klasik',
+                badge: 'Pilar Sejarah 1 • Abad ke-8 SM – 476 M',
+                title: 'Peradaban Klasik Yunani-Romawi',
+                icon: 'fa-landmark',
+                color: 'from-euroMidnight-950 to-euroRoyal-900',
+                summary: 'Fondasi filsafat rasional, sistem demokrasi warga di Athena, kodifikasi hukum sipil Romawi, serta tata kota dan arsitektur klasik yang membentuk identitas Barat.',
+                sections: [
+                    {
+                        title: 'Warisan Yunani Kuno (Hellas)',
+                        items: [
+                            'Konsep Demokrasi langsung pertama kali dipraktikkan di negara-kota (Polis) Athena.',
+                            'Kelahiran filsafat sistematis (Socrates, Plato, Aristoteles), matematika (Pythagoras, Euclid), historiografi, serta tradisi Olimpiade di Olympia.'
+                        ]
+                    },
+                    {
+                        title: 'Warisan Kekaisaran Romawi',
+                        items: [
+                            'Sistem Hukum Romawi (Corpus Juris Civilis) yang menjadi cikal bakal sistem hukum Civil Law di sebagian besar negara Eropa dan dunia.',
+                            'Rekayasa infrastruktur monumental: jaringan jalan batu beraspal, akuaduk air bersih, amfiteater Colosseum, dan penyebaran bahasa Latin sebagai akar bahasa Roman (Prancis, Italia, Spanyol, Portugis, Rumania).'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'renaisans_industri',
+                badge: 'Pilar Sejarah 2 • Abad ke-14 – Abad ke-19',
+                title: 'Renaisans & Revolusi Industri',
+                icon: 'fa-gears',
+                color: 'from-amber-800 to-euroMidnight-950',
+                summary: 'Kebangkitan kembali ilmu pengetahuan dan seni di Italia (Renaisans) yang memicu Revolusi Ilmiah, penjelajahan samudra, hingga Revolusi Industri di Inggris.',
+                sections: [
+                    {
+                        title: 'Era Renaisans (Abad ke-14 s.d. ke-16)',
+                        items: [
+                            'Bermula di kota-kota dagang Italia seperti Firenze (Florence), Venesia, dan Roma sebagai jembatan transisi dari Abad Pertengahan menuju Era Modern.',
+                            'Menekankan humanisme, observasi ilmiah (Galileo Galilei, Nicolaus Copernicus), serta mahakarya seni (Leonardo da Vinci, Michelangelo) yang dipercepat oleh penemuan mesin cetak Gutenberg di Jerman.'
+                        ]
+                    },
+                    {
+                        title: 'Revolusi Industri (Dimulai di Inggris ~1760)',
+                        items: [
+                            'Transisi radikal dari produksi kerajinan tangan menuju mekanisasi pabrik bertenaga mesin uap (James Watt), industri tekstil, peleburan besi, dan transportasi kereta api.',
+                            'Mendorong urbanisasi pesat, pertumbuhan kelas menengah, serta transformasi ekonomi global yang menjadikan Eropa pusat manufaktur dan perdagangan dunia pada abad ke-19.'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'integrasi_ue',
+                badge: 'Pilar Geopolitik 3 • 1951 – Sekarang',
+                title: 'Uni Eropa, Zona Euro & Perjanjian Schengen',
+                icon: 'fa-handshake-simple',
+                color: 'from-euroRoyal-800 to-euroMidnight-950',
+                summary: 'Memahami perbedaan penting antara keanggotaan Uni Eropa (27 negara), pengguna mata uang Euro (20 negara), dan wilayah bebas paspor Schengen (29 negara).',
+                sections: [
+                    {
+                        title: '1. Uni Eropa (European Union / UE — 27 Negara)',
+                        items: [
+                            'Persatuan politik dan ekonomi supranasional yang berawal dari Masyarakat Batu Bara dan Baja Eropa (ECSC 1951) & Perjanjian Roma (1957) untuk menjaga perdamaian pasca-Perang Dunia II.',
+                            'Menciptakan Pasar Tunggal (Single Market) dengan empat kebebasan: pergerakan bebas barang, jasa, modal, dan tenaga kerja.'
+                        ]
+                    },
+                    {
+                        title: '2. Zona Euro (Eurozone — 20 Negara Anggota UE)',
+                        items: [
+                            'Kelompok negara anggota Uni Eropa yang mengadopsi mata uang tunggal Euro (€) dan kebijakan moneternya dikelola oleh Bank Sentral Eropa (ECB) di Frankfurt.',
+                            'Catatan Penting: Tidak semua anggota UE memakai Euro (contoh: Swedia, Polandia, dan Ceko masih memakai mata uang nasionalnya sendiri).'
+                        ]
+                    },
+                    {
+                        title: '3. Wilayah Schengen (Schengen Area — 29 Negara)',
+                        items: [
+                            'Kawasan bebas pemeriksaan paspor di perbatasan internal antar-negara anggota sehingga warga dan wisatawan dapat melintas batas layaknya perjalanan domestik.',
+                            'Catatan Penting: Beberapa negara non-UE adalah anggota penuh Schengen (Norwegia, Islandia, Swiss, Liechtenstein), sedangkan Irlandia & Siprus adalah anggota UE tetapi berada di luar Schengen.'
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // 12 Negara Representatif (3 per Kawasan)
+        const COUNTRIES_DATA = [
+            // EROPA BARAT (3)
+            {
+                id: 'prancis',
+                name: 'Prancis',
+                flag: '🇫🇷',
+                region: 'Eropa Barat',
+                capital: 'Paris',
+                euStatus: 'Anggota UE • Zona Euro (€) • Schengen',
+                iconicLandform: 'Pegunungan Alpen (Mont Blanc), Lembah Sungai Loire & Seine',
+                geography: 'Negara terluas di Uni Eropa dengan bentang alam beragam: dataran rendah subur di utara dan barat, Pegunungan Alpen di tenggara (puncak Mont Blanc 4.808 m), serta Pegunungan Pirenia di perbatasan Spanyol.',
+                climate: 'Iklim laut sedang di barat (Paris), iklim kontinental di timur, dan iklim Mediterania hangat di pesisir selatan (Côte d’Azur).',
+                cultureHistory: 'Pusat Revolusi Prancis (1789), pencerahan intelektual, seni rupa (Museum Louvre), sastra, serta kiblat mode dan gastronomi dunia.',
+                economy: 'Industri dirgantara (Airbus), energi nuklir, barang mewah, agrikultur anggur/keju, serta destinasi wisata internasional nomor satu di dunia.',
+                uniqueFact: 'Memiliki wilayah seberang laut di beberapa benua sehingga Prancis mempunyai 12 zona waktu berbeda—terbanyak di dunia!'
+            },
+            {
+                id: 'jerman',
+                name: 'Jerman',
+                flag: '🇩🇪',
+                region: 'Eropa Barat',
+                capital: 'Berlin',
+                euStatus: 'Anggota UE • Zona Euro (€) • Schengen',
+                iconicLandform: 'Lembah Sungai Rhine, Hutan Hitam (Black Forest) & Alpen Bavaria',
+                geography: 'Terletak di jantung Eropa dan berbatasan dengan 9 negara; memiliki Dataran Rendah Eropa Utara, dataran tinggi berhutan di tengah, serta Pegunungan Alpen Bavaria di selatan.',
+                climate: 'Iklim sedang musiman dengan musim panas hangat dan musim dingin sejuk hingga bersalju di wilayah selatan dan pegunungan.',
+                cultureHistory: 'Tanah kelahiran mesin cetak Gutenberg, musik klasik (Beethoven, Bach), filsafat, serta simbol penyatuan kembali Eropa melalui runtuhnya Tembok Berlin (1989).',
+                economy: 'Ekonomi terbesar di Eropa dan terbesar ketiga di dunia; unggul dalam rekayasa mesin, otomotif (Mercedes-Benz, BMW, VW), kimia, dan teknologi hijau.',
+                uniqueFact: 'Jerman memiliki lebih dari 20.000 kastil bersejarah dan jaringan jalan tol bebas batas kecepatan di beberapa ruas bernama Autobahn.'
+            },
+            {
+                id: 'belanda',
+                name: 'Belanda',
+                flag: '🇳🇱',
+                region: 'Eropa Barat',
+                capital: 'Amsterdam',
+                euStatus: 'Anggota UE • Zona Euro (€) • Schengen',
+                iconicLandform: 'Delta Sungai Rhine-Meuse-Scheldt & Lahan Polder Reklamasi Laut',
+                geography: 'Negara dataran sangat rendah di pesisir Laut Utara; sekitar 26% wilayah daratannya berada di bawah permukaan laut dan dilindungi sistem tanggul raksasa (Delta Works).',
+                climate: 'Iklim laut sedang yang dipengaruhi angin Laut Utara dengan musim panas sejuk dan musim dingin ringan.',
+                cultureHistory: 'Era Keemasan maritim dan seni lukis abad ke-17 (Rembrandt, Van Gogh), tradisi toleransi, serta tuan rumah Mahkamah Internasional di Den Haag.',
+                economy: 'Gerbang logistik utama Eropa melalui Pelabuhan Rotterdam, eksportir produk pertanian dan hortikultura (bunga tulip) terbesar kedua di dunia, serta semikonduktor (ASML).',
+                uniqueFact: 'Jumlah sepeda di Belanda (lebih dari 23 juta unit) melebihi jumlah penduduknya yang sekitar 18 juta jiwa!'
+            },
+
+            // EROPA UTARA (3)
+            {
+                id: 'norwegia',
+                name: 'Norwegia',
+                flag: '🇳🇴',
+                region: 'Eropa Utara',
+                capital: 'Oslo',
+                euStatus: 'Non-UE • Krone Norwegia (NOK) • Schengen',
+                iconicLandform: 'Fjord Geiranger & Nærøyfjord, Pegunungan Skandinavia',
+                geography: 'Membentang sepanjang pesisir barat Semenanjung Skandinavia dengan garis pantai penuh Fjord dalam (lembah glasial terisi air laut) dan puluhan ribu pulau.',
+                climate: 'Iklim pesisir barat yang relatif hangat dibanding lintangnya berkat Arus Teluk, sementara bagian pedalaman dan utara beriklim subarktik.',
+                cultureHistory: 'Warisan pelaut Viking legendaris, penjelajah kutub (Roald Amundsen), serta penyelenggara penganugerahan Hadiah Nobel Perdamaian di Oslo.',
+                economy: 'Salah satu negara dengan pendapatan per kapita tertinggi di dunia berkat pengelolaan dana abadi migas (Sovereign Wealth Fund), perikanan salmon, dan 98% listrik berbasis tenaga air (PLTA).',
+                uniqueFact: 'Norwegia bukan anggota Uni Eropa (ditolak lewat referendum 1972 & 1994), namun bergabung penuh dalam Wilayah Schengen dan Pasar Tunggal EEA.'
+            },
+            {
+                id: 'swedia',
+                name: 'Swedia',
+                flag: '🇸🇪',
+                region: 'Eropa Utara',
+                capital: 'Stockholm',
+                euStatus: 'Anggota UE • Krona Swedia (SEK) • Schengen',
+                iconicLandform: 'Kepulauan Stockholm (30.000 Pulau) & Ribuan Danau Glasial',
+                geography: 'Negara terluas di Eropa Utara yang didominasi hutan boreal lebat, pegunungan di perbatasan Norwegia, dan hampir 100.000 danau alami.',
+                climate: 'Iklim kontinental sejuk di selatan (Stockholm) hingga subarktik di wilayah Lapland utara yang mengalami fenomena Midnight Sun.',
+                cultureHistory: 'Pelopor negara kesejahteraan Nordik, tempat penganugerahan Hadiah Nobel (Fisika, Kimia, Kedokteran, Sastra, Ekonomi), serta tradisi kopi sore "Fika".',
+                economy: 'Pusat inovasi teknologi digital, industri telekomunikasi (Ericsson), otomotif (Volvo), furnitur global (IKEA), dan industri baja hijau bebas fosil.',
+                uniqueFact: 'Swedia memiliki kebijakan "Allemansrätten" (Hak Menjelajah Alam) yang mengizinkan setiap orang berjalan dan berkemah bebas di alam terbuka secara bertanggung jawab.'
+            },
+            {
+                id: 'islandia',
+                name: 'Islandia',
+                flag: '🇮🇸',
+                region: 'Eropa Utara',
+                capital: 'Reykjavik',
+                euStatus: 'Non-UE • Króna Islandia (ISK) • Schengen',
+                iconicLandform: 'Punggung Tengah Atlantik, Geyser, Gunung Api & Gletser Vatnajökull',
+                geography: 'Pulau vulkanik di Samudra Atlantik Utara tepat di pertemuan Lempeng Amerika Utara dan Lempeng Eurasia; memadukan gletser es raksasa dengan gunung berapi aktif.',
+                climate: 'Iklim subarktik samudra yang diredam oleh Arus Atlantik Utara sehingga musim dingin pesisir tidak terlalu membeku meski dekat Lingkar Arktik.',
+                cultureHistory: 'Memiliki parlemen tertua di dunia yang masih berjalan sejak tahun 930 M (Althingi) serta tradisi sastra Saga Nordik.',
+                economy: 'Hampir 100% kebutuhan listrik dan pemanas rumah tangga berasal dari energi terbarukan panas bumi (geothermal) dan tenaga air, didukung perikanan dan ekowisata.',
+                uniqueFact: 'Islandia merupakan satu-satunya negara anggota NATO yang tidak memiliki angkatan bersenjata tetap dan tidak memiliki nyamuk di alam liarnya.'
+            },
+
+            // EROPA SELATAN (3)
+            {
+                id: 'italia',
+                name: 'Italia',
+                flag: '🇮🇹',
+                region: 'Eropa Selatan',
+                capital: 'Roma',
+                euStatus: 'Anggota UE • Zona Euro (€) • Schengen',
+                iconicLandform: 'Semenanjung Apenina (Sepatu Bot), Pegunungan Alpen & Lembah Sungai Po',
+                geography: 'Berbentuk semenanjung memanjang di Laut Mediterania dengan Pegunungan Alpen di utara, Pegunungan Apenina di tengah, serta Pulau Sisilia dan Sardinia.',
+                climate: 'Iklim Mediterania hangat-kering di pesisir dan selatan, serta iklim kontinental/alpin di Lembah Sungai Po (Milan) dan utara.',
+                cultureHistory: 'Pusat Kekaisaran Romawi Kuno dan tempat lahirnya era Renaisans (Firenze); memiliki jumlah Situs Warisan Dunia UNESCO terbanyak di dunia.',
+                economy: 'Kekuatan manufaktur Eropa (otomotif Ferrari/Lamborghini, mesin presisi), pusat mode dunia (Milan), kuliner, dan pariwisata budaya.',
+                uniqueFact: 'Di dalam wilayah negara Italia terdapat dua negara merdeka berukuran mikro (enklave), yaitu Kota Vatikan dan Republik San Marino.'
+            },
+            {
+                id: 'spanyol',
+                name: 'Spanyol',
+                flag: '🇪🇸',
+                region: 'Eropa Selatan',
+                capital: 'Madrid',
+                euStatus: 'Anggota UE • Zona Euro (€) • Schengen',
+                iconicLandform: 'Semenanjung Iberia, Dataran Tinggi Meseta Central & Pegunungan Pirenia',
+                geography: 'Menguasai sekitar 85% Semenanjung Iberia, dipisahkan dari Prancis oleh Pegunungan Pirenia, dan berjarak hanya 14 km dari Afrika di Selat Gibraltar.',
+                climate: 'Iklim Mediterania di pesisir timur/selatan, iklim semi-kering kontinental di dataran tinggi Madrid, dan iklim laut basah di pesisir utara (Galicia).',
+                cultureHistory: 'Perpaduan warisan Romawi, peradaban Islam Al-Andalus (Alhambra di Granada), serta pelopor pelayaran samudra abad ke-15.',
+                economy: 'Salah satu destinasi wisata utama dunia, pemimpin global energi surya dan angin, serta produsen minyak zaitun terbesar di dunia.',
+                uniqueFact: 'Bahasa Spanyol (Castellano) merupakan bahasa ibu kedua yang paling banyak dituturkan di dunia dengan lebih dari 480 juta penutur asli.'
+            },
+            {
+                id: 'yunani',
+                name: 'Yunani',
+                flag: '🇬🇷',
+                region: 'Eropa Selatan',
+                capital: 'Athena',
+                euStatus: 'Anggota UE • Zona Euro (€) • Schengen',
+                iconicLandform: 'Semenanjung Balkan Selatan, Gunung Olympus & Kepulauan Laut Aegea',
+                geography: 'Terletak di ujung selatan Semenanjung Balkan dengan kontur 80% bergunung-gunung dan memiliki lebih dari 2.000 pulau (seperti Kreta, Santorini, Rhodes).',
+                climate: 'Iklim Mediterania klasik dengan sinar matahari berlimpah sepanjang tahun, musim panas kering, dan musim dingin sejuk.',
+                cultureHistory: 'Tempat lahirnya peradaban Barat, demokrasi, filsafat, teater, dan Olimpiade Kuno dengan ikon Parthenon di bukit Acropolis Athena.',
+                economy: 'Armada kapal niaga (maritime shipping) terbesar di dunia berdasarkan tonase, pariwisata kepulauan, serta ekspor produk pangan Mediterania.',
+                uniqueFact: 'Garis pantai Yunani sepanjang ~13.676 km merupakan garis pantai terpanjang di cekungan Laut Mediterania.'
+            },
+
+            // EROPA TIMUR (3)
+            {
+                id: 'polandia',
+                name: 'Polandia',
+                flag: '🇵🇱',
+                region: 'Eropa Timur',
+                capital: 'Warsawa',
+                euStatus: 'Anggota UE • Złoty Polandia (PLN) • Schengen',
+                iconicLandform: 'Dataran Rendah Eropa Tengah-Timur, Sungai Vistula & Pegunungan Tatra',
+                geography: 'Sebagian besar wilayahnya berupa dataran rendah subur di sepanjang Sungai Vistula dan Oder yang membentang dari Laut Baltik hingga Pegunungan Carpathia/Tatra.',
+                climate: 'Iklim kontinental sedang dengan musim panas hangat dan musim dingin bersalju.',
+                cultureHistory: 'Tanah kelahiran astronom Nicolaus Copernicus, komposer Frédéric Chopin, dan ilmuwan peraih dua Nobel Marie Curie; bangkit luar biasa setelah kehancuran Perang Dunia II.',
+                economy: 'Ekonomi terbesar dan paling dinamis di Eropa Tengah-Timur; pusat manufaktur otomotif, elektronik, jasa teknologi informasi, dan pertanian.',
+                uniqueFact: 'Hutan Białowieża di perbatasan Polandia–Belarus adalah salah satu sisa hutan purba dataran rendah terakhir di Eropa yang menjadi habitat Bison Eropa.'
+            },
+            {
+                id: 'ukraina',
+                name: 'Ukraina',
+                flag: '🇺🇦',
+                region: 'Eropa Timur',
+                capital: 'Kyiv',
+                euStatus: 'Kandidat UE • Hryvnia (UAH) • Non-Schengen',
+                iconicLandform: 'Stepa Subur Chernozem (Tanah Hitam) & Lembah Sungai Dnieper',
+                geography: 'Negara yang seluruh wilayahnya berada di Benua Eropa dengan luas terbesar kedua di Eropa; didominasi dataran stepa sangat subur yang dibelah Sungai Dnieper menuju Laut Hitam.',
+                climate: 'Iklim kontinental sedang dengan musim panas hangat dan musim dingin bersalju yang tegas.',
+                cultureHistory: 'Berakar dari peradaban abad pertengahan Kyivan Rus, gereja berkubah emas Katedral Saint Sophia di Kyiv, serta tradisi seni rakyat Pysanka.',
+                economy: 'Dijuluki "Keranjang Roti Eropa" (Breadbasket of Europe) sebagai eksportir utama gandum, jagung, minyak biji bunga matahari, serta industri metalurgi.',
+                uniqueFact: 'Ukraina memiliki cadangan tanah hitam "Chernozem" paling subur di dunia yang mencakup hampir dua pertiga wilayah daratannya.'
+            },
+            {
+                id: 'ceko',
+                name: 'Ceko (Republik Ceko)',
+                flag: '🇨🇿',
+                region: 'Eropa Timur',
+                capital: 'Praha',
+                euStatus: 'Anggota UE • Koruna Ceko (CZK) • Schengen',
+                iconicLandform: 'Cekungan Dataran Tinggi Bohemia & Hutan Sumava',
+                geography: 'Negara terkurung daratan (landlocked) di jantung Eropa Tengah-Timur yang dikelilingi cincin pegunungan alami (Bohemia dan Moravia) serta dilintasi Sungai Vltava dan Elbe.',
+                climate: 'Iklim kontinental sedang dengan empat musim yang jelas dan curah hujan cukup merata.',
+                cultureHistory: 'Kota Praha dikenal sebagai "Kota Seribu Menara" dengan arsitektur Gotik dan Barok yang tetap utuh melewati dua Perang Dunia.',
+                economy: 'Salah satu negara paling terindustrialisasi di Uni Eropa dengan tingkat pengangguran terendah, unggul di industri otomotif (Škoda), teknik mesin, dan kaca kristal Bohemia.',
+                uniqueFact: 'Ceko memiliki kepadatan kastil dan chateau bersejarah tertinggi di Eropa serta tingkat konsumsi minuman tradisional per kapita tertinggi di dunia.'
+            }
+        ];
+
+        // 6 Soal Kuis Evaluasi Geografi & Sejarah Eropa
+        const QUIZ_QUESTIONS = [
+            {
+                q: "Secara fisik, daratan Eropa menyatu dengan daratan Asia membentuk massa daratan Eurasia. Rangkaian pegunungan dan perairan manakah yang secara geografis ditetapkan sebagai batas alam pemisah antara Benua Eropa dan Asia di sebelah timur?",
+                options: [
+                    "Pegunungan Alpen dan Sungai Rhine",
+                    "Pegunungan Ural, Sungai Ural, dan Laut Kaspia",
+                    "Pegunungan Pirenia dan Selat Gibraltar",
+                    "Pegunungan Skandinavia dan Laut Baltik"
+                ],
+                answer: 1,
+                explain: "Pegunungan Ural, Sungai Ural, dan Laut Kaspia (serta Pegunungan Kaukasus di selatan) merupakan batas alam konvensional yang memisahkan Benua Eropa di sebelah barat dengan Benua Asia di sebelah timur."
+            },
+            {
+                q: "Kota pelabuhan seperti Bergen di Norwegia dan pantai barat Eropa Utara terletak pada lintang tinggi (sekitar 60° LU), namun perairannya tidak membeku sepanjang musim dingin. Fenomena alam apakah yang menyebabkan kondisi iklim tersebut?",
+                options: [
+                    "Angin Fohn yang berembus dari Gurun Sahara",
+                    "Pengaruh Arus Teluk (Gulf Stream / North Atlantic Drift) yang membawa massa air hangat dari Teluk Meksiko",
+                    "Pantulan panas matahari dari puncak Pegunungan Alpen",
+                    "Tingginya aktivitas gunung api di seluruh dataran rendah Eropa"
+                ],
+                answer: 1,
+                explain: "Arus Teluk (Gulf Stream) dan kelanjutannya sebagai Arus Atlantik Utara membawa air hangat dari perairan tropis Teluk Meksiko menuju Eropa Barat dan Utara, sehingga menghangatkan suhu udara pesisir dan menjaga pelabuhan tetap bebas es."
+            },
+            {
+                q: "Manakah pernyataan yang paling tepat mengenai hubungan keanggotaan Uni Eropa (UE), Zona Euro (Eurozone), dan Wilayah Schengen di Benua Eropa?",
+                options: [
+                    "Semua negara anggota Schengen otomatis merupakan anggota Uni Eropa dan wajib menggunakan mata uang Euro.",
+                    "Norwegia dan Islandia bukan anggota Uni Eropa, namun tergabung dalam Wilayah Schengen (bebas paspor), sedangkan Swedia dan Polandia anggota UE tetapi tidak memakai mata uang Euro.",
+                    "Inggris, Prancis, dan Jerman semuanya menggunakan mata uang Euro dan menjadi anggota Schengen.",
+                    "Wilayah Schengen adalah aliansi pertahanan militer, sedangkan Zona Euro adalah wilayah bebas paspor."
+                ],
+                answer: 1,
+                explain: "Keanggotaan UE (27 negara), Zona Euro (20 negara), dan Schengen (29 negara) tidak identik. Norwegia, Islandia, dan Swiss adalah anggota Schengen non-UE, sementara Swedia, Polandia, dan Ceko adalah anggota UE yang tetap mempertahankan mata uang nasionalnya."
+            },
+            {
+                q: "Bentang alam pesisir berupa teluk sempit dan dalam dengan tebing-tebing batu curam yang terbentuk akibat erosi gletser purba dan banyak ditemukan di pesisir Norwegia disebut...",
+                options: [
+                    "Polder",
+                    "Fjord",
+                    "Stepa Chernozem",
+                    "Meseta"
+                ],
+                answer: 1,
+                explain: "Fjord adalah lembah glasial dalam berbentuk huruf U yang terisi oleh air laut setelah gletser mencair. Bentang alam ini merupakan ciri khas ikonik pesisir Norwegia di Semenanjung Skandinavia."
+            },
+            {
+                q: "Kawasan Eropa Selatan (Mediterania) memiliki garis pantai berlekuk yang membentuk tiga semenanjung utama di Laut Tengah. Ketiga semenanjung tersebut adalah...",
+                options: [
+                    "Semenanjung Skandinavia, Semenanjung Jutlandia, dan Semenanjung Kola",
+                    "Semenanjung Iberia (Spanyol-Portugal), Semenanjung Apenina (Italia), dan Semenanjung Balkan (Yunani dkk.)",
+                    "Semenanjung Krimea, Semenanjung Kamchatka, dan Semenanjung Sinai",
+                    "Semenanjung Bretagne, Semenanjung Cornwall, dan Semenanjung Peloponnesos"
+                ],
+                answer: 1,
+                explain: "Tiga semenanjung besar di Eropa Selatan yang menjorok ke Laut Mediterania adalah Semenanjung Iberia di barat, Semenanjung Apenina (berbentuk sepatu bot) di tengah, dan Semenanjung Balkan di tenggara."
+            },
+            {
+                q: "Gerakan pembaruan budaya, seni, humanisme, dan ilmu pengetahuan pada abad ke-14 hingga ke-16 yang bermula di kota-kota dagang Italia (seperti Firenze) dan menjadi jembatan lahirnya Eropa Modern dikenal sebagai...",
+                options: [
+                    "Revolusi Industri",
+                    "Era Renaisans (Renaissance)",
+                    "Perjanjian Westphalia",
+                    "Deklarasi Schuman"
+                ],
+                answer: 1,
+                explain: "Renaisans ('kelahiran kembali') berawal di Italia pada abad ke-14 dengan menghidupkan kembali warisan klasik Yunani-Romawi, mendorong kebebasan berpikir ilmiah, seni rupa, dan membuka jalan bagi Revolusi Ilmiah serta Eropa Modern."
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. STATE APLIKASI & SISTEM EVENT COUNTER PERSISTEN (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'eropa_activity_log';
+        let activityLog = []; // Array of { name, category, count, lastTime }
+        let compareColumnMode = 3; // 2 atau 3 negara
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let analyticsChartInstance = null;
+
+        // Inisialisasi saat DOM siap
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityLog();
+            renderGeoFactsGrid();
+            renderRegionsGrid();
+            renderHistoryPillarsGrid();
+            renderCountriesGrid();
+            initCompareSelectors();
+            renderCompareTable();
+            updateSimulatorPreview();
+            renderQuiz();
+            refreshAllBadgesAndAnalytics();
+        });
+
+        // Muat data dari localStorage
+        function loadActivityLog() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) activityLog = parsed;
+                }
+            } catch (e) {
+                activityLog = [];
+            }
+        }
+
+        // Simpan data ke localStorage
+        function saveActivityLog() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(activityLog));
+            } catch (e) {
+                console.warn('Gagal menyimpan ke localStorage:', e);
+            }
+        }
+
+        // Pencatat aktivitas klik & pembaru lencana real-time
+        function trackActivity(itemName, categoryName, pulseBadgeId = null) {
+            const nowStr = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            let entry = activityLog.find(item => item.name === itemName);
+            if (entry) {
+                entry.count += 1;
+                entry.lastTime = nowStr;
+            } else {
+                entry = {
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: nowStr
+                };
+                activityLog.push(entry);
+            }
+
+            saveActivityLog();
+            refreshAllBadgesAndAnalytics();
+            showToast(`Aktivitas Dicatat: ${itemName} (+1)`);
+
+            if (pulseBadgeId) {
+                const badgeEl = document.getElementById(pulseBadgeId);
+                if (badgeEl) {
+                    badgeEl.classList.remove('counter-pulse');
+                    void badgeEl.offsetWidth;
+                    badgeEl.classList.add('counter-pulse');
+                }
+            }
+        }
+
+        function getCount(itemName) {
+            const found = activityLog.find(i => i.name === itemName);
+            return found ? found.count : 0;
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. PEMBARUAN SELURUH BADGE & PANEL ANALITIK
+         * ------------------------------------------------------------------- */
+        function refreshAllBadgesAndAnalytics() {
+            // 1. Update Nav Tab Counters (Desktop & Mobile)
+            const navMap = [
+                { key: 'Tab 1: Beranda & Profil', desk: 'nav-count-beranda', mob: 'mob-count-beranda' },
+                { key: 'Tab 2: 4 Kawasan & 12 Negara', desk: 'nav-count-negara', mob: 'mob-count-negara' },
+                { key: 'Tab 3: Komparasi Negara', desk: 'nav-count-komparasi', mob: 'mob-count-komparasi' },
+                { key: 'Tab 4: Simulator Kebijakan UE', desk: 'nav-count-simulator', mob: 'mob-count-simulator' },
+                { key: 'Tab 5: Kuis Evaluasi', desk: 'nav-count-kuis', mob: 'mob-count-kuis' }
+            ];
+            navMap.forEach(n => {
+                const c = getCount(n.key);
+                const dEl = document.getElementById(n.desk);
+                const mEl = document.getElementById(n.mob);
+                if (dEl) dEl.innerText = c;
+                if (mEl) mEl.innerText = c;
+            });
+
+            // 2. Update 4 Fakta Geografis Badges
+            GEO_FACTS_DATA.forEach(f => {
+                const el = document.getElementById(`badge-fact-${f.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Fakta Geografis: ${f.title}`)}x dipelajari`;
+            });
+
+            // 3. Update 4 Kawasan Badges
+            REGIONS_DATA.forEach(r => {
+                const el = document.getElementById(`badge-region-${r.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Kawasan: ${r.name}`)}x dipelajari`;
+            });
+
+            // 4. Update 3 Pilar Sejarah Badges
+            HISTORY_PILLARS_DATA.forEach(h => {
+                const el = document.getElementById(`badge-history-${h.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Pilar Sejarah: ${h.title}`)}x dipelajari`;
+            });
+
+            // 5. Update 12 Negara Badges
+            COUNTRIES_DATA.forEach(c => {
+                const el = document.getElementById(`badge-country-${c.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Negara: ${c.name}`)}x dipelajari`;
+            });
+
+            // 6. Update Dropdown Komparasi Badges
+            [1, 2, 3].forEach(col => {
+                const el = document.getElementById(`badge-comp-${col}`);
+                if (el) el.innerText = `👁️ ${getCount(`Komparasi Negara Kolom ${col}`)}x dipelajari`;
+            });
+
+            // 7. Update Simulator & Kuis Badges
+            const simTotal = activityLog
+                .filter(i => i.category === 'Simulator Kebijakan UE')
+                .reduce((acc, cur) => acc + cur.count, 0);
+            const simBadge = document.getElementById('badge-simulator-count');
+            if (simBadge) simBadge.innerText = `👁️ ${simTotal}x simulasi dijalankan`;
+
+            const quizTotal = getCount('Kuis: Jawab Soal');
+            const quizBadge = document.getElementById('badge-quiz-count');
+            if (quizBadge) quizBadge.innerText = `👁️ ${quizTotal}x soal dijawab`;
+
+            // 8. Total Klik Global (Header, FAB, Modal)
+            const totalAllClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('header-total-clicks').innerText = `${totalAllClicks} Klik`;
+            document.getElementById('fab-total-clicks').innerText = `${totalAllClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalAllClicks;
+
+            // 9. Kategori Teraktif
+            const catTotals = {};
+            activityLog.forEach(item => {
+                catTotals[item.category] = (catTotals[item.category] || 0) + item.count;
+            });
+            let topCat = '-';
+            let maxVal = 0;
+            Object.entries(catTotals).forEach(([cat, val]) => {
+                if (val > maxVal) {
+                    maxVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // 10. Persentase Cakupan Negara yang sudah dibuka (dari 12 negara)
+            const countryKeys = new Set(COUNTRIES_DATA.map(c => `Negara: ${c.name}`));
+            const exploredCountryCount = activityLog.filter(item => countryKeys.has(item.name)).length;
+            const totalCountries = COUNTRIES_DATA.length; // 12
+            const coveragePct = Math.min(100, Math.round((exploredCountryCount / totalCountries) * 100));
+
+            document.getElementById('modal-progress-bar').style.width = `${coveragePct}%`;
+            document.getElementById('modal-progress-percent').innerText = `${coveragePct}%`;
+            document.getElementById('modal-coverage-detail').innerText = `${exploredCountryCount} dari ${totalCountries} negara dibuka`;
+
+            // 11. Top 5 Sub-Materi Paling Sering Diklik
+            const top5 = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const top5El = document.getElementById('top-5-list');
+            if (top5.length === 0) {
+                top5El.innerHTML = `<p class="text-slate-400 italic py-4 text-center">Belum ada interaksi tercatat. Klik kartu negara atau materi untuk mulai belajar!</p>`;
+            } else {
+                top5El.innerHTML = top5.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                        <span class="truncate pr-2 font-semibold text-slate-700">
+                            <span class="inline-block w-5 text-euroRoyal-800 font-extrabold">#${idx + 1}</span> ${item.name}
+                        </span>
+                        <span class="bg-euroGold-100 text-euroGold-700 px-2 py-0.5 rounded-md font-mono font-extrabold shrink-0">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // 12. Tabel Log Interaksi Lengkap
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">Belum ada data aktivitas belajar.</td></tr>`;
+            } else {
+                const reversedLog = [...activityLog].reverse();
+                tbody.innerHTML = reversedLog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-extrabold text-euroRoyal-800 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 13. Grafik Doughnut Chart.js
+            renderDoughnutChart(catTotals);
+        }
+
+        function renderDoughnutChart(catTotals) {
+            const canvas = document.getElementById('analyticsChart');
+            const emptyMsg = document.getElementById('chart-empty-msg');
+            if (!canvas) return;
+
+            const labels = Object.keys(catTotals);
+            const values = Object.values(catTotals);
+
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+                analyticsChartInstance = null;
+            }
+
+            if (labels.length === 0) {
+                canvas.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyMsg.classList.add('hidden');
+
+            analyticsChartInstance = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#1e3a8a', // Royal Blue
+                            '#d97706', // Euro Gold
+                            '#0f172a', // Midnight Navy
+                            '#059669', // Emerald
+                            '#2563eb', // Cobalt Blue
+                            '#7c3aed', // Violet
+                            '#e11d48'  // Crimson
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ` ${ctx.label}: ${ctx.parsed} klik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Notifikasi Toast Melayang di Pojok Kanan Atas
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            while (container.children.length >= 3) {
+                container.removeChild(container.firstChild);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = "bg-euroMidnight-950/95 text-white border border-euroGold-400/50 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 transition-all duration-300 transform translate-x-4 opacity-0";
+            toast.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-euroGold-400 text-euroMidnight-950 flex items-center justify-center text-[10px] shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="truncate font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. NAVIGASI ANTAR TAB
+         * ------------------------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-euroRoyal-700', 'text-white', 'shadow');
+                btn.classList.add('text-slate-300');
+            });
+            const activeDesk = document.getElementById(`nav-${tabId}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-euroRoyal-700', 'text-white', 'shadow');
+                activeDesk.classList.remove('text-slate-300');
+            }
+
+            // Mobile nav styling
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-euroRoyal-700', 'text-white');
+                btn.classList.add('bg-white/5', 'text-slate-300');
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.classList.add('bg-euroRoyal-700', 'text-white');
+                activeMob.classList.remove('bg-white/5', 'text-slate-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. TAB 1 RENDER & MODAL (4 FAKTA GEOGRAFIS, 4 KAWASAN, 3 PILAR SEJARAH)
+         * ------------------------------------------------------------------- */
+        function renderGeoFactsGrid() {
+            const container = document.getElementById('geo-facts-grid');
+            if (!container) return;
+
+            container.innerHTML = GEO_FACTS_DATA.map((f, idx) => {
+                const count = getCount(`Fakta Geografis: ${f.title}`);
+                return `
+                    <div onclick="openGeoFactModal(${idx})" class="bg-white p-5 rounded-2xl border-2 border-slate-200/90 hover:border-euroRoyal-800 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between space-y-3 group">
+                        <div class="space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="w-10 h-10 rounded-xl bg-euroRoyal-100 text-euroRoyal-800 flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-solid ${f.icon}"></i>
+                                </div>
+                                <span id="badge-fact-${f.id}" class="counter-badge bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-extrabold text-euroGold-600 block">${f.highlight}</span>
+                                <h4 class="font-extrabold text-slate-900 text-base group-hover:text-euroRoyal-800 transition leading-snug mt-0.5">${f.title}</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">${f.shortDesc}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-euroRoyal-800 group-hover:underline">
+                            <span>Buka Rincian Geografis</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openGeoFactModal(idx) {
+            const f = GEO_FACTS_DATA[idx];
+            if (!f) return;
+
+            trackActivity(`Fakta Geografis: ${f.title}`, 'Profil Geografis Eropa', `badge-fact-${f.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-900";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-euroGold-400">${f.highlight}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${f.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-euroGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Fakta Geografis: ${f.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-euroRoyal-50 p-4 rounded-2xl border border-euroRoyal-200 space-y-2">
+                    <h4 class="font-extrabold text-euroMidnight-900 text-sm">Penjelasan Geografis & Astronomis Lengkap:</h4>
+                    <ul class="space-y-2 text-xs text-slate-800 leading-relaxed">
+                        ${f.details.map(item => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-euroRoyal-800 mt-0.5"></i><span>${item}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function renderRegionsGrid() {
+            const container = document.getElementById('regions-grid');
+            if (!container) return;
+
+            container.innerHTML = REGIONS_DATA.map((r, idx) => {
+                const count = getCount(`Kawasan: ${r.name}`);
+                return `
+                    <div onclick="openRegionModal(${idx})" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${r.color} text-white space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center text-base">
+                                    <i class="fa-solid ${r.icon}"></i>
+                                </span>
+                                <span id="badge-region-${r.id}" class="counter-badge bg-euroGold-400 text-euroMidnight-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <h4 class="font-extrabold text-base leading-snug group-hover:translate-x-1 transition-transform">${r.name}</h4>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-3 text-xs">
+                            <div class="space-y-2">
+                                <p class="text-slate-600 line-clamp-2"><strong class="text-slate-800">Iklim:</strong> ${r.climate}</p>
+                                <p class="text-slate-600 line-clamp-2"><strong class="text-slate-800">Bentang Alam:</strong> ${r.landforms}</p>
+                            </div>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-euroRoyal-800 font-extrabold group-hover:underline">
+                                <span>Lihat Iklim & Negara Anggota</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openRegionModal(idx) {
+            const r = REGIONS_DATA[idx];
+            if (!r) return;
+
+            trackActivity(`Kawasan: ${r.name}`, '4 Kawasan Eropa', `badge-region-${r.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${r.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center text-xl">
+                        <i class="fa-solid ${r.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-euroGold-300">Sub-Kawasan Benua Eropa</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold">${r.name}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-euroGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Kawasan: ${r.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-sky-50 p-4 rounded-2xl border border-sky-200 space-y-1">
+                    <h4 class="font-extrabold text-sky-950 text-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-cloud-sun text-sky-700"></i>
+                        <span>Karakteristik Iklim Kawasan:</span>
+                    </h4>
+                    <p class="text-sky-900 leading-relaxed">${r.climate}</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
+                    <h4 class="font-extrabold text-slate-900 text-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-mountain text-euroRoyal-800"></i>
+                        <span>Bentang Alam & Sungai/Pegunungan Utama:</span>
+                    </h4>
+                    <p class="text-slate-700 leading-relaxed">${r.landforms}</p>
+                </div>
+                <div class="bg-euroGold-50 p-4 rounded-2xl border border-euroGold-200 space-y-1">
+                    <h4 class="font-extrabold text-euroGold-900 text-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-flag text-euroGold-700"></i>
+                        <span>Daftar Negara Anggota Kawasan:</span>
+                    </h4>
+                    <p class="text-euroGold-950 font-semibold leading-relaxed">${r.countries}</p>
+                </div>
+                <div class="bg-euroMidnight-900 text-white p-4 rounded-2xl border border-euroGold-400/30 space-y-1">
+                    <h4 class="font-extrabold text-euroGold-400 text-sm">Profil Ekonomi & Peran Regional:</h4>
+                    <p class="text-slate-200 leading-relaxed">${r.economicNotes}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function renderHistoryPillarsGrid() {
+            const container = document.getElementById('history-pillars-grid');
+            if (!container) return;
+
+            container.innerHTML = HISTORY_PILLARS_DATA.map((h, idx) => {
+                const count = getCount(`Pilar Sejarah: ${h.title}`);
+                return `
+                    <div onclick="openHistoryPillarModal(${idx})" class="bg-gradient-to-br ${h.color} text-white p-6 rounded-2xl border border-euroGold-400/30 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="bg-white/15 text-euroGold-300 border border-white/20 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                    ${h.badge}
+                                </span>
+                                <span id="badge-history-${h.id}" class="counter-badge bg-euroGold-400 text-euroMidnight-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg text-euroGold-400 shrink-0">
+                                    <i class="fa-solid ${h.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-lg text-white group-hover:text-euroGold-400 transition leading-snug">${h.title}</h4>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed">${h.summary}</p>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-euroGold-400 group-hover:underline">
+                            <span>Buka Modul Sejarah & Geopolitik</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openHistoryPillarModal(idx) {
+            const h = HISTORY_PILLARS_DATA[idx];
+            if (!h) return;
+
+            trackActivity(`Pilar Sejarah: ${h.title}`, 'Sejarah & Integrasi UE', `badge-history-${h.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${h.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-euroGold-400">${h.badge}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${h.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-euroGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Pilar Sejarah: ${h.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = h.sections.map(sec => `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                    <h4 class="font-extrabold text-euroMidnight-900 text-sm">${sec.title}</h4>
+                    <ul class="space-y-1.5 text-xs text-slate-700 leading-relaxed">
+                        ${sec.items.map(it => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-euroRoyal-800 mt-0.5"></i><span>${it}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. TAB 2 RENDER & MODAL KATALOG 12 NEGARA IKONIK BENUA EROPA
+         * ------------------------------------------------------------------- */
+        function renderCountriesGrid() {
+            const container = document.getElementById('countries-grid');
+            if (!container) return;
+
+            const regionFilter = document.getElementById('country-region-filter').value;
+            const searchQuery = (document.getElementById('country-search').value || '').toLowerCase();
+
+            const filtered = COUNTRIES_DATA.filter(c => {
+                const matchRegion = regionFilter === 'all' || c.region === regionFilter;
+                const matchSearch = c.name.toLowerCase().includes(searchQuery) ||
+                    c.capital.toLowerCase().includes(searchQuery) ||
+                    c.iconicLandform.toLowerCase().includes(searchQuery) ||
+                    c.euStatus.toLowerCase().includes(searchQuery);
+                return matchRegion && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada negara, ibu kota, atau bentang alam yang cocok dengan pencarian Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const regionHeaderColors = {
+                'Eropa Barat': 'from-euroRoyal-800 to-euroMidnight-950',
+                'Eropa Utara': 'from-sky-800 to-euroMidnight-950',
+                'Eropa Selatan': 'from-amber-700 to-euroMidnight-950',
+                'Eropa Timur': 'from-indigo-800 to-euroMidnight-950'
+            };
+
+            container.innerHTML = filtered.map(c => {
+                const count = getCount(`Negara: ${c.name}`);
+                const grad = regionHeaderColors[c.region] || 'from-euroRoyal-800 to-euroMidnight-950';
+
+                return `
+                    <div onclick="openCountryModal('${c.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${grad} text-white space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-white/15 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-white/20">
+                                    ${c.region}
+                                </span>
+                                <span id="badge-country-${c.id}" class="counter-badge bg-euroGold-400 text-euroMidnight-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-4xl leading-none select-none drop-shadow">${c.flag}</span>
+                                <div>
+                                    <h4 class="font-extrabold text-lg leading-snug group-hover:translate-x-1 transition-transform">${c.name}</h4>
+                                    <p class="text-xs text-slate-200"><i class="fa-solid fa-city mr-1 text-euroGold-400"></i> Ibu Kota: <strong>${c.capital}</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                            <div class="space-y-2.5">
+                                <div class="bg-euroRoyal-50/80 px-3 py-2 rounded-xl border border-euroRoyal-100">
+                                    <span class="text-[10px] font-extrabold uppercase text-euroRoyal-800 block">Status UE / Euro / Schengen:</span>
+                                    <p class="text-slate-800 font-semibold mt-0.5">${c.euStatus}</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase text-slate-500 block">Bentang Alam Ikonik:</span>
+                                    <p class="text-slate-700 leading-relaxed mt-0.5">${c.iconicLandform}</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-euroRoyal-800 font-extrabold group-hover:underline">
+                                <span>Buka Profil Geografis, Ekonomi & Fakta Unik</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCountryModal(countryId) {
+            const c = COUNTRIES_DATA.find(item => item.id === countryId);
+            if (!c) return;
+
+            trackActivity(`Negara: ${c.name}`, 'Katalog 12 Negara', `badge-country-${c.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-900";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-4 mb-2">
+                    <span class="text-5xl leading-none select-none drop-shadow">${c.flag}</span>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-euroGold-300">${c.region}</span>
+                            <span class="text-xs text-slate-300">Ibu Kota: <strong class="text-white">${c.capital}</strong></span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold mt-0.5">${c.name}</h3>
+                        <p class="text-[11px] text-blue-200 font-semibold mt-0.5">${c.euStatus}</p>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-euroGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Negara: ${c.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <!-- Profil Geografis & Bentang Alam -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1.5">
+                    <h4 class="font-extrabold text-euroMidnight-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-mountain-sun text-euroRoyal-800"></i>
+                        <span>Profil Geografis & Bentang Alam</span>
+                    </h4>
+                    <p class="text-slate-700 leading-relaxed">${c.geography}</p>
+                </div>
+
+                <!-- Iklim & Warisan Sejarah -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-sky-50 p-4 rounded-2xl border border-sky-200 space-y-1">
+                        <h5 class="font-extrabold text-sky-950 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-cloud-sun mr-1"></i> Karakteristik Iklim
+                        </h5>
+                        <p class="text-sky-900 leading-relaxed">${c.climate}</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-1">
+                        <h5 class="font-extrabold text-amber-950 text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-landmark mr-1"></i> Warisan Sejarah & Budaya
+                        </h5>
+                        <p class="text-amber-950 leading-relaxed">${c.cultureHistory}</p>
+                    </div>
+                </div>
+
+                <!-- Sektor Ekonomi Unggulan -->
+                <div class="bg-euroRoyal-50 p-4 rounded-2xl border border-euroRoyal-200 space-y-1">
+                    <h4 class="font-extrabold text-euroRoyal-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-line text-euroRoyal-800"></i>
+                        <span>Sektor Ekonomi Unggulan</span>
+                    </h4>
+                    <p class="text-euroRoyal-950 leading-relaxed">${c.economy}</p>
+                </div>
+
+                <!-- Fakta Unik -->
+                <div class="bg-euroMidnight-900 text-white p-4 rounded-2xl border border-euroGold-400/40 space-y-1">
+                    <h4 class="font-extrabold text-euroGold-400 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Fakta Unik ${c.name}</span>
+                    </h4>
+                    <p class="text-slate-200 leading-relaxed">${c.uniqueFact}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. TAB 3: MATRIKS KOMPARASI NEGARA EROPA (2 ATAU 3 NEGARA)
+         * ------------------------------------------------------------------- */
+        function initCompareSelectors() {
+            const defaults = ['prancis', 'norwegia', 'italia'];
+            [1, 2, 3].forEach((col, idx) => {
+                const sel = document.getElementById(`comp-select-${col}`);
+                if (!sel) return;
+                sel.innerHTML = COUNTRIES_DATA.map(c => `<option value="${c.id}" ${c.id === defaults[idx] ? 'selected' : ''}>${c.flag} ${c.name} (${c.region})</option>`).join('');
+            });
+        }
+
+        function setCompareMode(mode) {
+            compareColumnMode = mode;
+            const btn2 = document.getElementById('btn-comp-mode-2');
+            const btn3 = document.getElementById('btn-comp-mode-3');
+            const box3 = document.getElementById('comp-box-3');
+            const grid = document.getElementById('compare-selectors-grid');
+
+            if (mode === 2) {
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-euroMidnight-900 text-white transition";
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.add('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+            } else {
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-euroMidnight-900 text-white transition";
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.remove('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-3 gap-4";
+            }
+
+            trackActivity(`Mode Komparasi ${mode} Negara`, 'Matriks Komparasi');
+            renderCompareTable();
+        }
+
+        function handleCompareChange(colNum) {
+            const sel = document.getElementById(`comp-select-${colNum}`);
+            const chosen = COUNTRIES_DATA.find(c => c.id === sel.value);
+            trackActivity(`Komparasi Negara Kolom ${colNum}`, 'Matriks Komparasi', `badge-comp-${colNum}`);
+            if (chosen) {
+                trackActivity(`Bandingkan: ${chosen.name}`, 'Matriks Komparasi');
+            }
+            renderCompareTable();
+        }
+
+        function renderCompareTable() {
+            const table = document.getElementById('compare-matrix-table');
+            if (!table) return;
+
+            const c1 = COUNTRIES_DATA.find(c => c.id === document.getElementById('comp-select-1').value) || COUNTRIES_DATA[0];
+            const c2 = COUNTRIES_DATA.find(c => c.id === document.getElementById('comp-select-2').value) || COUNTRIES_DATA[3];
+            const c3 = compareColumnMode === 3 ? (COUNTRIES_DATA.find(c => c.id === document.getElementById('comp-select-3').value) || COUNTRIES_DATA[6]) : null;
+
+            const rows = [
+                { label: 'Kawasan Sub-Regional', field: 'region' },
+                { label: 'Ibu Kota Negara', field: 'capital' },
+                { label: 'Status UE / Eurozone / Schengen', field: 'euStatus' },
+                { label: 'Bentang Alam & Sungai/Pegunungan', field: 'iconicLandform' },
+                { label: 'Tipe Iklim Utama', field: 'climate' },
+                { label: 'Sektor Ekonomi Unggulan', field: 'economy' },
+                { label: 'Fakta Geografis / Budaya Unik', field: 'uniqueFact' }
+            ];
+
+            table.innerHTML = `
+                <thead>
+                    <tr class="bg-euroMidnight-900 text-white">
+                        <th class="p-3.5 font-extrabold w-48">Dimensi Perbandingan</th>
+                        <th class="p-3.5 font-extrabold bg-euroMidnight-800">${c1.flag} ${c1.name}</th>
+                        <th class="p-3.5 font-extrabold bg-euroRoyal-900">${c2.flag} ${c2.name}</th>
+                        ${c3 ? `<th class="p-3.5 font-extrabold bg-euroGold-700">${c3.flag} ${c3.name}</th>` : ''}
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    ${rows.map(r => `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-3.5 font-bold text-slate-800 bg-slate-50">${r.label}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed">${c1[r.field]}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed bg-euroRoyal-50/25">${c2[r.field]}</td>
+                            ${c3 ? `<td class="p-3.5 text-slate-700 leading-relaxed bg-euroGold-50/25">${c3[r.field]}</td>` : ''}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. TAB 4: SIMULATOR INTEGRASI & KEBIJAKAN KAWASAN EROPA (EU & GREEN DEAL)
+         * ------------------------------------------------------------------- */
+        function updateSimulatorPreview() {
+            const s1 = parseInt(document.getElementById('sim-slider-1').value) || 0;
+            const s2 = parseInt(document.getElementById('sim-slider-2').value) || 0;
+            const s3 = parseInt(document.getElementById('sim-slider-3').value) || 0;
+            const s4 = parseInt(document.getElementById('sim-slider-4').value) || 0;
+            const s5 = parseInt(document.getElementById('sim-slider-5').value) || 0;
+
+            document.getElementById('val-sim-1').innerText = `${s1}%`;
+            document.getElementById('val-sim-2').innerText = `${s2}%`;
+            document.getElementById('val-sim-3').innerText = `${s3}%`;
+            document.getElementById('val-sim-4').innerText = `${s4}%`;
+            document.getElementById('val-sim-5').innerText = `${s5}%`;
+
+            // Skor Integrasi & Kemakmuran (0-100)
+            const score = ((s1 * 0.25) + (s2 * 0.20) + (s3 * 0.20) + (s4 * 0.20) + (s5 * 0.15)).toFixed(1);
+            // Indeks Ketahanan Iklim & Energi
+            const climateIndex = ((s3 * 0.65) + (s4 * 0.20) + (s5 * 0.15)).toFixed(1);
+
+            document.getElementById('sim-res-score').innerText = score;
+
+            const tierBadge = document.getElementById('sim-res-tier-badge');
+            const climateEl = document.getElementById('sim-res-climate');
+            const mobilityEl = document.getElementById('sim-res-mobility');
+            const narrativeEl = document.getElementById('sim-res-narrative');
+
+            // Status Ketahanan Iklim
+            if (climateIndex >= 75) {
+                climateEl.innerText = `${climateIndex}% (Net-Zero On Track)`;
+                climateEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+            } else if (climateIndex >= 50) {
+                climateEl.innerText = `${climateIndex}% (Transisi Aktif)`;
+                climateEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-euroGold-500/20 text-euroGold-300 border border-euroGold-500/40';
+            } else {
+                climateEl.innerText = `${climateIndex}% (Tertinggal Target)`;
+                climateEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40';
+            }
+
+            // Status Mobilitas Schengen & Daya Tarik
+            if (s2 >= 75 && s1 >= 70) {
+                mobilityEl.innerText = 'Sangat Tinggi (Integrasi Penuh)';
+                mobilityEl.className = 'font-bold text-emerald-300';
+            } else if (s2 >= 45) {
+                mobilityEl.innerText = 'Moderat (Kontrol Perbatasan Parsial)';
+                mobilityEl.className = 'font-bold text-euroGold-300';
+            } else {
+                mobilityEl.innerText = 'Terbatas (Fragmentasi Perbatasan)';
+                mobilityEl.className = 'font-bold text-rose-400';
+            }
+
+            // Evaluasi Kebijakan Dinamis
+            if (score >= 80) {
+                tierBadge.innerText = 'Superpower Hijau & Terintegrasi Penuh';
+                tierBadge.className = 'bg-emerald-500 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Kombinasi kebijakan sangat harmonis: Pasar Tunggal dan Schengen mendorong arus perdagangan & riset lintas negara, sementara European Green Deal serta Dana Kohesi mempersempit kesenjangan antara Eropa Barat, Selatan, dan Timur.';
+            } else if (score >= 58) {
+                tierBadge.innerText = 'Integrasi Solid & Progresif';
+                tierBadge.className = 'bg-euroGold-400 text-euroMidnight-950 font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Keseimbangan antara keterbukaan pasar tunggal, mobilitas Schengen, dan transisi energi hijau menjaga daya saing global Eropa. Perkuat Dana Kohesi dan target energi terbarukan agar ketahanan energi regional semakin mandiri.';
+            } else {
+                tierBadge.innerText = 'Fragmentasi & Kerentanan Kawasan';
+                tierBadge.className = 'bg-rose-600 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Melemahnya integrasi pasar tunggal, hambatan perbatasan Schengen, dan rendahnya investasi transisi energi berisiko memperlambat pertumbuhan ekonomi kawasan serta memperlebar kesenjangan infrastruktur antar-subkawasan Eropa.';
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. TAB 5: KUIS EVALUASI GEOGRAFI & SEJARAH EROPA (6 SOAL)
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const pointsPerQ = Math.round(100 / QUIZ_QUESTIONS.length);
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span class="bg-euroMidnight-900 text-white px-3 py-1 rounded-full">Pertanyaan ${currentQuizIdx + 1} dari ${QUIZ_QUESTIONS.length}</span>
+                        <span>Benar: <strong class="text-euroRoyal-800 font-mono text-sm">${quizScore} / ${QUIZ_QUESTIONS.length}</strong></span>
+                    </div>
+
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</h4>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left bg-white hover:bg-euroRoyal-50 border border-slate-200 hover:border-euroRoyal-800 p-4 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-between group shadow-2xs">
+                                <span class="pr-3"><strong class="text-euroRoyal-800 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-euroRoyal-800 transition shrink-0"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi', 'badge-quiz-count');
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) quizScore += 1;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-4 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-rose-100 text-rose-950 border border-rose-300'} text-xs font-extrabold flex items-center space-x-2.5">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-xl"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Benar!' : `Jawaban Kurang Tepat. Jawaban benar: ${String.fromCharCode(65 + q.answer)}`}</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <strong class="text-euroMidnight-900 block">Pembahasan Konsep:</strong>
+                        <p>${q.explain}</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="advanceQuiz()" class="bg-euroRoyal-800 hover:bg-euroRoyal-900 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition shadow">
+                            ${currentQuizIdx < QUIZ_QUESTIONS.length - 1 ? 'Pertanyaan Berikutnya →' : 'Lihat Hasil Akhir Kuis'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function advanceQuiz() {
+            if (currentQuizIdx < QUIZ_QUESTIONS.length - 1) {
+                currentQuizIdx++;
+                renderQuiz();
+            } else {
+                const container = document.getElementById('quiz-container');
+                const finalPercent = Math.round((quizScore / QUIZ_QUESTIONS.length) * 100);
+                let predicate = 'Terus Jelajahi AtlasEropa!';
+                if (quizScore === QUIZ_QUESTIONS.length) predicate = 'Sempurna! Pakar Geografi & Geopolitik Eropa';
+                else if (quizScore >= 4) predicate = 'Sangat Baik! Pemahaman Kawasan Sangat Kuat';
+                else if (quizScore >= 3) predicate = 'Cukup Baik! Perkuat Detail Kawasan & Sejarah';
+
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-euroMidnight-950 via-euroMidnight-900 to-euroRoyal-900 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-euroGold-400/40">
+                        <div class="w-16 h-16 rounded-2xl bg-euroGold-400/20 text-euroGold-400 border border-euroGold-400/40 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-euroGold-400 block">${predicate}</span>
+                        <h4 class="font-extrabold text-2xl">Kuis Evaluasi Selesai!</h4>
+                        <div class="py-2">
+                            <span class="text-xs text-slate-300 block">Skor Akhir Anda (${quizScore} dari ${QUIZ_QUESTIONS.length} Soal Benar):</span>
+                            <strong class="text-4xl font-mono font-extrabold text-euroGold-400">${finalPercent} / 100</strong>
+                        </div>
+                        <button onclick="restartQuiz()" class="bg-gradient-to-r from-euroGold-400 to-euroGold-600 hover:from-euroGold-300 hover:to-euroGold-500 text-euroMidnight-950 font-extrabold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis Evaluasi
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            trackActivity('Kuis: Ulangi Kuis', 'Kuis Evaluasi');
+            renderQuiz();
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. MODAL ANALITIK, KONFIRMASI RESET INLINE & EKSPOR JSON
+         * ------------------------------------------------------------------- */
+        function openAnalyticsModal() {
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function toggleResetConfirm(show) {
+            const box = document.getElementById('reset-confirm-box');
+            if (!box) return;
+            if (show) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function executeClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem(STORAGE_KEY);
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            showToast('Seluruh riwayat hitungan belajar telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const payload = {
+                aplikasi: 'AtlasEropa - Eksplorasi Geografi, Sejarah, & Geopolitik Benua Eropa',
+                waktuEkspor: new Date().toISOString(),
+                totalInteraksi: activityLog.reduce((s, i) => s + i.count, 0),
+                riwayatAktivitas: activityLog
+            };
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `Analitik_AtlasEropa_${Date.now()}.json`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Data analitik berhasil diekspor ke JSON.');
+        }
+    </script>
+</body>
+</html>
