@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NusantaraGov - Nilai Luhur & Tata Kelola Pemerintahan Indonesia</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6.4 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        garudaNavy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#050b18',
+                        },
+                        garudaCrimson: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                            950: '#450a0a',
+                        },
+                        nusantaraGold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar untuk tabel dan modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Animasi denyut pada counter badge */
+        .counter-badge {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: badgePulse 0.45s ease-out;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.25); background-color: #f59e0b; color: #050b18; }
+            100% { transform: scale(1); }
+        }
+        /* Sembunyikan scrollbar horizontal pada menu mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-garudaCrimson-800 selection:text-white">
+
+    <!-- ================= HEADER STICKY & NAVIGASI 5 TAB ================= -->
+    <header class="bg-gradient-to-r from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800 text-white sticky top-0 z-40 shadow-xl border-b border-nusantaraGold-500/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Identitas Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="trackActivity('Logo Beranda NusantaraGov', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-nusantaraGold-500 to-garudaCrimson-800 text-white flex items-center justify-center font-extrabold text-lg shadow-lg border border-nusantaraGold-400/50 group-hover:scale-105 transition">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">NusantaraGov</h1>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-garudaNavy-950/70 text-nusantaraGold-400 border border-nusantaraGold-400/40 px-2 py-0.5 rounded-full">NKRI • Pancasila</span>
+                        </div>
+                        <p class="text-[11px] text-rose-100 font-medium">Nilai Luhur & Tata Kelola Pemerintahan Indonesia</p>
+                    </div>
+                </div>
+
+                <!-- Navigasi Desktop (5 Tab Utama) -->
+                <nav class="hidden lg:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab 1: Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-garudaCrimson-700 text-white shadow border border-nusantaraGold-400/30">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Beranda</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-garudaNavy-950 text-nusantaraGold-400 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 2: 12 Pilar & Lembaga', 'Navigasi Menu'); switchTab('pilar')" id="nav-pilar" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-rose-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-landmark"></i>
+                        <span>12 Pilar & Lembaga</span>
+                        <span id="nav-count-pilar" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 3: Matriks Komparasi', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-rose-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Matriks Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 4: Simulator Tata Kelola', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-rose-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator Tata Kelola</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 5: Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-rose-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis Evaluasi</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Tombol Statistik Belajar -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-nusantaraGold-400 to-nusantaraGold-600 hover:from-nusantaraGold-300 hover:to-nusantaraGold-500 text-garudaNavy-950 px-3.5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-garudaNavy-950 text-nusantaraGold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+
+            <!-- Navigasi Mobile & Tablet -->
+            <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-white/15 text-xs font-semibold">
+                <button onclick="trackActivity('Tab 1: Beranda', 'Navigasi Menu'); switchTab('beranda')" id="mob-nav-beranda" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-garudaCrimson-700 text-white">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Beranda</span>
+                    <span id="mob-count-beranda" class="text-[10px] bg-garudaNavy-950 text-nusantaraGold-400 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 2: 12 Pilar & Lembaga', 'Navigasi Menu'); switchTab('pilar')" id="mob-nav-pilar" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-rose-100">
+                    <i class="fa-solid fa-landmark"></i>
+                    <span>12 Pilar & Lembaga</span>
+                    <span id="mob-count-pilar" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 3: Matriks Komparasi', 'Navigasi Menu'); switchTab('komparasi')" id="mob-nav-komparasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-rose-100">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <span>Matriks Komparasi</span>
+                    <span id="mob-count-komparasi" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 4: Simulator Tata Kelola', 'Navigasi Menu'); switchTab('simulator')" id="mob-nav-simulator" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-rose-100">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Simulator Tata Kelola</span>
+                    <span id="mob-count-simulator" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 5: Kuis Evaluasi', 'Navigasi Menu'); switchTab('kuis')" id="mob-nav-kuis" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-rose-100">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Kuis Evaluasi</span>
+                    <span id="mob-count-kuis" class="text-[10px] bg-nusantaraGold-400 text-garudaNavy-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- =====================================================================
+             TAB 1: BERANDA (NILAI LUHUR & FONDASI TATA KELOLA INDONESIA)
+             ===================================================================== -->
+        <section id="sec-beranda" class="tab-content space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800 text-white p-7 sm:p-11 shadow-2xl border border-nusantaraGold-500/40">
+                <div class="absolute -right-6 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-landmark-dome text-[16rem] text-nusantaraGold-400"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-nusantaraGold-400/20 text-nusantaraGold-300 border border-nusantaraGold-400/40 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+                            Pancasila • UUD NRI 1945 • Bhinneka Tunggal Ika • NKRI
+                        </span>
+                        <span class="bg-garudaNavy-950/60 text-rose-100 border border-white/20 px-3 py-1 rounded-full text-xs font-semibold">
+                            4 Pilar Kebangsaan & Tata Kelola Modern
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+                        Merajut Nilai Luhur Bangsa & Tata Kelola Pemerintahan Modern
+                    </h2>
+                    <p class="text-rose-100/95 text-sm sm:text-base leading-relaxed">
+                        Tata kelola pemerintahan Indonesia berdiri di atas sintesis harmonis antara <strong>nilai filosofis Pancasila, gotong royong, musyawarah mufakat, serta kearifan lokal Nusantara</strong> dengan arsitektur konstitusional modern: <em>checks and balances</em> antar-lembaga negara, otonomi daerah, reformasi birokrasi <strong>BerAKHLAK</strong>, dan transformasi pemerintahan digital (<strong>SPBE</strong>).
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Buka 12 Pilar & Lembaga', 'Navigasi Cepat'); switchTab('pilar')" class="bg-gradient-to-r from-nusantaraGold-400 to-nusantaraGold-600 hover:from-nusantaraGold-300 hover:to-nusantaraGold-500 text-garudaNavy-950 font-extrabold px-5 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center space-x-2">
+                            <i class="fa-solid fa-landmark"></i>
+                            <span>Eksplorasi 12 Pilar & Lembaga</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Buka Simulator Tata Kelola', 'Navigasi Cepat'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/25 font-semibold px-5 py-3 rounded-xl text-xs sm:text-sm transition backdrop-blur-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-nusantaraGold-400"></i>
+                            <span>Simulator Good Governance</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN A: 5 KARTU PILAR NILAI DASAR & FALSAFAH BANGSA -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-garudaCrimson-800">Fondasi Etika & Kepribadian Bangsa</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">5 Pilar Nilai Dasar & Falsafah Bangsa Indonesia</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap kartu nilai untuk mendalami uraian filosofis & mencatat progres belajar</p>
+                </div>
+
+                <div id="core-values-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN B: 3 KARTU PILAR ARSITEKTUR TATA KELOLA NEGARA -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-nusantaraGold-700">Sistem Konstitusional & Birokrasi</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">3 Pilar Arsitektur Tata Kelola Negara</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik kartu pilar arsitektur untuk membuka struktur kelembagaan & regulasinya</p>
+                </div>
+
+                <div id="governance-pillars-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 2: KATALOG 12 PILAR NILAI & INSTITUSI TATA KELOLA
+             ===================================================================== -->
+        <section id="sec-pilar" class="tab-content hidden space-y-6">
+            <!-- Header & Filter Pencarian -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-garudaCrimson-800">Direktori Nilai, Lembaga & Reformasi</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Katalog 12 Pilar Nilai & Institusi Tata Kelola</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap kartu untuk mempelajari Landasan Konstitusional/Filosofis, Fungsi Strategis, Tantangan Kontemporer, dan Contoh Praktik Baik.</p>
+                    </div>
+                    <!-- Filter Kategori & Live Search -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="pilar-category-filter" onchange="trackActivity('Filter Kategori: ' + this.value, 'Katalog 12 Pilar'); renderPillarsCatalogGrid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-garudaCrimson-800">
+                            <option value="all">Semua Kategori (12 Pilar)</option>
+                            <option value="Nilai & Falsafah">Nilai & Falsafah (4 Pilar)</option>
+                            <option value="Lembaga Tinggi Negara">Lembaga Tinggi Negara (4 Pilar)</option>
+                            <option value="Tata Kelola & Reformasi">Tata Kelola & Reformasi (4 Pilar)</option>
+                        </select>
+                        <div class="relative sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="pilar-search" oninput="renderPillarsCatalogGrid()" placeholder="Cari Pancasila, MK, SPBE, BPK..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-garudaCrimson-800 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 12 Kartu Pilar & Institusi -->
+            <div id="pillars-catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 3: MATRIKS KOMPARASI TATA KELOLA
+             ===================================================================== -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-nusantaraGold-700">Analisis Komparatif Sistem Pemerintahan</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Matriks Komparasi Tata Kelola Indonesia</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih 2 atau 3 dimensi/model tata kelola untuk membandingkan dasar konsep, mekanisme keputusan, keunggulan, tantangan, dan relevansinya di Indonesia.</p>
+                    </div>
+                    <!-- Toggle 2 vs 3 Model -->
+                    <div class="flex items-center space-x-2 bg-slate-100 p-1 rounded-xl self-start sm:self-auto">
+                        <button onclick="setCompareMode(2)" id="btn-comp-mode-2" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">2 Dimensi</button>
+                        <button onclick="setCompareMode(3)" id="btn-comp-mode-3" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-garudaCrimson-800 text-white transition">3 Dimensi</button>
+                    </div>
+                </div>
+
+                <!-- Dropdown Pemilih Dimensi -->
+                <div id="compare-selectors-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Kolom 1 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-garudaNavy-900 uppercase">Dimensi Pembanding 1</label>
+                            <span id="badge-comp-1" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-1" onchange="handleCompareChange(1)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-garudaCrimson-800">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 2 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-garudaCrimson-800 uppercase">Dimensi Pembanding 2</label>
+                            <span id="badge-comp-2" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-2" onchange="handleCompareChange(2)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-garudaCrimson-800">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 3 -->
+                    <div id="comp-box-3" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-nusantaraGold-700 uppercase">Dimensi Pembanding 3</label>
+                            <span id="badge-comp-3" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-3" onchange="handleCompareChange(3)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-garudaCrimson-800">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabel Matriks Komparasi -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table id="compare-matrix-table" class="w-full text-left text-xs border-collapse">
+                        <!-- Di-render dinamis oleh JS -->
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 4: SIMULATOR REFORMASI BIROKRASI & GOOD GOVERNANCE
+             ===================================================================== -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-garudaCrimson-800">Simulasi Kebijakan & Integritas Birokrasi</span>
+                        <h3 class="font-extrabold text-slate-900 text-2xl">Simulator Reformasi Birokrasi & Good Governance</h3>
+                        <p class="text-xs text-slate-500 mt-1">Atur 5 instrumen strategis reformasi pemerintahan Indonesia untuk memproyeksikan Indeks Good Governance, Kepercayaan Publik, dan Risiko Korupsi.</p>
+                    </div>
+                    <span id="badge-simulator-count" class="counter-badge bg-garudaCrimson-100 text-garudaCrimson-900 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-garudaCrimson-200 self-start sm:self-auto">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 5 Sliders Kebijakan (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">1. Integrasi Digital & SPBE (%)</label>
+                                <span id="val-sim-1" class="font-mono font-extrabold text-garudaCrimson-800 bg-white px-2.5 py-0.5 rounded border">75%</span>
+                            </div>
+                            <input type="range" id="sim-slider-1" min="0" max="100" value="75" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Integrasi Digital & SPBE', 'Simulator Tata Kelola'); updateSimulatorPreview()" class="w-full accent-garudaCrimson-800 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Interoperabilitas layanan publik digital, penerapan Satu Data Indonesia, e-Procurement, dan Mal Pelayanan Publik digital.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">2. Transparansi Anggaran & Pencegahan Korupsi (%)</label>
+                                <span id="val-sim-2" class="font-mono font-extrabold text-garudaCrimson-800 bg-white px-2.5 py-0.5 rounded border">78%</span>
+                            </div>
+                            <input type="range" id="sim-slider-2" min="0" max="100" value="78" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Transparansi Anggaran & Pencegahan Korupsi', 'Simulator Tata Kelola'); updateSimulatorPreview()" class="w-full accent-garudaCrimson-800 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Keterbukaan APBN/APBD melalui PPID, audit BPK/APIP, pelaporan LHKPN, dan sistem pencegahan gratifikasi.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">3. Internalisasi Nilai Pancasila & BerAKHLAK (%)</label>
+                                <span id="val-sim-3" class="font-mono font-extrabold text-nusantaraGold-700 bg-white px-2.5 py-0.5 rounded border">80%</span>
+                            </div>
+                            <input type="range" id="sim-slider-3" min="0" max="100" value="80" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Internalisasi Nilai Pancasila & BerAKHLAK', 'Simulator Tata Kelola'); updateSimulatorPreview()" class="w-full accent-nusantaraGold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Pembudayaan etika pelayanan publik ASN BerAKHLAK, integritas moral, serta penguatan moderasi beragama dan kebangsaan.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">4. Partisipasi Publik & Musyawarah Inklusif (%)</label>
+                                <span id="val-sim-4" class="font-mono font-extrabold text-nusantaraGold-700 bg-white px-2.5 py-0.5 rounded border">70%</span>
+                            </div>
+                            <input type="range" id="sim-slider-4" min="0" max="100" value="70" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Partisipasi Publik & Musyawarah Inklusif', 'Simulator Tata Kelola'); updateSimulatorPreview()" class="w-full accent-nusantaraGold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Pelibatan warga dalam Musrenbang desa/daerah, konsultasi publik rancangan kebijakan, serta tindak lanjut aduan SP4N-LAPOR!.</p>
+                        </div>
+
+                        <!-- Slider 5 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">5. Efektivitas Desentralisasi & Pelayanan Publik (%)</label>
+                                <span id="val-sim-5" class="font-mono font-extrabold text-emerald-700 bg-white px-2.5 py-0.5 rounded border">72%</span>
+                            </div>
+                            <input type="range" id="sim-slider-5" min="0" max="100" value="72" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Efektivitas Desentralisasi & Pelayanan Publik', 'Simulator Tata Kelola'); updateSimulatorPreview()" class="w-full accent-emerald-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Sinergi kewenangan Pusat–Provinsi–Kabupaten/Kota hingga kemandirian pengelolaan Dana Desa berbasis kebutuhan warga.</p>
+                        </div>
+                    </div>
+
+                    <!-- Output Dashboard Panel (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-garudaNavy-950 via-garudaNavy-900 to-garudaCrimson-950 text-white rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl border border-nusantaraGold-500/40">
+                        <div class="space-y-1 border-b border-white/10 pb-3">
+                            <span class="text-[11px] font-mono text-nusantaraGold-400 uppercase tracking-widest font-bold">Proyeksi Tata Kelola Pemerintahan</span>
+                            <h4 class="text-xl font-extrabold">Dashboard Evaluasi Good Governance</h4>
+                        </div>
+
+                        <!-- Big Score Box -->
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 text-center space-y-1">
+                            <span class="text-xs text-slate-300 block">Indeks Good Governance (Skor 0 – 100)</span>
+                            <strong id="sim-res-score" class="text-5xl font-mono font-extrabold text-nusantaraGold-400">75.3</strong>
+                            <div class="pt-2">
+                                <span id="sim-res-tier-badge" class="bg-nusantaraGold-400 text-garudaNavy-950 font-extrabold text-xs px-3.5 py-1 rounded-full">
+                                    Tata Kelola Progresif & Akuntabel
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-metrics -->
+                        <div class="space-y-2.5 text-xs">
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Tingkat Kepercayaan Publik:</span>
+                                <span id="sim-res-trust" class="font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Tinggi (75.0%)</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Risiko Maladministrasi & Korupsi:</span>
+                                <span id="sim-res-risk" class="font-bold text-emerald-300">Rendah & Terkendali</span>
+                            </div>
+                        </div>
+
+                        <!-- Narrative Evaluation -->
+                        <div class="bg-garudaCrimson-900/40 border border-nusantaraGold-400/30 p-4 rounded-2xl space-y-1.5 text-xs">
+                            <h5 class="font-bold text-nusantaraGold-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                                <span>Evaluasi & Rekomendasi Kebijakan:</span>
+                            </h5>
+                            <p id="sim-res-narrative" class="text-rose-100 leading-relaxed">
+                                Sinergi antara SPBE, transparansi anggaran, dan internalisasi nilai BerAKHLAK menghasilkan pelayanan publik yang responsif. Tingkatkan partisipasi musyawarah publik agar kebijakan daerah semakin tepat sasaran.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 5: KUIS EVALUASI 6 SOAL STUDI KASUS
+             ===================================================================== -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-garudaCrimson-800 text-nusantaraGold-400 flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-xl">Kuis Evaluasi 6 Soal Studi Kasus Tata Kelola Indonesia</h3>
+                            <p class="text-xs text-slate-500">Uji pemahaman Anda melalui skenario nyata seputar MK vs MA, ASN BerAKHLAK, Musyawarah Mufakat, Otonomi & Dana Desa, SPBE/KIP, dan BPK vs KPK.</p>
+                        </div>
+                    </div>
+                    <span id="badge-quiz-count" class="counter-badge bg-slate-100 text-slate-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto">
+                        👁️ 0x soal dijawab
+                    </span>
+                </div>
+
+                <!-- Area Kuis Dinamis -->
+                <div id="quiz-container" class="max-w-3xl mx-auto">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-garudaNavy-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-garudaCrimson-800 text-nusantaraGold-400 border border-nusantaraGold-400/30 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span class="font-bold text-slate-200">NusantaraGov • Nilai Luhur & Tata Kelola Pemerintahan Indonesia</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Modul Edukasi Kebangsaan & Administrasi Publik • Dilengkapi Pelacak Progres Belajar Real-Time.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ACTION BUTTON (FAB) ANALITIK ================= -->
+    <button onclick="openAnalyticsModal(); trackActivity('Tombol Melayang Statistik Belajar', 'Navigasi Analitik')" class="fixed bottom-6 right-6 bg-gradient-to-r from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800 text-white p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-nusantaraGold-400/70">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-nusantaraGold-400"></i>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-nusantaraGold-400 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-nusantaraGold-400">Panel Analitik</span>
+            <span id="fab-total-clicks" class="font-extrabold text-sm font-mono leading-none text-white">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ================= MODAL 1: PANEL ANALITIK AKTIVITAS BELAJAR ================= -->
+    <div id="modal-analytics" onclick="if(event.target===this) closeAnalyticsModal()" class="fixed inset-0 bg-garudaNavy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800 text-white p-5 flex items-center justify-between border-b border-nusantaraGold-500/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-nusantaraGold-400 text-garudaNavy-950 flex items-center justify-center font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-rose-100">Rekapitulasi interaksi & cakupan eksplorasi 12 pilar NusantaraGov</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- 3 Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-garudaCrimson-800 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Tersimpan di browser Anda</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-sm text-slate-800 font-extrabold block truncate mt-1">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Topik paling sering diklik</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Persentase Cakupan Materi</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <div class="flex-grow bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-garudaCrimson-800 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-extrabold text-garudaCrimson-800 font-mono">0%</span>
+                        </div>
+                        <span id="modal-coverage-detail" class="text-[11px] text-slate-400 block mt-1">0 dari 12 pilar dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top 5 Popular -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Doughnut Chart -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-extrabold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative flex items-center justify-center">
+                            <canvas id="analyticsChart"></canvas>
+                            <p id="chart-empty-msg" class="text-xs text-slate-400 italic text-center hidden">Belum ada data klik untuk grafik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Sub-Materi -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-5-list" class="space-y-2 text-xs">
+                            <!-- Di-render dinamis -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline Custom Reset Confirmation Banner (Tanpa native confirm) -->
+                <div id="reset-confirm-box" class="hidden bg-rose-50 border border-rose-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2.5 text-rose-900 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600 text-base"></i>
+                        <span><strong>Konfirmasi Reset:</strong> Yakin ingin menghapus seluruh riwayat hitungan belajar Anda?</span>
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-auto">
+                        <button onclick="executeClearAnalytics()" class="bg-garudaCrimson-800 hover:bg-garudaCrimson-900 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Ya, Hapus Semua</button>
+                        <button onclick="toggleResetConfirm(false)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Batal</button>
+                    </div>
+                </div>
+
+                <!-- Activity Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="toggleResetConfirm(true)" class="text-garudaCrimson-800 hover:text-garudaCrimson-900 text-xs font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-52 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-800 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Waktu Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Di-render dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-export text-garudaCrimson-800"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-garudaNavy-900 hover:bg-garudaNavy-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: DETAIL MATERI / PILAR / LEMBAGA ================= -->
+    <div id="modal-detail" onclick="if(event.target===this) closeDetailModal()" class="fixed inset-0 bg-garudaNavy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800">
+                <!-- Di-render dinamis -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar flex-grow">
+                <!-- Di-render dinamis -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeDetailModal()" class="bg-garudaNavy-900 hover:bg-garudaNavy-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Detail
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed top-20 right-4 sm:right-6 z-50 space-y-2 pointer-events-none max-w-xs w-full"></div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. DATASET LENGKAP NUSANTARAGOV:
+         *    - 5 Kartu Pilar Nilai Dasar & Falsafah Bangsa
+         *    - 3 Kartu Pilar Arsitektur Tata Kelola Negara
+         *    - 12 Kartu Pilar Nilai & Institusi Tata Kelola (Tab 2)
+         *    - 6 Dimensi/Model Matriks Komparasi (Tab 3)
+         *    - 6 Soal Kuis Evaluasi Studi Kasus (Tab 5)
+         * ------------------------------------------------------------------- */
+
+        // 5 Kartu Pilar Nilai Dasar & Falsafah Bangsa (Beranda - Bagian A)
+        const CORE_VALUES_DATA = [
+            {
+                id: 'pancasila_dasar',
+                title: 'Pancasila sebagai Dasar & Ideologi Negara',
+                icon: 'fa-sun',
+                badge: 'Nilai Filosofis Utama',
+                shortDesc: 'Lima sila sebagai sumber dari segala sumber hukum negara, bintang penuntun kebijakan publik, dan pemersatu kehendak bangsa.',
+                details: [
+                    'Kedudukan Yuridis: Tercantum dalam Pembukaan UUD NRI Tahun 1945 alinea ke-4 serta ditegaskan dalam UU No. 12 Tahun 2011 sebagai sumber dari segala sumber hukum negara.',
+                    'Dimensi Ideologis: Memiliki dimensi idealis (nilai dasar ketuhanan, kemanusiaan, persatuan, kerakyatan, keadilan sosial), dimensi normatif (dijabarkan dalam konstitusi & undang-undang), dan dimensi realistis (aktual dalam kebijakan pelayanan publik).',
+                    'Implementasi Tata Kelola: Setiap kebijakan fiskal, sosial, dan pembangunan wajib berorientasi pada keadilan sosial bagi seluruh rakyat Indonesia tanpa diskriminasi.'
+                ]
+            },
+            {
+                id: 'bhinneka_wawasan',
+                title: 'Bhinneka Tunggal Ika & Wawasan Nusantara',
+                icon: 'fa-earth-asia',
+                badge: 'Persatuan & Geopolitik',
+                shortDesc: 'Semboyan "Berbeda-beda tetapi tetap satu" yang berpadu dengan cara pandang kesatuan politik, ekonomi, sosial budaya, dan pertahanan.',
+                details: [
+                    'Bhinneka Tunggal Ika: Dikutip dari Kitab Sutasoma karya Mpu Tantular; menegaskan bahwa kemajemukan suku, agama, bahasa daerah, dan adat istiadat merupakan kekuatan kohesi nasional.',
+                    'Wawasan Nusantara: Cara pandang bangsa Indonesia mengenai diri dan lingkungannya sebagai negara kepulauan (archipelagic state) yang merupakan satu kesatuan wilayah darat, laut, dan udara.',
+                    'Implementasi Tata Kelola: Mengakomodasi kekhususan daerah (otonomi asimetris) serta pemerataan pembangunan infrastruktur dari Sabang sampai Merauke untuk memperkuat keutuhan NKRI.'
+                ]
+            },
+            {
+                id: 'gotong_royong_musyawarah',
+                title: 'Gotong Royong & Musyawarah Mufakat',
+                icon: 'fa-people-carry-box',
+                badge: 'Demokrasi Khas Indonesia',
+                shortDesc: 'Intisari nilai kolektivisme Nusantara (ekasila) dan pengambilan keputusan deliberatif yang mengutamakan hikmat kebijaksanaan.',
+                details: [
+                    'Gotong Royong: Semangat kerja bersama secara sukarela dan saling menopang demi kepentingan umum—tercermin dalam solidaritas sosial, lumbung desa, hingga kolaborasi lintas sektor (pentahelix).',
+                    'Musyawarah Mufakat: Perwujudan Sila ke-4 Pancasila yang menolak tirani mayoritas maupun pemaksaan kehendak minoritas melalui dialog mendalam dan lapang dada.',
+                    'Implementasi Tata Kelola: Musyawarah Perencanaan Pembangunan (Musrenbang) berjenjang dari tingkat desa/kelurahan hingga nasional.'
+                ]
+            },
+            {
+                id: 'asn_berakhlak',
+                title: 'Core Values ASN BerAKHLAK',
+                icon: 'fa-award',
+                badge: 'Etika & Budaya Kerja Aparatur',
+                shortDesc: 'Tujuh nilai dasar Aparatur Sipil Negara: Berorientasi Pelayanan, Akuntabel, Kompeten, Harmonis, Loyal, Adaptif, dan Kolaboratif.',
+                details: [
+                    'Berorientasi Pelayanan & Akuntabel: Komitmen memberikan pelayanan prima demi kepuasan masyarakat serta bertanggung jawab atas kepercayaan dan penggunaan anggaran publik.',
+                    'Kompeten & Harmonis: Terus belajar mengembangkan kapabilitas diri serta saling peduli dan menghargai perbedaan di lingkungan kerja maupun masyarakat.',
+                    'Loyal, Adaptif & Kolaboratif: Berdedikasi mengutamakan kepentingan bangsa dan negara di atas kepentingan pribadi, cepat berinovasi menghadapi disrupsi digital, serta membangun sinergi lintas instansi (dengan employer branding "Bangga Melayani Bangsa").'
+                ]
+            },
+            {
+                id: 'kearifan_lokal',
+                title: 'Kearifan Lokal & Kepemimpinan Nusantara',
+                icon: 'fa-compass',
+                badge: 'Etika Kepemimpinan Luhur',
+                shortDesc: 'Trilogi kepemimpinan Ki Hadjar Dewantara (Ing Ngarso Sung Tulodo, Ing Madyo Mangun Karso, Tut Wuri Handayani) & Tri Hita Karana.',
+                details: [
+                    'Trilogi Kepemimpinan Nusantara: "Ing Ngarso Sung Tulodo" (di depan memberi teladan integritas), "Ing Madyo Mangun Karso" (di tengah membangun prakarsa dan semangat), dan "Tut Wuri Handayani" (di belakang memberi dorongan dan pemberdayaan).',
+                    'Tri Hita Karana (Bali): Tiga penyebab kebahagiaan dan keseimbangan tata kelola, yakni harmoni hubungan manusia dengan Tuhan (Parahyangan), sesama manusia (Pawongan), dan kelestarian alam (Palemahan).',
+                    'Kearifan Adat Nusantara: Tradisi Mapalus (Minahasa), Subak (Bali), Sasi (Maluku/Papua), dan Rembug Warga sebagai modal sosial penyelesaian konflik dan tata kelola lingkungan berkelanjutan.'
+                ]
+            }
+        ];
+
+        // 3 Kartu Pilar Arsitektur Tata Kelola Negara (Beranda - Bagian B)
+        const GOVERNANCE_PILLARS_DATA = [
+            {
+                id: 'konstitusi_trias',
+                badge: 'Arsitektur 1 • Konstitusi & Kekuasaan',
+                title: 'Konstitusi UUD NRI 1945 & Trias Politika',
+                icon: 'fa-landmark',
+                color: 'from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800',
+                summary: 'Sistem presidensial Indonesia berdasarkan UUD NRI 1945 pasca-amandemen dengan mekanisme checks and balances antara Eksekutif, Legislatif, dan Yudikatif.',
+                sections: [
+                    {
+                        title: 'Pemisahan Kekuasaan & Checks and Balances',
+                        items: [
+                            'Cabang Eksekutif: Presiden dan Wakil Presiden dipilih langsung oleh rakyat (masa jabatan 5 tahun, maksimal 2 periode) sebagai kepala negara sekaligus kepala pemerintahan.',
+                            'Cabang Legislatif: MPR (kewenangan konstitusi & pelantikan), DPR (fungsi legislasi, anggaran, dan pengawasan), serta DPD (representasi aspirasi daerah dan otonomi daerah).',
+                            'Cabang Yudikatif: Kekuasaan kehakiman yang merdeka dijalankan oleh Mahkamah Agung (MA) beserta badan peradilan di bawahnya dan Mahkamah Konstitusi (MK), didukung Komisi Yudisial (KY).'
+                        ]
+                    },
+                    {
+                        title: 'Supremasi Konstitusi & Negara Hukum (Rechtsstaat)',
+                        items: [
+                            'Pasal 1 ayat (3) UUD NRI 1945 menegaskan "Negara Indonesia adalah negara hukum", sehingga setiap tindakan penyelenggara negara wajib berdasar pada peraturan perundang-undangan yang sah dan dapat diuji secara konstitusional.'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'otonomi_asimetris',
+                badge: 'Arsitektur 2 • Hubungan Pusat & Daerah',
+                title: 'Otonomi Daerah & Desentralisasi Asimetris',
+                icon: 'fa-map-location-dot',
+                color: 'from-garudaCrimson-900 via-garudaCrimson-800 to-nusantaraGold-700',
+                summary: 'Pelimpahan kewenangan pemerintahan kepada daerah otonom untuk mempercepat kesejahteraan rakyat, dilengkapi pengakuan kekhususan sejarah dan adat.',
+                sections: [
+                    {
+                        title: 'Asas Penyelenggaraan Pemerintahan Daerah (UU No. 23/2014)',
+                        items: [
+                            'Desentralisasi: Penyerahan urusan pemerintahan oleh Pemerintah Pusat kepada daerah otonom (Provinsi dan Kabupaten/Kota), kecuali 6 urusan absolut (politik luar negeri, pertahanan, keamanan, yustisi, moneter & fiskal nasional, serta agama).',
+                            'Dekonsentrasi & Tugas Pembantuan: Pelimpahan sebagian urusan pemerintah pusat kepada gubernur sebagai wakil pemerintah pusat atau penugasan kepada daerah/desa.',
+                            'UU Desa (UU No. 6/2014 jo. UU No. 3/2024): Mengakui asas rekognisi dan subsidiaritas desa melalui alokasi Dana Desa dan Musyawarah Desa.'
+                        ]
+                    },
+                    {
+                        title: 'Desentralisasi Asimetris di Indonesia',
+                        items: [
+                            'Pemberian status otonomi khusus/istimewa sesuai akar sejarah dan kebutuhan spesifik daerah: Daerah Istimewa Yogyakarta (DIY), Provinsi Aceh, Provinsi-provinsi di Tanah Papua, serta Daerah Khusus Jakarta.'
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'good_governance_spbe',
+                badge: 'Arsitektur 3 • Modernisasi Birokrasi',
+                title: 'Good Governance, Reformasi Birokrasi & SPBE',
+                icon: 'fa-microchip',
+                color: 'from-garudaNavy-950 via-garudaNavy-900 to-garudaCrimson-900',
+                summary: 'Transformasi tata kelola pemerintahan yang bersih, transparan, akuntabel, dan berbasis ekosistem digital terpadu (SPBE & Satu Data Indonesia).',
+                sections: [
+                    {
+                        title: 'Prinsip Utama Good Governance',
+                        items: [
+                            'Transparansi & Keterbukaan Informasi (UU No. 14/2008): Hak warga negara memperoleh informasi publik yang akurat dan tepat waktu.',
+                            'Akuntabilitas & Efektivitas: Pertanggungjawaban kinerja anggaran berbasis hasil (Sistem Akuntabilitas Kinerja Instansi Pemerintah / SAKIP).',
+                            'Partisipasi & Daya Tanggap: Kemudahan kanal pengaduan publik nasional terintegrasi (SP4N-LAPOR!).'
+                        ]
+                    },
+                    {
+                        title: 'SPBE & Satu Data Indonesia (Perpres 95/2018 & Perpres 39/2019)',
+                        items: [
+                            'Sistem Pemerintahan Berbasis Elektronik (SPBE) mengintegrasikan proses bisnis, data, dan layanan digital lintas kementerian/lembaga/pemda agar pelayanan publik cepat, bebas pungli, dan berbasis bukti (data-driven policy).'
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // 12 Kartu Pilar Nilai & Institusi Tata Kelola (Tab 2)
+        const PILLARS_12_DATA = [
+            // KATEGORI 1: NILAI & FALSAFAH (4)
+            {
+                id: 'pilar_01_pancasila',
+                number: '01',
+                title: 'Pancasila & Pembukaan UUD 1945',
+                category: 'Nilai & Falsafah',
+                icon: 'fa-sun',
+                summary: 'Dasar negara, pandangan hidup bangsa, serta pokok kaidah fundamental negara yang memuat tujuan nasional dan cita hukum Indonesia.',
+                constitutionalBasis: 'Pembukaan UUD NRI Tahun 1945 alinea ke-4 (18 Agustus 1945) dan Pasal 2 UU No. 12 Tahun 2011 tentang Pembentukan Peraturan Perundang-undangan.',
+                strategicRole: 'Menjadi batu uji filosofis setiap undang-undang dan kebijakan publik agar selaras dengan nilai Ketuhanan, Kemanusiaan, Persatuan, Kerakyatan, dan Keadilan Sosial.',
+                contemporaryChallenge: 'Polarisasi informasi di ruang digital, tantangan intoleransi, serta kesenjangan sosial-ekonomi yang menuntut aktualisasi nyata Sila ke-5 dalam kebijakan anggaran.',
+                bestPractice: 'Penerapan uji keselarasan nilai Pancasila dalam penyusunan program strategis nasional dan kurikulum pendidikan karakter kebangsaan yang kontekstual.'
+            },
+            {
+                id: 'pilar_02_musyawarah',
+                number: '02',
+                title: 'Musyawarah Mufakat & Gotong Royong',
+                category: 'Nilai & Falsafah',
+                icon: 'fa-people-carry-box',
+                summary: 'Mekanisme demokrasi permusyawaratan dan modal sosial kebersamaan dalam merumuskan serta mengeksekusi kepentingan publik.',
+                constitutionalBasis: 'Sila ke-4 Pancasila dan Pasal 18B ayat (2) UUD NRI 1945 yang mengakui kesatuan masyarakat hukum adat beserta hak-hak tradisionalnya.',
+                strategicRole: 'Mencegah dominasi kelompok mayoritas semata, menjaga legitimasi sosial kebijakan publik, dan menggerakkan swadaya warga dalam pembangunan.',
+                contemporaryChallenge: 'Kecenderungan pengambilan keputusan transaksional atau prosedural semata tanpa mendengarkan suara kelompok rentan dan masyarakat akar rumput.',
+                bestPractice: 'Forum Musrenbang Desa dan Kabupaten yang melibatkan perempuan, pemuda, penyandang disabilitas, serta tokoh adat dalam menetapkan prioritas penggunaan Dana Desa.'
+            },
+            {
+                id: 'pilar_03_berakhlak',
+                number: '03',
+                title: 'Core Values ASN BerAKHLAK',
+                category: 'Nilai & Falsafah',
+                icon: 'fa-award',
+                summary: 'Standar nilai dasar tunggal bagi seluruh Aparatur Sipil Negara untuk mewujudkan birokrasi berkelas dunia yang melayani.',
+                constitutionalBasis: 'UU No. 20 Tahun 2023 tentang Aparatur Sipil Negara (ASN) dan Surat Edaran Menteri PANRB No. 20 Tahun 2021 tentang Implementasi Core Values dan Employer Branding ASN.',
+                strategicRole: 'Menyeragamkan budaya kerja aparatur pusat dan daerah pada 7 nilai: Berorientasi Pelayanan, Akuntabel, Kompeten, Harmonis, Loyal, Adaptif, dan Kolaboratif.',
+                contemporaryChallenge: 'Silo mentality (ego sektoral antar-instansi), resistensi terhadap perubahan digital, serta godaan konflik kepentingan dan gratifikasi dalam pelayanan.',
+                bestPractice: 'Penyelenggaraan Mal Pelayanan Publik (MPP) terintegrasi satu atap di berbagai kabupaten/kota dengan standar waktu layanan transparan dan indeks kepuasan masyarakat.'
+            },
+            {
+                id: 'pilar_04_moderasi',
+                number: '04',
+                title: 'Moderasi Beragama & Kearifan Lokal',
+                category: 'Nilai & Falsafah',
+                icon: 'fa-dove',
+                summary: 'Sikap beragama yang seimbang (tawasuth) dan penghormatan terhadap kearifan lokal Nusantara sebagai penjaga harmoni sosial.',
+                constitutionalBasis: 'Pasal 28E, Pasal 29 UUD NRI 1945, serta Perpres No. 58 Tahun 2023 tentang Penguatan Moderasi Beragama.',
+                strategicRole: 'Menjamin kebebasan beribadah setiap warga negara, merawat kerukunan antarumat beragama, dan mengintegrasikan kearifan adat dalam pelestarian lingkungan.',
+                contemporaryChallenge: 'Penyebaran ujaran kebencian berbasis identitas, disinformasi keagamaan di media sosial, serta tergerusnya pranata adat lokal oleh urbanisasi.',
+                bestPractice: 'Peran aktif Forum Kerukunan Umat Beragama (FKUB) daerah bersama tokoh adat (seperti tradisi Pela Gandong di Maluku dan Subak di Bali) dalam merawat perdamaian.'
+            },
+
+            // KATEGORI 2: LEMBAGA TINGGI NEGARA (4)
+            {
+                id: 'pilar_05_eksekutif',
+                number: '05',
+                title: 'Lembaga Eksekutif: Presiden, Wapres & Kabinet',
+                category: 'Lembaga Tinggi Negara',
+                icon: 'fa-building-columns',
+                summary: 'Pemegang kekuasaan pemerintahan negara menurut UUD NRI 1945 yang memimpin penyelenggaraan administrasi negara dan pembangunan nasional.',
+                constitutionalBasis: 'Pasal 4 sampai dengan Pasal 17 UUD NRI Tahun 1945 (Bab III Kekuasaan Pemerintahan Negara dan Bab V Kementerian Negara).',
+                strategicRole: 'Menjalankan undang-undang, menetapkan Peraturan Pemerintah dan Peraturan Presiden, mengelola APBN, memimpin hubungan luar negeri, serta memegang kekuasaan tertinggi atas TNI.',
+                contemporaryChallenge: 'Koordinasi lintas kementerian/lembaga yang kompleks dalam menangani isu lintas sektor seperti transisi energi, stunting, dan hilirisasi ekonomi.',
+                bestPractice: 'Penguatan peran Kementerian Koordinator dan Sistem Akuntabilitas Kinerja (SAKIP) untuk memastikan program prioritas presiden terukur hingga ke daerah.'
+            },
+            {
+                id: 'pilar_06_legislatif',
+                number: '06',
+                title: 'Lembaga Legislatif: MPR, DPR & DPD RI',
+                category: 'Lembaga Tinggi Negara',
+                icon: 'fa-landmark',
+                summary: 'Lembaga perwakilan rakyat dan daerah yang menjalankan fungsi konstitusi, legislasi, penyusunan anggaran (APBN), dan pengawasan pemerintah.',
+                constitutionalBasis: 'Pasal 2, Pasal 3, Pasal 19–22D UUD NRI Tahun 1945 serta UU MD3 (MPR, DPR, DPD, dan DPRD).',
+                strategicRole: 'MPR berwenang mengubah/menetapkan UUD dan melantik Presiden/Wapres; DPR membentuk UU bersama Presiden dan mengawasi eksekutif; DPD memperjuangkan aspirasi serta otonomi daerah.',
+                contemporaryChallenge: 'Tuntutan peningkatan kualitas partisipasi publik yang bermakna (meaningful participation) dalam setiap proses perancangan undang-undang.',
+                bestPractice: 'Keterbukaan rapat kerja komisi DPR/DPD melalui siaran publik, portal aspirasi masyarakat, dan uji sahih RUU di perguruan tinggi berbagai daerah.'
+            },
+            {
+                id: 'pilar_07_yudikatif',
+                number: '07',
+                title: 'Lembaga Yudikatif: MA, MK & Komisi Yudisial',
+                category: 'Lembaga Tinggi Negara',
+                icon: 'fa-gavel',
+                summary: 'Pelaku kekuasaan kehakiman yang merdeka untuk menegakkan hukum dan keadilan serta menjaga kemurnian konstitusi.',
+                constitutionalBasis: 'Pasal 24, Pasal 24A (Mahkamah Agung), Pasal 24B (Komisi Yudisial), dan Pasal 24C (Mahkamah Konstitusi) UUD NRI Tahun 1945.',
+                strategicRole: 'MA mengadili tingkat kasasi dan menguji peraturan di bawah UU terhadap UU; MK menguji UU terhadap UUD (judicial review) dan memutus sengketa pemilu; KY menjaga kehormatan serta perilaku hakim.',
+                contemporaryChallenge: 'Menjaga independensi peradilan dari intervensi politik/ekonomi, mempercepat penyelesaian perkara, dan memperkuat integritas kode etik hakim.',
+                bestPractice: 'Digitalisasi peradilan melalui sistem e-Court dan Direktori Putusan MA yang terbuka untuk umum, serta persidangan MK yang disiarkan secara transparan.'
+            },
+            {
+                id: 'pilar_08_pengawas',
+                number: '08',
+                title: 'Lembaga Pengawas Independen: BPK, KPK & Ombudsman RI',
+                category: 'Lembaga Tinggi Negara',
+                icon: 'fa-magnifying-glass-chart',
+                summary: 'Pilar pengawasan eksternal yang mengawal keuangan negara, memberantas korupsi, dan mencegah maladministrasi pelayanan publik.',
+                constitutionalBasis: 'Pasal 23E UUD NRI 1945 (BPK), UU No. 30/2002 jo. UU No. 19/2019 (KPK), dan UU No. 37 Tahun 2008 tentang Ombudsman Republik Indonesia.',
+                strategicRole: 'BPK memeriksa pengelolaan dan tanggung jawab keuangan negara (opini WTP); KPK melakukan pencegahan, koordinasi, dan penindakan korupsi; Ombudsman mengawasi penyelenggaraan pelayanan publik oleh negara/BUMN.',
+                contemporaryChallenge: 'Sinergi pencegahan korupsi berbasis sistem digital serta kepatuhan instansi dalam menindaklanjuti rekomendasi hasil pemeriksaan BPK dan saran korektif Ombudsman.',
+                bestPractice: 'Monitoring Center for Prevention (MCP) KPK yang memantau tata kelola perizinan, pengadaan barang/jasa, dan manajemen ASN di seluruh pemerintah daerah.'
+            },
+
+            // KATEGORI 3: TATA KELOLA & REFORMASI (4)
+            {
+                id: 'pilar_09_otda_desa',
+                number: '09',
+                title: 'Otonomi Daerah & Tata Kelola Desa / UU Desa',
+                category: 'Tata Kelola & Reformasi',
+                icon: 'fa-tree-city',
+                summary: 'Desentralisasi kewenangan kepada daerah otonom serta pengakuan kemandirian desa sebagai subjek pembangunan berbasis warga.',
+                constitutionalBasis: 'Pasal 18, 18A, dan 18B UUD NRI 1945, UU No. 23 Tahun 2014 tentang Pemerintahan Daerah, serta UU No. 6 Tahun 2014 jo. UU No. 3 Tahun 2024 tentang Desa.',
+                strategicRole: 'Mendekatkan pengambilan keputusan kebijakan publik kepada masyarakat lokal dan memberdayakan Badan Usaha Milik Desa (BUMDes) serta Dana Desa.',
+                contemporaryChallenge: 'Kapasitas SDM aparatur desa/daerah dalam perencanaan anggaran, ketergantungan fiskal pada transfer pusat, serta pengawasan akuntabilitas Dana Desa.',
+                bestPractice: 'Penerapan Sistem Keuangan Desa (Siskeudes) dan publikasi infografis APBDes di balai desa sebagai bentuk transparansi langsung kepada warga.'
+            },
+            {
+                id: 'pilar_10_spbe',
+                number: '10',
+                title: 'SPBE & Transformasi Digital Pemerintahan / Satu Data',
+                category: 'Tata Kelola & Reformasi',
+                icon: 'fa-network-wired',
+                summary: 'Penyelenggaraan tata kelola pemerintahan berbasis elektronik yang terintegrasi dan tata kelola data pemerintah yang akurat serta mutakhir.',
+                constitutionalBasis: 'Perpres No. 95 Tahun 2018 tentang Sistem Pemerintahan Berbasis Elektronik (SPBE) dan Perpres No. 39 Tahun 2019 tentang Satu Data Indonesia.',
+                strategicRole: 'Menghilangkan duplikasi aplikasi pemerintah, mempercepat layanan administrasi kependudukan/perizinan (OSS), dan mendukung kebijakan berbasis bukti.',
+                contemporaryChallenge: 'Keamanan siber (cybersecurity), perlindungan data pribadi warga negara, serta ketimpangan infrastruktur digital di wilayah 3T (Tertinggal, Terdepan, Terluar).',
+                bestPractice: 'Integrasi Identitas Kependudukan Digital (IKD) dan portal layanan publik terpadu yang memangkas birokrasi tatap muka berbelit.'
+            },
+            {
+                id: 'pilar_11_sppn',
+                number: '11',
+                title: 'Sistem Perencanaan & Penganggaran Berbasis Kinerja / SPPN',
+                category: 'Tata Kelola & Reformasi',
+                icon: 'fa-chart-line',
+                summary: 'Integrasi perencanaan pembangunan jangka panjang/menengah/tahunan (RPJPN, RPJMN, RKP) dengan penganggaran berbasis hasil (money follow program).',
+                constitutionalBasis: 'UU No. 25 Tahun 2004 tentang Sistem Perencanaan Pembangunan Nasional (SPPN) dan UU No. 17 Tahun 2003 tentang Keuangan Negara.',
+                strategicRole: 'Memastikan setiap rupiah APBN/APBD dialokasikan pada program prioritas yang menghasilkan dampak nyata (outcome) bagi masyarakat, bukan sekadar menghabiskan anggaran.',
+                contemporaryChallenge: 'Sinkronisasi antara perencanaan pusat dan daerah serta pengendalian penumpukan penyerapan anggaran di akhir tahun anggaran.',
+                bestPractice: 'Aplikasi KRISNA (Kolaborasi Perencanaan dan Informasi Kinerja Anggaran) yang menyelaraskan Bappenas, Kemenkeu, dan Kementerian/Lembaga secara real-time.'
+            },
+            {
+                id: 'pilar_12_kip_lapor',
+                number: '12',
+                title: 'Keterbukaan Informasi Publik & SP4N-LAPOR!',
+                category: 'Tata Kelola & Reformasi',
+                icon: 'fa-bullhorn',
+                summary: 'Jaminan hak konstitusional warga untuk mengakses informasi badan publik serta kanal aspirasi dan pengaduan pelayanan publik nasional.',
+                constitutionalBasis: 'Pasal 28F UUD NRI 1945, UU No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik (KIP), dan Perpres No. 76 Tahun 2013 tentang Pengelolaan Pengaduan Pelayanan Publik.',
+                strategicRole: 'Mendorong pengawasan partisipatif masyarakat melalui Pejabat Pengelola Informasi dan Dokumentasi (PPID) serta sistem SP4N-LAPOR! yang terhubung ke seluruh instansi.',
+                contemporaryChallenge: 'Kualitas respons tindak lanjut aduan di beberapa unit layanan dan perlindungan kerahasiaan identitas pelapor (whistleblower).',
+                bestPractice: 'Keterbukaan informasi berkala melalui portal e-PPID dan penyelesaian laporan warga di SP4N-LAPOR! dengan tenggat waktu terukur.'
+            }
+        ];
+
+        // 6 Dimensi/Model Tata Kelola untuk Matriks Komparasi (Tab 3)
+        const COMPARE_MODELS_DATA = [
+            {
+                id: 'sentralisasi_vs_desentralisasi',
+                name: 'Sentralisasi Orde Baru vs Desentralisasi Reformasi',
+                concept: 'Sentralisasi (UU No. 5/1974) memusatkan kewenangan politik, administratif, dan fiskal di Pemerintah Pusat; Desentralisasi Reformasi (UU No. 22/1999 jo. UU No. 23/2014) menyerahkan otonomi luas kepada Daerah.',
+                decisionMechanism: 'Sentralisasi: instruksi hierarkis dari pusat ke daerah (kepala daerah ditunjuk pusat). Desentralisasi: Pilkada langsung dan penetapan Perda bersama antara Kepala Daerah dan DPRD.',
+                strengths: 'Sentralisasi mempercepat keseragaman proyek nasional & stabilitas komando; Desentralisasi mendekatkan layanan publik dan memberi ruang inovasi sesuai kebutuhan lokal.',
+                risks: 'Sentralisasi memicu ketimpangan pembangunan Jawa–Luar Jawa & mematikan inisiatif lokal; Desentralisasi berisiko memunculkan raja-raja kecil & korupsi di daerah jika pengawasan lemah.',
+                relevance: 'Indonesia kini menerapkan keseimbangan NKRI: desentralisasi luas dengan tetap mempertahankan 6 urusan absolut di tangan Pemerintah Pusat.'
+            },
+            {
+                id: 'musyawarah_vs_voting',
+                name: 'Musyawarah Mufakat vs Voting Mayoritas',
+                concept: 'Musyawarah Mufakat berakar pada Sila ke-4 Pancasila (demokrasi deliberatif); Voting Mayoritas merupakan mekanisme demokrasi liberal berdasarkan suara terbanyak (50% + 1).',
+                decisionMechanism: 'Musyawarah: dialog mendalam untuk menemukan titik temu tanpa mengalahkan pihak lain. Voting: pemungutan suara apabila mufakat tidak tercapai setelah musyawarah optimal.',
+                strengths: 'Musyawarah menghasilkan legitimasi sosial tinggi dan menjaga persaudaraan; Voting memberikan kepastian waktu pengambilan keputusan saat terjadi kebuntuan (deadlock).',
+                risks: 'Musyawarah membutuhkan waktu lebih lama dan fasilitator bijak; Voting berpotensi menciptakan polarisasi menang-kalah serta mengabaikan aspirasi minoritas.',
+                relevance: 'Pasal 2 ayat (3) & Tata Tertib DPR/MPR Indonesia mengutamakan musyawarah untuk mufakat sebagai jalan utama, dan menggunakan voting hanya sebagai jalan terakhir.'
+            },
+            {
+                id: 'birokrasi_konvensional_vs_spbe',
+                name: 'Birokrasi Konvensional vs Pemerintahan Digital (SPBE)',
+                concept: 'Birokrasi Konvensional bertumpu pada berkas fisik, loket tatap muka berjenjang, dan arsip terpisah; SPBE mengintegrasikan proses bisnis, layanan, dan data pemerintah secara elektronik.',
+                decisionMechanism: 'Konvensional: disposisi surat manual berbasis dokumen kertas. SPBE: tanda tangan elektronik tersertifikasi (TTE), alur kerja digital, dan analitik Satu Data Indonesia.',
+                strengths: 'Konvensional mudah diakses warga yang belum memiliki perangkat digital; SPBE memangkas waktu layanan, menekan biaya operasional, dan menutup celah pungutan liar.',
+                risks: 'Konvensional lambat, boros kertas, dan rentan maladministrasi; SPBE menghadapi tantangan serangan siber, kebocoran data pribadi, dan kesenjangan akses internet.',
+                relevance: 'Pemerintah Indonesia menggabungkan SPBE nasional dengan pendampingan tatap muka di Mal Pelayanan Publik (MPP) bagi kelompok rentan/lansia.'
+            },
+            {
+                id: 'otda_umum_vs_otsus',
+                name: 'Otonomi Daerah Umum vs Otonomi Khusus (DIY, Aceh, Papua)',
+                concept: 'Otonomi Daerah Umum berlaku seragam bagi provinsi/kabupaten/kota berdasarkan UU No. 23/2014; Otonomi Khusus (Desentralisasi Asimetris) memberi kewenangan khusus sesuai kekhasan sejarah dan budaya.',
+                decisionMechanism: 'Otda Umum: tata kelola pemerintahan daerah standar nasional. Otsus: mekanisme khusus seperti Kasultanan/Kadipaten di DIY, Qanun & Syariat Islam di Aceh, serta Majelis Rakyat Papua (MRP).',
+                strengths: 'Otda Umum memudahkan standardisasi tata kelola nasional; Otsus menghormati hak asal-usul, meredam konflik historis, dan menyediakan Dana Otsus untuk percepatan kesejahteraan.',
+                risks: 'Otda Umum kurang sensitif terhadap keunikan adat tertentu; Otsus menuntut tata kelola pengawasan dana yang ketat agar manfaatnya benar-benar dirasakan masyarakat asli.',
+                relevance: 'Pasal 18B ayat (1) UUD NRI 1945 menjadi payung hukum negara mengakui satuan-satuan pemerintahan daerah yang bersifat khusus atau istimewa dalam bingkai NKRI.'
+            },
+            {
+                id: 'pengawasan_internal_vs_eksternal',
+                name: 'Pengawasan Internal (APIP/Inspektorat) vs Eksternal (BPK, KPK, Ombudsman)',
+                concept: 'Pengawasan Internal dilakukan oleh Aparat Pengawasan Intern Pemerintah (BPKP, Inspektorat Jenderal/Daerah) di dalam eksekutif; Pengawasan Eksternal dilakukan lembaga independen di luar eksekutif.',
+                decisionMechanism: 'Internal: reviu laporan keuangan, pendampingan tata kelola, dan audit kepatuhan sebelum/saat program berjalan. Eksternal: pemeriksaan keuangan (BPK), penindakan/pencegahan korupsi (KPK), dan pemeriksaan maladministrasi (Ombudsman).',
+                strengths: 'Internal berfungsi sebagai peringatan dini (early warning system) dan konsultan perbaikan; Eksternal menjamin objektivitas independen, transparansi publik, dan penegakan hukum.',
+                risks: 'Internal berisiko kurang independen jika berada di bawah tekanan pimpinan instansi; Eksternal bersifat post-audit atau reaktif apabila tidak diimbangi pencegahan internal.',
+                relevance: 'Kapabilitas APIP Level 3–4 dipadukan dengan audit BPK, MCP KPK, dan pengawasan Ombudsman membentuk ekosistem integritas berlapis di Indonesia.'
+            },
+            {
+                id: 'top_down_vs_bottom_up',
+                name: 'Pendekatan Top-Down Teknokratik vs Bottom-Up Partisipatif (Musrenbang)',
+                concept: 'Top-Down Teknokratik menyusun rencana pembangunan berdasarkan kajian ilmiah, indikator makro, dan visi kepala negara/daerah; Bottom-Up menyerap usulan kebutuhan langsung dari warga melalui Musrenbang.',
+                decisionMechanism: 'Top-Down: perumusan RPJPN/RPJMN oleh Bappenas/Bappeda berbasis data makro. Bottom-Up: penjaringan aspirasi berjenjang mulai dari Musrenbang Desa/Kelurahan, Kecamatan, hingga Nasional.',
+                strengths: 'Top-Down menjaga keselarasan proyek strategis nasional dan efisiensi makro; Bottom-Up memastikan program menyentuh kebutuhan riil masyarakat di lapangan.',
+                risks: 'Top-Down berisiko tidak sesuai konteks lokal jika mengabaikan suara warga; Bottom-Up berisiko menghasilkan daftar keinginan (shopping list) yang melampaui kapasitas anggaran.',
+                relevance: 'UU No. 25 Tahun 2004 tentang SPPN mewajibkan perpaduan pendekatan teknokratik, partisipatif, politis, serta top-down dan bottom-up secara bersamaan.'
+            }
+        ];
+
+        // 6 Soal Kuis Evaluasi Studi Kasus (Tab 5)
+        const QUIZ_QUESTIONS = [
+            {
+                q: "Studi Kasus 1 (Kewenangan Yudikatif): Sebuah koalisi masyarakat sipil menilai suatu pasal dalam Undang-Undang bertentangan dengan hak konstitusional warga negara yang dijamin dalam UUD NRI Tahun 1945. Sementara itu, di daerah lain, warga menggugat sebuah Peraturan Daerah (Perda) karena dinilai bertentangan dengan Undang-Undang di atasnya. Ke lembaga peradilan manakah masing-masing permohonan pengujian (judicial review) tersebut harus diajukan?",
+                options: [
+                    "Pengujian UU terhadap UUD 1945 ke Mahkamah Agung (MA), sedangkan pengujian Perda terhadap UU ke Mahkamah Konstitusi (MK).",
+                    "Pengujian UU terhadap UUD 1945 ke Mahkamah Konstitusi (MK), sedangkan pengujian peraturan perundang-undangan di bawah UU (termasuk Perda) terhadap UU ke Mahkamah Agung (MA).",
+                    "Keduanya diajukan ke Komisi Yudisial (KY) untuk diputus secara final dan mengikat.",
+                    "Pengujian UU diajukan ke Dewan Perwakilan Daerah (DPD), sedangkan pengujian Perda ke Kementerian Dalam Negeri."
+                ],
+                answer: 1,
+                explain: "Berdasarkan Pasal 24C ayat (1) UUD NRI 1945, Mahkamah Konstitusi (MK) berwenang menguji Undang-Undang terhadap UUD 1945. Sementara berdasarkan Pasal 24A ayat (1), Mahkamah Agung (MA) berwenang menguji peraturan perundang-undangan di bawah Undang-Undang (seperti PP, Perpres, dan Perda) terhadap Undang-Undang."
+            },
+            {
+                q: "Studi Kasus 2 (ASN BerAKHLAK): Seorang kepala bidang di dinas perizinan daerah menolak pemberian parsel mewah dari pemohon izin usaha, mempercepat layanan dengan mengintegrasikan formulir daring, serta membimbing stafnya agar ramah melayani warga lansia. Perilaku aparatur tersebut mencerminkan perpaduan nilai-nilai dalam Core Values ASN BerAKHLAK, khususnya...",
+                options: [
+                    "Akuntabel, Berorientasi Pelayanan, Adaptif, dan Harmonis",
+                    "Loyal terhadap atasan secara mutlak tanpa memperhatikan aturan hukum",
+                    "Sentralistis, Prosedural, dan Birokratis",
+                    "Kompetitif antar-bidang dengan menutup akses data publik"
+                ],
+                answer: 0,
+                explain: "Menolak gratifikasi mencerminkan nilai Akuntabel (berintegritas dan bertanggung jawab), melayani warga lansia dengan ramah mencerminkan Berorientasi Pelayanan dan Harmonis, serta mengintegrasikan layanan daring mencerminkan nilai Adaptif terhadap perkembangan teknologi."
+            },
+            {
+                q: "Studi Kasus 3 (Musyawarah Mufakat): Dalam rapat Musyawarah Desa untuk menentukan alokasi Dana Desa antara pembangunan irigasi pertanian dan renovasi balai pertemuan, terjadi perbedaan pendapat tajam antar-dusun. Kepala desa memfasilitasi dialog terbuka, menyajikan data kebutuhan pangan warga, hingga seluruh peserta sepakat memprioritaskan irigasi tahun ini dan balai pertemuan tahun berikutnya. Mekanisme ini merupakan wujud nyata dari...",
+                options: [
+                    "Tiranni mayoritas melalui pemungutan suara tertutup",
+                    "Sila ke-4 Pancasila: Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan",
+                    "Sentralisasi keputusan kepala desa tanpa partisipasi warga",
+                    "Privatisasi aset desa kepada pihak ketiga"
+                ],
+                answer: 1,
+                explain: "Pengambilan keputusan melalui dialog rasional berbasis hikmat kebijaksanaan untuk mencapai mufakat yang adil bagi semua pihak adalah inti dari demokrasi permusyawaratan Sila ke-4 Pancasila."
+            },
+            {
+                q: "Studi Kasus 4 (Otonomi Daerah & Dana Desa): Pemerintah Kabupaten X berinovasi membuat program kurikulum muatan lokal pelestarian bahasa daerah dan pengelolaan sampah berbasis desa, namun tidak dapat membentuk mata uang daerah sendiri maupun menjalin perjanjian pertahanan dengan negara asing. Mengapa demikian menurut UU No. 23 Tahun 2014 tentang Pemerintahan Daerah?",
+                options: [
+                    "Karena pendidikan dan lingkungan hidup merupakan urusan absolut Pemerintah Pusat.",
+                    "Karena moneter/fiskal nasional dan pertahanan-politik luar negeri termasuk dalam 6 urusan pemerintahan absolut yang sepenuhnya menjadi kewenangan Pemerintah Pusat.",
+                    "Karena daerah otonom hanya boleh mengurusi masalah pajak kendaraan bermotor.",
+                    "Karena seluruh peraturan daerah harus mendapat persetujuan dari Mahkamah Konstitusi terlebih dahulu."
+                ],
+                answer: 1,
+                explain: "Dalam sistem NKRI yang terdesentralisasi, terdapat 6 urusan pemerintahan absolut yang tidak diserahkan ke daerah, yaitu: politik luar negeri, pertahanan, keamanan, yustisi, moneter dan fiskal nasional, serta agama."
+            },
+            {
+                q: "Studi Kasus 5 (SPBE & Keterbukaan Informasi Publik): Seorang warga mengajukan permohonan salinan dokumen Rencana Kerja Anggaran (RKA) dinas daerah yang bukan merupakan informasi dikecualikan, namun tidak mendapat tanggapan selama berbulan-bulan. Kanal dan mekanisme resmi apakah yang dapat ditempuh warga berdasarkan UU No. 14 Tahun 2008 tentang KIP dan Perpres No. 76 Tahun 2013?",
+                options: [
+                    "Mengajukan keberatan kepada atasan PPID (Pejabat Pengelola Informasi dan Dokumentasi), sengketa informasi ke Komisi Informasi, serta menyampaikan pengaduan melalui SP4N-LAPOR!.",
+                    "Langsung memblokir akses jalan raya di depan kantor dinas daerah tersebut.",
+                    "Mengajukan gugatan sengketa hasil pemilihan umum ke Mahkamah Konstitusi.",
+                    "Meminta Badan Pemeriksa Keuangan (BPK) memberhentikan kepala dinas secara sepihak."
+                ],
+                answer: 0,
+                explain: "Berdasarkan UU Keterbukaan Informasi Publik, pemohon informasi dapat mengajukan keberatan ke atasan PPID dan menyelesaikan sengketa informasi melalui Komisi Informasi, serta melaporkan kelalaian layanan melalui kanal pengaduan nasional terintegrasi SP4N-LAPOR!."
+            },
+            {
+                q: "Studi Kasus 6 (BPK vs KPK vs Ombudsman): Dalam ekosistem pengawasan pemerintahan di Indonesia, apabila ditemukan indikasi kerugian keuangan negara dalam laporan pertanggungjawaban APBD, lembaga manakah yang berwenang melakukan pemeriksaan pengelolaan dan tanggung jawab keuangan negara serta memberikan opini (seperti Wajar Tanpa Pengecualian/WTP), dan lembaga manakah yang berwenang melakukan penyidikan tindak pidana korupsi apabila ditemukan unsur suap/korupsi penyelenggara negara?",
+                options: [
+                    "KPK memberikan opini laporan keuangan WTP, sedangkan BPK melakukan operasi tangkap tangan.",
+                    "BPK memeriksa pengelolaan keuangan negara dan memberikan opini laporan keuangan, sedangkan KPK melakukan pencegahan, penyelidikan, dan penyidikan tindak pidana korupsi.",
+                    "Ombudsman RI melakukan penyidikan tindak pidana korupsi, sedangkan Komisi Yudisial memeriksa APBD.",
+                    "DPR melakukan audit forensik APBD dan menjatuhkan vonis pidana penjara."
+                ],
+                answer: 1,
+                explain: "BPK (Pasal 23E UUD NRI 1945) adalah lembaga negara yang bertugas memeriksa pengelolaan dan tanggung jawab keuangan negara serta menerbitkan opini atas laporan keuangan pemerintah. Apabila ditemukan indikasi tindak pidana korupsi, KPK (bersama Kepolisian/Kejaksaan) berwenang melakukan penyelidikan, penyidikan, dan penuntutan tindak pidana korupsi."
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. STATE APLIKASI & SISTEM PELACAKAN AKTIVITAS (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'nusantara_gov_activity_log';
+        let activityLog = []; // Array of { name, category, count, lastTime }
+        let compareColumnMode = 3; // 2 atau 3 dimensi
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let analyticsChartInstance = null;
+
+        // Inisialisasi aplikasi saat DOM selesai dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityLog();
+            renderCoreValuesGrid();
+            renderGovernancePillarsGrid();
+            renderPillarsCatalogGrid();
+            initCompareSelectors();
+            renderCompareTable();
+            updateSimulatorPreview();
+            renderQuiz();
+            refreshAllBadgesAndAnalytics();
+        });
+
+        function loadActivityLog() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) activityLog = parsed;
+                }
+            } catch (e) {
+                activityLog = [];
+            }
+        }
+
+        function saveActivityLog() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(activityLog));
+            } catch (e) {
+                console.warn('Gagal menyimpan log ke localStorage:', e);
+            }
+        }
+
+        // Mencatat klik ke localStorage, memperbarui badge & memunculkan Toast
+        function trackActivity(itemName, categoryName, pulseBadgeId = null) {
+            const nowStr = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            let entry = activityLog.find(item => item.name === itemName);
+            if (entry) {
+                entry.count += 1;
+                entry.lastTime = nowStr;
+            } else {
+                entry = {
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: nowStr
+                };
+                activityLog.push(entry);
+            }
+
+            saveActivityLog();
+            refreshAllBadgesAndAnalytics();
+            showToast(`Aktivitas Dicatat: ${itemName} (+1)`);
+
+            if (pulseBadgeId) {
+                const badgeEl = document.getElementById(pulseBadgeId);
+                if (badgeEl) {
+                    badgeEl.classList.remove('counter-pulse');
+                    void badgeEl.offsetWidth;
+                    badgeEl.classList.add('counter-pulse');
+                }
+            }
+        }
+
+        function getCount(itemName) {
+            const found = activityLog.find(i => i.name === itemName);
+            return found ? found.count : 0;
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. PEMBARUAN SELURUH BADGE & PANEL ANALITIK
+         * ------------------------------------------------------------------- */
+        function refreshAllBadgesAndAnalytics() {
+            // 1. Update Nav Tab Counters (Desktop & Mobile)
+            const navMap = [
+                { key: 'Tab 1: Beranda', desk: 'nav-count-beranda', mob: 'mob-count-beranda' },
+                { key: 'Tab 2: 12 Pilar & Lembaga', desk: 'nav-count-pilar', mob: 'mob-count-pilar' },
+                { key: 'Tab 3: Matriks Komparasi', desk: 'nav-count-komparasi', mob: 'mob-count-komparasi' },
+                { key: 'Tab 4: Simulator Tata Kelola', desk: 'nav-count-simulator', mob: 'mob-count-simulator' },
+                { key: 'Tab 5: Kuis Evaluasi', desk: 'nav-count-kuis', mob: 'mob-count-kuis' }
+            ];
+            navMap.forEach(n => {
+                const c = getCount(n.key);
+                const dEl = document.getElementById(n.desk);
+                const mEl = document.getElementById(n.mob);
+                if (dEl) dEl.innerText = c;
+                if (mEl) mEl.innerText = c;
+            });
+
+            // 2. Update 5 Kartu Pilar Nilai Dasar Badges
+            CORE_VALUES_DATA.forEach(v => {
+                const el = document.getElementById(`badge-val-${v.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Nilai Dasar: ${v.title}`)}x dipelajari`;
+            });
+
+            // 3. Update 3 Kartu Arsitektur Tata Kelola Badges
+            GOVERNANCE_PILLARS_DATA.forEach(g => {
+                const el = document.getElementById(`badge-gov-${g.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Arsitektur Negara: ${g.title}`)}x dipelajari`;
+            });
+
+            // 4. Update 12 Pilar & Lembaga Badges
+            PILLARS_12_DATA.forEach(p => {
+                const el = document.getElementById(`badge-pilar-${p.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Pilar: ${p.title}`)}x dipelajari`;
+            });
+
+            // 5. Update Dropdown Komparasi Badges
+            [1, 2, 3].forEach(col => {
+                const el = document.getElementById(`badge-comp-${col}`);
+                if (el) el.innerText = `👁️ ${getCount(`Komparasi Dimensi Kolom ${col}`)}x dipelajari`;
+            });
+
+            // 6. Update Simulator & Kuis Badges
+            const simTotal = activityLog
+                .filter(i => i.category === 'Simulator Tata Kelola')
+                .reduce((acc, cur) => acc + cur.count, 0);
+            const simBadge = document.getElementById('badge-simulator-count');
+            if (simBadge) simBadge.innerText = `👁️ ${simTotal}x simulasi dijalankan`;
+
+            const quizTotal = getCount('Kuis: Jawab Soal');
+            const quizBadge = document.getElementById('badge-quiz-count');
+            if (quizBadge) quizBadge.innerText = `👁️ ${quizTotal}x soal dijawab`;
+
+            // 7. Total Klik Global (Header, FAB, Modal)
+            const totalAllClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('header-total-clicks').innerText = `${totalAllClicks} Klik`;
+            document.getElementById('fab-total-clicks').innerText = `${totalAllClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalAllClicks;
+
+            // 8. Kategori Teraktif
+            const catTotals = {};
+            activityLog.forEach(item => {
+                catTotals[item.category] = (catTotals[item.category] || 0) + item.count;
+            });
+            let topCat = '-';
+            let maxVal = 0;
+            Object.entries(catTotals).forEach(([cat, val]) => {
+                if (val > maxVal) {
+                    maxVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // 9. Persentase Cakupan Materi (dari 12 Pilar)
+            const pilarKeys = new Set(PILLARS_12_DATA.map(p => `Pilar: ${p.title}`));
+            const exploredPilarCount = activityLog.filter(item => pilarKeys.has(item.name)).length;
+            const totalPillars = PILLARS_12_DATA.length; // 12
+            const coveragePct = Math.min(100, Math.round((exploredPilarCount / totalPillars) * 100));
+
+            document.getElementById('modal-progress-bar').style.width = `${coveragePct}%`;
+            document.getElementById('modal-progress-percent').innerText = `${coveragePct}%`;
+            document.getElementById('modal-coverage-detail').innerText = `${exploredPilarCount} dari ${totalPillars} pilar dibuka`;
+
+            // 10. Top 5 Sub-Materi Paling Sering Diklik
+            const top5 = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const top5El = document.getElementById('top-5-list');
+            if (top5.length === 0) {
+                top5El.innerHTML = `<p class="text-slate-400 italic py-4 text-center">Belum ada interaksi tercatat. Klik kartu nilai atau lembaga untuk mulai belajar!</p>`;
+            } else {
+                top5El.innerHTML = top5.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                        <span class="truncate pr-2 font-semibold text-slate-700">
+                            <span class="inline-block w-5 text-garudaCrimson-800 font-extrabold">#${idx + 1}</span> ${item.name}
+                        </span>
+                        <span class="bg-nusantaraGold-100 text-nusantaraGold-700 px-2 py-0.5 rounded-md font-mono font-extrabold shrink-0">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // 11. Tabel Log Interaksi Lengkap
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">Belum ada data aktivitas belajar.</td></tr>`;
+            } else {
+                const reversedLog = [...activityLog].reverse();
+                tbody.innerHTML = reversedLog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-extrabold text-garudaCrimson-800 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 12. Grafik Doughnut Chart.js
+            renderDoughnutChart(catTotals);
+        }
+
+        function renderDoughnutChart(catTotals) {
+            const canvas = document.getElementById('analyticsChart');
+            const emptyMsg = document.getElementById('chart-empty-msg');
+            if (!canvas) return;
+
+            const labels = Object.keys(catTotals);
+            const values = Object.values(catTotals);
+
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+                analyticsChartInstance = null;
+            }
+
+            if (labels.length === 0) {
+                canvas.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyMsg.classList.add('hidden');
+
+            analyticsChartInstance = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#991b1b', // Garuda Crimson
+                            '#d97706', // Nusantara Gold
+                            '#0f172a', // Garuda Navy
+                            '#059669', // Emerald
+                            '#b91c1c', // Red 700
+                            '#b45309', // Amber 700
+                            '#1e293b'  // Slate 800
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ` ${ctx.label}: ${ctx.parsed} klik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Toast Notification di Pojok Kanan Atas
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            while (container.children.length >= 3) {
+                container.removeChild(container.firstChild);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = "bg-garudaNavy-950/95 text-white border border-nusantaraGold-400/60 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 transition-all duration-300 transform translate-x-4 opacity-0";
+            toast.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-nusantaraGold-400 text-garudaNavy-950 flex items-center justify-center text-[10px] shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="truncate font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. NAVIGASI ANTAR TAB
+         * ------------------------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-garudaCrimson-700', 'text-white', 'shadow', 'border', 'border-nusantaraGold-400/30');
+                btn.classList.add('text-rose-100');
+            });
+            const activeDesk = document.getElementById(`nav-${tabId}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-garudaCrimson-700', 'text-white', 'shadow', 'border', 'border-nusantaraGold-400/30');
+                activeDesk.classList.remove('text-rose-100');
+            }
+
+            // Mobile nav styling
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-garudaCrimson-700', 'text-white');
+                btn.classList.add('bg-white/10', 'text-rose-100');
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.classList.add('bg-garudaCrimson-700', 'text-white');
+                activeMob.classList.remove('bg-white/10', 'text-rose-100');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. TAB 1 RENDER & MODAL (5 NILAI DASAR & 3 ARSITEKTUR NEGARA)
+         * ------------------------------------------------------------------- */
+        function renderCoreValuesGrid() {
+            const container = document.getElementById('core-values-grid');
+            if (!container) return;
+
+            container.innerHTML = CORE_VALUES_DATA.map((v, idx) => {
+                const count = getCount(`Nilai Dasar: ${v.title}`);
+                return `
+                    <div onclick="openCoreValueModal(${idx})" class="bg-white p-5 rounded-2xl border-2 border-slate-200/90 hover:border-garudaCrimson-800 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between space-y-3 group">
+                        <div class="space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="w-10 h-10 rounded-xl bg-garudaCrimson-100 text-garudaCrimson-800 flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-solid ${v.icon}"></i>
+                                </div>
+                                <span id="badge-val-${v.id}" class="counter-badge bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-extrabold text-nusantaraGold-700 block">${v.badge}</span>
+                                <h4 class="font-extrabold text-slate-900 text-base group-hover:text-garudaCrimson-800 transition leading-snug mt-0.5">${v.title}</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">${v.shortDesc}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-garudaCrimson-800 group-hover:underline">
+                            <span>Buka Penjelasan Mendalam</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCoreValueModal(idx) {
+            const v = CORE_VALUES_DATA[idx];
+            if (!v) return;
+
+            trackActivity(`Nilai Dasar: ${v.title}`, 'Nilai & Falsafah Bangsa', `badge-val-${v.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-nusantaraGold-400">${v.badge}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${v.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-nusantaraGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Nilai Dasar: ${v.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-garudaCrimson-50 p-4 rounded-2xl border border-garudaCrimson-200 space-y-2">
+                    <h4 class="font-extrabold text-garudaNavy-900 text-sm">Uraian Filosofis & Implementasi dalam Tata Kelola:</h4>
+                    <ul class="space-y-2 text-xs text-slate-800 leading-relaxed">
+                        ${v.details.map(item => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-garudaCrimson-800 mt-0.5"></i><span>${item}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function renderGovernancePillarsGrid() {
+            const container = document.getElementById('governance-pillars-grid');
+            if (!container) return;
+
+            container.innerHTML = GOVERNANCE_PILLARS_DATA.map((g, idx) => {
+                const count = getCount(`Arsitektur Negara: ${g.title}`);
+                return `
+                    <div onclick="openGovernancePillarModal(${idx})" class="bg-gradient-to-br ${g.color} text-white p-6 rounded-2xl border border-nusantaraGold-400/30 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="bg-white/15 text-nusantaraGold-300 border border-white/20 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                    ${g.badge}
+                                </span>
+                                <span id="badge-gov-${g.id}" class="counter-badge bg-nusantaraGold-400 text-garudaNavy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg text-nusantaraGold-400 shrink-0">
+                                    <i class="fa-solid ${g.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-lg text-white group-hover:text-nusantaraGold-300 transition leading-snug">${g.title}</h4>
+                            </div>
+                            <p class="text-xs text-rose-100 leading-relaxed">${g.summary}</p>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-white/15 flex items-center justify-between text-xs font-bold text-nusantaraGold-400 group-hover:underline">
+                            <span>Buka Struktur & Regulasi</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openGovernancePillarModal(idx) {
+            const g = GOVERNANCE_PILLARS_DATA[idx];
+            if (!g) return;
+
+            trackActivity(`Arsitektur Negara: ${g.title}`, 'Arsitektur Tata Kelola', `badge-gov-${g.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${g.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-nusantaraGold-300">${g.badge}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${g.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-nusantaraGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Arsitektur Negara: ${g.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = g.sections.map(sec => `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                    <h4 class="font-extrabold text-garudaNavy-900 text-sm">${sec.title}</h4>
+                    <ul class="space-y-1.5 text-xs text-slate-700 leading-relaxed">
+                        ${sec.items.map(it => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-garudaCrimson-800 mt-0.5"></i><span>${it}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. TAB 2 RENDER & MODAL KATALOG 12 PILAR NILAI & INSTITUSI TATA KELOLA
+         * ------------------------------------------------------------------- */
+        function renderPillarsCatalogGrid() {
+            const container = document.getElementById('pillars-catalog-grid');
+            if (!container) return;
+
+            const catFilter = document.getElementById('pilar-category-filter').value;
+            const searchQuery = (document.getElementById('pilar-search').value || '').toLowerCase();
+
+            const filtered = PILLARS_12_DATA.filter(p => {
+                const matchCat = catFilter === 'all' || p.category === catFilter;
+                const matchSearch = p.title.toLowerCase().includes(searchQuery) ||
+                    p.category.toLowerCase().includes(searchQuery) ||
+                    p.summary.toLowerCase().includes(searchQuery) ||
+                    p.constitutionalBasis.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada pilar nilai atau lembaga tata kelola yang cocok dengan kata kunci pencarian Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const categoryColors = {
+                'Nilai & Falsafah': 'from-garudaCrimson-900 to-garudaCrimson-800',
+                'Lembaga Tinggi Negara': 'from-garudaNavy-950 to-garudaCrimson-900',
+                'Tata Kelola & Reformasi': 'from-nusantaraGold-700 to-garudaNavy-950'
+            };
+
+            container.innerHTML = filtered.map(p => {
+                const count = getCount(`Pilar: ${p.title}`);
+                const grad = categoryColors[p.category] || 'from-garudaNavy-950 to-garudaCrimson-800';
+
+                return `
+                    <div onclick="openPillarCatalogModal('${p.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${grad} text-white space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-white/15 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-white/20">
+                                    #${p.number} • ${p.category}
+                                </span>
+                                <span id="badge-pilar-${p.id}" class="counter-badge bg-nusantaraGold-400 text-garudaNavy-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg text-nusantaraGold-300 shrink-0">
+                                    <i class="fa-solid ${p.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-base leading-snug group-hover:translate-x-1 transition-transform">${p.title}</h4>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-4 text-xs">
+                            <div class="space-y-2.5">
+                                <p class="text-slate-600 leading-relaxed">${p.summary}</p>
+                                <div class="bg-garudaCrimson-50/70 px-3 py-2 rounded-xl border border-garudaCrimson-100">
+                                    <span class="text-[10px] font-extrabold uppercase text-garudaCrimson-800 block">Landasan Utama:</span>
+                                    <p class="text-slate-700 line-clamp-2 mt-0.5">${p.constitutionalBasis}</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-garudaCrimson-800 font-extrabold group-hover:underline">
+                                <span>Buka Detail Lengkap (4 Aspek)</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openPillarCatalogModal(pilarId) {
+            const p = PILLARS_12_DATA.find(item => item.id === pilarId);
+            if (!p) return;
+
+            trackActivity(`Pilar: ${p.title}`, 'Katalog 12 Pilar', `badge-pilar-${p.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center text-xl text-nusantaraGold-400 shrink-0">
+                        <i class="fa-solid ${p.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-nusantaraGold-300">Pilar #${p.number} • ${p.category}</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${p.title}</h3>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-nusantaraGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Pilar: ${p.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <!-- 1. Landasan Konstitusional / Filosofis -->
+                <div class="bg-garudaCrimson-50 p-4 rounded-2xl border border-garudaCrimson-200 space-y-1.5">
+                    <h4 class="font-extrabold text-garudaCrimson-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-book-bookmark text-garudaCrimson-800"></i>
+                        <span>1. Landasan Konstitusional / Filosofis</span>
+                    </h4>
+                    <p class="text-slate-800 leading-relaxed">${p.constitutionalBasis}</p>
+                </div>
+
+                <!-- 2. Fungsi & Peran Strategis -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1.5">
+                    <h4 class="font-extrabold text-garudaNavy-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-chess-queen text-garudaNavy-800"></i>
+                        <span>2. Fungsi & Peran Strategis</span>
+                    </h4>
+                    <p class="text-slate-700 leading-relaxed">${p.strategicRole}</p>
+                </div>
+
+                <!-- 3. Tantangan Kontemporer -->
+                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-1.5">
+                    <h4 class="font-extrabold text-amber-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-triangle-exclamation text-nusantaraGold-700"></i>
+                        <span>3. Tantangan Kontemporer</span>
+                    </h4>
+                    <p class="text-amber-950 leading-relaxed">${p.contemporaryChallenge}</p>
+                </div>
+
+                <!-- 4. Contoh Praktik Baik -->
+                <div class="bg-garudaNavy-900 text-white p-4 rounded-2xl border border-nusantaraGold-400/40 space-y-1.5">
+                    <h4 class="font-extrabold text-nusantaraGold-400 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>4. Contoh Praktik Baik (Best Practices)</span>
+                    </h4>
+                    <p class="text-slate-200 leading-relaxed">${p.bestPractice}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. TAB 3: MATRIKS KOMPARASI TATA KELOLA (2 ATAU 3 DIMENSI)
+         * ------------------------------------------------------------------- */
+        function initCompareSelectors() {
+            const defaults = ['sentralisasi_vs_desentralisasi', 'musyawarah_vs_voting', 'birokrasi_konvensional_vs_spbe'];
+            [1, 2, 3].forEach((col, idx) => {
+                const sel = document.getElementById(`comp-select-${col}`);
+                if (!sel) return;
+                sel.innerHTML = COMPARE_MODELS_DATA.map(m => `<option value="${m.id}" ${m.id === defaults[idx] ? 'selected' : ''}>${m.name}</option>`).join('');
+            });
+        }
+
+        function setCompareMode(mode) {
+            compareColumnMode = mode;
+            const btn2 = document.getElementById('btn-comp-mode-2');
+            const btn3 = document.getElementById('btn-comp-mode-3');
+            const box3 = document.getElementById('comp-box-3');
+            const grid = document.getElementById('compare-selectors-grid');
+
+            if (mode === 2) {
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-garudaCrimson-800 text-white transition";
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.add('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+            } else {
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-garudaCrimson-800 text-white transition";
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.remove('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-3 gap-4";
+            }
+
+            trackActivity(`Mode Komparasi ${mode} Dimensi`, 'Matriks Komparasi');
+            renderCompareTable();
+        }
+
+        function handleCompareChange(colNum) {
+            const sel = document.getElementById(`comp-select-${colNum}`);
+            const chosen = COMPARE_MODELS_DATA.find(m => m.id === sel.value);
+            trackActivity(`Komparasi Dimensi Kolom ${colNum}`, 'Matriks Komparasi', `badge-comp-${colNum}`);
+            if (chosen) {
+                trackActivity(`Bandingkan: ${chosen.name}`, 'Matriks Komparasi');
+            }
+            renderCompareTable();
+        }
+
+        function renderCompareTable() {
+            const table = document.getElementById('compare-matrix-table');
+            if (!table) return;
+
+            const m1 = COMPARE_MODELS_DATA.find(m => m.id === document.getElementById('comp-select-1').value) || COMPARE_MODELS_DATA[0];
+            const m2 = COMPARE_MODELS_DATA.find(m => m.id === document.getElementById('comp-select-2').value) || COMPARE_MODELS_DATA[1];
+            const m3 = compareColumnMode === 3 ? (COMPARE_MODELS_DATA.find(m => m.id === document.getElementById('comp-select-3').value) || COMPARE_MODELS_DATA[2]) : null;
+
+            const rows = [
+                { label: 'Dasar Konsep', field: 'concept' },
+                { label: 'Mekanisme Pengambilan Keputusan', field: 'decisionMechanism' },
+                { label: 'Keunggulan Utama', field: 'strengths' },
+                { label: 'Risiko / Tantangan', field: 'risks' },
+                { label: 'Relevansi di Indonesia', field: 'relevance' }
+            ];
+
+            table.innerHTML = `
+                <thead>
+                    <tr class="bg-garudaNavy-950 text-white">
+                        <th class="p-3.5 font-extrabold w-48">Parameter Analisis</th>
+                        <th class="p-3.5 font-extrabold bg-garudaNavy-900">${m1.name}</th>
+                        <th class="p-3.5 font-extrabold bg-garudaCrimson-900">${m2.name}</th>
+                        ${m3 ? `<th class="p-3.5 font-extrabold bg-nusantaraGold-700">${m3.name}</th>` : ''}
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    ${rows.map(r => `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-3.5 font-bold text-slate-800 bg-slate-50">${r.label}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed">${m1[r.field]}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed bg-garudaCrimson-50/25">${m2[r.field]}</td>
+                            ${m3 ? `<td class="p-3.5 text-slate-700 leading-relaxed bg-nusantaraGold-50/30">${m3[r.field]}</td>` : ''}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. TAB 4: SIMULATOR REFORMASI BIROKRASI & GOOD GOVERNANCE
+         * ------------------------------------------------------------------- */
+        function updateSimulatorPreview() {
+            const s1 = parseInt(document.getElementById('sim-slider-1').value) || 0;
+            const s2 = parseInt(document.getElementById('sim-slider-2').value) || 0;
+            const s3 = parseInt(document.getElementById('sim-slider-3').value) || 0;
+            const s4 = parseInt(document.getElementById('sim-slider-4').value) || 0;
+            const s5 = parseInt(document.getElementById('sim-slider-5').value) || 0;
+
+            document.getElementById('val-sim-1').innerText = `${s1}%`;
+            document.getElementById('val-sim-2').innerText = `${s2}%`;
+            document.getElementById('val-sim-3').innerText = `${s3}%`;
+            document.getElementById('val-sim-4').innerText = `${s4}%`;
+            document.getElementById('val-sim-5').innerText = `${s5}%`;
+
+            // Indeks Good Governance (0 - 100)
+            const govIndex = ((s1 * 0.20) + (s2 * 0.25) + (s3 * 0.20) + (s4 * 0.15) + (s5 * 0.20)).toFixed(1);
+            // Tingkat Kepercayaan Publik
+            const trustScore = ((s2 * 0.35) + (s3 * 0.30) + (s4 * 0.20) + (s5 * 0.15)).toFixed(1);
+            // Skor Pengendalian Anti-Korupsi
+            const antiCorruptionScore = ((s1 * 0.35) + (s2 * 0.45) + (s3 * 0.20));
+
+            document.getElementById('sim-res-score').innerText = govIndex;
+
+            const tierBadge = document.getElementById('sim-res-tier-badge');
+            const trustEl = document.getElementById('sim-res-trust');
+            const riskEl = document.getElementById('sim-res-risk');
+            const narrativeEl = document.getElementById('sim-res-narrative');
+
+            // Tingkat Kepercayaan Publik (Rendah / Sedang / Tinggi)
+            if (trustScore >= 72) {
+                trustEl.innerText = `Tinggi (${trustScore}%)`;
+                trustEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+            } else if (trustScore >= 48) {
+                trustEl.innerText = `Sedang (${trustScore}%)`;
+                trustEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-nusantaraGold-500/20 text-nusantaraGold-300 border border-nusantaraGold-500/40';
+            } else {
+                trustEl.innerText = `Rendah (${trustScore}%)`;
+                trustEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40';
+            }
+
+            // Risiko Maladministrasi & Korupsi
+            if (antiCorruptionScore >= 75) {
+                riskEl.innerText = 'Rendah & Terkendali';
+                riskEl.className = 'font-bold text-emerald-300';
+            } else if (antiCorruptionScore >= 48) {
+                riskEl.innerText = 'Moderat (Perlu Pengawasan)';
+                riskEl.className = 'font-bold text-nusantaraGold-300';
+            } else {
+                riskEl.innerText = 'Tinggi (Rentan Penyimpangan)';
+                riskEl.className = 'font-bold text-rose-400';
+            }
+
+            // Evaluasi & Rekomendasi Kebijakan
+            if (govIndex >= 82) {
+                tierBadge.innerText = 'Birokrasi Berkelas Dunia & Berintegritas';
+                tierBadge.className = 'bg-emerald-500 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Kombinasi SPBE terpadu, transparansi anggaran, internalisasi nilai Pancasila & BerAKHLAK, serta musyawarah inklusif menciptakan pemerintahan yang bersih, lincah, dan dipercaya publik dari pusat hingga desa.';
+            } else if (govIndex >= 58) {
+                tierBadge.innerText = 'Tata Kelola Progresif & Akuntabel';
+                tierBadge.className = 'bg-nusantaraGold-400 text-garudaNavy-950 font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Sinergi antara SPBE, transparansi anggaran, dan internalisasi nilai BerAKHLAK menghasilkan pelayanan publik yang responsif. Tingkatkan partisipasi musyawarah publik dan efektivitas desentralisasi agar pemerataan layanan daerah semakin optimal.';
+            } else {
+                tierBadge.innerText = 'Birokrasi Lamban & Rentan Maladministrasi';
+                tierBadge.className = 'bg-rose-600 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Rendahnya digitalisasi SPBE, lemahnya transparansi anggaran, dan minimnya internalisasi etika BerAKHLAK memperbesar risiko pungli, lambannya layanan publik, serta menurunnya legitimasi kepercayaan masyarakat.';
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. TAB 5: KUIS EVALUASI 6 SOAL STUDI KASUS
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span class="bg-garudaCrimson-800 text-white px-3 py-1 rounded-full">Studi Kasus ${currentQuizIdx + 1} dari ${QUIZ_QUESTIONS.length}</span>
+                        <span>Benar: <strong class="text-garudaCrimson-800 font-mono text-sm">${quizScore} / ${QUIZ_QUESTIONS.length}</strong></span>
+                    </div>
+
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</h4>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left bg-white hover:bg-garudaCrimson-50 border border-slate-200 hover:border-garudaCrimson-800 p-4 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-between group shadow-2xs">
+                                <span class="pr-3"><strong class="text-garudaCrimson-800 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-garudaCrimson-800 transition shrink-0"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi', 'badge-quiz-count');
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) quizScore += 1;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-4 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-rose-100 text-rose-950 border border-rose-300'} text-xs font-extrabold flex items-center space-x-2.5">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-xl"></i>
+                        <span>${isCorrect ? 'Jawaban Anda Tepat!' : `Jawaban Kurang Tepat. Jawaban benar: ${String.fromCharCode(65 + q.answer)}`}</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <strong class="text-garudaNavy-900 block">Pembahasan Yuridis & Konseptual:</strong>
+                        <p>${q.explain}</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="advanceQuiz()" class="bg-garudaCrimson-800 hover:bg-garudaCrimson-900 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition shadow">
+                            ${currentQuizIdx < QUIZ_QUESTIONS.length - 1 ? 'Studi Kasus Berikutnya →' : 'Lihat Hasil Akhir Kuis'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function advanceQuiz() {
+            if (currentQuizIdx < QUIZ_QUESTIONS.length - 1) {
+                currentQuizIdx++;
+                renderQuiz();
+            } else {
+                const container = document.getElementById('quiz-container');
+                const finalPercent = Math.round((quizScore / QUIZ_QUESTIONS.length) * 100);
+                let predicate = 'Terus Pelajari Pilar NusantaraGov!';
+                if (quizScore === QUIZ_QUESTIONS.length) predicate = 'Sempurna! Negarawan & Analis Tata Kelola Unggul';
+                else if (quizScore >= 4) predicate = 'Sangat Baik! Pemahaman Konstitusi & Birokrasi Kuat';
+                else if (quizScore >= 3) predicate = 'Cukup Baik! Perkuat Detail Kewenangan Lembaga';
+
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-garudaNavy-950 via-garudaCrimson-900 to-garudaCrimson-800 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-nusantaraGold-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-nusantaraGold-400/20 text-nusantaraGold-400 border border-nusantaraGold-400/40 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-nusantaraGold-300 block">${predicate}</span>
+                        <h4 class="font-extrabold text-2xl">Kuis Evaluasi Selesai!</h4>
+                        <div class="py-2">
+                            <span class="text-xs text-rose-100 block">Skor Akhir Anda (${quizScore} dari ${QUIZ_QUESTIONS.length} Studi Kasus Benar):</span>
+                            <strong class="text-4xl font-mono font-extrabold text-nusantaraGold-400">${finalPercent} / 100</strong>
+                        </div>
+                        <button onclick="restartQuiz()" class="bg-gradient-to-r from-nusantaraGold-400 to-nusantaraGold-600 hover:from-nusantaraGold-300 hover:to-nusantaraGold-500 text-garudaNavy-950 font-extrabold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis Evaluasi
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            trackActivity('Kuis: Ulangi Kuis', 'Kuis Evaluasi');
+            renderQuiz();
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. MODAL ANALITIK, RESET INLINE & EKSPOR DATA JSON
+         * ------------------------------------------------------------------- */
+        function openAnalyticsModal() {
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function toggleResetConfirm(show) {
+            const box = document.getElementById('reset-confirm-box');
+            if (!box) return;
+            if (show) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function executeClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem(STORAGE_KEY);
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            showToast('Seluruh riwayat hitungan belajar telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const payload = {
+                aplikasi: 'NusantaraGov - Nilai Luhur & Tata Kelola Pemerintahan Indonesia',
+                waktuEkspor: new Date().toISOString(),
+                totalInteraksi: activityLog.reduce((s, i) => s + i.count, 0),
+                riwayatAktivitas: activityLog
+            };
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `Analitik_NusantaraGov_${Date.now()}.json`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Data analitik berhasil diekspor ke JSON.');
+        }
+    </script>
+</body>
+</html>
