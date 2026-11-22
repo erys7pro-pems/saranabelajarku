@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntegritasID - Edukasi Jenis Korupsi, Analogi Sehari-hari, & Dampak Sosial Ekonomi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6.4.0 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyDark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        integrityCrimson: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        },
+                        amberGold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        emeraldSafe: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar untuk tabel dan modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Animasi denyut visual pada counter badge */
+        .counter-badge {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: badgePulse 0.45s ease-out;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.25); background-color: #fbbf24; color: #020617; }
+            100% { transform: scale(1); }
+        }
+        /* Sembunyikan scrollbar horizontal pada navigasi mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-integrityCrimson-700 selection:text-white">
+
+    <!-- ================= 1. HEADER STICKY & NAVIGASI 5 TAB + LIVE COUNTER BADGES ================= -->
+    <header class="bg-gradient-to-r from-navyDark-950 via-navyDark-900 to-integrityCrimson-900 text-white sticky top-0 z-40 shadow-xl border-b border-integrityCrimson-600/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo IntegritasID -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="trackActivity('Logo Beranda IntegritasID', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-integrityCrimson-600 to-amberGold-500 text-white flex items-center justify-center font-extrabold text-lg shadow-lg border border-amberGold-400/40 group-hover:scale-105 transition">
+                        <i class="fa-solid fa-scale-unbalanced-flip"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">IntegritasID</h1>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-integrityCrimson-700/80 text-amberGold-400 border border-amberGold-400/40 px-2 py-0.5 rounded-full">Anti-Korupsi</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 font-medium">Jenis Korupsi, Analogi & Dampak Sosial-Ekonomi</p>
+                    </div>
+                </div>
+
+                <!-- Navigasi Desktop (5 Tab Utama) -->
+                <nav class="hidden lg:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab 1: Beranda', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-integrityCrimson-700 text-white shadow border border-amberGold-400/30">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Beranda</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-navyDark-950 text-amberGold-400 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 2: Katalog 12 Jenis', 'Navigasi Menu'); switchTab('katalog')" id="nav-katalog" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Katalog 12 Jenis</span>
+                        <span id="nav-count-katalog" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 3: Komparasi', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-code-compare"></i>
+                        <span>Komparasi</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 4: Simulator Dampak', 'Navigasi Menu'); switchTab('simulator')" id="nav-simulator" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Simulator Dampak</span>
+                        <span id="nav-count-simulator" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 5: Kuis Studi Kasus', 'Navigasi Menu'); switchTab('kuis')" id="nav-kuis" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-slate-300 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Kuis Studi Kasus</span>
+                        <span id="nav-count-kuis" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Tombol Statistik Belajar -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-amberGold-400 to-amberGold-500 hover:from-amberGold-300 hover:to-amberGold-400 text-navyDark-950 px-3.5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-navyDark-950 text-amberGold-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+
+            <!-- Navigasi Mobile & Tablet -->
+            <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-white/10 text-xs font-semibold">
+                <button onclick="trackActivity('Tab 1: Beranda', 'Navigasi Menu'); switchTab('beranda')" id="mob-nav-beranda" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-integrityCrimson-700 text-white">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Beranda</span>
+                    <span id="mob-count-beranda" class="text-[10px] bg-navyDark-950 text-amberGold-400 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 2: Katalog 12 Jenis', 'Navigasi Menu'); switchTab('katalog')" id="mob-nav-katalog" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-slate-200">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Katalog 12 Jenis</span>
+                    <span id="mob-count-katalog" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 3: Komparasi', 'Navigasi Menu'); switchTab('komparasi')" id="mob-nav-komparasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-slate-200">
+                    <i class="fa-solid fa-code-compare"></i>
+                    <span>Komparasi</span>
+                    <span id="mob-count-komparasi" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 4: Simulator Dampak', 'Navigasi Menu'); switchTab('simulator')" id="mob-nav-simulator" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-slate-200">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Simulator Dampak</span>
+                    <span id="mob-count-simulator" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 5: Kuis Studi Kasus', 'Navigasi Menu'); switchTab('kuis')" id="mob-nav-kuis" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-slate-200">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Kuis Studi Kasus</span>
+                    <span id="mob-count-kuis" class="text-[10px] bg-amberGold-400 text-navyDark-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- =====================================================================
+             TAB 1: BERANDA (LANDASAN HUKUM, 7 KELOMPOK TIPIKOR, & 3 DAMPAK SOSIAL EKONOMI)
+             ===================================================================== -->
+        <section id="sec-beranda" class="tab-content space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navyDark-950 via-navyDark-900 to-integrityCrimson-900 text-white p-7 sm:p-11 shadow-2xl border border-integrityCrimson-600/40">
+                <div class="absolute -right-6 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-gavel text-[16rem] text-amberGold-400"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-integrityCrimson-600/30 text-amberGold-400 border border-amberGold-400/40 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+                            UU No. 31 Tahun 1999 jo. UU No. 20 Tahun 2001
+                        </span>
+                        <span class="bg-emeraldSafe-500/20 text-emerald-300 border border-emeraldSafe-500/40 px-3 py-1 rounded-full text-xs font-semibold">
+                            Literasi Hukum & Antikorupsi Publik
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+                        Kenali Bentuknya, Pahami Analoginya, Lawan Dampaknya
+                    </h2>
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                        Berdasarkan <strong>UU No. 31 Tahun 1999 jo. UU No. 20 Tahun 2001 tentang Pemberantasan Tindak Pidana Korupsi</strong>, korupsi bukan sekadar mencuri uang negara secara langsung, melainkan mencakup 30 bentuk delik yang dikelompokkan KPK menjadi <strong>7 kelompok utama tindak pidana korupsi</strong>. Pelajari padanan analoginya dalam kehidupan sehari-hari serta dampak sosial-ekonominya bagi kesejahteraan rakyat.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="trackActivity('Hero: Jelajahi Katalog 12 Jenis', 'Navigasi Cepat'); switchTab('katalog')" class="bg-gradient-to-r from-integrityCrimson-600 to-integrityCrimson-700 hover:from-integrityCrimson-500 hover:to-integrityCrimson-600 text-white font-extrabold px-5 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg border border-amberGold-400/30 flex items-center space-x-2">
+                            <i class="fa-solid fa-book-open text-amberGold-400"></i>
+                            <span>Jelajahi Katalog 12 Jenis</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="trackActivity('Hero: Buka Simulator Dampak', 'Navigasi Cepat'); switchTab('simulator')" class="bg-white/10 hover:bg-white/20 text-white border border-white/25 font-semibold px-5 py-3 rounded-xl text-xs sm:text-sm transition backdrop-blur-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-amberGold-400"></i>
+                            <span>Simulasi Dampak Sosial-Ekonomi</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN A: 7 KELOMPOK UTAMA TINDAK PIDANA KORUPSI (KPK & UU TIPIKOR) -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-integrityCrimson-700">Klasifikasi Resmi KPK & UU Tipikor</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">7 Kelompok Utama Tindak Pidana Korupsi (KPK & UU Tipikor)</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap kartu kelompok untuk membuka rincian pasal & ringkasan deliknya</p>
+                </div>
+
+                <div id="tipikor-7-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- BAGIAN B: 3 PILAR DAMPAK SOSIAL-EKONOMI KORUPSI -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amberGold-600">Konsekuensi Nyata Bagi Masyarakat</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">3 Pilar Dampak Sosial-Ekonomi Korupsi</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik setiap kartu pilar dampak untuk membedah mekanisme kerugian publiknya</p>
+                </div>
+
+                <div id="impact-3-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 2: KATALOG 12 JENIS KORUPSI & PERILAKU KORUPTIF
+             ===================================================================== -->
+        <section id="sec-katalog" class="tab-content hidden space-y-6">
+            <!-- Toolbar Filter & Pencarian Real-Time -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-integrityCrimson-700">Ensiklopedia Delik, Analogi & Dampak</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Katalog 12 Jenis Korupsi & Perilaku Koruptif</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap kartu untuk mempelajari Dasar Hukum & Unsur Pasal, Analogi Kehidupan Sehari-hari, Contoh Kasus Nyata, dan Analisis Dampak Sosial-Ekonomi.</p>
+                    </div>
+                    <!-- Filter Kategori & Live Search -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="katalog-category-filter" onchange="trackActivity('Filter Kategori: ' + this.value, 'Katalog 12 Jenis'); renderKatalog12Grid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-integrityCrimson-700">
+                            <option value="all">Semua Kategori (12 Jenis)</option>
+                            <option value="Keuangan Negara & Pengadaan">Keuangan Negara & Pengadaan</option>
+                            <option value="Suap, Gratifikasi & Pemerasan">Suap, Gratifikasi & Pemerasan</option>
+                            <option value="Jabatan, Curang & Obstruction">Jabatan, Curang & Obstruction</option>
+                        </select>
+                        <div class="relative sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="katalog-search" oninput="renderKatalog12Grid()" placeholder="Cari suap, pasal 12B, bendahara, pungli..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-integrityCrimson-700 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 12 Kartu Jenis Korupsi -->
+            <div id="katalog-12-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 3: MATRIKS KOMPARASI JENIS KORUPSI
+             ===================================================================== -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amberGold-600">Pembedah Batas Hukum & Relasi Kuasa</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Matriks Komparasi Jenis Korupsi</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih 3 jenis korupsi (default: Suap-Menyuap, Gratifikasi Ilegal, dan Pemerasan) untuk melihat perbedaan unsur pasal, inisiatif pihak, mekanisme pelaporan 30 hari kerja KPK, serta sanksinya.</p>
+                    </div>
+                </div>
+
+                <!-- 3 Dropdown Pemilih Jenis Korupsi -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Kolom 1 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-navyDark-900 uppercase">Jenis Pembanding 1</label>
+                            <span id="badge-comp-1" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-1" onchange="handleCompareChange(1)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-integrityCrimson-700">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 2 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-integrityCrimson-700 uppercase">Jenis Pembanding 2</label>
+                            <span id="badge-comp-2" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-2" onchange="handleCompareChange(2)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-integrityCrimson-700">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 3 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-amberGold-700 uppercase">Jenis Pembanding 3</label>
+                            <span id="badge-comp-3" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-3" onchange="handleCompareChange(3)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-integrityCrimson-700">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabel Perbandingan Berdampingan pada 6 Parameter -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table id="compare-matrix-table" class="w-full text-left text-xs border-collapse">
+                        <!-- Di-render dinamis oleh JS -->
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 4: SIMULATOR DAMPAK SOSIAL-EKONOMI KORUPSI
+             ===================================================================== -->
+        <section id="sec-simulator" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-8">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-integrityCrimson-700">Pemodelan Konsekuensi Fiskal & Kesejahteraan Publik</span>
+                        <h3 class="font-extrabold text-slate-900 text-2xl">Simulator Dampak Sosial-Ekonomi Korupsi</h3>
+                        <p class="text-xs text-slate-500 mt-1">Ubah 5 parameter kerawanan korupsi dan efektivitas digitalisasi publik untuk memproyeksikan beban biaya tinggi, kerusakan infrastruktur, serta skor Indeks Persepsi Korupsi (CPI).</p>
+                    </div>
+                    <span id="badge-simulator-count" class="counter-badge bg-integrityCrimson-100 text-integrityCrimson-900 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-integrityCrimson-200 self-start sm:self-auto">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 5 Sliders Interaktif (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Slider 1 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">1. Tingkat Kebocoran & Mark-Up Anggaran Infrastruktur (0% - 60%)</label>
+                                <span id="val-sim-1" class="font-mono font-extrabold text-integrityCrimson-700 bg-white px-2.5 py-0.5 rounded border">25%</span>
+                            </div>
+                            <input type="range" id="sim-slider-1" min="0" max="60" value="25" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Kebocoran & Mark-Up Infrastruktur', 'Simulator Dampak'); updateSimulatorPreview()" class="w-full accent-integrityCrimson-700 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Penggelembungan harga satuan proyek (mark-up) dan pengurangan kualitas material jalan, jembatan, irigasi, dan gedung sekolah.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">2. Intensitas Suap & Pungli Perizinan Usaha (0% - 80%)</label>
+                                <span id="val-sim-2" class="font-mono font-extrabold text-integrityCrimson-700 bg-white px-2.5 py-0.5 rounded border">30%</span>
+                            </div>
+                            <input type="range" id="sim-slider-2" min="0" max="80" value="30" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Suap & Pungli Perizinan Usaha', 'Simulator Dampak'); updateSimulatorPreview()" class="w-full accent-integrityCrimson-700 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Uang pelicin izin usaha, pungli distribusi logistik, dan biaya siluman yang dibebankan pelaku usaha ke harga barang konsumen.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">3. Penyimpangan Pengadaan Barang/Jasa & Benturan Kepentingan (0% - 70%)</label>
+                                <span id="val-sim-3" class="font-mono font-extrabold text-amberGold-700 bg-white px-2.5 py-0.5 rounded border">25%</span>
+                            </div>
+                            <input type="range" id="sim-slider-3" min="0" max="70" value="25" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Penyimpangan Pengadaan & Conflict of Interest', 'Simulator Dampak'); updateSimulatorPreview()" class="w-full accent-amberGold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Pengaturan pemenang tender kepada perusahaan afiliasi/kerabat pejabat yang mematikan persaingan usaha sehat dan UMKM.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-slate-800">4. Kebocoran Dana Bantuan Sosial & Pendidikan (0% - 50%)</label>
+                                <span id="val-sim-4" class="font-mono font-extrabold text-amberGold-700 bg-white px-2.5 py-0.5 rounded border">15%</span>
+                            </div>
+                            <input type="range" id="sim-slider-4" min="0" max="50" value="15" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Kebocoran Bansos & Pendidikan', 'Simulator Dampak'); updateSimulatorPreview()" class="w-full accent-amberGold-600 cursor-pointer">
+                            <p class="text-[11px] text-slate-500">Pemotongan dana bantuan sosial, manipulasi data penerima manfaat, dan penyalahgunaan dana operasional pendidikan/kesehatan.</p>
+                        </div>
+
+                        <!-- Slider 5 (Indikator Positif - Emerald) -->
+                        <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <label class="font-bold text-emerald-950">5. Efektivitas Digitalisasi Layanan & Transparansi Publik (10% - 100%)</label>
+                                <span id="val-sim-5" class="font-mono font-extrabold text-emerald-700 bg-white px-2.5 py-0.5 rounded border border-emerald-200">65%</span>
+                            </div>
+                            <input type="range" id="sim-slider-5" min="10" max="100" value="65" oninput="updateSimulatorPreview()" onchange="trackActivity('Simulator: Efektivitas Digitalisasi & Transparansi', 'Simulator Dampak'); updateSimulatorPreview()" class="w-full accent-emeraldSafe-500 cursor-pointer">
+                            <p class="text-[11px] text-emerald-800">Penerapan e-Katalog, perizinan daring terpadu (OSS), transaksi nontunai, dan pengawasan partisipatif masyarakat sebagai faktor peredam korupsi.</p>
+                        </div>
+                    </div>
+
+                    <!-- Panel Proyeksi Dampak Real-Time (5 Cols) -->
+                    <div class="lg:col-span-5 bg-gradient-to-br from-navyDark-950 via-navyDark-900 to-integrityCrimson-950 text-white rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl border border-integrityCrimson-600/40">
+                        <div class="space-y-1 border-b border-white/10 pb-3">
+                            <span class="text-[11px] font-mono text-amberGold-400 uppercase tracking-widest font-bold">Proyeksi Dampak Sosial-Ekonomi</span>
+                            <h4 class="text-xl font-extrabold">Dashboard Evaluasi Risiko Publik</h4>
+                        </div>
+
+                        <!-- Estimasi Beban Ekonomi Biaya Tinggi -->
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 text-center space-y-1">
+                            <span class="text-xs text-slate-300 block">Estimasi Beban Ekonomi Biaya Tinggi / Kerugian Publik</span>
+                            <div class="flex items-baseline justify-center space-x-1.5">
+                                <span class="text-sm font-bold text-amberGold-400">Rp</span>
+                                <strong id="sim-res-loss" class="text-4xl sm:text-5xl font-mono font-extrabold text-amberGold-400">84.2</strong>
+                                <span class="text-xs font-bold text-slate-300">Triliun / Tahun</span>
+                            </div>
+                            <div class="pt-2">
+                                <span id="sim-res-status-badge" class="bg-amberGold-400 text-navyDark-950 font-extrabold text-xs px-3.5 py-1 rounded-full">
+                                    Kerentanan Sedang — Perlu Penguatan Sistem
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-metrics -->
+                        <div class="space-y-2.5 text-xs">
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Penurunan Umur Teknis Infrastruktur:</span>
+                                <span id="sim-res-infra" class="font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-amberGold-500/20 text-amberGold-300 border border-amberGold-500/40">-22.5% Lebih Cepat Rusak</span>
+                            </div>
+                            <div class="bg-white/5 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                <span class="text-slate-300">Proyeksi Skor Indeks Persepsi Korupsi (CPI):</span>
+                                <span id="sim-res-cpi" class="font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emeraldSafe-500/20 text-emerald-300 border border-emeraldSafe-500/40">44 / 100</span>
+                            </div>
+                        </div>
+
+                        <!-- Narasi Analisis Dampak Nyata bagi Masyarakat -->
+                        <div class="bg-integrityCrimson-900/40 border border-amberGold-400/30 p-4 rounded-2xl space-y-1.5 text-xs">
+                            <h5 class="font-bold text-amberGold-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-people-group"></i>
+                                <span>Narasi Analisis Dampak Nyata bagi Masyarakat:</span>
+                            </h5>
+                            <p id="sim-res-narrative" class="text-slate-200 leading-relaxed">
+                                Kebocoran anggaran dan pungli perizinan masih membebani harga kebutuhan pokok serta memperpendek usia jalan dan fasilitas publik. Memperluas digitalisasi layanan publik dan pengadaan e-Katalog terbukti efektif menekan celah transaksi tatap muka.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 5: KUIS STUDI KASUS (6 SOAL SCENARIO-BASED)
+             ===================================================================== -->
+        <section id="sec-kuis" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-integrityCrimson-700 text-amberGold-400 flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-xl">Kuis Studi Kasus (6 Soal Skenario Nyata)</h3>
+                            <p class="text-xs text-slate-500">Uji kemampuan Anda membedakan suap vs gratifikasi vs pemerasan, batas pelaporan gratifikasi 30 hari kerja ke KPK, pungli logistik, perbuatan curang kontraktor, dan benturan kepentingan pengadaan.</p>
+                        </div>
+                    </div>
+                    <span id="badge-quiz-count" class="counter-badge bg-slate-100 text-slate-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto">
+                        👁️ 0x soal dijawab
+                    </span>
+                </div>
+
+                <!-- Area Kuis Dinamis -->
+                <div id="quiz-container" class="max-w-3xl mx-auto">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-navyDark-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-integrityCrimson-700 text-amberGold-400 border border-amberGold-400/30 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-scale-unbalanced-flip"></i>
+                </div>
+                <span class="font-bold text-slate-200">IntegritasID • Edukasi Jenis Korupsi, Analogi Sehari-hari, & Dampak Sosial Ekonomi</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Referensi: UU No. 31 Tahun 1999 jo. UU No. 20 Tahun 2001 & Modul Edukasi Antikorupsi KPK.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ACTION BUTTON (FAB) ANALITIK ================= -->
+    <button onclick="openAnalyticsModal(); trackActivity('Tombol Melayang Statistik Belajar', 'Navigasi Analitik')" class="fixed bottom-6 right-6 bg-gradient-to-r from-navyDark-950 via-navyDark-900 to-integrityCrimson-900 text-white p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-amberGold-400/70">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-amberGold-400"></i>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emeraldSafe-500 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-amberGold-400">Panel Analitik</span>
+            <span id="fab-total-clicks" class="font-extrabold text-sm font-mono leading-none text-white">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ================= MODAL 1: PANEL ANALITIK AKTIVITAS BELAJAR ================= -->
+    <div id="modal-analytics" onclick="if(event.target===this) closeAnalyticsModal()" class="fixed inset-0 bg-navyDark-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-navyDark-950 via-navyDark-900 to-integrityCrimson-900 text-white p-5 flex items-center justify-between border-b border-integrityCrimson-600/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-amberGold-400 text-navyDark-950 flex items-center justify-center font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-slate-300">Rekapitulasi interaksi & cakupan eksplorasi 12 jenis korupsi di IntegritasID</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- 3 Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-integrityCrimson-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Tersimpan di browser Anda</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-sm text-slate-800 font-extrabold block truncate mt-1">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Topik paling sering diklik</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Persentase Cakupan Materi</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <div class="flex-grow bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-emeraldSafe-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-extrabold text-emeraldSafe-600 font-mono">0%</span>
+                        </div>
+                        <span id="modal-coverage-detail" class="text-[11px] text-slate-400 block mt-1">0 dari 12 jenis korupsi dibuka</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top 5 Popular -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Doughnut Chart -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-extrabold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative flex items-center justify-center">
+                            <canvas id="analyticsChart"></canvas>
+                            <p id="chart-empty-msg" class="text-xs text-slate-400 italic text-center hidden">Belum ada data klik untuk grafik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Sub-Materi -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-5-list" class="space-y-2 text-xs">
+                            <!-- Di-render dinamis -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline Custom Reset Confirmation Banner (Tanpa native confirm/alert) -->
+                <div id="reset-confirm-box" class="hidden bg-rose-50 border border-rose-200 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2.5 text-rose-900 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-integrityCrimson-600 text-base"></i>
+                        <span><strong>Konfirmasi Reset:</strong> Yakin ingin menghapus seluruh riwayat hitungan belajar Anda?</span>
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-auto">
+                        <button onclick="executeClearAnalytics()" class="bg-integrityCrimson-700 hover:bg-integrityCrimson-800 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Ya, Hapus Semua</button>
+                        <button onclick="toggleResetConfirm(false)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Batal</button>
+                    </div>
+                </div>
+
+                <!-- Activity Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="toggleResetConfirm(true)" class="text-integrityCrimson-700 hover:text-integrityCrimson-800 text-xs font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-52 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-800 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Waktu Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Di-render dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-export text-integrityCrimson-700"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-navyDark-900 hover:bg-navyDark-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: DETAIL MATERI / KELOMPOK TIPIKOR / JENIS KORUPSI ================= -->
+    <div id="modal-detail" onclick="if(event.target===this) closeDetailModal()" class="fixed inset-0 bg-navyDark-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-navyDark-950 via-navyDark-900 to-integrityCrimson-900">
+                <!-- Di-render dinamis -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar flex-grow">
+                <!-- Di-render dinamis -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeDetailModal()" class="bg-navyDark-900 hover:bg-navyDark-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Detail
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed top-20 right-4 sm:right-6 z-50 space-y-2 pointer-events-none max-w-xs w-full"></div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. DATASET LENGKAP INTEGRITASID:
+         *    - 7 Kelompok Utama Tindak Pidana Korupsi (KPK & UU Tipikor)
+         *    - 3 Pilar Dampak Sosial-Ekonomi Korupsi
+         *    - 12 Jenis Korupsi & Perilaku Koruptif (4 Aspek Detail per Item)
+         *    - 6 Soal Kuis Studi Kasus (Scenario-Based)
+         * ------------------------------------------------------------------- */
+
+        // 7 Kelompok Utama Tindak Pidana Korupsi (Beranda - Bagian A)
+        const TIPIKOR_7_GROUPS = [
+            {
+                id: 'kel_1_keuangan',
+                number: 'Kelompok 01',
+                title: 'Kerugian Keuangan Negara',
+                pasal: 'Pasal 2 & Pasal 3 UU Tipikor',
+                icon: 'fa-sack-xmark',
+                shortDesc: 'Perbuatan melawan hukum atau menyalahgunakan kewenangan yang merugikan keuangan atau perekonomian negara.',
+                elements: [
+                    'Pasal 2: Setiap orang yang secara melawan hukum memperkaya diri sendiri/orang lain/korporasi yang dapat merugikan keuangan negara atau perekonomian negara.',
+                    'Pasal 3: Setiap orang yang dengan tujuan menguntungkan diri sendiri/orang lain/korporasi, menyalahgunakan kewenangan, kesempatan, atau sarana karena jabatan/kedudukan yang dapat merugikan keuangan negara.',
+                    'Pemberatan (Pasal 2 ayat 2): Dalam keadaan tertentu (seperti bencana alam nasional atau krisis moneter), pelaku dapat dijatuhi pidana mati.'
+                ],
+                analogy: 'Bendahara panitia menggunakan uang kas bersama untuk berbelanja pribadi, atau menuliskan harga pembelian barang lebih tinggi dari harga asli (mark-up).'
+            },
+            {
+                id: 'kel_2_suap',
+                number: 'Kelompok 02',
+                title: 'Suap-Menyuap',
+                pasal: 'Pasal 5, 6, 11, & 12 huruf a, b, c, d',
+                icon: 'fa-hand-holding-dollar',
+                shortDesc: 'Pemberian atau janji kepada pegawai negeri/penyelenggara negara atau hakim agar berbuat/tidak berbuat sesuatu yang bertentangan dengan kewajibannya.',
+                elements: [
+                    'Bersifat transaksional (meeting of minds): Ada kesepakatan aktif antara pemberi suap dan penerima suap.',
+                    'Mencakup suap kepada Pegawai Negeri/Penyelenggara Negara (Pasal 5 & 12 a, b) serta suap kepada Hakim dan Advokat untuk memengaruhi putusan perkara (Pasal 6 & 12 c, d).',
+                    'Baik pemberi maupun penerima suap sama-sama dijerat pidana korupsi.'
+                ],
+                analogy: 'Pengendara yang melanggar rambu lalu lintas menawarkan sejumlah uang kepada petugas agar tidak diberikan surat tilang, dan petugas menerimanya.'
+            },
+            {
+                id: 'kel_3_penggelapan',
+                number: 'Kelompok 03',
+                title: 'Penggelapan dalam Jabatan',
+                pasal: 'Pasal 8, Pasal 9, & Pasal 10',
+                icon: 'fa-vault',
+                shortDesc: 'Pegawai negeri yang menggelapkan uang/surat berharga yang disimpan karena jabatannya, memalsukan buku administrasi, atau merusak barang bukti.',
+                elements: [
+                    'Pasal 8: Menggelapkan atau membiarkan orang lain mengambil/menggelapkan uang atau surat berharga yang disimpan karena jabatannya.',
+                    'Pasal 9: Sengaja memalsukan buku-buku atau daftar-daftar yang khusus untuk pemeriksaan administrasi.',
+                    'Pasal 10: Sengaja menggelapkan, menghancurkan, merusakkan, atau membuat tidak dapat dipakai barang, akta, surat, atau daftar yang digunakan untuk meyakinkan/membuktikan di muka penguasa.'
+                ],
+                analogy: 'Petugas gudang logistik mengambil barang inventaris kantor untuk dijual sendiri lalu mengubah angka catatan stok di buku pembukuan.'
+            },
+            {
+                id: 'kel_4_pemerasan',
+                number: 'Kelompok 04',
+                title: 'Pemerasan',
+                pasal: 'Pasal 12 huruf e, f, & g',
+                icon: 'fa-user-lock',
+                shortDesc: 'Pegawai negeri atau penyelenggara negara yang menyalahgunakan kekuasaan untuk memaksa seseorang memberikan sesuatu, membayar, atau mengerjakan sesuatu bagi dirinya.',
+                elements: [
+                    'Pasal 12 huruf e: Dengan maksud menguntungkan diri sendiri atau orang lain secara melawan hukum, memaksa seseorang memberikan sesuatu, membayar, atau menerima pembayaran dengan potongan.',
+                    'Pasal 12 huruf f & g: Meminta atau menerima pekerjaan/penyerahan barang seolah-olah merupakan utang kepada dirinya, padahal diketahui bukan utang.',
+                    'Inisiatif dan paksaan datang dari pihak pejabat yang memegang otoritas layanan publik.'
+                ],
+                analogy: 'Petugas loket mengancam menahan berkas izin usaha warga selama berbulan-bulan kecuali pemohon membayar "uang pelicin" di luar tarif resmi.'
+            },
+            {
+                id: 'kel_5_curang',
+                number: 'Kelompok 05',
+                title: 'Perbuatan Curang',
+                pasal: 'Pasal 7 & Pasal 12 huruf h',
+                icon: 'fa-trowel-bricks',
+                shortDesc: 'Kecurangan pemborong, ahli bangunan, atau rekanan TNI/Polri yang membahayakan keselamatan orang/barang atau negara dalam keadaan perang.',
+                elements: [
+                    'Pasal 7 ayat (1) huruf a & b: Pemborong/ahli bangunan atau penjual bahan bangunan yang pada waktu membuat bangunan/menyerahkan bahan melakukan perbuatan curang yang membahayakan keamanan orang atau barang.',
+                    'Pasal 7 ayat (1) huruf c & d: Pengawas proyek yang sengaja membiarkan perbuatan curang tersebut terjadi.',
+                    'Pasal 12 huruf h: Pegawai negeri yang menyerobot tanah negara sehingga merugikan orang yang berhak.'
+                ],
+                analogy: 'Kontraktor mengurangi ketebalan aspal jalan dan takaran besi beton dari spesifikasi kontrak sehingga jembatan/jalan cepat ambles.'
+            },
+            {
+                id: 'kel_6_benturan',
+                number: 'Kelompok 06',
+                title: 'Benturan Kepentingan dalam Pengadaan',
+                pasal: 'Pasal 12 huruf i UU Tipikor',
+                icon: 'fa-people-arrows',
+                shortDesc: 'Pegawai negeri atau penyelenggara negara yang turut serta dalam pemborongan, pengadaan, atau persewaan yang ditugaskan kepadanya untuk mengurus/mengawasinya.',
+                elements: [
+                    'Terjadi konflik antara tugas publik (menjaga objektivitas dan efisiensi anggaran negara) dengan kepentingan pribadi/keluarga/afiliasi bisnis.',
+                    'Pejabat yang seharusnya menjadi panitia seleksi, pengawas, atau penentu pemenang tender ikut bermain sebagai penyedia barang/jasa.',
+                    'Menghilangkan persaingan usaha yang sehat dan memicu penggelembungan harga.'
+                ],
+                analogy: 'Ketua panitia pengadaan katering kantor menunjuk perusahaan milik keluarganya sendiri sebagai pemenang tender tanpa proses evaluasi objektif.'
+            },
+            {
+                id: 'kel_7_gratifikasi',
+                number: 'Kelompok 07',
+                title: 'Gratifikasi',
+                pasal: 'Pasal 12B & Pasal 12C UU Tipikor',
+                icon: 'fa-gift',
+                shortDesc: 'Pemberian dalam arti luas (uang, barang, rabat/diskon, komisi, tiket perjalanan, fasilitas penginapan) kepada pegawai negeri/penyelenggara negara yang berhubungan dengan jabatannya.',
+                elements: [
+                    'Pasal 12B: Setiap gratifikasi kepada pegawai negeri/penyelenggara negara dianggap pemberian suap apabila berhubungan dengan jabatannya dan berlawanan dengan kewajiban/tugasnya.',
+                    'Pembuktian terbalik: Jika nilai gratifikasi Rp10 juta atau lebih, pembuktian bahwa gratifikasi bukan suap dilakukan oleh penerima; jika di bawah Rp10 juta, pembuktian dilakukan oleh penuntut umum.',
+                    'Pengecualian Hukum (Pasal 12C): Ketentuan pidana tidak berlaku jika penerima melaporkan gratifikasi yang diterimanya kepada KPK paling lambat 30 hari kerja sejak tanggal diterima.'
+                ],
+                analogy: 'Rekanan proyek mengirimkan parsel mewah atau voucher hotel bintang lima kepada pejabat pembuat komitmen setelah proyek selesai sebagai "ucapan terima kasih".'
+            }
+        ];
+
+        // 3 Pilar Dampak Sosial-Ekonomi Korupsi (Beranda - Bagian B)
+        const IMPACT_3_PILLARS = [
+            {
+                id: 'dampak_1_highcost',
+                badge: 'Pilar Dampak 1 • Distorsi Pasar & Daya Beli',
+                title: 'Ekonomi Biaya Tinggi (High-Cost Economy) & Inflasi Terselubung',
+                icon: 'fa-arrow-trend-up',
+                color: 'from-navyDark-950 via-navyDark-900 to-integrityCrimson-900',
+                summary: 'Suap perizinan, pungli jalanan, dan biaya siluman birokrasi dibebankan pelaku usaha ke harga akhir barang dan jasa yang harus dibayar rakyat.',
+                mechanisms: [
+                    'Beban Produksi & Logistik: Ketika truk logistik dipungut biaya liar di jalan dan perusahaan harus membayar uang pelicin perizinan, biaya produksi melonjak tajam.',
+                    'Inflasi Terselubung bagi Konsumen: Pelaku usaha mengalihkan biaya suap dan pungli tersebut ke harga jual bahan pokok, transportasi, dan jasa—sehingga masyarakat luas menanggung harga yang lebih mahal.',
+                    'Menurunnya Daya Saing Investasi: Investor yang menjunjung tata kelola bersih enggan menanamkan modal karena ketidakpastian hukum dan tingginya biaya transaksi ilegal.'
+                ]
+            },
+            {
+                id: 'dampak_2_infrastruktur',
+                badge: 'Pilar Dampak 2 • Kualitas Fasilitas Publik',
+                title: 'Degradasi Infrastruktur & Layanan Publik',
+                icon: 'fa-road-barrier',
+                color: 'from-integrityCrimson-900 via-integrityCrimson-800 to-amberGold-700',
+                summary: 'Mark-up anggaran dan penyunatan spesifikasi teknis menyebabkan jalan cepat berlubang, gedung sekolah ambruk, serta buruknya layanan kesehatan.',
+                mechanisms: [
+                    'Penyunatan Umur Teknis Bangunan: Dana pembangunan yang seharusnya menjadi aspal tebal, beton berkualitas, atau alat kesehatan modern terpotong untuk fee proyek.',
+                    'Pemborosan APBN/APBD Berulang: Jalan atau jembatan yang seharusnya bertahan 10 tahun rusak dalam 1–2 tahun, sehingga negara harus menganggarkan perbaikan berulang kali dengan mengorbankan pos kesejahteraan lain.',
+                    'Ancaman Keselamatan Nyawa Warga: Atap ruang kelas yang ambruk, jembatan putus, atau alat medis di bawah standar secara langsung membahayakan keselamatan masyarakat.'
+                ]
+            },
+            {
+                id: 'dampak_3_ketimpangan',
+                badge: 'Pilar Dampak 3 • Keadilan Sosial & Legitimasi',
+                title: 'Ketimpangan Sosial & Runtuhnya Kepercayaan Publik',
+                icon: 'fa-scale-unbalanced',
+                color: 'from-navyDark-950 via-navyDark-900 to-slate-800',
+                summary: 'Kebocoran dana bantuan sosial dan pendidikan memperlebar jurang kemiskinan, merusak meritokrasi, serta melemahkan supremasi hukum.',
+                mechanisms: [
+                    'Perampasan Hak Kelompok Rentan: Pemotongan dana bansos, beasiswa, atau bantuan bencana menghambat keluarga prasejahtera untuk keluar dari lingkaran kemiskinan.',
+                    'Rusaknya Meritokrasi & Moral Sosial: Ketika jabatan atau kelulusan dapat dibeli melalui suap, generasi muda kehilangan motivasi berprestasi secara jujur.',
+                    'Krisis Kepercayaan terhadap Hukum: Jika hukum dapat diperjualbelikan, warga kehilangan rasa aman dan kepercayaan terhadap institusi negara.'
+                ]
+            }
+        ];
+
+        // 12 Jenis Korupsi & Perilaku Koruptif (Tab 2 & Tab 3)
+        const CORRUPTION_12_TYPES = [
+            {
+                id: 'merugikan_keuangan_negara',
+                number: '01',
+                title: 'Merugikan Keuangan Negara',
+                category: 'Keuangan Negara & Pengadaan',
+                pasal: 'Pasal 2 & Pasal 3 UU No. 31/1999 jo. UU No. 20/2001',
+                icon: 'fa-sack-xmark',
+                analogyShort: 'Bendahara kelas memakai uang kas untuk kepentingan pribadi atau mencatat harga pulpen Rp2.000 menjadi Rp10.000 (mark-up).',
+                impactShort: 'Mengurangi kapasitas anggaran negara untuk membangun rumah sakit, sekolah, dan subsidi rakyat.',
+                legalBasis: 'Pasal 2 ayat (1) melarang setiap orang secara melawan hukum memperkaya diri sendiri/orang lain/korporasi yang dapat merugikan keuangan/perekonomian negara. Pasal 3 menjerat penyalahgunaan kewenangan, kesempatan, atau sarana karena jabatan yang merugikan keuangan negara. Ancaman pidana: penjara minimal 4 tahun hingga seumur hidup/20 tahun serta denda Rp200 juta – Rp1 miliar.',
+                analogyFull: 'Bayangkan seorang bendahara kelas yang dipercaya memegang uang kas untuk membeli perlengkapan kebersihan kelas. Ia diam-diam memakai uang kas tersebut untuk membeli pulsa pribadinya, atau membeli sapu seharga Rp15.000 namun menuliskan di kuitansi laporan sebesar Rp45.000 (mark-up). Selisih uang kas kelas yang hilang itulah yang setara dengan kerugian keuangan negara.',
+                publicCaseExample: 'Penggelembungan harga (mark-up) pengadaan perangkat teknologi informasi atau pengadaan tanah proyek pemerintah jauh di atas harga pasar wajar (NJOP/appraisal) yang menyebabkan selisih kerugian ratusan miliar rupiah pada kas negara/daerah.',
+                socioEconomicImpact: 'Setiap rupiah anggaran negara yang dikorupsi berarti hilangnya kesempatan pembangunan puluhan ruang kelas baru, pengurangan kuota beasiswa pendidikan, serta meningkatnya beban utang publik yang harus ditanggung pembayar pajak.'
+            },
+            {
+                id: 'suap_menyuap',
+                number: '02',
+                title: 'Suap-Menyuap Aktif & Pasif',
+                category: 'Suap, Gratifikasi & Pemerasan',
+                pasal: 'Pasal 5, Pasal 6, Pasal 11, & Pasal 12 huruf a–d UU Tipikor',
+                icon: 'fa-hand-holding-dollar',
+                analogyShort: 'Pengendara menerobos lampu merah lalu menyelipkan uang damai ke petugas agar lolos tilang (kesepakatan dua pihak).',
+                impactShort: 'Merusak penegakan hukum, meloloskan izin berbahaya, dan menciptakan ketidakadilan bagi warga yang taat aturan.',
+                legalBasis: 'Suap aktif (Pasal 5 & 6) menjerat pihak yang memberi atau menjanjikan sesuatu kepada pegawai negeri/penyelenggara negara atau hakim agar berbuat/tidak berbuat sesuatu yang bertentangan dengan kewajibannya. Suap pasif (Pasal 11 & 12 huruf a–d) menjerat pejabat/hakim yang menerima pemberian/janji tersebut. Keduanya (pemberi & penerima) dipidana.',
+                analogyFull: 'Seorang pengendara sepeda motor menerobos lampu merah dan diberhentikan petugas. Agar tidak diproses sidang tilang resmi, pengendara berinisiatif menyelipkan uang Rp100.000 ke petugas sebagai "uang damai", dan petugas menerimanya. Terjadi kesepakatan timbal balik (transaksional) untuk melanggar aturan.',
+                publicCaseExample: 'Pengusaha memberikan sejumlah uang kepada pejabat pemberi izin lingkungan agar izin tambang atau pendirian bangunan tetap diterbitkan meskipun dokumen analisis dampak lingkungan (AMDAL) tidak memenuhi syarat.',
+                socioEconomicImpact: 'Izin usaha atau putusan hukum yang lahir dari suap memicu kerusakan lingkungan (banjir, pencemaran air), persaingan usaha tidak sehat, serta hilangnya wibawa hukum di mata masyarakat.'
+            },
+            {
+                id: 'gratifikasi_ilegal',
+                number: '03',
+                title: 'Gratifikasi Ilegal',
+                category: 'Suap, Gratifikasi & Pemerasan',
+                pasal: 'Pasal 12B & Pasal 12C UU No. 20 Tahun 2001',
+                icon: 'fa-gift',
+                analogyShort: 'Wali murid mengirim parsel mewah/voucher liburan ke guru menjelang pembagian rapor agar nilai anaknya didongkrak.',
+                impactShort: 'Menciptakan "utang budi" terselubung yang memengaruhi objektivitas keputusan pejabat publik di masa depan.',
+                legalBasis: 'Pasal 12B ayat (1) menetapkan bahwa setiap gratifikasi kepada pegawai negeri/penyelenggara negara dianggap pemberian suap apabila berhubungan dengan jabatannya dan berlawanan dengan kewajiban/tugasnya. Pasal 12C mengecualikan pidana jika penerima melaporkannya kepada KPK paling lambat 30 hari kerja sejak gratifikasi diterima.',
+                analogyFull: 'Menjelang pembagian rapor kenaikan kelas, seorang wali murid mengirimkan parsel mewah dan voucher menginap di hotel kepada wali kelas tanpa ada permintaan langsung dari guru tersebut. Tujuannya menanamkan "rasa tidak enak/utang budi" agar guru bersikap lunak atau mendongkrak nilai anaknya.',
+                publicCaseExample: 'Vendor pemenang proyek memberikan fasilitas tiket pesawat kelas bisnis, akomodasi liburan keluarga, atau jam tangan mewah kepada pejabat pembuat komitmen (PPK) setelah kontrak proyek ditandatangani.',
+                socioEconomicImpact: 'Meskipun sering dibungkus sebagai "tanda terima kasih" atau "tradisi", gratifikasi menciptakan konflik kepentingan jangka panjang sehingga kebijakan publik lebih berpihak kepada pemberi hadiah dibandingkan kepentingan rakyat.'
+            },
+            {
+                id: 'pemerasan_pejabat',
+                number: '04',
+                title: 'Pemerasan oleh Pejabat',
+                category: 'Suap, Gratifikasi & Pemerasan',
+                pasal: 'Pasal 12 huruf e, f, & g UU No. 20 Tahun 2001',
+                icon: 'fa-user-lock',
+                analogyShort: 'Petugas loket mengancam tidak memproses KTP/izin warga kecuali diberi "uang pelicin" di luar tarif resmi.',
+                impactShort: 'Menindas warga negara yang membutuhkan hak layanan dasar dan menyuburkan ekonomi biaya tinggi.',
+                legalBasis: 'Pasal 12 huruf e menjerat pegawai negeri atau penyelenggara negara yang dengan maksud menguntungkan diri sendiri/orang lain secara melawan hukum, atau dengan menyalahgunakan kekuasaannya memaksa seseorang memberikan sesuatu, membayar, atau menerima pembayaran dengan potongan, atau mengerjakan sesuatu bagi dirinya.',
+                analogyFull: 'Seorang warga mengurus dokumen kependudukan atau surat keterangan usaha dengan berkas yang sudah lengkap dan seharusnya gratis. Namun, oknum petugas loket sengaja memperlambat proses dan berkata, "Kalau mau berkasnya selesai minggu ini, harus ada biaya percepatan Rp300.000." Di sini warga berada di posisi korban paksaan.',
+                publicCaseExample: 'Oknum pejabat mengancam akan mencabut izin operasional atau menahan pencairan hak termin pembayaran kontraktor apabila kontraktor tidak menyetorkan sejumlah persentase uang kepada oknum tersebut.',
+                socioEconomicImpact: 'Masyarakat kecil dan pelaku UMKM terpaksa mengeluarkan biaya ekstra untuk mendapatkan hak yang seharusnya menjadi kewajiban negara, sehingga menurunkan daya beli rumah tangga dan menghambat pertumbuhan usaha baru.'
+            },
+            {
+                id: 'penggelapan_jabatan',
+                number: '05',
+                title: 'Penggelapan dalam Jabatan',
+                category: 'Jabatan, Curang & Obstruction',
+                pasal: 'Pasal 8 UU No. 31/1999 jo. UU No. 20/2001',
+                icon: 'fa-vault',
+                analogyShort: 'Kasir toko mengambil uang tunai dari laci kasir atau memanipulasi stok barang yang dipercayakan kepadanya.',
+                impactShort: 'Menggerogoti kas operasional instansi dan melumpuhkan ketersediaan logistik pelayanan masyarakat.',
+                legalBasis: 'Pasal 8 menjerat pegawai negeri atau orang selain pegawai negeri yang ditugaskan menjalankan suatu jabatan umum secara terus-menerus atau sementara waktu, yang dengan sengaja menggelapkan uang atau surat berharga yang disimpan karena jabatannya, atau membiarkan uang/surat berharga tersebut diambil/digelapkan orang lain.',
+                analogyFull: 'Seorang kasir toko yang memegang kunci laci kasir dan brankas setiap hari mengambil sebagian uang tunai hasil penjualan untuk melunasi utang pribadinya, atau membawa pulang stok barang dagangan yang dipercayakan kepadanya untuk dijaga.',
+                publicCaseExample: 'Bendahara pengeluaran instansi pemerintah mentransfer dana operasional kantor atau dana gaji/honorarium pegawai yang disimpan dalam rekening dinas ke rekening pribadinya untuk digunakan bermain investasi spekulatif.',
+                socioEconomicImpact: 'Terhentinya pembayaran honor tenaga layanan publik (seperti tenaga kesehatan atau guru honorer) serta macetnya operasional pelayanan masyarakat di unit kerja terkait.'
+            },
+            {
+                id: 'perbuatan_curang',
+                number: '06',
+                title: 'Perbuatan Curang Pemborong / Kontraktor',
+                category: 'Jabatan, Curang & Obstruction',
+                pasal: 'Pasal 7 & Pasal 12 huruf h UU Tipikor',
+                icon: 'fa-trowel-bricks',
+                analogyShort: 'Tukang bangunan mengurangi takaran semen dari perjanjian awal sehingga dinding rumah retak dalam sebulan.',
+                impactShort: 'Menghasilkan jalan berlubang, jembatan rapuh, dan gedung sekolah yang membahayakan keselamatan warga.',
+                legalBasis: 'Pasal 7 ayat (1) menjerat pemborong, ahli bangunan, atau penjual bahan bangunan yang pada waktu membuat bangunan atau menyerahkan bahan bangunan melakukan perbuatan curang yang dapat membahayakan keamanan orang atau barang, serta pengawas bangunan yang sengaja membiarkan perbuatan curang tersebut.',
+                analogyFull: 'Pemilik rumah sepakat dengan tukang bangunan untuk menggunakan campuran semen dan pasir berkualitas tinggi sesuai standar agar tembok kokoh. Namun demi menghemat biaya dan meraup untung lebih besar, tukang mengurangi takaran semen secara diam-diam sehingga tembok retak dan rapuh hanya dalam satu bulan.',
+                publicCaseExample: 'Kontraktor pembangunan jalan raya mengurangi ketebalan lapisan aspal dari 10 cm menjadi 5 cm serta menggunakan besi tulangan di bawah standar SNI, sementara konsultan pengawas tetap menandatangani berita acara serah terima 100%.',
+                socioEconomicImpact: 'Infrastruktur publik cepat rusak sebelum umur teknisnya tercapai, menimbulkan kecelakaan lalu lintas akibat jalan berlubang, dan memaksa negara mengeluarkan anggaran perbaikan ganda.'
+            },
+            {
+                id: 'benturan_kepentingan',
+                number: '07',
+                title: 'Benturan Kepentingan dalam Pengadaan (Conflict of Interest)',
+                category: 'Keuangan Negara & Pengadaan',
+                pasal: 'Pasal 12 huruf i UU No. 20 Tahun 2001',
+                icon: 'fa-people-arrows',
+                analogyShort: 'Ketua panitia lomba memasak menunjuk katering milik adiknya sendiri sebagai pemenang tender tanpa seleksi objektif.',
+                impactShort: 'Mematikan persaingan usaha yang adil bagi UMKM jujur dan menurunkan kualitas barang/jasa yang diterima publik.',
+                legalBasis: 'Pasal 12 huruf i menjerat pegawai negeri atau penyelenggara negara baik langsung maupun tidak langsung dengan sengaja turut serta dalam pemborongan, pengadaan, atau persewaan, yang pada saat dilakukan perbuatan, untuk seluruh atau sebagian ditugaskan untuk mengurus atau mengawasinya.',
+                analogyFull: 'Ketua panitia acara sekolah yang diberi tugas memilih penyedia konsumsi secara objektif justru menunjuk usaha katering milik adiknya sendiri dengan harga lebih mahal dan porsi lebih sedikit dibandingkan peserta lain.',
+                publicCaseExample: 'Seorang kepala dinas atau pejabat pembuat komitmen mendirikan perusahaan atas nama kerabatnya, lalu mengarahkan spesifikasi teknis lelang pengadaan alat kesehatan agar hanya perusahaan miliknya yang dapat memenangkan tender.',
+                socioEconomicImpact: 'Pelaku usaha dan UMKM yang jujur tersingkir dari pasar pengadaan pemerintah, kualitas barang publik menurun drastis, dan inovasi sektor swasta terhambat.'
+            },
+            {
+                id: 'pemalsuan_buku',
+                number: '08',
+                title: 'Pemalsuan Buku & Administrasi Pemeriksaan',
+                category: 'Jabatan, Curang & Obstruction',
+                pasal: 'Pasal 9 UU No. 31/1999 jo. UU No. 20/2001',
+                icon: 'fa-file-signature',
+                analogyShort: 'Pengurus organisasi menghapus catatan pengeluaran di buku kas dan mengubah angka kuitansi agar lolos audit.',
+                impactShort: 'Menutupi jejak kebocoran anggaran sehingga penyimpangan terus berulang tanpa terdeteksi sejak dini.',
+                legalBasis: 'Pasal 9 menjerat pegawai negeri atau orang selain pegawai negeri yang diberi tugas menjalankan suatu jabatan umum secara terus-menerus atau sementara waktu, yang dengan sengaja memalsu buku-buku atau daftar-daftar yang khusus untuk pemeriksaan administrasi.',
+                analogyFull: 'Seorang pengurus organisasi mahasiswa menyadari ada selisih kas akibat perjalanan fiktif. Menjelang pemeriksaan laporan pertanggungjawaban akhir tahun, ia memalsukan stempel toko dan mengubah angka pada kuitansi pembelian agar pembukuan tampak seimbang.',
+                publicCaseExample: 'Pembuatan daftar hadir fiktif kegiatan sosialisasi, kuitansi hotel/transportasi perjalanan dinas fiktif, atau manipulasi buku register pencatatan penerimaan retribusi daerah untuk mengelabui tim pemeriksa BPK/Inspektorat.',
+                socioEconomicImpact: 'Melemahkan sistem akuntabilitas keuangan publik dan menyebabkan kebocoran anggaran daerah berlangsung bertahun-tahun sebelum akhirnya terungkap.'
+            },
+            {
+                id: 'merusak_barang_bukti',
+                number: '09',
+                title: 'Merusak Barang Bukti & Dokumen Negara',
+                category: 'Jabatan, Curang & Obstruction',
+                pasal: 'Pasal 10 UU No. 31/1999 jo. UU No. 20/2001',
+                icon: 'fa-fire-flame-curved',
+                analogyShort: 'Seseorang sengaja membakar atau merobek buku catatan utang agar penagih kehilangan bukti tagihan.',
+                impactShort: 'Menghambat pemulihan aset negara dan melindungi pelaku kejahatan dari pertanggungjawaban hukum.',
+                legalBasis: 'Pasal 10 menjerat pegawai negeri atau pejabat umum yang dengan sengaja menggelapkan, menghancurkan, merusakkan, atau membuat tidak dapat dipakai barang, akta, surat, atau daftar yang digunakan untuk meyakinkan atau membuktikan di muka penguasa yang berwenang, yang dikuasainya karena jabatannya.',
+                analogyFull: 'Seseorang yang memiliki kewajiban membayar utang sengaja merobek dan membakar buku catatan perjanjian utang yang disimpan di laci kantor agar pihak yang berhak menagih kehilangan bukti tertulis.',
+                publicCaseExample: 'Oknum pegawai sengaja menghancurkan dokumen kontrak lelang asli, menghapus log data server transaksi keuangan, atau menghilangkan sertifikat aset tanah pemerintah saat audit investigatif berlangsung.',
+                socioEconomicImpact: 'Aset tanah dan bangunan milik negara berisiko jatuh ke tangan mafia tanah, sementara proses penegakan hukum kehilangan alat bukti autentik.'
+            },
+            {
+                id: 'pungutan_liar',
+                number: '10',
+                title: 'Pungutan Liar (Pungli) Layanan Publik',
+                category: 'Suap, Gratifikasi & Pemerasan',
+                pasal: 'Pasal 12 huruf e UU Tipikor & Perpres No. 87 Tahun 2016 (Saber Pungli)',
+                icon: 'fa-hand-stop',
+                analogyShort: 'Oknum penjaga area parkir gratis fasilitas umum mematok tarif paksa Rp20.000 sambil mengintimidasi pengendara.',
+                impactShort: 'Membebani biaya hidup harian masyarakat kecil dan merusak citra pelayanan publik negara.',
+                legalBasis: 'Pungutan liar yang dilakukan oleh pegawai negeri/penyelenggara negara dengan menyalahgunakan wewenang untuk memaksa warga membayar di luar ketentuan resmi merupakan tindak pidana pemerasan dalam jabatan (Pasal 12 huruf e UU Tipikor) dan menjadi sasaran Satgas Saber Pungli (Perpres 87/2016).',
+                analogyFull: 'Di halaman fasilitas umum yang jelas terpasang papan pengumuman "Parkir Gratis", seorang oknum menghadang pengendara dan mematok tarif paksa Rp20.000 tanpa karcis resmi sambil bersikap intimidatif.',
+                publicCaseExample: 'Pungutan liar di jembatan timbang kendaraan angkutan barang, pungli pengurusan dokumen kependudukan/pertanahan, atau pungutan tidak resmi dalam penerimaan peserta didik baru.',
+                socioEconomicImpact: 'Menciptakan biaya logistik tinggi yang langsung menaikkan harga pangan di pasar tradisional serta menggerus pendapatan bersih pekerja informal dan pengemudi angkutan.'
+            },
+            {
+                id: 'korupsi_bansos_bencana',
+                number: '11',
+                title: 'Korupsi Bantuan Sosial & Dana Bencana',
+                category: 'Keuangan Negara & Pengadaan',
+                pasal: 'Pasal 2 ayat (2) (Pemberatan Pidana) & Pasal 3 UU Tipikor',
+                icon: 'fa-box-open',
+                analogyShort: 'Relawan memotong isi paket sembako korban bencana untuk dijual kembali demi keuntungan pribadi.',
+                impactShort: 'Merampas hak hidup paling dasar warga miskin dan korban bencana di saat krisis kemanusiaan.',
+                legalBasis: 'Selain dijerat Pasal 2 ayat (1) atau Pasal 3 UU Tipikor, korupsi atas dana penanggulangan bencana alam nasional, keadaan bahaya, atau krisis ekonomi/moneter termasuk dalam "keadaan tertentu" berdasarkan Pasal 2 ayat (2) UU Tipikor yang memperberat ancaman pidana hingga pidana mati.',
+                analogyFull: 'Saat warga sedang mengungsi akibat banjir bandang, seorang oknum koordinator posko justru mengurangi isi paket sembako—mengambil beras dan minyak goreng dari setiap kardus bantuan—untuk dijual kembali ke pasar demi keuntungan pribadi.',
+                publicCaseExample: 'Pemotongan fee Rp10.000 per paket bantuan sosial sembako di masa pandemi/bencana atau pengurangan kualitas bahan pangan bantuan bagi keluarga prasejahtera.',
+                socioEconomicImpact: 'Meningkatkan kerentanan gizi buruk dan kemiskinan ekstrem pada kelompok masyarakat paling lemah, sekaligus melukai rasa keadilan dan solidaritas kemanusiaan.'
+            },
+            {
+                id: 'obstruction_of_justice',
+                number: '12',
+                title: 'Merintangi Penyidikan (Obstruction of Justice)',
+                category: 'Jabatan, Curang & Obstruction',
+                pasal: 'Pasal 21 & Pasal 22 UU No. 31 Tahun 1999',
+                icon: 'fa-ban',
+                analogyShort: 'Seseorang menyembunyikan pelaku kejahatan dan merekayasa keterangan palsu kepada penyidik agar kasus tidak terungkap.',
+                impactShort: 'Memperlambat penegakan hukum, melindungi jaringan koruptor, dan memperbesar biaya penanganan perkara negara.',
+                legalBasis: 'Pasal 21 menjerat setiap orang yang dengan sengaja mencegah, merintangi, atau menggagalkan secara langsung atau tidak langsung penyidikan, penuntutan, dan pemeriksaan di sidang pengadilan terhadap tersangka dan terdakwa ataupun para saksi dalam perkara korupsi (pidana penjara 3–12 tahun).',
+                analogyFull: 'Ketika polisi sedang menyelidiki pencurian di lingkungan warga, seseorang sengaja menyembunyikan pelaku di rumahnya, membuang barang curian, dan mengarahkan saksi-saksi agar memberikan keterangan palsu supaya kasus tidak terbongkar.',
+                publicCaseExample: 'Memalsukan rekam medis agar tersangka korupsi terhindar dari pemeriksaan penyidik, menyembunyikan buronan korupsi, atau mengintimidasi saksi kunci agar mencabut keterangannya di persidangan.',
+                socioEconomicImpact: 'Menghambat pengembalian kerugian keuangan negara (asset recovery), memperpanjang impunitas pelaku kejahatan kerah putih, dan melemahkan kepercayaan masyarakat terhadap pemberantasan korupsi.'
+            }
+        ];
+
+        // 6 Parameter Matriks Komparasi (Tab 3)
+        const COMPARE_PARAMETERS = [
+            { label: 'Dasar Pasal UU Tipikor', field: 'pasal' },
+            { label: 'Inisiatif & Relasi Kuasa', field: 'initiative' },
+            { label: 'Analogi Sederhana Sehari-hari', field: 'analogyShort' },
+            { label: 'Mekanisme Pelaporan / Pengecualian', field: 'reportingMechanism' },
+            { label: 'Ancaman Sanksi Pidana', field: 'sanction' },
+            { label: 'Dampak Sosial-Ekonomi', field: 'socioEconomicImpact' }
+        ];
+
+        // Lengkapi metadata khusus komparasi pada CORRUPTION_12_TYPES
+        const COMPARE_ENRICHMENT = {
+            merugikan_keuangan_negara: {
+                initiative: 'Inisiatif internal pejabat/pihak yang memiliki akses atau wewenang mengelola anggaran/aset negara secara melawan hukum.',
+                reportingMechanism: 'Tidak ada pengecualian penghapus pidana; pengembalian kerugian negara tidak menghapus pidana (Pasal 4), hanya meringankan.',
+                sanction: 'Penjara minimal 4 tahun s.d. 20 tahun / seumur hidup (bahkan pidana mati dalam keadaan bencana nasional) + denda Rp200 juta – Rp1 miliar.'
+            },
+            suap_menyuap: {
+                initiative: 'Kesepakatan dua arah (transaksional/meeting of minds): inisiatif bisa dari pemberi maupun penerima untuk memengaruhi keputusan.',
+                reportingMechanism: 'Tidak ada batas waktu pelaporan yang menghapus pidana karena sejak awal terdapat kesepakatan jahat; kedua pihak dipidana.',
+                sanction: 'Pemberi: penjara 1–5 tahun (Pasal 5). Penerima (pejabat/hakim): penjara 4–20 tahun / seumur hidup (Pasal 12) + denda hingga Rp1 miliar.'
+            },
+            gratifikasi_ilegal: {
+                initiative: 'Pemberian bersifat tanam budi (tidak harus ada kesepakatan langsung saat pemberian), berkaitan dengan jabatan penerima.',
+                reportingMechanism: 'Pengecualian Pasal 12C: Pidana hapus apabila penerima melapor ke KPK paling lambat 30 hari kerja sejak tanggal gratifikasi diterima.',
+                sanction: 'Jika tidak dilaporkan dalam 30 hari kerja dan terbukti berhubungan dengan jabatan: penjara 4–20 tahun / seumur hidup + denda Rp200 juta – Rp1 miliar.'
+            },
+            pemerasan_pejabat: {
+                initiative: 'Inisiatif dan paksaan sepihak datang dari pejabat/pegawai negeri yang menyalahgunakan kekuasaan terhadap warga/pemohon.',
+                reportingMechanism: 'Warga yang dipaksa berada pada posisi korban dan dapat melaporkan ke KPK, Kepolisian, Kejaksaan, atau Satgas Saber Pungli.',
+                sanction: 'Penjara minimal 4 tahun s.d. 20 tahun atau pidana penjara seumur hidup dan denda Rp200 juta – Rp1 miliar (Pasal 12 huruf e).'
+            },
+            penggelapan_jabatan: {
+                initiative: 'Inisiatif tunggal pemegang jabatan/kepercayaan yang menguasai uang atau surat berharga milik negara/instansi.',
+                reportingMechanism: 'Pelaporan melalui audit internal APIP/Inspektorat, BPK, serta aparat penegak hukum (KPK/Kejaksaan/Polri).',
+                sanction: 'Penjara minimal 3 tahun dan maksimal 15 tahun serta denda paling sedikit Rp150 juta dan paling banyak Rp750 juta (Pasal 8).'
+            },
+            perbuatan_curang: {
+                initiative: 'Inisiatif pemborong/kontraktor/penjual bahan bangunan untuk meraup laba ilegal dengan menyunat spesifikasi teknis.',
+                reportingMechanism: 'Pengawasan teknis konsultan pengawas, audit fisik BPK, serta pengaduan masyarakat pengguna infrastruktur.',
+                sanction: 'Penjara minimal 2 tahun dan maksimal 7 tahun serta denda Rp100 juta – Rp350 juta (Pasal 7 UU Tipikor).'
+            },
+            benturan_kepentingan: {
+                initiative: 'Inisiatif pejabat pengadaan/pengawas proyek yang diam-diam ikut bermain sebagai penyedia barang/jasa.',
+                reportingMechanism: 'Wajib mendeklarasikan konflik kepentingan dan mengundurkan diri dari proses pengadaan sejak awal.',
+                sanction: 'Penjara minimal 4 tahun s.d. 20 tahun atau seumur hidup dan denda Rp200 juta – Rp1 miliar (Pasal 12 huruf i).'
+            },
+            pemalsuan_buku: {
+                initiative: 'Inisiatif aparatur/pengurus administrasi untuk menutupi penyimpangan anggaran menjelang pemeriksaan/audit.',
+                reportingMechanism: 'Terdeteksi melalui audit forensik dokumen, pencocokan silang (cross-check) bukti transaksi, dan whistleblowing system.',
+                sanction: 'Penjara minimal 1 tahun dan maksimal 5 tahun serta denda Rp50 juta – Rp250 juta (Pasal 9 UU Tipikor).'
+            },
+            merusak_barang_bukti: {
+                initiative: 'Inisiatif pejabat yang menguasai dokumen/akta negara untuk menghilangkan alat bukti agar kasus tidak terungkap.',
+                reportingMechanism: 'Pemulihan arsip digital/cadangan (backup) dan penelusuran jejak audit oleh penyidik serta pengawas arsip.',
+                sanction: 'Penjara minimal 2 tahun dan maksimal 7 tahun serta denda Rp100 juta – Rp350 juta (Pasal 10 UU Tipikor).'
+            },
+            pungutan_liar: {
+                initiative: 'Inisiatif oknum petugas layanan publik memungut biaya tanpa dasar hukum dengan memanfaatkan ketidaktahuan atau keterdesakan warga.',
+                reportingMechanism: 'Dapat dilaporkan langsung melalui kanal Satgas Saber Pungli, SP4N-LAPOR!, Ombudsman RI, atau aparat penegak hukum.',
+                sanction: 'Dijerat Pasal 12 huruf e UU Tipikor (penjara 4–20 tahun) atau Pasal 368/423 KUHP sesuai kualifikasi perbuatannya.'
+            },
+            korupsi_bansos_bencana: {
+                initiative: 'Inisiatif penyelenggara/penyalur bantuan yang menyunat hak kelompok miskin atau korban bencana saat situasi darurat.',
+                reportingMechanism: 'Pengawasan partisipatif warga penerima manfaat, audit BPKP/BPK, serta pelaporan ke KPK dan Kemensos/BPBD.',
+                sanction: 'Pasal 2 ayat (2): Ancaman pemberatan pidana hingga pidana mati apabila dilakukan saat bencana alam nasional atau krisis.'
+            },
+            obstruction_of_justice: {
+                initiative: 'Inisiatif pihak tertentu (baik pelaku maupun pihak luar) untuk menggagalkan proses penyidikan, penuntutan, atau persidangan.',
+                reportingMechanism: 'Penyidik dapat langsung menetapkan tersangka Pasal 21 tanpa menunggu putusan perkara pokok selesai.',
+                sanction: 'Penjara minimal 3 tahun dan maksimal 12 tahun serta denda Rp150 juta – Rp600 juta (Pasal 21 UU Tipikor).'
+            }
+        };
+
+        CORRUPTION_12_TYPES.forEach(item => {
+            Object.assign(item, COMPARE_ENRICHMENT[item.id]);
+        });
+
+        // 6 Soal Kuis Studi Kasus (Tab 5)
+        const QUIZ_QUESTIONS = [
+            {
+                q: "Studi Kasus 1 (Suap vs Gratifikasi vs Pemerasan): Seorang pengusaha properti mengurus Izin Mendirikan Bangunan. Pejabat dinas perizinan mengatakan: 'Berkas Bapak lengkap, tetapi kalau tidak menyetor Rp50 juta di luar retribusi resmi, berkas ini tidak akan saya tanda tangani sampai tahun depan.' Karena terdesak jadwal proyek, pengusaha terpaksa menyerahkan uang tersebut. Perbuatan pejabat tersebut paling tepat dikategorikan sebagai...",
+                options: [
+                    "Gratifikasi ilegal karena diberikan setelah izin selesai diproses.",
+                    "Pemerasan oleh pejabat (Pasal 12 huruf e UU Tipikor) karena inisiatif dan paksaan sepihak datang dari pejabat yang menyalahgunakan wewenangnya.",
+                    "Penggelapan dalam jabatan karena pejabat menyimpan uang negara.",
+                    "Benturan kepentingan dalam pengadaan barang dan jasa."
+                ],
+                answer: 1,
+                explain: "Berbeda dengan suap (kesepakatan dua pihak yang sama-sama menghendaki pelanggaran aturan), pada Pemerasan (Pasal 12 huruf e), paksaan dan inisiatif datang sepihak dari pejabat yang menyalahgunakan kekuasaannya untuk memaksa warga membayar di luar aturan resmi."
+            },
+            {
+                q: "Studi Kasus 2 (Mekanisme Pelaporan Gratifikasi): Seorang pejabat pembuat komitmen (PPK) menerima kiriman parsel mewah dan voucher menginap hotel senilai Rp15 juta di rumahnya dari seorang rekanan kontraktor tanpa kesepakatan sebelumnya. Agar terhindar dari ancaman pidana gratifikasi yang dianggap suap, langkah hukum apa yang wajib dilakukan pejabat tersebut berdasarkan Pasal 12C UU Tipikor?",
+                options: [
+                    "Menyimpannya di kantor sebagai inventaris pribadi dan tidak memberitahu siapa pun.",
+                    "Membagikan voucher tersebut kepada staf di kantor agar tidak dinikmati sendiri.",
+                    "Melaporkan penerimaan gratifikasi tersebut kepada Komisi Pemberantasan Korupsi (KPK) paling lambat 30 hari kerja sejak tanggal diterima.",
+                    "Menunggu sampai pemeriksaan audit BPK tahun depan baru melaporkannya."
+                ],
+                answer: 2,
+                explain: "Berdasarkan Pasal 12C UU No. 20 Tahun 2001, ketentuan pidana gratifikasi (Pasal 12B) tidak berlaku apabila penerima melaporkan gratifikasi yang diterimanya kepada KPK paling lambat 30 (tiga puluh) hari kerja terhitung sejak tanggal gratifikasi tersebut diterima."
+            },
+            {
+                q: "Studi Kasus 3 (Ekonomi Biaya Tinggi / High-Cost Economy): Di sepanjang jalur distribusi pangan antarkabupaten, truk-truk pengangkut beras dan sayuran kerap dimintai 'uang keamanan/pungli' di beberapa titik pos liar serta dikenai pungutan izin tidak resmi. Bagaimana dampak sosial-ekonomi langsung dari praktik koruptif tersebut bagi masyarakat luas?",
+                options: [
+                    "Harga beras dan sayuran di pasar turun karena biaya transportasi menjadi lebih murah.",
+                    "Terjadi Ekonomi Biaya Tinggi (High-Cost Economy) dan inflasi terselubung karena pelaku usaha membebankan biaya pungli ke harga jual pangan yang dibayar konsumen.",
+                    "Pendapatan asli daerah (PAD) meningkat drastis dari hasil pungutan liar tersebut.",
+                    "Daya beli rumah tangga miskin meningkat karena distribusi barang semakin cepat."
+                ],
+                answer: 1,
+                explain: "Pungli dan suap di jalur logistik serta perizinan meningkatkan biaya operasional perusahaan. Pelaku usaha kemudian mengalihkan beban biaya ilegal tersebut ke harga jual produk akhir, sehingga rakyat kecil harus membayar harga kebutuhan pokok lebih mahal (inflasi terselubung)."
+            },
+            {
+                q: "Studi Kasus 4 (Perbuatan Curang Kontraktor): Sebuah perusahaan kontraktor memenangkan proyek pembangunan jembatan penghubung desa senilai Rp8 miliar. Demi meraup keuntungan berlipat, kontraktor mengurangi diameter besi beton dan ketebalan aspal dari spesifikasi kontrak (analogi tukang bangunan mengurangi takaran semen), sehingga jembatan retak dan nyaris ambles 6 bulan setelah diresmikan. Tindakan ini dijerat dengan...",
+                options: [
+                    "Perbuatan Curang Pemborong/Ahli Bangunan (Pasal 7 UU Tipikor) yang membahayakan keselamatan orang/barang dan memperpendek umur teknis infrastruktur.",
+                    "Merintangi penyidikan perkara korupsi (Pasal 21 UU Tipikor).",
+                    "Gratifikasi kepada masyarakat pengguna jembatan.",
+                    "Pelanggaran administrasi ringan yang cukup diselesaikan dengan permintaan maaf."
+                ],
+                answer: 0,
+                explain: "Pasal 7 UU Tipikor menjerat pemborong, ahli bangunan, atau penjual bahan bangunan yang melakukan perbuatan curang saat membuat bangunan/menyerahkan bahan sehingga membahayakan keamanan orang atau barang. Dampaknya, umur teknis infrastruktur anjlok drastis dan negara merugi."
+            },
+            {
+                q: "Studi Kasus 5 (Benturan Kepentingan dalam Pengadaan): Ketua panitia lelang pengadaan seragam dan perlengkapan sekolah di suatu dinas ternyata merupakan pemilik sekaligus komisaris utama perusahaan konveksi yang ikut serta dan ditetapkan sebagai pemenang tender. Seperti analogi ketua panitia lomba yang menunjuk katering adiknya sendiri, delik korupsi apakah yang dilanggar?",
+                options: [
+                    "Pemalsuan buku register administrasi (Pasal 9 UU Tipikor).",
+                    "Benturan Kepentingan dalam Pengadaan / Conflict of Interest (Pasal 12 huruf i UU Tipikor).",
+                    "Merusak barang bukti akta autentik negara (Pasal 10 UU Tipikor).",
+                    "Suap kepada hakim pengadilan tata usaha negara (Pasal 6 UU Tipikor)."
+                ],
+                answer: 1,
+                explain: "Pasal 12 huruf i UU Tipikor secara tegas melarang pegawai negeri atau penyelenggara negara turut serta secara langsung maupun tidak langsung dalam pemborongan, pengadaan, atau persewaan yang ditugaskan kepadanya untuk mengurus atau mengawasinya."
+            },
+            {
+                q: "Studi Kasus 6 (Korupsi Dana Bencana & Obstruction of Justice): Saat terjadi bencana gempa bumi nasional, seorang oknum pejabat menyunat anggaran pengadaan paket sembako pengungsi (seperti relawan memotong isi paket bantuan korban bencana), lalu ketika kasusnya diselidiki, rekan pejabat tersebut sengaja menyembunyikan dokumen kontrak asli dan menyuruh saksi berbohong. Mengapa perbuatan ini sangat berat secara hukum?",
+                options: [
+                    "Karena penyunatan dana bencana dapat dikenai pemberatan pidana hingga pidana mati (Pasal 2 ayat 2), sedangkan perbuatan menyembunyikan bukti dan mengarahkan saksi palsu dijerat Pasal 21 (Obstruction of Justice).",
+                    "Karena korupsi dana bencana hanya dikenai sanksi teguran lisan dari atasan.",
+                    "Karena Pasal 21 hanya berlaku apabila kasus korupsi sudah memiliki putusan berkekuatan hukum tetap.",
+                    "Karena menyembunyikan dokumen negara diperbolehkan jika atas perintah rekan kerja."
+                ],
+                answer: 0,
+                explain: "Korupsi terhadap dana penanggulangan bencana alam nasional termasuk 'keadaan tertentu' pada Pasal 2 ayat (2) UU Tipikor dengan pemberatan hingga pidana mati. Sementara tindakan merintangi penyidikan dengan menyembunyikan dokumen atau merekayasa saksi dijerat Pasal 21 UU Tipikor (penjara 3–12 tahun)."
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. STATE APLIKASI & SISTEM EVENT COUNTER PERSISTEN (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'integritas_id_activity_log';
+        let activityLog = []; // Array of { name, category, count, lastTime }
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let analyticsChartInstance = null;
+
+        // Inisialisasi saat DOM selesai dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityLog();
+            renderTipikor7Grid();
+            renderImpact3Grid();
+            renderKatalog12Grid();
+            initCompareSelectors();
+            renderCompareTable();
+            updateSimulatorPreview();
+            renderQuiz();
+            refreshAllBadgesAndAnalytics();
+        });
+
+        function loadActivityLog() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) activityLog = parsed;
+                }
+            } catch (e) {
+                activityLog = [];
+            }
+        }
+
+        function saveActivityLog() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(activityLog));
+            } catch (e) {
+                console.warn('Gagal menyimpan log ke localStorage:', e);
+            }
+        }
+
+        // Mencatat setiap klik ke localStorage, memperbarui lencana real-time & memunculkan Toast
+        function trackActivity(itemName, categoryName, pulseBadgeId = null) {
+            const nowStr = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            let entry = activityLog.find(item => item.name === itemName);
+            if (entry) {
+                entry.count += 1;
+                entry.lastTime = nowStr;
+            } else {
+                entry = {
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: nowStr
+                };
+                activityLog.push(entry);
+            }
+
+            saveActivityLog();
+            refreshAllBadgesAndAnalytics();
+            showToast(`Aktivitas Dicatat: ${itemName} (+1)`);
+
+            if (pulseBadgeId) {
+                const badgeEl = document.getElementById(pulseBadgeId);
+                if (badgeEl) {
+                    badgeEl.classList.remove('counter-pulse');
+                    void badgeEl.offsetWidth;
+                    badgeEl.classList.add('counter-pulse');
+                }
+            }
+        }
+
+        function getCount(itemName) {
+            const found = activityLog.find(i => i.name === itemName);
+            return found ? found.count : 0;
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. PEMBARUAN SELURUH BADGE & PANEL ANALITIK
+         * ------------------------------------------------------------------- */
+        function refreshAllBadgesAndAnalytics() {
+            // 1. Update Nav Tab Counters (Desktop & Mobile)
+            const navMap = [
+                { key: 'Tab 1: Beranda', desk: 'nav-count-beranda', mob: 'mob-count-beranda' },
+                { key: 'Tab 2: Katalog 12 Jenis', desk: 'nav-count-katalog', mob: 'mob-count-katalog' },
+                { key: 'Tab 3: Komparasi', desk: 'nav-count-komparasi', mob: 'mob-count-komparasi' },
+                { key: 'Tab 4: Simulator Dampak', desk: 'nav-count-simulator', mob: 'mob-count-simulator' },
+                { key: 'Tab 5: Kuis Studi Kasus', desk: 'nav-count-kuis', mob: 'mob-count-kuis' }
+            ];
+            navMap.forEach(n => {
+                const c = getCount(n.key);
+                const dEl = document.getElementById(n.desk);
+                const mEl = document.getElementById(n.mob);
+                if (dEl) dEl.innerText = c;
+                if (mEl) mEl.innerText = c;
+            });
+
+            // 2. Update 7 Kelompok Tipikor Badges
+            TIPIKOR_7_GROUPS.forEach(g => {
+                const el = document.getElementById(`badge-tipikor-${g.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`7 Kelompok Tipikor: ${g.title}`)}x dipelajari`;
+            });
+
+            // 3. Update 3 Pilar Dampak Badges
+            IMPACT_3_PILLARS.forEach(imp => {
+                const el = document.getElementById(`badge-impact-${imp.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Pilar Dampak: ${imp.title}`)}x dipelajari`;
+            });
+
+            // 4. Update Katalog 12 Jenis Korupsi Badges
+            CORRUPTION_12_TYPES.forEach(c => {
+                const el = document.getElementById(`badge-katalog-${c.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Jenis Korupsi: ${c.title}`)}x dipelajari`;
+            });
+
+            // 5. Update Dropdown Komparasi Badges
+            [1, 2, 3].forEach(col => {
+                const el = document.getElementById(`badge-comp-${col}`);
+                if (el) el.innerText = `👁️ ${getCount(`Komparasi Jenis Kolom ${col}`)}x dipelajari`;
+            });
+
+            // 6. Update Simulator & Kuis Badges
+            const simTotal = activityLog
+                .filter(i => i.category === 'Simulator Dampak')
+                .reduce((acc, cur) => acc + cur.count, 0);
+            const simBadge = document.getElementById('badge-simulator-count');
+            if (simBadge) simBadge.innerText = `👁️ ${simTotal}x simulasi dijalankan`;
+
+            const quizTotal = getCount('Kuis: Jawab Soal');
+            const quizBadge = document.getElementById('badge-quiz-count');
+            if (quizBadge) quizBadge.innerText = `👁️ ${quizTotal}x soal dijawab`;
+
+            // 7. Total Klik Global (Header, FAB, Modal)
+            const totalAllClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('header-total-clicks').innerText = `${totalAllClicks} Klik`;
+            document.getElementById('fab-total-clicks').innerText = `${totalAllClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalAllClicks;
+
+            // 8. Kategori Teraktif
+            const catTotals = {};
+            activityLog.forEach(item => {
+                catTotals[item.category] = (catTotals[item.category] || 0) + item.count;
+            });
+            let topCat = '-';
+            let maxVal = 0;
+            Object.entries(catTotals).forEach(([cat, val]) => {
+                if (val > maxVal) {
+                    maxVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // 9. Persentase Cakupan Materi (dari 12 Jenis Korupsi)
+            const jenisKeys = new Set(CORRUPTION_12_TYPES.map(c => `Jenis Korupsi: ${c.title}`));
+            const exploredCount = activityLog.filter(item => jenisKeys.has(item.name)).length;
+            const totalItems = CORRUPTION_12_TYPES.length; // 12
+            const coveragePct = Math.min(100, Math.round((exploredCount / totalItems) * 100));
+
+            document.getElementById('modal-progress-bar').style.width = `${coveragePct}%`;
+            document.getElementById('modal-progress-percent').innerText = `${coveragePct}%`;
+            document.getElementById('modal-coverage-detail').innerText = `${exploredCount} dari ${totalItems} jenis korupsi dibuka`;
+
+            // 10. Top 5 Sub-Materi Paling Sering Diklik
+            const top5 = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const top5El = document.getElementById('top-5-list');
+            if (top5.length === 0) {
+                top5El.innerHTML = `<p class="text-slate-400 italic py-4 text-center">Belum ada interaksi tercatat. Klik kartu jenis korupsi atau kelompok tipikor untuk mulai belajar!</p>`;
+            } else {
+                top5El.innerHTML = top5.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                        <span class="truncate pr-2 font-semibold text-slate-700">
+                            <span class="inline-block w-5 text-integrityCrimson-700 font-extrabold">#${idx + 1}</span> ${item.name}
+                        </span>
+                        <span class="bg-amberGold-100 text-amberGold-700 px-2 py-0.5 rounded-md font-mono font-extrabold shrink-0">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // 11. Tabel Log Interaksi Lengkap
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">Belum ada data aktivitas belajar.</td></tr>`;
+            } else {
+                const reversedLog = [...activityLog].reverse();
+                tbody.innerHTML = reversedLog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-extrabold text-integrityCrimson-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 12. Grafik Doughnut Chart.js
+            renderDoughnutChart(catTotals);
+        }
+
+        function renderDoughnutChart(catTotals) {
+            const canvas = document.getElementById('analyticsChart');
+            const emptyMsg = document.getElementById('chart-empty-msg');
+            if (!canvas) return;
+
+            const labels = Object.keys(catTotals);
+            const values = Object.values(catTotals);
+
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+                analyticsChartInstance = null;
+            }
+
+            if (labels.length === 0) {
+                canvas.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyMsg.classList.add('hidden');
+
+            analyticsChartInstance = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#be123c', // Integrity Crimson
+                            '#f59e0b', // Amber Gold
+                            '#0f172a', // Dark Navy
+                            '#10b981', // Emerald
+                            '#e11d48', // Rose 600
+                            '#d97706', // Amber 600
+                            '#334155'  // Slate 700
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ` ${ctx.label}: ${ctx.parsed} klik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Toast Notification singkat di pojok kanan atas
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            while (container.children.length >= 3) {
+                container.removeChild(container.firstChild);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = "bg-navyDark-950/95 text-white border border-amberGold-400/60 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 transition-all duration-300 transform translate-x-4 opacity-0";
+            toast.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-emeraldSafe-500 text-white flex items-center justify-center text-[10px] shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="truncate font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. NAVIGASI ANTAR TAB
+         * ------------------------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-integrityCrimson-700', 'text-white', 'shadow', 'border', 'border-amberGold-400/30');
+                btn.classList.add('text-slate-300');
+            });
+            const activeDesk = document.getElementById(`nav-${tabId}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-integrityCrimson-700', 'text-white', 'shadow', 'border', 'border-amberGold-400/30');
+                activeDesk.classList.remove('text-slate-300');
+            }
+
+            // Mobile nav styling
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-integrityCrimson-700', 'text-white');
+                btn.classList.add('bg-white/10', 'text-slate-200');
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.classList.add('bg-integrityCrimson-700', 'text-white');
+                activeMob.classList.remove('bg-white/10', 'text-slate-200');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. TAB 1 RENDER & MODAL (7 KELOMPOK TIPIKOR & 3 PILAR DAMPAK)
+         * ------------------------------------------------------------------- */
+        function renderTipikor7Grid() {
+            const container = document.getElementById('tipikor-7-grid');
+            if (!container) return;
+
+            container.innerHTML = TIPIKOR_7_GROUPS.map((g, idx) => {
+                const count = getCount(`7 Kelompok Tipikor: ${g.title}`);
+                return `
+                    <div onclick="openTipikorGroupModal(${idx})" class="bg-white p-5 rounded-2xl border-2 border-slate-200/90 hover:border-integrityCrimson-700 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between space-y-3 group">
+                        <div class="space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="w-10 h-10 rounded-xl bg-integrityCrimson-100 text-integrityCrimson-700 flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-solid ${g.icon}"></i>
+                                </div>
+                                <span id="badge-tipikor-${g.id}" class="counter-badge bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-200">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-extrabold text-amberGold-600 block">${g.number} • ${g.pasal}</span>
+                                <h4 class="font-extrabold text-slate-900 text-base group-hover:text-integrityCrimson-700 transition leading-snug mt-0.5">${g.title}</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">${g.shortDesc}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-integrityCrimson-700 group-hover:underline">
+                            <span>Buka Rincian Pasal & Analogi</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openTipikorGroupModal(idx) {
+            const g = TIPIKOR_7_GROUPS[idx];
+            if (!g) return;
+
+            trackActivity(`7 Kelompok Tipikor: ${g.title}`, '7 Kelompok Tipikor', `badge-tipikor-${g.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navyDark-950 via-navyDark-900 to-integrityCrimson-900";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-amberGold-400">${g.number} • ${g.pasal}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${g.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amberGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`7 Kelompok Tipikor: ${g.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-integrityCrimson-50 p-4 rounded-2xl border border-integrityCrimson-200 space-y-2">
+                    <h4 class="font-extrabold text-integrityCrimson-900 text-sm">Rincian Pasal & Unsur Tindak Pidana:</h4>
+                    <ul class="space-y-2 text-xs text-slate-800 leading-relaxed">
+                        ${g.elements.map(item => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-integrityCrimson-700 mt-0.5"></i><span>${item}</span></li>`).join('')}
+                    </ul>
+                </div>
+                <div class="bg-amberGold-50 p-4 rounded-2xl border border-amberGold-200 space-y-1">
+                    <h4 class="font-extrabold text-amberGold-900 text-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-lightbulb text-amberGold-600"></i>
+                        <span>Analogi Sederhana dalam Kehidupan Sehari-hari:</span>
+                    </h4>
+                    <p class="text-amberGold-950 leading-relaxed">${g.analogy}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function renderImpact3Grid() {
+            const container = document.getElementById('impact-3-grid');
+            if (!container) return;
+
+            container.innerHTML = IMPACT_3_PILLARS.map((imp, idx) => {
+                const count = getCount(`Pilar Dampak: ${imp.title}`);
+                return `
+                    <div onclick="openImpactPillarModal(${idx})" class="bg-gradient-to-br ${imp.color} text-white p-6 rounded-2xl border border-amberGold-400/30 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="bg-white/15 text-amberGold-300 border border-white/20 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                    ${imp.badge}
+                                </span>
+                                <span id="badge-impact-${imp.id}" class="counter-badge bg-amberGold-400 text-navyDark-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg text-amberGold-400 shrink-0">
+                                    <i class="fa-solid ${imp.icon}"></i>
+                                </div>
+                                <h4 class="font-extrabold text-lg text-white group-hover:text-amberGold-300 transition leading-snug">${imp.title}</h4>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed">${imp.summary}</p>
+                        </div>
+                        <div class="pt-4 mt-4 border-t border-white/15 flex items-center justify-between text-xs font-bold text-amberGold-400 group-hover:underline">
+                            <span>Bedah Mekanisme Dampak Publik</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openImpactPillarModal(idx) {
+            const imp = IMPACT_3_PILLARS[idx];
+            if (!imp) return;
+
+            trackActivity(`Pilar Dampak: ${imp.title}`, '3 Pilar Dampak Sosial-Ekonomi', `badge-impact-${imp.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = `p-6 text-white relative bg-gradient-to-r ${imp.color}`;
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/25 hover:bg-black/40 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-amberGold-300">${imp.badge}</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${imp.title}</h3>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amberGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Pilar Dampak: ${imp.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+                    <h4 class="font-extrabold text-navyDark-900 text-sm">Mekanisme Dampak Nyata bagi Kehidupan Masyarakat:</h4>
+                    <ul class="space-y-2 text-xs text-slate-700 leading-relaxed">
+                        ${imp.mechanisms.map(m => `<li class="flex items-start space-x-2"><i class="fa-solid fa-triangle-exclamation text-integrityCrimson-600 mt-0.5"></i><span>${m}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. TAB 2 RENDER & MODAL KATALOG 12 JENIS KORUPSI & PERILAKU KORUPTIF
+         * ------------------------------------------------------------------- */
+        function renderKatalog12Grid() {
+            const container = document.getElementById('katalog-12-grid');
+            if (!container) return;
+
+            const catFilter = document.getElementById('katalog-category-filter').value;
+            const searchQuery = (document.getElementById('katalog-search').value || '').toLowerCase();
+
+            const filtered = CORRUPTION_12_TYPES.filter(c => {
+                const matchCat = catFilter === 'all' || c.category === catFilter;
+                const matchSearch = c.title.toLowerCase().includes(searchQuery) ||
+                    c.pasal.toLowerCase().includes(searchQuery) ||
+                    c.analogyShort.toLowerCase().includes(searchQuery) ||
+                    c.impactShort.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada jenis korupsi, pasal, atau analogi yang cocok dengan pencarian Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const categoryHeaderColors = {
+                'Keuangan Negara & Pengadaan': 'from-navyDark-950 to-integrityCrimson-900',
+                'Suap, Gratifikasi & Pemerasan': 'from-integrityCrimson-900 to-integrityCrimson-700',
+                'Jabatan, Curang & Obstruction': 'from-amberGold-700 to-navyDark-950'
+            };
+
+            container.innerHTML = filtered.map(c => {
+                const count = getCount(`Jenis Korupsi: ${c.title}`);
+                const grad = categoryHeaderColors[c.category] || 'from-navyDark-950 to-integrityCrimson-800';
+
+                return `
+                    <div onclick="openCorruptionDetailModal('${c.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-r ${grad} text-white space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="bg-white/15 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-white/20 truncate">
+                                    #${c.number} • ${c.category}
+                                </span>
+                                <span id="badge-katalog-${c.id}" class="counter-badge bg-amberGold-400 text-navyDark-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-lg text-amberGold-300 shrink-0">
+                                    <i class="fa-solid ${c.icon}"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-base leading-snug group-hover:translate-x-1 transition-transform">${c.title}</h4>
+                                    <p class="text-[11px] text-amberGold-300 font-semibold mt-0.5">${c.pasal}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-3.5 text-xs">
+                            <div class="space-y-2.5">
+                                <div class="bg-amberGold-50/90 px-3 py-2.5 rounded-xl border border-amberGold-200/80">
+                                    <span class="text-[10px] font-extrabold uppercase text-amberGold-700 block">
+                                        <i class="fa-solid fa-lightbulb mr-1"></i> Analogi Sehari-hari:
+                                    </span>
+                                    <p class="text-slate-800 leading-relaxed mt-0.5">${c.analogyShort}</p>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase text-integrityCrimson-700 block">Dampak Sosial-Ekonomi:</span>
+                                    <p class="text-slate-600 leading-relaxed mt-0.5">${c.impactShort}</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-integrityCrimson-700 font-extrabold group-hover:underline">
+                                <span>Buka 4 Aspek Lengkap</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCorruptionDetailModal(typeId) {
+            const c = CORRUPTION_12_TYPES.find(item => item.id === typeId);
+            if (!c) return;
+
+            trackActivity(`Jenis Korupsi: ${c.title}`, 'Katalog 12 Jenis', `badge-katalog-${c.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-navyDark-950 via-navyDark-900 to-integrityCrimson-900";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center text-xl text-amberGold-400 shrink-0">
+                        <i class="fa-solid ${c.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-amberGold-300">#${c.number} • ${c.category}</span>
+                        <h3 class="text-xl sm:text-2xl font-extrabold mt-0.5">${c.title}</h3>
+                        <p class="text-[11px] text-rose-200 font-semibold mt-0.5">${c.pasal}</p>
+                    </div>
+                </div>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-amberGold-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Jenis Korupsi: ${c.title}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <!-- 1. Dasar Hukum & Unsur Pasal -->
+                <div class="bg-integrityCrimson-50 p-4 rounded-2xl border border-integrityCrimson-200 space-y-1.5">
+                    <h4 class="font-extrabold text-integrityCrimson-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-gavel text-integrityCrimson-700"></i>
+                        <span>1. Dasar Hukum & Unsur Pasal</span>
+                    </h4>
+                    <p class="text-slate-800 leading-relaxed">${c.legalBasis}</p>
+                </div>
+
+                <!-- 2. Analogi Kehidupan Sehari-hari -->
+                <div class="bg-amberGold-50 p-4 rounded-2xl border border-amberGold-200 space-y-1.5">
+                    <h4 class="font-extrabold text-amberGold-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-lightbulb text-amberGold-600"></i>
+                        <span>2. Analogi Kehidupan Sehari-hari</span>
+                    </h4>
+                    <p class="text-amberGold-950 leading-relaxed">${c.analogyFull}</p>
+                </div>
+
+                <!-- 3. Contoh Kasus Nyata di Sektor Publik -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1.5">
+                    <h4 class="font-extrabold text-navyDark-900 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-building-columns text-navyDark-800"></i>
+                        <span>3. Contoh Kasus Nyata di Sektor Publik</span>
+                    </h4>
+                    <p class="text-slate-700 leading-relaxed">${c.publicCaseExample}</p>
+                </div>
+
+                <!-- 4. Analisis Dampak Sosial-Ekonomi -->
+                <div class="bg-navyDark-900 text-white p-4 rounded-2xl border border-amberGold-400/40 space-y-1.5">
+                    <h4 class="font-extrabold text-amberGold-400 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>4. Analisis Dampak Sosial-Ekonomi</span>
+                    </h4>
+                    <p class="text-slate-200 leading-relaxed">${c.socioEconomicImpact}</p>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. TAB 3: MATRIKS KOMPARASI JENIS KORUPSI (3 DROPDOWN, 6 PARAMETER)
+         * ------------------------------------------------------------------- */
+        function initCompareSelectors() {
+            const defaults = ['suap_menyuap', 'gratifikasi_ilegal', 'pemerasan_pejabat'];
+            [1, 2, 3].forEach((col, idx) => {
+                const sel = document.getElementById(`comp-select-${col}`);
+                if (!sel) return;
+                sel.innerHTML = CORRUPTION_12_TYPES.map(c => `<option value="${c.id}" ${c.id === defaults[idx] ? 'selected' : ''}>#${c.number} ${c.title}</option>`).join('');
+            });
+        }
+
+        function handleCompareChange(colNum) {
+            const sel = document.getElementById(`comp-select-${colNum}`);
+            const chosen = CORRUPTION_12_TYPES.find(c => c.id === sel.value);
+            trackActivity(`Komparasi Jenis Kolom ${colNum}`, 'Matriks Komparasi', `badge-comp-${colNum}`);
+            if (chosen) {
+                trackActivity(`Bandingkan: ${chosen.title}`, 'Matriks Komparasi');
+            }
+            renderCompareTable();
+        }
+
+        function renderCompareTable() {
+            const table = document.getElementById('compare-matrix-table');
+            if (!table) return;
+
+            const c1 = CORRUPTION_12_TYPES.find(c => c.id === document.getElementById('comp-select-1').value) || CORRUPTION_12_TYPES[1];
+            const c2 = CORRUPTION_12_TYPES.find(c => c.id === document.getElementById('comp-select-2').value) || CORRUPTION_12_TYPES[2];
+            const c3 = CORRUPTION_12_TYPES.find(c => c.id === document.getElementById('comp-select-3').value) || CORRUPTION_12_TYPES[3];
+
+            table.innerHTML = `
+                <thead>
+                    <tr class="bg-navyDark-950 text-white">
+                        <th class="p-3.5 font-extrabold w-48">Parameter Perbandingan</th>
+                        <th class="p-3.5 font-extrabold bg-navyDark-900">${c1.title}</th>
+                        <th class="p-3.5 font-extrabold bg-integrityCrimson-800">${c2.title}</th>
+                        <th class="p-3.5 font-extrabold bg-amberGold-700">${c3.title}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    ${COMPARE_PARAMETERS.map(p => `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-3.5 font-bold text-slate-800 bg-slate-50">${p.label}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed">${c1[p.field]}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed bg-integrityCrimson-50/30">${c2[p.field]}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed bg-amberGold-50/30">${c3[p.field]}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. TAB 4: SIMULATOR DAMPAK SOSIAL-EKONOMI KORUPSI
+         * ------------------------------------------------------------------- */
+        function updateSimulatorPreview() {
+            const s1 = parseInt(document.getElementById('sim-slider-1').value) || 0; // 0 - 60%
+            const s2 = parseInt(document.getElementById('sim-slider-2').value) || 0; // 0 - 80%
+            const s3 = parseInt(document.getElementById('sim-slider-3').value) || 0; // 0 - 70%
+            const s4 = parseInt(document.getElementById('sim-slider-4').value) || 0; // 0 - 50%
+            const s5 = parseInt(document.getElementById('sim-slider-5').value) || 10; // 10 - 100%
+
+            document.getElementById('val-sim-1').innerText = `${s1}%`;
+            document.getElementById('val-sim-2').innerText = `${s2}%`;
+            document.getElementById('val-sim-3').innerText = `${s3}%`;
+            document.getElementById('val-sim-4').innerText = `${s4}%`;
+            document.getElementById('val-sim-5').innerText = `${s5}%`;
+
+            // Faktor peredam dari Digitalisasi & Transparansi (s5: 10..100 -> faktor 0.55..1.05)
+            const transparencyMitigation = 1.15 - (s5 / 100) * 0.55;
+
+            // Estimasi Beban Ekonomi Biaya Tinggi / Kerugian Publik (Triliun Rp/Tahun)
+            const rawLoss = (s1 * 1.35) + (s2 * 0.75) + (s3 * 0.90) + (s4 * 0.85);
+            const estimatedLoss = Math.max(0, rawLoss * transparencyMitigation).toFixed(1);
+
+            // Penurunan Umur Teknis & Kualitas Infrastruktur (%)
+            const infraDrop = Math.min(75, ((s1 * 0.65) + (s3 * 0.25)) * transparencyMitigation).toFixed(1);
+
+            // Proyeksi Skor Indeks Persepsi Korupsi / CPI (Skor 0-100)
+            const riskPressure = ((s1 / 60) * 22) + ((s2 / 80) * 22) + ((s3 / 70) * 18) + ((s4 / 50) * 14);
+            const cpiScore = Math.round(Math.min(92, Math.max(12, 62 - riskPressure + (s5 * 0.32))));
+
+            document.getElementById('sim-res-loss').innerText = estimatedLoss;
+
+            const statusBadge = document.getElementById('sim-res-status-badge');
+            const infraEl = document.getElementById('sim-res-infra');
+            const cpiEl = document.getElementById('sim-res-cpi');
+            const narrativeEl = document.getElementById('sim-res-narrative');
+
+            // Update indikator Infrastruktur
+            infraEl.innerText = `-${infraDrop}% Lebih Cepat Rusak`;
+            if (parseFloat(infraDrop) <= 12) {
+                infraEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emeraldSafe-500/20 text-emerald-300 border border-emeraldSafe-500/40';
+            } else if (parseFloat(infraDrop) <= 28) {
+                infraEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-amberGold-500/20 text-amberGold-300 border border-amberGold-500/40';
+            } else {
+                infraEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-integrityCrimson-600/30 text-rose-200 border border-integrityCrimson-600/50';
+            }
+
+            // Update indikator CPI
+            cpiEl.innerText = `${cpiScore} / 100`;
+            if (cpiScore >= 60) {
+                cpiEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-emeraldSafe-500/20 text-emerald-300 border border-emeraldSafe-500/40';
+            } else if (cpiScore >= 38) {
+                cpiEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-amberGold-500/20 text-amberGold-300 border border-amberGold-500/40';
+            } else {
+                cpiEl.className = 'font-mono font-extrabold px-2.5 py-0.5 rounded-full bg-integrityCrimson-600/30 text-rose-200 border border-integrityCrimson-600/50';
+            }
+
+            // Status Ketahanan Sosial-Ekonomi & Narasi Analisis
+            if (cpiScore >= 62 && parseFloat(estimatedLoss) <= 45) {
+                statusBadge.innerText = 'Ketahanan Integritas Tinggi & Efisien';
+                statusBadge.className = 'bg-emeraldSafe-500 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Digitalisasi layanan publik dan transparansi pengadaan berhasil menekan celah suap serta mark-up. Anggaran negara terserap optimal untuk membangun infrastruktur tahan lama, menjaga harga pangan stabil, dan memperkuat kepercayaan investor.';
+            } else if (cpiScore >= 38) {
+                statusBadge.innerText = 'Kerentanan Sedang — Perlu Penguatan Sistem';
+                statusBadge.className = 'bg-amberGold-400 text-navyDark-950 font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Kebocoran anggaran dan pungli perizinan masih membebani harga kebutuhan pokok (inflasi terselubung) serta memperpendek usia jalan dan fasilitas publik. Memperluas digitalisasi e-Katalog dan perizinan daring sangat krusial menekan biaya siluman.';
+            } else {
+                statusBadge.innerText = 'Darurat Ekonomi Biaya Tinggi & Degradasi Publik';
+                statusBadge.className = 'bg-integrityCrimson-600 text-white font-extrabold text-xs px-3.5 py-1 rounded-full shadow';
+                narrativeEl.innerText = 'Tingginya mark-up proyek, suap perizinan, dan kebocoran bansos memicu ekonomi biaya tinggi yang langsung menggerus daya beli keluarga miskin. Infrastruktur publik cepat rusak sebelum waktunya dan investasi sehat menjauh akibat ketidakpastian hukum.';
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. TAB 5: KUIS STUDI KASUS (6 SOAL SCENARIO-BASED)
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span class="bg-integrityCrimson-700 text-white px-3 py-1 rounded-full">Studi Kasus ${currentQuizIdx + 1} dari ${QUIZ_QUESTIONS.length}</span>
+                        <span>Benar: <strong class="text-emeraldSafe-600 font-mono text-sm">${quizScore} / ${QUIZ_QUESTIONS.length}</strong></span>
+                    </div>
+
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</h4>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left bg-white hover:bg-integrityCrimson-50 border border-slate-200 hover:border-integrityCrimson-700 p-4 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-between group shadow-2xs">
+                                <span class="pr-3"><strong class="text-integrityCrimson-700 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-integrityCrimson-700 transition shrink-0"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Studi Kasus', 'badge-quiz-count');
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) quizScore += 1;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-4 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-rose-100 text-rose-950 border border-rose-300'} text-xs font-extrabold flex items-center space-x-2.5">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emeraldSafe-600' : 'fa-circle-xmark text-integrityCrimson-600'} text-xl"></i>
+                        <span>${isCorrect ? 'Analisis Anda Tepat!' : `Analisis Kurang Tepat. Jawaban benar: ${String.fromCharCode(65 + q.answer)}`}</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <strong class="text-navyDark-900 block">Pembahasan Pasal & Analogi:</strong>
+                        <p>${q.explain}</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="advanceQuiz()" class="bg-integrityCrimson-700 hover:bg-integrityCrimson-800 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition shadow">
+                            ${currentQuizIdx < QUIZ_QUESTIONS.length - 1 ? 'Studi Kasus Berikutnya →' : 'Lihat Hasil Akhir Kuis'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function advanceQuiz() {
+            if (currentQuizIdx < QUIZ_QUESTIONS.length - 1) {
+                currentQuizIdx++;
+                renderQuiz();
+            } else {
+                const container = document.getElementById('quiz-container');
+                const finalPercent = Math.round((quizScore / QUIZ_QUESTIONS.length) * 100);
+                let predicate = 'Terus Pelajari Katalog 12 Jenis Korupsi!';
+                if (quizScore === QUIZ_QUESTIONS.length) predicate = 'Sempurna! Duta Integritas & Literasi Antikorupsi';
+                else if (quizScore >= 4) predicate = 'Sangat Baik! Pemahaman Hukum & Dampak Korupsi Kuat';
+                else if (quizScore >= 3) predicate = 'Cukup Baik! Perkuat Detail Pasal & Mekanisme Pelaporan';
+
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-navyDark-950 via-navyDark-900 to-integrityCrimson-900 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-amberGold-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-emeraldSafe-500/20 text-emerald-300 border border-emeraldSafe-500/40 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amberGold-400 block">${predicate}</span>
+                        <h4 class="font-extrabold text-2xl">Kuis Studi Kasus Selesai!</h4>
+                        <div class="py-2">
+                            <span class="text-xs text-slate-300 block">Skor Akhir Anda (${quizScore} dari ${QUIZ_QUESTIONS.length} Studi Kasus Benar):</span>
+                            <strong class="text-4xl font-mono font-extrabold text-amberGold-400">${finalPercent} / 100</strong>
+                        </div>
+                        <button onclick="restartQuiz()" class="bg-gradient-to-r from-amberGold-400 to-amberGold-500 hover:from-amberGold-300 hover:to-amberGold-400 text-navyDark-950 font-extrabold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis Studi Kasus
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            trackActivity('Kuis: Ulangi Kuis', 'Kuis Studi Kasus');
+            renderQuiz();
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. MODAL ANALITIK, KONFIRMASI RESET INLINE & EKSPOR DATA JSON
+         * ------------------------------------------------------------------- */
+        function openAnalyticsModal() {
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function toggleResetConfirm(show) {
+            const box = document.getElementById('reset-confirm-box');
+            if (!box) return;
+            if (show) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function executeClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem(STORAGE_KEY);
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            showToast('Seluruh riwayat hitungan belajar telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const payload = {
+                aplikasi: 'IntegritasID - Edukasi Jenis Korupsi, Analogi Sehari-hari, & Dampak Sosial Ekonomi',
+                waktuEkspor: new Date().toISOString(),
+                totalInteraksi: activityLog.reduce((s, i) => s + i.count, 0),
+                riwayatAktivitas: activityLog
+            };
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `Analitik_IntegritasID_${Date.now()}.json`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Data analitik berhasil diekspor ke JSON.');
+        }
+    </script>
+</body>
+</html>
