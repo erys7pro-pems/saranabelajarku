@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AotearoaExplorer - Peta Interaktif Region, Kota, & 8 Universitas New Zealand</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6.4.0 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pounamu: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            950: '#042f2e',
+                        },
+                        silverFern: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        kowhai: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar untuk tabel & modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Animasi denyut pada counter badge */
+        .counter-badge {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .counter-pulse {
+            animation: badgePulse 0.45s ease-out;
+        }
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.25); background-color: #fbbf24; color: #020617; }
+            100% { transform: scale(1); }
+        }
+        /* Sembunyikan scrollbar horizontal pada menu mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Styling Interaktif Peta SVG New Zealand */
+        .nz-region-path {
+            transition: fill 0.25s ease, stroke 0.25s ease, opacity 0.3s ease, filter 0.25s ease;
+            cursor: pointer;
+        }
+        .nz-region-path:hover {
+            filter: brightness(1.18);
+            stroke: #fbbf24;
+            stroke-width: 2px;
+        }
+        .nz-region-active {
+            fill: #f59e0b !important;
+            stroke: #ffffff !important;
+            stroke-width: 2.4px !important;
+            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.75));
+        }
+        .nz-island-dimmed {
+            opacity: 0.25;
+        }
+        .city-pin-pulse {
+            animation: pinRipple 2s infinite ease-out;
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        @keyframes pinRipple {
+            0% { transform: scale(0.85); opacity: 0.9; }
+            70% { transform: scale(2.1); opacity: 0; }
+            100% { transform: scale(2.1); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-pounamu-700 selection:text-white">
+
+    <!-- ================= 1. HEADER STICKY & NAVIGASI 5 TAB + LIVE COUNTER BADGES ================= -->
+    <header class="bg-gradient-to-r from-silverFern-950 via-pounamu-950 to-pounamu-800 text-white sticky top-0 z-40 shadow-xl border-b border-kowhai-400/35">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Identitas Brand AotearoaExplorer -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="trackActivity('Logo Beranda AotearoaExplorer', 'Navigasi Utama'); switchTab('beranda')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pounamu-600 to-kowhai-500 text-white flex items-center justify-center font-extrabold text-lg shadow-lg border border-kowhai-400/50 group-hover:scale-105 transition">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">AotearoaExplorer</h1>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider bg-silverFern-950/75 text-kowhai-400 border border-kowhai-400/40 px-2 py-0.5 rounded-full">Aotearoa • NZ</span>
+                        </div>
+                        <p class="text-[11px] text-pounamu-100 font-medium">Peta Pulau, 16 Region, Kota, & Universitas NZ</p>
+                    </div>
+                </div>
+
+                <!-- Navigasi Desktop (5 Tab Utama) -->
+                <nav class="hidden lg:flex items-center space-x-1 text-xs font-semibold">
+                    <button onclick="trackActivity('Tab 1: Peta Pulau & Region', 'Navigasi Menu'); switchTab('beranda')" id="nav-beranda" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 bg-pounamu-700 text-white shadow border border-kowhai-400/40">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span>Peta Pulau & Region</span>
+                        <span id="nav-count-beranda" class="text-[10px] bg-silverFern-950 text-kowhai-400 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 2: 8 Universitas Negeri', 'Navigasi Menu'); switchTab('universitas')" id="nav-universitas" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-pounamu-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <span>8 Universitas Negeri</span>
+                        <span id="nav-count-universitas" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 3: Kota Utama', 'Navigasi Menu'); switchTab('kota')" id="nav-kota" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-pounamu-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-city"></i>
+                        <span>Kota Utama</span>
+                        <span id="nav-count-kota" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 4: Komparasi Kampus', 'Navigasi Menu'); switchTab('komparasi')" id="nav-komparasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-pounamu-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <span>Komparasi Kampus</span>
+                        <span id="nav-count-komparasi" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                    <button onclick="trackActivity('Tab 5: Simulator & Kuis', 'Navigasi Menu'); switchTab('simulasi')" id="nav-simulasi" class="nav-btn px-3 py-2 rounded-xl transition-all flex items-center space-x-1.5 text-pounamu-100 hover:bg-white/10 hover:text-white">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Simulator & Kuis</span>
+                        <span id="nav-count-simulasi" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold ml-1">0</span>
+                    </button>
+                </nav>
+
+                <!-- Tombol Statistik Belajar -->
+                <button onclick="openAnalyticsModal()" class="flex items-center space-x-2 bg-gradient-to-r from-kowhai-400 to-kowhai-500 hover:from-kowhai-300 hover:to-kowhai-400 text-silverFern-950 px-3.5 py-2 rounded-xl font-extrabold text-xs shadow-lg transition transform active:scale-95">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                    <span class="hidden sm:inline">Statistik Belajar:</span>
+                    <span id="header-total-clicks" class="bg-silverFern-950 text-kowhai-400 px-2 py-0.5 rounded-md font-mono text-xs">0 Klik</span>
+                </button>
+            </div>
+
+            <!-- Navigasi Mobile & Tablet -->
+            <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar py-2.5 border-t border-white/15 text-xs font-semibold">
+                <button onclick="trackActivity('Tab 1: Peta Pulau & Region', 'Navigasi Menu'); switchTab('beranda')" id="mob-nav-beranda" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-pounamu-700 text-white">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Peta Pulau & Region</span>
+                    <span id="mob-count-beranda" class="text-[10px] bg-silverFern-950 text-kowhai-400 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 2: 8 Universitas Negeri', 'Navigasi Menu'); switchTab('universitas')" id="mob-nav-universitas" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-pounamu-100">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span>8 Universitas Negeri</span>
+                    <span id="mob-count-universitas" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 3: Kota Utama', 'Navigasi Menu'); switchTab('kota')" id="mob-nav-kota" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-pounamu-100">
+                    <i class="fa-solid fa-city"></i>
+                    <span>Kota Utama</span>
+                    <span id="mob-count-kota" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 4: Komparasi Kampus', 'Navigasi Menu'); switchTab('komparasi')" id="mob-nav-komparasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-pounamu-100">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <span>Komparasi Kampus</span>
+                    <span id="mob-count-komparasi" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+                <button onclick="trackActivity('Tab 5: Simulator & Kuis', 'Navigasi Menu'); switchTab('simulasi')" id="mob-nav-simulasi" class="mob-nav-btn shrink-0 px-3 py-2 rounded-xl flex items-center space-x-1.5 bg-white/10 text-pounamu-100">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Simulator & Kuis</span>
+                    <span id="mob-count-simulasi" class="text-[10px] bg-kowhai-400 text-silverFern-950 px-1.5 py-0.5 rounded-full font-mono font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- =====================================================================
+             TAB 1: PETA PULAU & 16 REGION INTERAKTIF (BERANDA)
+             ===================================================================== -->
+        <section id="sec-beranda" class="tab-content space-y-8">
+            <!-- Hero Banner Singkat Geografi Aotearoa New Zealand -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-silverFern-950 via-pounamu-950 to-pounamu-800 text-white p-6 sm:p-9 shadow-2xl border border-kowhai-400/35">
+                <div class="absolute -right-6 -bottom-8 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-earth-oceania text-[15rem] text-kowhai-400"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-kowhai-400/20 text-kowhai-300 border border-kowhai-400/40 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+                            Te Ika-a-Māui (North Island) • Te Waipounamu (South Island) • Rakiura
+                        </span>
+                        <span class="bg-pounamu-600/30 text-pounamu-100 border border-pounamu-400/40 px-3 py-1 rounded-full text-xs font-semibold">
+                            16 Region Resmi & 8 Universitas Negeri
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight">
+                        Jelajahi Peta Interaktif Pulau, 16 Region, Kota, & Kampus Aotearoa New Zealand
+                    </h2>
+                    <p class="text-pounamu-100/95 text-xs sm:text-sm leading-relaxed">
+                        Terbentang di barat daya Samudra Pasifik, Selandia Baru (<strong>Aotearoa</strong>) terbagi atas dua pulau utama yang dipisahkan oleh <strong>Selat Cook (Te Moana-o-Raukawa)</strong>: <strong>North Island (Te Ika-a-Māui)</strong> yang dinamis dengan 9 region dan mayoritas populasi, serta <strong>South Island (Te Waipounamu)</strong> yang megah dengan pegunungan Alpen Selatan, fyord, dan 7 region. Klik wilayah mana pun pada peta atau pin kota untuk membedah profilnya.
+                    </p>
+                </div>
+            </div>
+
+            <!-- PETA SVG INTERAKTIF + PANEL INSPEKTOR REAL-TIME -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Kolom Kiri (7 Cols): Peta SVG Interaktif New Zealand -->
+                <div class="lg:col-span-7 bg-gradient-to-b from-silverFern-950 via-silverFern-900 to-pounamu-950 rounded-3xl p-5 sm:p-6 text-white shadow-2xl border border-pounamu-700/50 space-y-4">
+                    <!-- Toolbar Filter Cepat Pulau -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-kowhai-400 animate-pulse"></span>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white">Peta Kepulauan Aotearoa New Zealand</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 text-[11px] font-bold">
+                            <button onclick="setIslandMapFilter('all')" id="map-btn-all" class="px-3 py-1.5 rounded-xl bg-kowhai-400 text-silverFern-950 transition shadow">
+                                Semua Pulau
+                            </button>
+                            <button onclick="setIslandMapFilter('North Island')" id="map-btn-north" class="px-3 py-1.5 rounded-xl bg-white/10 text-pounamu-100 hover:bg-white/20 transition">
+                                North Island (Te Ika-a-Māui)
+                            </button>
+                            <button onclick="setIslandMapFilter('South Island')" id="map-btn-south" class="px-3 py-1.5 rounded-xl bg-white/10 text-pounamu-100 hover:bg-white/20 transition">
+                                South Island (Te Waipounamu)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kontainer Peta SVG Responsif -->
+                    <div class="relative bg-gradient-to-br from-[#031324] via-[#062033] to-[#042f2e] rounded-2xl border border-pounamu-700/40 overflow-hidden p-2">
+                        <!-- Kompas Dekoratif -->
+                        <div class="absolute top-3 left-3 bg-silverFern-950/80 backdrop-blur-sm border border-white/15 rounded-xl px-2.5 py-1.5 text-[10px] text-pounamu-100 pointer-events-none z-10">
+                            <div class="flex items-center space-x-1.5 font-bold text-kowhai-400">
+                                <i class="fa-regular fa-compass"></i>
+                                <span>34°S – 47°S • 166°E – 179°E</span>
+                            </div>
+                            <span class="text-[9px] text-slate-400 block">Klik wilayah region atau pin kota/kampus</span>
+                        </div>
+
+                        <!-- Legenda Peta -->
+                        <div class="absolute bottom-3 right-3 bg-silverFern-950/85 backdrop-blur-sm border border-white/15 rounded-xl p-2.5 text-[10px] space-y-1.5 pointer-events-none z-10">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-sm bg-[#0f766e] border border-white/40 inline-block"></span>
+                                <span class="text-slate-200">North Island (9 Region)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-sm bg-[#1e3a5f] border border-white/40 inline-block"></span>
+                                <span class="text-slate-200">South Island (7 Region)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-sm bg-[#f59e0b] border border-white inline-block"></span>
+                                <span class="text-kowhai-300 font-bold">Region Terpilih</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-kowhai-400 inline-block"></span>
+                                <span class="text-slate-200">Pin Kota & Kampus</span>
+                            </div>
+                        </div>
+
+                        <svg id="nz-interactive-svg" viewBox="0 0 560 725" class="w-full h-auto max-h-[560px] mx-auto select-none" role="img" aria-label="Peta Interaktif 16 Region New Zealand">
+                            <defs>
+                                <pattern id="seaGrid" width="36" height="36" patternUnits="userSpaceOnUse">
+                                    <path d="M 36 0 L 0 0 0 36" fill="none" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+                                </pattern>
+                            </defs>
+                            <!-- Latar Laut Grid -->
+                            <rect width="560" height="725" fill="url(#seaGrid)" />
+
+                            <!-- Label Perairan & Pulau -->
+                            <text x="105" y="210" fill="rgba(148,163,184,0.38)" font-size="11" font-weight="800" letter-spacing="2">TASMAN SEA</text>
+                            <text x="108" y="224" fill="rgba(148,163,184,0.28)" font-size="9" font-weight="600">(Te Tai-o-Rehua)</text>
+
+                            <text x="415" y="485" fill="rgba(148,163,184,0.38)" font-size="11" font-weight="800" letter-spacing="2">PACIFIC OCEAN</text>
+                            <text x="415" y="499" fill="rgba(148,163,184,0.28)" font-size="9" font-weight="600">(Te Moana-nui-a-Kiwa)</text>
+
+                            <text x="342" y="382" fill="#fbbf24" font-size="9.5" font-weight="800" letter-spacing="0.5">Cook Strait</text>
+                            <text x="342" y="393" fill="rgba(251,191,36,0.65)" font-size="8" font-weight="600">(Te Moana-o-Raukawa)</text>
+
+                            <text x="405" y="88" fill="#5eead4" font-size="11" font-weight="800">NORTH ISLAND</text>
+                            <text x="405" y="101" fill="rgba(94,234,212,0.7)" font-size="9" font-weight="600">Te Ika-a-Māui</text>
+
+                            <text x="54" y="425" fill="#93c5fd" font-size="11" font-weight="800">SOUTH ISLAND</text>
+                            <text x="54" y="438" fill="rgba(147,197,253,0.7)" font-size="9" font-weight="600">Te Waipounamu</text>
+
+                            <!-- ==================== NORTH ISLAND (9 REGION) ==================== -->
+                            <g id="svg-group-north" stroke="#042f2e" stroke-width="1.3" stroke-linejoin="round">
+                                <!-- 1. Northland (Te Tai Tokerau) -->
+                                <path id="svg-reg-northland" class="nz-region-path" fill="#0d9488"
+                                    d="M 258,34 L 270,38 L 285,68 L 302,92 L 315,112 L 318,128 L 304,132 L 296,120 L 284,102 L 270,74 L 256,48 Z"
+                                    onclick="selectRegion('northland', 'Peta SVG: Region Northland')">
+                                    <title>Northland (Te Tai Tokerau) - North Island</title>
+                                </path>
+
+                                <!-- 2. Auckland (Tāmaki Makaurau) -->
+                                <path id="svg-reg-auckland" class="nz-region-path" fill="#0f766e"
+                                    d="M 304,132 L 318,128 L 327,144 L 333,158 L 321,164 L 312,158 L 306,144 Z"
+                                    onclick="selectRegion('auckland', 'Peta SVG: Region Auckland')">
+                                    <title>Auckland (Tāmaki Makaurau) - North Island</title>
+                                </path>
+
+                                <!-- 3. Waikato -->
+                                <path id="svg-reg-waikato" class="nz-region-path" fill="#115e59"
+                                    d="M 312,158 L 321,164 L 333,158 L 348,144 L 355,148 L 352,172 L 366,186 L 372,216 L 366,246 L 344,254 L 322,248 L 310,225 L 308,195 L 312,175 Z"
+                                    onclick="selectRegion('waikato', 'Peta SVG: Region Waikato')">
+                                    <title>Waikato - North Island</title>
+                                </path>
+
+                                <!-- 4. Bay of Plenty (Te Moana-a-Toi) -->
+                                <path id="svg-reg-bay_of_plenty" class="nz-region-path" fill="#0d9488"
+                                    d="M 352,172 L 378,184 L 408,194 L 434,190 L 442,202 L 424,218 L 398,224 L 372,216 L 366,186 Z"
+                                    onclick="selectRegion('bay_of_plenty', 'Peta SVG: Region Bay of Plenty')">
+                                    <title>Bay of Plenty (Te Moana-a-Toi) - North Island</title>
+                                </path>
+
+                                <!-- 5. Gisborne (Te Tai Rāwhiti) -->
+                                <path id="svg-reg-gisborne" class="nz-region-path" fill="#0f766e"
+                                    d="M 434,190 L 464,182 L 474,198 L 466,226 L 452,244 L 434,238 L 424,218 L 442,202 Z"
+                                    onclick="selectRegion('gisborne', 'Peta SVG: Region Gisborne')">
+                                    <title>Gisborne (Te Tai Rāwhiti) - North Island</title>
+                                </path>
+
+                                <!-- 6. Hawke's Bay (Te Matau-a-Māui) -->
+                                <path id="svg-reg-hawkes_bay" class="nz-region-path" fill="#115e59"
+                                    d="M 398,224 L 424,218 L 434,238 L 452,244 L 436,262 L 418,274 L 412,304 L 396,318 L 382,312 L 388,275 L 392,245 Z"
+                                    onclick="selectRegion('hawkes_bay', 'Peta SVG: Region Hawke\'s Bay')">
+                                    <title>Hawke's Bay (Te Matau-a-Māui) - North Island</title>
+                                </path>
+
+                                <!-- 7. Taranaki -->
+                                <path id="svg-reg-taranaki" class="nz-region-path" fill="#0d9488"
+                                    d="M 284,244 L 310,225 L 322,248 L 316,274 L 296,282 L 274,274 L 270,258 Z"
+                                    onclick="selectRegion('taranaki', 'Peta SVG: Region Taranaki')">
+                                    <title>Taranaki - North Island</title>
+                                </path>
+
+                                <!-- 8. Manawatū-Whanganui -->
+                                <path id="svg-reg-manawatu_whanganui" class="nz-region-path" fill="#0f766e"
+                                    d="M 322,248 L 344,254 L 366,246 L 372,216 L 398,224 L 392,245 L 388,275 L 382,312 L 368,334 L 342,332 L 328,312 L 316,274 Z"
+                                    onclick="selectRegion('manawatu_whanganui', 'Peta SVG: Region Manawatū-Whanganui')">
+                                    <title>Manawatū-Whanganui - North Island</title>
+                                </path>
+
+                                <!-- 9. Wellington (Te Whanganui-a-Tara) -->
+                                <path id="svg-reg-wellington" class="nz-region-path" fill="#134e4a"
+                                    d="M 342,332 L 368,334 L 382,312 L 396,318 L 384,348 L 362,368 L 336,374 L 328,362 L 336,346 Z"
+                                    onclick="selectRegion('wellington', 'Peta SVG: Region Wellington')">
+                                    <title>Wellington (Te Whanganui-a-Tara) - North Island</title>
+                                </path>
+                            </g>
+
+                            <!-- ==================== SOUTH ISLAND (7 REGION) ==================== -->
+                            <g id="svg-group-south" stroke="#020617" stroke-width="1.3" stroke-linejoin="round">
+                                <!-- 10. Tasman (Te Tai o Aorere) -->
+                                <path id="svg-reg-tasman" class="nz-region-path" fill="#1d4ed8"
+                                    d="M 244,376 L 266,372 L 278,388 L 284,404 L 276,426 L 254,436 L 238,424 L 236,396 Z"
+                                    onclick="selectRegion('tasman', 'Peta SVG: Region Tasman')">
+                                    <title>Tasman (Te Tai o Aorere) - South Island</title>
+                                </path>
+
+                                <!-- 11. Nelson (Whakatū) -->
+                                <path id="svg-reg-nelson" class="nz-region-path" fill="#0284c7"
+                                    d="M 284,398 L 296,396 L 298,412 L 284,414 Z"
+                                    onclick="selectRegion('nelson', 'Peta SVG: Region Nelson')">
+                                    <title>Nelson (Whakatū) - South Island</title>
+                                </path>
+
+                                <!-- 12. Marlborough (Te Tauihu-o-te-Waka) -->
+                                <path id="svg-reg-marlborough" class="nz-region-path" fill="#1e40af"
+                                    d="M 296,396 L 322,388 L 334,404 L 324,432 L 304,452 L 282,446 L 276,426 L 284,414 L 298,412 Z"
+                                    onclick="selectRegion('marlborough', 'Peta SVG: Region Marlborough')">
+                                    <title>Marlborough (Te Tauihu-o-te-Waka) - South Island</title>
+                                </path>
+
+                                <!-- 13. West Coast (Te Tai Poutini) -->
+                                <path id="svg-reg-west_coast" class="nz-region-path" fill="#1e3a8a"
+                                    d="M 238,424 L 254,436 L 244,468 L 218,504 L 184,536 L 146,564 L 126,554 L 154,522 L 194,484 L 222,448 Z"
+                                    onclick="selectRegion('west_coast', 'Peta SVG: Region West Coast')">
+                                    <title>West Coast (Te Tai Poutini) - South Island</title>
+                                </path>
+
+                                <!-- 14. Canterbury (Waitaha) -->
+                                <path id="svg-reg-canterbury" class="nz-region-path" fill="#2563eb"
+                                    d="M 254,436 L 276,426 L 282,446 L 304,452 L 292,484 L 278,508 L 292,516 L 284,526 L 266,522 L 244,548 L 224,574 L 196,564 L 184,536 L 218,504 L 244,468 Z"
+                                    onclick="selectRegion('canterbury', 'Peta SVG: Region Canterbury')">
+                                    <title>Canterbury (Waitaha) - South Island</title>
+                                </path>
+
+                                <!-- 15. Otago (Ōtākou) -->
+                                <path id="svg-reg-otago" class="nz-region-path" fill="#1d4ed8"
+                                    d="M 146,564 L 184,536 L 196,564 L 224,574 L 212,606 L 194,634 L 166,646 L 146,624 L 138,594 Z"
+                                    onclick="selectRegion('otago', 'Peta SVG: Region Otago')">
+                                    <title>Otago (Ōtākou) - South Island</title>
+                                </path>
+
+                                <!-- 16. Southland (Murihiku) + Stewart Island (Rakiura) -->
+                                <path id="svg-reg-southland" class="nz-region-path" fill="#1e3a8a"
+                                    d="M 126,554 L 146,564 L 138,594 L 146,624 L 166,646 L 142,662 L 106,660 L 78,644 L 72,616 L 94,586 Z M 108,674 L 128,678 L 132,694 L 114,702 L 102,690 Z"
+                                    onclick="selectRegion('southland', 'Peta SVG: Region Southland & Rakiura')">
+                                    <title>Southland (Murihiku) & Stewart Island (Rakiura) - South Island</title>
+                                </path>
+                            </g>
+
+                            <!-- Label Kecil Rakiura -->
+                            <text x="138" y="692" fill="rgba(148,163,184,0.65)" font-size="8.5" font-weight="700">Rakiura (Stewart I.)</text>
+
+                            <!-- ==================== PIN / MARKER KOTA & KAMPUS INTERAKTIF ==================== -->
+                            <g id="svg-city-pins">
+                                <!-- Di-render dinamis oleh JS agar interaktif dan sinkron -->
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan (5 Cols): Panel Inspektor Peta Real-Time -->
+                <div id="map-inspector-panel" class="lg:col-span-5 bg-white rounded-3xl p-6 shadow-xl border-2 border-pounamu-700/25 space-y-5 sticky top-20">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- GRID 16 REGION RESMI NEW ZEALAND -->
+            <div class="space-y-4 pt-2">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pounamu-700">Administrasi Wilayah Selandia Baru</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">16 Region Resmi New Zealand (9 North Island & 7 South Island)</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Klik kartu region untuk menyorot di peta SVG & menampilkan profil lengkapnya</p>
+                </div>
+
+                <div id="regions-16-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 2: KATALOG 8 UNIVERSITAS NEGERI NEW ZEALAND
+             ===================================================================== -->
+        <section id="sec-universitas" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pounamu-700">Seluruh 8 Universitas Negeri Selandia Baru (QS World Top 3%)</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Katalog 8 Universitas Negeri New Zealand</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap kartu universitas untuk melihat nama resmi Māori, peringkat QS global, program unggulan (relevan untuk Beasiswa Manaaki), suasana kampus, dan biaya hidup kota.</p>
+                    </div>
+                    <!-- Filter Pulau & Pencarian Real-Time -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="uni-island-filter" onchange="trackActivity('Filter Universitas: ' + this.value, '8 Universitas Negeri'); renderUniversities8Grid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                            <option value="all">Semua Pulau (8 Universitas)</option>
+                            <option value="North Island">North Island (Te Ika-a-Māui)</option>
+                            <option value="South Island">South Island (Te Waipounamu)</option>
+                        </select>
+                        <div class="relative sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="uni-search" oninput="renderUniversities8Grid()" placeholder="Cari Auckland, Otago, Pertanian, Hukum..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-pounamu-700 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 8 Universitas Negeri -->
+            <div id="universities-8-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 3: KATALOG 12 KOTA UTAMA & PUSAT PELAJAR NEW ZEALAND
+             ===================================================================== -->
+        <section id="sec-kota" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-kowhai-700">Destinasi Studi, Riset & Kehidupan Urban NZ</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Katalog 12 Kota Utama & Pusat Pelajar New Zealand</h3>
+                        <p class="text-xs text-slate-500 mt-1">Klik setiap kartu kota untuk melihat region, iklim & suhu rata-rata, karakteristik ekonomi & gaya hidup, transportasi publik, serta institusi pendidikan tinggi di kota tersebut.</p>
+                    </div>
+                    <!-- Filter Pulau & Pencarian Kota -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <select id="city-island-filter" onchange="trackActivity('Filter Kota: ' + this.value, 'Kota Utama'); renderCities12Grid()" class="bg-slate-50 border border-slate-200 text-slate-700 py-2.5 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                            <option value="all">Semua Pulau (12 Kota)</option>
+                            <option value="North Island">North Island (Te Ika-a-Māui)</option>
+                            <option value="South Island">South Island (Te Waipounamu)</option>
+                        </select>
+                        <div class="relative sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="city-search" oninput="renderCities12Grid()" placeholder="Cari Wellington, Dunedin, Queenstown..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-pounamu-700 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid 12 Kota Utama -->
+            <div id="cities-12-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Di-render dinamis oleh JS -->
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 4: MATRIKS KOMPARASI UNIVERSITAS & KOTA
+             ===================================================================== -->
+        <section id="sec-komparasi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pounamu-700">Perbandingan Berdampingan Antar-Kampus</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl">Matriks Komparasi Universitas & Kota New Zealand</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih 2 hingga 3 universitas negeri Selandia Baru untuk membandingkan lokasi pulau/kota, tahun berdiri, bidang unggulan, atmosfer kampus, estimasi biaya hidup, dan kecocokan profil mahasiswa.</p>
+                    </div>
+                    <!-- Toggle 2 vs 3 Kampus -->
+                    <div class="flex items-center space-x-2 bg-slate-100 p-1 rounded-xl self-start sm:self-auto">
+                        <button onclick="setCompareColumnMode(2)" id="btn-comp-mode-2" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">2 Kampus</button>
+                        <button onclick="setCompareColumnMode(3)" id="btn-comp-mode-3" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-pounamu-700 text-white transition">3 Kampus</button>
+                    </div>
+                </div>
+
+                <!-- Dropdown Pemilih Kampus -->
+                <div id="compare-selectors-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Kolom 1 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-pounamu-800 uppercase">Kampus Pembanding 1</label>
+                            <span id="badge-comp-1" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-1" onchange="handleCompareChange(1)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 2 -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-silverFern-900 uppercase">Kampus Pembanding 2</label>
+                            <span id="badge-comp-2" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-2" onchange="handleCompareChange(2)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+
+                    <!-- Kolom 3 -->
+                    <div id="comp-box-3" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-extrabold text-kowhai-700 uppercase">Kampus Pembanding 3</label>
+                            <span id="badge-comp-3" class="counter-badge bg-white text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border">👁️ 0x dipelajari</span>
+                        </div>
+                        <select id="comp-select-3" onchange="handleCompareChange(3)" class="w-full bg-white border border-slate-300 text-slate-800 py-2.5 px-3 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                            <!-- Options diisi JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabel Matriks Komparasi -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table id="compare-matrix-table" class="w-full text-left text-xs border-collapse">
+                        <!-- Di-render dinamis oleh JS -->
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             TAB 5: SIMULATOR KECOCOKAN STUDI & KUIS INTERAKTIF (6 SOAL)
+             ===================================================================== -->
+        <section id="sec-simulasi" class="tab-content hidden space-y-10">
+            <!-- BAGIAN A: SIMULATOR PENCOCOKAN KAMPUS & ESTIMASI BIAYA HIDUP NZ -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-pounamu-700">Perencanaan Studi & Beasiswa Manaaki NZ</span>
+                        <h3 class="font-extrabold text-slate-900 text-xl sm:text-2xl">Simulator Pencocokan Kampus & Estimasi Biaya Hidup NZ</h3>
+                        <p class="text-xs text-slate-500 mt-1">Pilih bidang studi prioritas, preferensi ukuran kota, dan gaya hidup Anda untuk memperoleh rekomendasi kampus utama/alternatif beserta estimasi biaya bulanan (NZD & Rupiah).</p>
+                    </div>
+                    <span id="badge-simulator-count" class="counter-badge bg-pounamu-100 text-pounamu-900 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-pounamu-200 self-start sm:self-auto">
+                        👁️ 0x simulasi dijalankan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- 3 Pemilih Preferensi (6 Cols) -->
+                    <div class="lg:col-span-6 space-y-5">
+                        <!-- Pilihan 1: Bidang Studi Prioritas -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
+                            <label for="sim-field" class="block text-xs font-extrabold text-slate-800">
+                                1. Bidang Studi Prioritas (Fokus Riset & Karier)
+                            </label>
+                            <select id="sim-field" onchange="runStudySimulator(true)" class="w-full bg-white border border-slate-300 text-slate-800 py-3 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                                <option value="kebijakan">Kebijakan Publik, Hukum & Hubungan Internasional</option>
+                                <option value="pertanian">Pertanian, Agribisnis, Kehutanan & Lingkungan</option>
+                                <option value="teknik">Teknik Sipil, Kebencanaan (Gempa) & Arsitektur</option>
+                                <option value="bisnis">Bisnis, Teknologi Digital, Desain & Perhotelan</option>
+                                <option value="kesehatan">Kesehatan, Kedokteran, Ilmu Kelautan & Sains Hayati</option>
+                            </select>
+                            <p class="text-[11px] text-slate-500">Menentukan kecocokan fakultas unggulan dan pusat riset nasional di setiap universitas.</p>
+                        </div>
+
+                        <!-- Pilihan 2: Preferensi Ukuran Kota -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
+                            <label for="sim-city-size" class="block text-xs font-extrabold text-slate-800">
+                                2. Preferensi Ukuran & Atmosfer Kota
+                            </label>
+                            <select id="sim-city-size" onchange="runStudySimulator(true)" class="w-full bg-white border border-slate-300 text-slate-800 py-3 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                                <option value="metropolitan">Metropolitan Besar & Multikultural (Auckland / Christchurch)</option>
+                                <option value="ibukota">Kota Ibu Kota & Pusat Pemerintahan Kreatif (Wellington)</option>
+                                <option value="pelajar">Kota Pelajar Klasik & Tenang (Dunedin / Palmerston North / Hamilton / Lincoln)</option>
+                            </select>
+                            <p class="text-[11px] text-slate-500">Memengaruhi akses transportasi umum, peluang kerja paruh waktu (20 jam/minggu), dan biaya sewa hunian.</p>
+                        </div>
+
+                        <!-- Pilihan 3: Gaya Hidup & Hunian -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
+                            <label for="sim-lifestyle" class="block text-xs font-extrabold text-slate-800">
+                                3. Gaya Hidup & Pola Hunian Mahasiswa
+                            </label>
+                            <select id="sim-lifestyle" onchange="runStudySimulator(true)" class="w-full bg-white border border-slate-300 text-slate-800 py-3 px-3.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pounamu-700">
+                                <option value="hemat">Hemat (Shared Flatting, Masak Sendiri, Bus Pelajar)</option>
+                                <option value="moderat">Moderat (Studio/Asrama Kampus, Sesekali Kuliner & Wisata Akhir Pekan)</option>
+                            </select>
+                            <p class="text-[11px] text-slate-500">Standar bukti kecukupan dana visa pelajar NZ adalah NZD 20.000/tahun (~NZD 1.667/bulan).</p>
+                        </div>
+                    </div>
+
+                    <!-- Output Rekomendasi Kampus & Biaya Hidup (6 Cols) -->
+                    <div class="lg:col-span-6 bg-gradient-to-br from-silverFern-950 via-pounamu-950 to-pounamu-900 text-white rounded-3xl p-6 flex flex-col justify-between space-y-5 shadow-2xl border border-kowhai-400/40">
+                        <div class="space-y-1 border-b border-white/10 pb-3">
+                            <span class="text-[11px] font-mono text-kowhai-400 uppercase tracking-widest font-bold">Hasil Pencocokan Studi Aotearoa</span>
+                            <h4 class="text-xl font-extrabold">Rekomendasi Universitas & Anggaran Bulanan</h4>
+                        </div>
+
+                        <!-- Rekomendasi Kampus Utama & Alternatif -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div class="bg-white/10 p-4 rounded-2xl border border-kowhai-400/50 space-y-1.5">
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-kowhai-400 block">
+                                    <i class="fa-solid fa-star mr-1"></i> Rekomendasi Utama
+                                </span>
+                                <h5 id="sim-uni-primary" class="font-extrabold text-sm text-white leading-snug">-</h5>
+                                <p id="sim-uni-primary-city" class="text-[11px] text-pounamu-200">-</p>
+                                <button id="sim-uni-primary-btn" class="mt-1 inline-flex items-center space-x-1 text-[11px] font-bold text-kowhai-300 hover:underline">
+                                    <span>Lihat Profil Kampus</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </button>
+                            </div>
+
+                            <div class="bg-white/5 p-4 rounded-2xl border border-white/15 space-y-1.5">
+                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-pounamu-300 block">
+                                    <i class="fa-solid fa-compass mr-1"></i> Alternatif Sangat Cocok
+                                </span>
+                                <h5 id="sim-uni-alt" class="font-extrabold text-sm text-white leading-snug">-</h5>
+                                <p id="sim-uni-alt-city" class="text-[11px] text-slate-300">-</p>
+                                <button id="sim-uni-alt-btn" class="mt-1 inline-flex items-center space-x-1 text-[11px] font-bold text-pounamu-300 hover:underline">
+                                    <span>Lihat Profil Kampus</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Estimasi Biaya Hidup Bulanan -->
+                        <div class="bg-silverFern-950/70 p-4 rounded-2xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <span class="text-[11px] text-slate-300 block">Estimasi Biaya Hidup Bulanan:</span>
+                                <strong id="sim-cost-nzd" class="text-2xl font-mono font-extrabold text-kowhai-400">NZD 1.650 / bln</strong>
+                            </div>
+                            <div class="sm:text-right">
+                                <span class="text-[10px] text-slate-400 block">Setara Rupiah (Kurs ~Rp9.600/NZD):</span>
+                                <strong id="sim-cost-idr" class="text-base font-mono font-extrabold text-pounamu-200">± Rp 15.840.000</strong>
+                            </div>
+                        </div>
+
+                        <!-- Tips Persiapan Studi & Beasiswa Manaaki -->
+                        <div class="bg-pounamu-900/50 border border-kowhai-400/30 p-4 rounded-2xl space-y-1.5 text-xs">
+                            <h5 class="font-bold text-kowhai-400 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                <span>Tips Persiapan Studi & Strategi Beasiswa Manaaki NZ:</span>
+                            </h5>
+                            <p id="sim-tips-text" class="text-pounamu-100 leading-relaxed">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN B: KUIS EVALUASI 6 SOAL -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-11 h-11 rounded-xl bg-pounamu-700 text-kowhai-400 flex items-center justify-center font-bold text-xl shadow">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-xl">Kuis Evaluasi 6 Soal: Geografi Pulau, 16 Region, Kota & 8 Universitas NZ</h3>
+                            <p class="text-xs text-slate-500">Uji penguasaan Anda terhadap peta North & South Island, 16 region resmi, karakteristik kota, serta spesialisasi 8 universitas negeri Selandia Baru.</p>
+                        </div>
+                    </div>
+                    <span id="badge-quiz-count" class="counter-badge bg-slate-100 text-slate-800 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-slate-200 self-start sm:self-auto">
+                        👁️ 0x soal dijawab
+                    </span>
+                </div>
+
+                <!-- Area Kuis Dinamis -->
+                <div id="quiz-container" class="max-w-3xl mx-auto">
+                    <!-- Di-render dinamis oleh JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-silverFern-950 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-lg bg-pounamu-700 text-kowhai-400 border border-kowhai-400/30 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <span class="font-bold text-slate-200">AotearoaExplorer • Peta Interaktif Region, Kota, & 8 Universitas New Zealand</span>
+            </div>
+            <p class="text-center sm:text-right text-slate-500">
+                Kia Ora! Modul Geografi & Pendidikan Tinggi Aotearoa New Zealand dengan Pelacak Progres Belajar Real-Time.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING ACTION BUTTON (FAB) ANALITIK ================= -->
+    <button onclick="openAnalyticsModal(); trackActivity('Tombol Melayang Statistik Belajar', 'Navigasi Analitik')" class="fixed bottom-6 right-6 bg-gradient-to-r from-silverFern-950 via-pounamu-950 to-pounamu-800 text-white p-3.5 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition z-40 flex items-center space-x-3 border-2 border-kowhai-400/70">
+        <div class="relative">
+            <i class="fa-solid fa-chart-pie text-xl text-kowhai-400"></i>
+            <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-kowhai-400 rounded-full animate-ping"></span>
+        </div>
+        <div class="text-left hidden sm:block">
+            <span class="block text-[10px] uppercase font-bold tracking-wider text-kowhai-400">Panel Analitik</span>
+            <span id="fab-total-clicks" class="font-extrabold text-sm font-mono leading-none text-white">0 Interaksi</span>
+        </div>
+    </button>
+
+    <!-- ================= MODAL 1: PANEL ANALITIK AKTIVITAS BELAJAR ================= -->
+    <div id="modal-analytics" onclick="if(event.target===this) closeAnalyticsModal()" class="fixed inset-0 bg-silverFern-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-silverFern-950 via-pounamu-950 to-pounamu-800 text-white p-5 flex items-center justify-between border-b border-kowhai-400/35">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-kowhai-400 text-silverFern-950 flex items-center justify-center font-extrabold text-lg">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">Panel Analitik Aktivitas Belajar</h3>
+                        <p class="text-xs text-pounamu-100">Rekapitulasi interaksi & cakupan eksplorasi 16 Region + 8 Universitas NZ</p>
+                    </div>
+                </div>
+                <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-grow">
+                <!-- 3 Metric Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Total Klik / Interaksi</span>
+                        <strong id="modal-total-clicks" class="text-2xl text-pounamu-700 font-extrabold font-mono">0</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Tersimpan di browser Anda</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Kategori Teraktif</span>
+                        <strong id="modal-top-category" class="text-sm text-slate-800 font-extrabold block truncate mt-1">-</strong>
+                        <span class="text-[11px] text-slate-400 block mt-1">Topik paling sering diklik</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <span class="text-slate-500 text-xs font-semibold block">Persentase Cakupan Eksplorasi</span>
+                        <div class="flex items-center space-x-2 mt-1.5">
+                            <div class="flex-grow bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                                <div id="modal-progress-bar" class="bg-pounamu-700 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <span id="modal-progress-percent" class="text-xs font-extrabold text-pounamu-700 font-mono">0%</span>
+                        </div>
+                        <span id="modal-coverage-detail" class="text-[11px] text-slate-400 block mt-1">0 dari 24 item (16 Region & 8 Univ)</span>
+                    </div>
+                </div>
+
+                <!-- Chart & Top 5 Popular -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Doughnut Chart -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-center items-center">
+                        <h4 class="text-xs font-extrabold text-slate-700 mb-3 uppercase tracking-wider">Distribusi Klik Per Kategori</h4>
+                        <div class="w-48 h-48 relative flex items-center justify-center">
+                            <canvas id="analyticsChart"></canvas>
+                            <p id="chart-empty-msg" class="text-xs text-slate-400 italic text-center hidden">Belum ada data klik untuk grafik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Sub-Materi -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Top 5 Sub-Materi Paling Sering Diklik</h4>
+                        <div id="top-5-list" class="space-y-2 text-xs">
+                            <!-- Di-render dinamis -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline Custom Reset Confirmation Banner (Tanpa native alert/confirm) -->
+                <div id="reset-confirm-box" class="hidden bg-amber-50 border border-amber-300 p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2.5 text-amber-950 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-kowhai-600 text-base"></i>
+                        <span><strong>Konfirmasi Reset:</strong> Yakin ingin menghapus seluruh riwayat hitungan belajar Anda?</span>
+                    </div>
+                    <div class="flex items-center space-x-2 self-end sm:self-auto">
+                        <button onclick="executeClearAnalytics()" class="bg-pounamu-700 hover:bg-pounamu-800 text-white font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Ya, Hapus Semua</button>
+                        <button onclick="toggleResetConfirm(false)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-3.5 py-1.5 rounded-xl text-xs transition">Batal</button>
+                    </div>
+                </div>
+
+                <!-- Activity Log Table -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Tabel Log Interaksi Lengkap</h4>
+                        <button onclick="toggleResetConfirm(true)" class="text-rose-700 hover:text-rose-800 text-xs font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Reset Data Hitungan</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl max-h-52 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-800 sticky top-0 font-bold">
+                                <tr>
+                                    <th class="p-2.5">Sub-Materi / Komponen</th>
+                                    <th class="p-2.5">Kategori</th>
+                                    <th class="p-2.5 text-center">Jumlah Klik</th>
+                                    <th class="p-2.5 text-right">Waktu Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-log-tbody" class="divide-y divide-slate-100 bg-white">
+                                <!-- Di-render dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-slate-100 p-4 flex items-center justify-between border-t border-slate-200">
+                <button onclick="exportAnalyticsJSON()" class="bg-white hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-export text-pounamu-700"></i>
+                    <span>Ekspor Data (JSON)</span>
+                </button>
+                <button onclick="closeAnalyticsModal()" class="bg-silverFern-900 hover:bg-silverFern-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: DETAIL UNIVERSITAS / KOTA ================= -->
+    <div id="modal-detail" onclick="if(event.target===this) closeDetailModal()" class="fixed inset-0 bg-silverFern-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div id="detail-modal-header" class="p-6 text-white relative bg-gradient-to-r from-silverFern-950 via-pounamu-950 to-pounamu-800">
+                <!-- Di-render dinamis -->
+            </div>
+            <div id="detail-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar flex-grow">
+                <!-- Di-render dinamis -->
+            </div>
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-200 flex justify-end">
+                <button onclick="closeDetailModal()" class="bg-silverFern-900 hover:bg-silverFern-800 text-white font-bold px-5 py-2 rounded-xl text-xs transition">
+                    Tutup Detail
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+    <div id="toast-container" class="fixed top-20 right-4 sm:right-6 z-50 space-y-2 pointer-events-none max-w-xs w-full"></div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. DATASET LENGKAP AOTEAROAEXPLORER:
+         *    - 16 Region Resmi New Zealand (9 North Island + 7 South Island)
+         *    - 10 Pin Kota & Kampus pada Peta SVG
+         *    - 8 Universitas Negeri New Zealand
+         *    - 12 Kota Utama & Pusat Pelajar New Zealand
+         *    - 6 Soal Kuis Evaluasi
+         * ------------------------------------------------------------------- */
+
+        const REGIONS_16_DATA = [
+            // NORTH ISLAND (9 REGION)
+            {
+                id: 'northland',
+                name: 'Northland',
+                maoriName: 'Te Tai Tokerau',
+                island: 'North Island',
+                capital: 'Whangārei',
+                population: '± 203.000 jiwa',
+                climate: 'Subtropis hangat (12°C – 25°C), paling cerah & lembap di NZ',
+                sectors: 'Hortikultura (alpukat, kiwi, jeruk), pariwisata bahari Bay of Islands, kehutanan',
+                majorCities: ['Whangārei', 'Kerikeri', 'Kaitaia', 'Paihia'],
+                universities: [],
+                notes: 'Tempat penandatanganan Perjanjian Waitangi (1840) yang menjadi dokumen pendirian Selandia Baru modern.'
+            },
+            {
+                id: 'auckland',
+                name: 'Auckland',
+                maoriName: 'Tāmaki Makaurau',
+                island: 'North Island',
+                capital: 'Auckland City',
+                population: '± 1.740.000 jiwa (33% populasi NZ)',
+                climate: 'Oseanik subtropis sejuk (11°C – 24°C), dikelilingi dua pelabuhan alami',
+                sectors: 'Keuangan, teknologi digital, perdagangan internasional, manufaktur, & pendidikan tinggi',
+                majorCities: ['Auckland Central', 'North Shore (Albany)', 'Manukau', 'Waitākere'],
+                universities: ['uoa', 'aut', 'massey'],
+                notes: 'Kota terbesar dan gerbang utama penerbangan internasional Selandia Baru dengan julukan "City of Sails".'
+            },
+            {
+                id: 'waikato',
+                name: 'Waikato',
+                maoriName: 'Waikato',
+                island: 'North Island',
+                capital: 'Hamilton (Kirikiriroa)',
+                population: '± 522.000 jiwa',
+                climate: 'Oseanik sedang (8°C – 24°C), lembah sungai subur & Danau Taupō di selatan',
+                sectors: 'Industri susu & peternakan sapi perah, riset agroteknologi, energi panas bumi, pariwisata Hobbiton & Waitomo',
+                majorCities: ['Hamilton', 'Taupō', 'Cambridge', 'Thames'],
+                universities: ['waikato'],
+                notes: 'Dilalui Sungai Waikato (sungai terpanjang di NZ, 425 km) dan menaungi Danau Taupō (danau terbesar di NZ).'
+            },
+            {
+                id: 'bay_of_plenty',
+                name: 'Bay of Plenty',
+                maoriName: 'Te Moana-a-Toi',
+                island: 'North Island',
+                capital: 'Whakatāne (Kota terbesar: Tauranga)',
+                population: '± 352.000 jiwa',
+                climate: 'Hangat & kaya sinar matahari (10°C – 25°C)',
+                sectors: 'Ekspor buah kiwi (Zespri), pelabuhan peti kemas terbesar NZ (Port of Tauranga), pariwisata geotermal Rotorua',
+                majorCities: ['Tauranga', 'Rotorua', 'Whakatāne', 'Mount Maunganui'],
+                universities: ['waikato'],
+                notes: 'Pusat kebudayaan Māori Te Arawa di Rotorua dan kampus pesisir University of Waikato di Tauranga.'
+            },
+            {
+                id: 'gisborne',
+                name: 'Gisborne',
+                maoriName: 'Te Tai Rāwhiti',
+                island: 'North Island',
+                capital: 'Gisborne (Tūranganui-a-Kiwa)',
+                population: '± 53.000 jiwa',
+                climate: 'Hangat & kering di pesisir timur (9°C – 25°C)',
+                sectors: 'Kehutanan, hortikultura (anggur Chardonnay, jeruk, jagung), perikanan',
+                majorCities: ['Gisborne', 'Tolaga Bay', 'Ruatoria'],
+                universities: [],
+                notes: 'Kota pertama di dunia yang menyambut matahari terbit setiap hari karena kedekatannya dengan Garis Penanggalan Internasional.'
+            },
+            {
+                id: 'hawkes_bay',
+                name: "Hawke's Bay",
+                maoriName: 'Te Matau-a-Māui',
+                island: 'North Island',
+                capital: 'Napier (Ahuriri)',
+                population: '± 184.000 jiwa',
+                climate: 'Mediterania sejuk, sangat cerah & kering (8°C – 25°C)',
+                sectors: 'Hortikultura apel & buah batu, perkebunan anggur (wine), pengolahan pangan, pariwisata Art Deco',
+                majorCities: ['Napier', 'Hastings', 'Havelock North', 'Wairoa'],
+                universities: [],
+                notes: 'Napier terkenal di dunia sebagai ibu kota arsitektur Art Deco setelah dibangun kembali pascagempa 1931.'
+            },
+            {
+                id: 'taranaki',
+                name: 'Taranaki',
+                maoriName: 'Taranaki',
+                island: 'North Island',
+                capital: 'New Plymouth (Ngāmotu)',
+                population: '± 129.000 jiwa',
+                climate: 'Oseanik basah & sejuk (9°C – 22°C), curah hujan merata',
+                sectors: 'Energi terbarukan (angin & hidrogen hijau), minyak-gas bumi, industri susu, teknik rekayasa',
+                majorCities: ['New Plymouth', 'Hāwera', 'Stratford', 'Waitara'],
+                universities: [],
+                notes: 'Didominasi oleh Gunung Taranaki (2.518 m), gunung berapi kerucut simetris yang ikonik.'
+            },
+            {
+                id: 'manawatu_whanganui',
+                name: 'Manawatū-Whanganui',
+                maoriName: 'Manawatū-Whanganui',
+                island: 'North Island',
+                capital: 'Palmerston North (Te Papaioea)',
+                population: '± 260.000 jiwa',
+                climate: 'Sedang & berangin sepoi (7°C – 23°C)',
+                sectors: 'Riset pertanian & pangan (FoodHQ), pendidikan tinggi, logistik darat North Island, pertahanan',
+                majorCities: ['Palmerston North', 'Whanganui', 'Feilding', 'Levin'],
+                universities: ['massey'],
+                notes: 'Rumah bagi kampus utama Massey University dan pusat riset pangan terbesar di Selandia Baru.'
+            },
+            {
+                id: 'wellington',
+                name: 'Wellington',
+                maoriName: 'Te Whanganui-a-Tara',
+                island: 'North Island',
+                capital: 'Wellington City',
+                population: '± 550.000 jiwa',
+                climate: 'Oseanik sejuk & berangin khas Selat Cook (8°C – 21°C)',
+                sectors: 'Pemerintahan pusat & diplomasi, industri film (Wētā Workshop), teknologi kreatif, keuangan & kebijakan publik',
+                majorCities: ['Wellington City', 'Lower Hutt', 'Upper Hutt', 'Porirua'],
+                universities: ['vuw', 'massey'],
+                notes: 'Ibu kota negara Selandia Baru (sejak 1865) dan ibu kota paling selatan di dunia.'
+            },
+
+            // SOUTH ISLAND (7 REGION)
+            {
+                id: 'tasman',
+                name: 'Tasman',
+                maoriName: 'Te Tai o Aorere',
+                island: 'South Island',
+                capital: 'Richmond',
+                population: '± 59.000 jiwa',
+                climate: 'Sangat cerah dengan sinar matahari tinggi (7°C – 23°C)',
+                sectors: 'Hortikultura (apel, hops bir, buah beri), kehutanan, perikanan kerang hijau, ekowisata taman nasional',
+                majorCities: ['Richmond', 'Motueka', 'Tākaka'],
+                universities: [],
+                notes: 'Menaungi tiga taman nasional terkenal: Abel Tasman, Kahurangi, dan Nelson Lakes.'
+            },
+            {
+                id: 'nelson',
+                name: 'Nelson',
+                maoriName: 'Whakatū',
+                island: 'South Island',
+                capital: 'Nelson City',
+                population: '± 55.000 jiwa',
+                climate: 'Salah satu kota dengan jam sinar matahari terbanyak di NZ (7°C – 23°C)',
+                sectors: 'Perikanan & akuakultur, seni kriya, pariwisata alam, teknologi maritim',
+                majorCities: ['Nelson City', 'Stoke'],
+                universities: [],
+                notes: 'Region terkecil berdasarkan luas wilayah di Selandia Baru dan titik tengah geografis negara.'
+            },
+            {
+                id: 'marlborough',
+                name: 'Marlborough',
+                maoriName: 'Te Tauihu-o-te-Waka',
+                island: 'South Island',
+                capital: 'Blenheim (Waiharakeke)',
+                population: '± 52.000 jiwa',
+                climate: 'Kering, cerah, siang hangat & malam sejuk (6°C – 24°C)',
+                sectors: 'Industri anggur Sauvignon Blanc kelas dunia, akuakultur salmon & kerang, penerbangan & pelabuhan feri Picton',
+                majorCities: ['Blenheim', 'Picton', 'Havelock'],
+                universities: [],
+                notes: 'Pelabuhan Picton menghubungkan feri Interislander melintasi Selat Cook menuju Wellington.'
+            },
+            {
+                id: 'west_coast',
+                name: 'West Coast',
+                maoriName: 'Te Tai Poutini',
+                island: 'South Island',
+                capital: 'Greymouth (Māwhera)',
+                population: '± 33.000 jiwa',
+                climate: 'Curah hujan tinggi & sejuk (6°C – 20°C), diapit Laut Tasman & Pegunungan Alpen Selatan',
+                sectors: 'Pariwisata gletser (Franz Josef & Fox Glacier), pertambangan batu pounamu (giok NZ) & mineral, peternakan',
+                majorCities: ['Greymouth', 'Westport', 'Hokitika'],
+                universities: [],
+                notes: 'Sumber utama batu hijau suci Māori (Pounamu / Greenstone) dan gletser yang turun hingga dekat hutan hujan.'
+            },
+            {
+                id: 'canterbury',
+                name: 'Canterbury',
+                maoriName: 'Waitaha',
+                island: 'South Island',
+                capital: 'Christchurch (Ōtautahi)',
+                population: '± 670.000 jiwa (terbesar di South Island)',
+                climate: 'Kering & empat musim tegas (4°C – 23°C), angin hangat Nor’wester',
+                sectors: 'Pertanian & agribisnis modern, teknik & manufaktur, teknologi dirgantara, pariwisata Aoraki/Mount Cook',
+                majorCities: ['Christchurch', 'Lincoln', 'Timaru', 'Ashburton'],
+                universities: ['uc', 'lincoln'],
+                notes: 'Region terluas di Selandia Baru dan gerbang utama ekspedisi ilmiah menuju Antartika.'
+            },
+            {
+                id: 'otago',
+                name: 'Otago',
+                maoriName: 'Ōtākou',
+                island: 'South Island',
+                capital: 'Dunedin (Ōtepoti)',
+                population: '± 255.000 jiwa',
+                climate: 'Sejuk di pesisir Dunedin (4°C – 20°C) & kontras musim panas/salju di Central Otago/Queenstown',
+                sectors: 'Pendidikan tinggi & riset kesehatan (Dunedin), pariwisata petualangan kelas dunia (Queenstown & Wānaka), hortikultura',
+                majorCities: ['Dunedin', 'Queenstown', 'Wānaka', 'Oamaru'],
+                universities: ['otago'],
+                notes: 'Rumah bagi University of Otago (universitas tertua di NZ, berdiri 1869) dan destinasi ski Queenstown.'
+            },
+            {
+                id: 'southland',
+                name: 'Southland',
+                maoriName: 'Murihiku',
+                island: 'South Island',
+                capital: 'Invercargill (Waihōpai)',
+                population: '± 105.000 jiwa',
+                climate: 'Oseanik sejuk & segar (3°C – 19°C), wilayah paling selatan NZ',
+                sectors: 'Peternakan domba & susu, peleburan aluminium Tiwai Point, perikanan tiram Bluff, pariwisata Milford Sound/Fiordland',
+                majorCities: ['Invercargill', 'Gore', 'Bluff', 'Oban (Stewart Island)'],
+                universities: [],
+                notes: 'Mencakup Taman Nasional Fiordland (Milford Sound) serta Pulau Stewart (Rakiura) di selatan Selat Foveaux.'
+            }
+        ];
+
+        // 10 Pin Kota & Kampus Interaktif pada Peta SVG
+        const CITY_PINS_DATA = [
+            { id: 'pin_auckland', label: 'Auckland', sub: 'UoA, AUT, Massey', x: 320, y: 147, regionId: 'auckland', cityId: 'auckland' },
+            { id: 'pin_hamilton', label: 'Hamilton', sub: 'Univ. of Waikato', x: 334, y: 184, regionId: 'waikato', cityId: 'hamilton' },
+            { id: 'pin_tauranga', label: 'Tauranga', sub: 'Waikato Coastal', x: 374, y: 188, regionId: 'bay_of_plenty', cityId: 'tauranga' },
+            { id: 'pin_palmy', label: 'Palmerston N.', sub: 'Massey Univ.', x: 356, y: 314, regionId: 'manawatu_whanganui', cityId: 'palmerston_north' },
+            { id: 'pin_wellington', label: 'Wellington', sub: 'VUW & Massey', x: 344, y: 363, regionId: 'wellington', cityId: 'wellington' },
+            { id: 'pin_nelson', label: 'Nelson', sub: 'Tasman Bay Hub', x: 290, y: 405, regionId: 'nelson', cityId: 'nelson' },
+            { id: 'pin_christchurch', label: 'Christchurch', sub: 'Univ. of Canterbury', x: 274, y: 508, regionId: 'canterbury', cityId: 'christchurch' },
+            { id: 'pin_lincoln', label: 'Lincoln', sub: 'Lincoln Univ.', x: 263, y: 519, regionId: 'canterbury', cityId: 'christchurch' },
+            { id: 'pin_queenstown', label: 'Queenstown', sub: 'Alpine Hub', x: 148, y: 585, regionId: 'otago', cityId: 'queenstown' },
+            { id: 'pin_dunedin', label: 'Dunedin', sub: 'Univ. of Otago', x: 204, y: 616, regionId: 'otago', cityId: 'dunedin' }
+        ];
+
+        // 8 Universitas Negeri New Zealand
+        const UNIVERSITIES_8_DATA = [
+            {
+                id: 'uoa',
+                number: '01',
+                name: 'The University of Auckland',
+                maoriName: 'Waipapa Taumata Rau',
+                island: 'North Island',
+                city: 'Auckland',
+                regionId: 'auckland',
+                coordinates: '36.8523° S, 174.7691° E',
+                founded: 1883,
+                qsRank: 'QS Top 65–70 Dunia (#1 di New Zealand)',
+                tagline: 'Universitas riset komprehensif terbesar dan berperingkat tertinggi di Selandia Baru.',
+                historyReputation: 'Didirikan pada tahun 1883, The University of Auckland merupakan satu-satunya universitas di Selandia Baru yang secara konsisten menembus peringkat 100 besar dunia (QS World University Rankings) dan anggota jaringan Universitas 21 serta APRU.',
+                manaakiPrograms: [
+                    'Master of Public Policy / International Relations & Human Rights',
+                    'Master of Engineering (Civil, Environmental, Geothermal & Energy)',
+                    'Master of Data Science, Computer Science & Business Analytics',
+                    'Master of Public Health & Biomedical Sciences'
+                ],
+                campusVibeCost: 'Kampus perkotaan modern di jantung Auckland CBD yang multikultural (lebih dari 40.000 mahasiswa dari 120 negara). Biaya hidup kota tertinggi di NZ (sekitar NZD 1.850 – 2.250/bulan), namun menawarkan akses karier dan penerbangan internasional paling luas.',
+                uniqueFact: 'Menara jam ikonik ClockTower (1926) merupakan cagar budaya kelas satu dan simbol pendidikan tinggi Selandia Baru.'
+            },
+            {
+                id: 'otago',
+                number: '02',
+                name: 'University of Otago',
+                maoriName: 'Ōtākou Whakaihu Waka',
+                island: 'South Island',
+                city: 'Dunedin',
+                regionId: 'otago',
+                coordinates: '45.8648° S, 170.5144° E',
+                founded: 1869,
+                qsRank: 'QS Top 210–220 Dunia (#2 di New Zealand)',
+                tagline: 'Universitas tertua di Selandia Baru dengan budaya kota pelajar residensial yang legendaris.',
+                historyReputation: 'Didirikan pada tahun 1869 oleh Dewan Provinsi Otago, University of Otago memiliki reputasi internasional yang sangat kuat di bidang Kedokteran, Ilmu Kesehatan, Ilmu Kelautan, dan Humaniora.',
+                manaakiPrograms: [
+                    'Master of Public Health & Health Sciences (Kedokteran & Farmasi)',
+                    'Master of Marine Science & Environmental Management',
+                    'Master of International Studies & Peace and Conflict Studies',
+                    'Master of Science Communication & Entrepreneurship'
+                ],
+                campusVibeCost: 'Atmosfer kota pelajar sejati: sekitar 20% penduduk Dunedin adalah mahasiswa! Kampus bergaya arsitektur neogotik Skotlandia dengan jarak jalan kaki ke hunian mahasiswa dan biaya hidup jauh lebih terjangkau dibanding Auckland (sekitar NZD 1.450 – 1.750/bulan).',
+                uniqueFact: 'Memiliki satu-satunya Fakultas Kedokteran Gigi (School of Dentistry) di Selandia Baru serta lab riset kelautan di Portobello.'
+            },
+            {
+                id: 'vuw',
+                number: '03',
+                name: 'Victoria University of Wellington',
+                maoriName: 'Te Herenga Waka',
+                island: 'North Island',
+                city: 'Wellington',
+                regionId: 'wellington',
+                coordinates: '41.2901° S, 174.7681° E',
+                founded: 1897,
+                qsRank: 'QS Top 240–250 Dunia (#1 Riset Kebijakan & Hukum)',
+                tagline: 'Berlokasi di pusat pemerintahan ibu kota negara; unggulan utama studi kebijakan publik, hukum, dan tata kelola.',
+                historyReputation: 'Didirikan pada tahun 1897 untuk memperingati 60 tahun pemerintahan Ratu Victoria. Kampus Pipitea-nya berada tepat di seberang Gedung Parlemen Selandia Baru (Beehive) dan Mahkamah Agung.',
+                manaakiPrograms: [
+                    'Master of Public Policy (MPP) & Master of Public Management (MPM)',
+                    'Master of Laws (LLM) & Master of International Trade',
+                    'Master of Climate Change Science and Policy',
+                    'Master of Design Innovation & Digital Media'
+                ],
+                campusVibeCost: 'Suasana intelektual ibu kota yang kompak, kreatif, dan ramah pejalan kaki dengan budaya kopi dan seni yang hidup. Biaya hidup menengah-atas (sekitar NZD 1.700 – 2.050/bulan) dengan jaringan langsung ke kementerian, kedutaan besar, dan lembaga think-tank.',
+                uniqueFact: 'Fakultas Hukumnya menempati gedung bersejarah Old Government Buildings, salah satu bangunan kayu terbesar di belahan bumi selatan.'
+            },
+            {
+                id: 'uc',
+                number: '04',
+                name: 'University of Canterbury',
+                maoriName: 'Te Whare Wānanga o Waitaha',
+                island: 'South Island',
+                city: 'Christchurch',
+                regionId: 'canterbury',
+                coordinates: '43.5225° S, 172.5812° E',
+                founded: 1873,
+                qsRank: 'QS Top 255–265 Dunia (Unggulan Teknik & Kebencanaan)',
+                tagline: 'Pelopor pendidikan teknik sipil, mitigasi bencana gempa, kehutanan, dan studi Antartika.',
+                historyReputation: 'Didirikan pada tahun 1873 oleh para cendekiawan lulusan Oxford dan Cambridge sebagai Canterbury College. Ernest Rutherford (Bapak Fisika Nuklir peraih Nobel) merupakan alumnus paling termasyhur dari universitas ini.',
+                manaakiPrograms: [
+                    'Master of Engineering in Disaster Risk and Resilience (Teknik Gempa)',
+                    'Master of Forestry Science (satu-satunya di Selandia Baru)',
+                    'Master of Water Resource Management & Environmental Science',
+                    'Master of Antarctic Studies & Civil Engineering'
+                ],
+                campusVibeCost: 'Kampus taman seluas 76 hektare di Ilam, Christchurch—kota terbesar di South Island yang modern pasca-rekonstruksi dan datar (sangat ramah pesepeda). Biaya hidup moderat (sekitar NZD 1.500 – 1.850/bulan).',
+                uniqueFact: 'Memiliki fasilitas uji struktur gempa skala penuh dan menjadi pusat koordinasi riset Antartika Selandia Baru.'
+            },
+            {
+                id: 'massey',
+                number: '05',
+                name: 'Massey University',
+                maoriName: 'Te Kunenga ki Pūrehuroa',
+                island: 'North Island',
+                city: 'Palmerston North, Auckland & Wellington',
+                regionId: 'manawatu_whanganui',
+                coordinates: '40.3831° S, 175.6166° E',
+                founded: 1927,
+                qsRank: 'QS Top 235–245 Dunia (Top 25 Dunia Bidang Pertanian & Kedokteran Hewan)',
+                tagline: 'Universitas multi-kampus nasional dengan keunggulan global pada pertanian, ilmu pangan, kedokteran hewan, dan penerbangan.',
+                historyReputation: 'Berawal sebagai sekolah tinggi pertanian pada tahun 1927 di Palmerston North, Massey berkembang menjadi universitas multi-kampus (Palmerston North, Albany Auckland, dan Wellington) sekaligus pelopor pendidikan jarak jauh di NZ.',
+                manaakiPrograms: [
+                    'Master of AgriCommerce & Master of Agriculture',
+                    'Master of Food Technology & Food Safety',
+                    'Master of Veterinary Science (satu-satunya di Selandia Baru)',
+                    'Master of International Development & Emergency Management'
+                ],
+                campusVibeCost: 'Kampus utama Manawatū di Palmerston North menawarkan lingkungan hijau yang sangat tenang, biaya hidup ramah kantong mahasiswa (sekitar NZD 1.350 – 1.650/bulan), serta akses langsung ke ekosistem riset pangan FoodHQ.',
+                uniqueFact: 'Satu-satunya universitas di Selandia Baru yang menawarkan gelar Sarjana Penerbangan (Bachelor of Aviation) dengan armada pesawat latih sendiri.'
+            },
+            {
+                id: 'waikato',
+                number: '06',
+                name: 'University of Waikato',
+                maoriName: 'Te Whare Wānanga o Waikato',
+                island: 'North Island',
+                city: 'Hamilton & Tauranga',
+                regionId: 'waikato',
+                coordinates: '37.7870° S, 175.3183° E',
+                founded: 1964,
+                qsRank: 'QS Top 235–250 Dunia (Triple Crown Business School)',
+                tagline: 'Universitas modern yang inovatif dengan integrasi budaya Māori terkuat serta keunggulan manajemen, siber, dan agroteknologi.',
+                historyReputation: 'Didirikan pada tahun 1964 di Hamilton dan memperluas kampus pesisirnya di Tauranga pada tahun 2019. Fakultas Manajemennya menyandang akreditasi Triple Crown (AACSB, EQUIS, AMBA) yang hanya dimiliki 1% sekolah bisnis dunia.',
+                manaakiPrograms: [
+                    'Master of Business Administration (MBA) & Management Studies',
+                    'Master of Cyber Security & Information Technology',
+                    'Master of Environment and Society & Agribusiness',
+                    'Master of Education & Indigenous Studies'
+                ],
+                campusVibeCost: 'Kampus hijau seluas 65 hektare dengan tiga danau buatan di Hamilton, kota yang strategis hanya 1,5 jam di selatan Auckland dengan biaya sewa hunian lebih hemat (sekitar NZD 1.450 – 1.750/bulan).',
+                uniqueFact: 'Memiliki persentase mahasiswa Māori tertinggi di antara seluruh universitas negeri Selandia Baru dengan marae kampus yang megah.'
+            },
+            {
+                id: 'lincoln',
+                number: '07',
+                name: 'Lincoln University',
+                maoriName: 'Te Whare Wānaka o Aoraki',
+                island: 'South Island',
+                city: 'Lincoln (20 km dari Christchurch)',
+                regionId: 'canterbury',
+                coordinates: '43.6443° S, 172.4676° E',
+                founded: 1878,
+                qsRank: 'QS Top 360–375 Dunia (Top 100 Dunia Bidang Pertanian & Kehutanan)',
+                tagline: 'Universitas spesialis berbasis lahan (land-based university) tertua di belahan bumi selatan.',
+                historyReputation: 'Didirikan pada tahun 1878 sebagai sekolah pertanian di dataran subur Canterbury, Lincoln University memfokuskan seluruh riset dan pengajarannya pada ketahanan pangan, agribisnis, ekologi, dan tata kelola lingkungan berkelanjutan.',
+                manaakiPrograms: [
+                    'Master of Agricultural Science & Master of Applied Science',
+                    'Master of Food Innovation & Agribusiness',
+                    'Master of Environmental Policy and Management',
+                    'Master of Tourism Management & Landscape Architecture'
+                ],
+                campusVibeCost: 'Kampus butik yang sangat akrab dengan rasio dosen-mahasiswa rendah (sekitar 4.500 mahasiswa), dikelilingi lahan pertanian riset namun hanya 20 menit berkendara dari pusat kota Christchurch (biaya hidup NZD 1.400 – 1.700/bulan).',
+                uniqueFact: 'Lembaga pendidikan tinggi pertanian tertua di belahan bumi selatan (Southern Hemisphere).'
+            },
+            {
+                id: 'aut',
+                number: '08',
+                name: 'Auckland University of Technology (AUT)',
+                maoriName: 'Te Wānanga Aronui o Tāmaki Makau Rau',
+                island: 'North Island',
+                city: 'Auckland',
+                regionId: 'auckland',
+                coordinates: '36.8534° S, 174.7665° E',
+                founded: 2000,
+                qsRank: 'QS Top 400–415 Dunia (Top 100 Universitas Muda Terbaik Dunia)',
+                tagline: 'Universitas teknologi dan terapan paling progresif di Selandia Baru dengan koneksi industri yang sangat erat.',
+                historyReputation: 'Berakar dari Auckland Technical School (1895) dan resmi memperoleh status universitas pada tahun 2000. AUT dikenal luas karena pendekatan pembelajaran berbasis praktik industri, inovasi desain, komunikasi, dan ilmu kesehatan.',
+                manaakiPrograms: [
+                    'Master of Engineering Project Management & Construction Management',
+                    'Master of International Hospitality Management & Tourism',
+                    'Master of Health Practice & Rehabilitation',
+                    'Master of Analytics & Creative Technologies'
+                ],
+                campusVibeCost: 'Memiliki tiga kampus modern (City Campus di pusat Auckland, North Campus di North Shore, dan South Campus di Manukau) dengan fasilitas laboratorium berteknologi mutakhir. Biaya hidup mengikuti standar kota Auckland (NZD 1.850 – 2.200/bulan).',
+                uniqueFact: 'Memiliki tingkat penyerapan lulusan ke dunia kerja yang sangat tinggi berkat program penempatan kerja (work-integrated learning) wajib di hampir semua jurusan.'
+            }
+        ];
+
+        // 12 Kota Utama & Pusat Pelajar New Zealand
+        const CITIES_12_DATA = [
+            {
+                id: 'auckland',
+                name: 'Auckland',
+                maoriName: 'Tāmaki Makaurau',
+                island: 'North Island',
+                region: 'Auckland Region',
+                climate: 'Subtropis oseanik hangat (11°C musim dingin – 24°C musim panas)',
+                economyLifestyle: 'Pusat ekonomi, keuangan, teknologi, dan kota paling beragam secara budaya di NZ (komunitas Asia, Pasifik, Eropa, dan Māori yang besar). Banyak restoran halal & toko bahan makanan Asia.',
+                transport: 'Jaringan bus AT Metro, kereta komuter listrik, dan feri pelabuhan menggunakan kartu terpadu AT HOP (diskon tarif pelajar).',
+                institutions: ['The University of Auckland (UoA)', 'Auckland University of Technology (AUT)', 'Massey University (Auckland Campus)']
+            },
+            {
+                id: 'wellington',
+                name: 'Wellington',
+                maoriName: 'Te Whanganui-a-Tara',
+                island: 'North Island',
+                region: 'Wellington Region',
+                climate: 'Oseanik sejuk & berangin khas Selat Cook (8°C – 21°C)',
+                economyLifestyle: 'Ibu kota negara, pusat kementerian, kedutaan besar, industri perfilman (Wētā), serta kafe dan seni independen. Kota kompak yang sangat mudah dijelajahi dengan berjalan kaki.',
+                transport: 'Bus listrik Metlink, kereta komuter lintas lembah Hutt, dan kereta gantung ikonik Wellington Cable Car dengan kartu Snapper.',
+                institutions: ['Victoria University of Wellington (VUW)', 'Massey University (Wellington Campus)']
+            },
+            {
+                id: 'christchurch',
+                name: 'Christchurch',
+                maoriName: 'Ōtautahi',
+                island: 'South Island',
+                region: 'Canterbury Region',
+                climate: 'Kering, cerah dengan empat musim tegas (4°C – 23°C); salju tipis sesekali di musim dingin',
+                economyLifestyle: 'Kota terbesar di South Island dengan tata kota modern pasca-rekonstruksi, taman kota Hagley Park yang luas, pusat industri teknologi, pertanian, dan gerbang menuju Pegunungan Alpen Selatan.',
+                transport: 'Kota paling ramah sepeda (flat terrain) dengan jalur sepeda terpisah, jaringan bus Metro (kartu Metrocard), dan trem wisata pusat kota.',
+                institutions: ['University of Canterbury (UC)', 'Lincoln University (20 km di selatan)', 'Ara Institute of Canterbury']
+            },
+            {
+                id: 'dunedin',
+                name: 'Dunedin',
+                maoriName: 'Ōtepoti',
+                island: 'South Island',
+                region: 'Otago Region',
+                climate: 'Sejuk & segar sepanjang tahun (4°C – 20°C)',
+                economyLifestyle: 'Kota pelajar klasik bergaya arsitektur Skotlandia dengan kehidupan kampus yang sangat hangat, biaya hidup hemat, serta ekowisata satwa langka (penguin bermata kuning & albatros) di Semenanjung Otago.',
+                transport: 'Sebagian besar mahasiswa berjalan kaki atau bersepeda dari asrama/flat ke kampus; didukung bus kota Orbus (kartu Bee Card).',
+                institutions: ['University of Otago', 'Otago Polytechnic']
+            },
+            {
+                id: 'hamilton',
+                name: 'Hamilton',
+                maoriName: 'Kirikiriroa',
+                island: 'North Island',
+                region: 'Waikato Region',
+                climate: 'Oseanik sedang & lembap di pedalaman (8°C – 24°C)',
+                economyLifestyle: 'Kota pedalaman terbesar di NZ yang dibelah Sungai Waikato; pusat riset agribisnis susu, manufaktur, dan mahasiswa dengan biaya hunian jauh lebih terjangkau daripada Auckland.',
+                transport: 'Bus kota BUSIT (kartu Bee Card) serta layanan kereta penumpang Te Huia yang menghubungkan Hamilton ke Auckland.',
+                institutions: ['University of Waikato', 'Waikato Institute of Technology (Wintec)']
+            },
+            {
+                id: 'tauranga',
+                name: 'Tauranga',
+                maoriName: 'Tauranga Moana',
+                island: 'North Island',
+                region: 'Bay of Plenty Region',
+                climate: 'Pesisir hangat & kaya sinar matahari (10°C – 25°C)',
+                economyLifestyle: 'Kota pelabuhan ekspor utama Selandia Baru dengan pantai selancar terkenal di Mount Maunganui, gaya hidup pesisir santai, dan pusat industri hortikultura buah kiwi.',
+                transport: 'Bus perkotaan Bayhopper (kartu Bee Card) dan jalur sepeda pesisir yang nyaman.',
+                institutions: ['University of Waikato (Tauranga CBD Campus)', 'Toi Ohomai Institute of Technology']
+            },
+            {
+                id: 'palmerston_north',
+                name: 'Palmerston North',
+                maoriName: 'Te Papaioea',
+                island: 'North Island',
+                region: 'Manawatū-Whanganui Region',
+                climate: 'Sedang & berangin sepoi (7°C – 23°C)',
+                economyLifestyle: 'Kota pelajar dan pusat riset pertanian/pangan terkemuka (FoodHQ) dengan proporsi penduduk muda dan akademisi yang sangat tinggi serta biaya hidup paling hemat di North Island.',
+                transport: 'Jaringan bus kota Horizons (gratis bagi mahasiswa & staf Massey University dengan kartu identitas kampus) serta jalur sepeda di tepi Sungai Manawatū.',
+                institutions: ['Massey University (Manawatū Main Campus)', 'Universal College of Learning (UCOL)']
+            },
+            {
+                id: 'queenstown',
+                name: 'Queenstown',
+                maoriName: 'Tāhuna',
+                island: 'South Island',
+                region: 'Otago Region',
+                climate: 'Alpen empat musim: musim dingin bersalju untuk ski (-1°C – 8°C), musim panas cerah (12°C – 24°C)',
+                economyLifestyle: 'Ibu kota pariwisata petualangan dunia di tepi Danau Wakatipu yang dikelilingi pegunungan The Remarkables; pusat industri perhotelan, ekowisata, dan olahraga musim dingin.',
+                transport: 'Bus lokal Orbus (kartu Bee Card) dengan tarif flat NZD 2 termasuk rute langsung ke Bandara Internasional Queenstown.',
+                institutions: ['Queenstown Resort College (QRC)', 'University of Otago (Pusat Eksekutif & Riset)']
+            },
+            {
+                id: 'nelson',
+                name: 'Nelson',
+                maoriName: 'Whakatū',
+                island: 'South Island',
+                region: 'Nelson Region',
+                climate: 'Salah satu kota paling cerah di NZ dengan sinar matahari tinggi sepanjang tahun (7°C – 23°C)',
+                economyLifestyle: 'Kota pesisir artistik yang menjadi gerbang menuju Taman Nasional Abel Tasman; unggul di sektor perikanan, akuakultur, kehutanan, seni kriya, dan gaya hidup luar ruang.',
+                transport: 'Layanan bus eBus listrik modern yang menghubungkan Nelson, Stoke, dan Richmond.',
+                institutions: ['Nelson Marlborough Institute of Technology (NMIT)']
+            },
+            {
+                id: 'napier_hastings',
+                name: 'Napier-Hastings',
+                maoriName: 'Ahuriri & Heretaunga',
+                island: 'North Island',
+                region: "Hawke's Bay Region",
+                climate: 'Hangat, cerah, dan kering menyerupai iklim Mediterania (8°C – 25°C)',
+                economyLifestyle: 'Dua kota kembar yang menjadi lumbung buah-buahan (apel, pir, anggur) terbesar di Selandia Baru, terkenal dengan warisan arsitektur Art Deco di tepi laut Napier.',
+                transport: 'Bus penghubung antarkota goBay yang melayani koridor Napier, Taradale, dan Hastings.',
+                institutions: ['Eastern Institute of Technology (EIT – Te Pūkenga)']
+            },
+            {
+                id: 'new_plymouth',
+                name: 'New Plymouth',
+                maoriName: 'Ngāmotu',
+                island: 'North Island',
+                region: 'Taranaki Region',
+                climate: 'Oseanik sejuk & hijau dengan curah hujan merata (9°C – 22°C)',
+                economyLifestyle: 'Pusat industri energi, transisi hidrogen hijau, dan teknik di kaki Gunung Taranaki yang megah, lengkap dengan jalur jalan kaki pesisir Coastal Walkway dan Len Lye Centre.',
+                transport: 'Bus lokal Citylink New Plymouth serta jalur pedestrian/sepeda pesisir sepanjang 13 km.',
+                institutions: ['Western Institute of Technology at Taranaki (WITT)']
+            },
+            {
+                id: 'invercargill',
+                name: 'Invercargill',
+                maoriName: 'Waihōpai',
+                island: 'South Island',
+                region: 'Southland Region',
+                climate: 'Oseanik sejuk & segar di ujung selatan (3°C – 19°C)',
+                economyLifestyle: 'Kota paling selatan di Selandia Baru yang terkenal akan keramahan warganya, biaya hidup sangat rendah, serta kedekatan dengan Taman Nasional Fiordland dan Pulau Stewart (Rakiura).',
+                transport: 'Bus kota BusSmart Invercargill dan pelabuhan feri di Bluff menuju Pulau Stewart.',
+                institutions: ['Southern Institute of Technology (SIT)']
+            }
+        ];
+
+        // 6 Soal Kuis Evaluasi (Tab 5)
+        const QUIZ_QUESTIONS = [
+            {
+                q: "1. Dalam bahasa Māori, North Island dan South Island memiliki nama resmi yang mencerminkan mitologi navigasi Polinesia. Pasangan nama Māori manakah yang tepat untuk kedua pulau utama tersebut?",
+                options: [
+                    "North Island = Te Waipounamu; South Island = Te Ika-a-Māui",
+                    "North Island = Te Ika-a-Māui (Ikan milik Māui); South Island = Te Waipounamu (Perairan Batu Hijau/Giok)",
+                    "North Island = Rakiura; South Island = Tāmaki Makaurau",
+                    "North Island = Ōtautahi; South Island = Te Whanganui-a-Tara"
+                ],
+                answer: 1,
+                explain: "North Island bernama Te Ika-a-Māui ('Ikan milik Māui'), sedangkan South Island bernama Te Waipounamu ('Perairan Batu Pounamu/Giok'), dan Stewart Island bernama Rakiura."
+            },
+            {
+                q: "2. Selandia Baru terbagi menjadi 16 region pemerintahan resmi. Bagaimanakah komposisi jumlah region di North Island dan South Island?",
+                options: [
+                    "8 region di North Island dan 8 region di South Island",
+                    "10 region di North Island dan 6 region di South Island",
+                    "9 region di North Island dan 7 region di South Island",
+                    "7 region di North Island dan 9 region di South Island"
+                ],
+                answer: 2,
+                explain: "Dari total 16 region resmi Selandia Baru, 9 region berada di North Island (Northland, Auckland, Waikato, Bay of Plenty, Gisborne, Hawke's Bay, Taranaki, Manawatū-Whanganui, Wellington) dan 7 region di South Island (Tasman, Nelson, Marlborough, West Coast, Canterbury, Otago, Southland)."
+            },
+            {
+                q: "3. Seorang pelamar Beasiswa Manaaki New Zealand asal Indonesia ingin menempuh studi Master of Public Policy (MPP) dan mempelajari tata kelola pemerintahan tepat di seberang Gedung Parlemen Selandia Baru (Beehive) di ibu kota negara. Universitas dan kota manakah yang paling sesuai?",
+                options: [
+                    "Victoria University of Wellington (Te Herenga Waka) di kota Wellington",
+                    "University of Otago (Ōtākou Whakaihu Waka) di kota Dunedin",
+                    "Lincoln University (Te Whare Wānaka o Aoraki) di wilayah Canterbury",
+                    "University of Waikato di kota Hamilton"
+                ],
+                answer: 0,
+                explain: "Victoria University of Wellington (Te Herenga Waka) berlokasi di ibu kota Wellington dengan Kampus Pipitea yang berada tepat di seberang Gedung Parlemen Selandia Baru, menjadikannya pusat utama studi kebijakan publik dan hukum."
+            },
+            {
+                q: "4. Manakah pernyataan yang PALING TEPAT mengenai dua universitas negeri yang berada di Region Canterbury, South Island?",
+                options: [
+                    "The University of Auckland dan AUT berada di Christchurch, Canterbury.",
+                    "University of Canterbury (unggulan teknik sipil & mitigasi gempa di Christchurch) dan Lincoln University (universitas spesialis pertanian & berbasis lahan tertua di belahan bumi selatan).",
+                    "Massey University dan Victoria University berpusat di Region Canterbury.",
+                    "University of Otago dan University of Waikato keduanya berlokasi di Christchurch."
+                ],
+                answer: 1,
+                explain: "Region Canterbury di South Island menaungi dua universitas negeri: University of Canterbury (di Christchurch, unggulan teknik sipil, kebencanaan, dan kehutanan) serta Lincoln University (di kota Lincoln, 20 km dari Christchurch, spesialis pertanian & agribisnis)."
+            },
+            {
+                q: "5. Universitas negeri tertua di Selandia Baru (berdiri tahun 1869) yang dikenal luas dengan Fakultas Kedokteran, Ilmu Kesehatan, Ilmu Kelautan, serta budaya kota pelajar residensial yang khas berlokasi di kota dan region mana?",
+                options: [
+                    "Kota Hamilton, Region Waikato",
+                    "Kota Palmerston North, Region Manawatū-Whanganui",
+                    "Kota Dunedin, Region Otago (South Island)",
+                    "Kota Napier, Region Hawke's Bay"
+                ],
+                answer: 2,
+                explain: "University of Otago (Ōtākou Whakaihu Waka) didirikan pada tahun 1869 di kota Dunedin, Region Otago (South Island), dan merupakan universitas tertua di Selandia Baru."
+            },
+            {
+                q: "6. Region di South Island yang terkenal sebagai sumber utama batu hijau suci Māori (Pounamu / Greenstone) serta memiliki gletser terkenal (Franz Josef dan Fox Glacier) yang diapit Laut Tasman dan Pegunungan Alpen Selatan adalah...",
+                options: [
+                    "West Coast (Te Tai Poutini)",
+                    "Marlborough (Te Tauihu-o-te-Waka)",
+                    "Bay of Plenty (Te Moana-a-Toi)",
+                    "Taranaki"
+                ],
+                answer: 0,
+                explain: "West Coast (Te Tai Poutini) membentang di sepanjang pesisir barat South Island di kaki Pegunungan Alpen Selatan, terkenal dengan gletser Franz Josef & Fox serta cadangan batu giok Pounamu."
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. STATE APLIKASI & SISTEM PELACAKAN AKTIVITAS (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        const STORAGE_KEY = 'nz_explorer_activity_log';
+        let activityLog = []; // Array of { name, category, count, lastTime }
+        let selectedRegionId = 'wellington'; // Default region aktif di peta & inspektor
+        let activeIslandFilter = 'all';
+        let compareColumnMode = 3; // 2 atau 3 kampus
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let analyticsChartInstance = null;
+
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadActivityLog();
+            renderCityPinsOnSvg();
+            highlightSvgRegion(selectedRegionId);
+            renderMapInspector(selectedRegionId);
+            renderRegions16Grid();
+            renderUniversities8Grid();
+            renderCities12Grid();
+            initCompareSelectors();
+            renderCompareTable();
+            runStudySimulator(false);
+            renderQuiz();
+            refreshAllBadgesAndAnalytics();
+        });
+
+        function loadActivityLog() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) activityLog = parsed;
+                }
+            } catch (e) {
+                activityLog = [];
+            }
+        }
+
+        function saveActivityLog() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(activityLog));
+            } catch (e) {
+                console.warn('Gagal menyimpan log ke localStorage:', e);
+            }
+        }
+
+        // Mencatat setiap klik ke localStorage, memperbarui lencana real-time & memunculkan Toast
+        function trackActivity(itemName, categoryName, pulseBadgeId = null) {
+            const nowStr = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            let entry = activityLog.find(item => item.name === itemName);
+            if (entry) {
+                entry.count += 1;
+                entry.lastTime = nowStr;
+            } else {
+                entry = {
+                    name: itemName,
+                    category: categoryName,
+                    count: 1,
+                    lastTime: nowStr
+                };
+                activityLog.push(entry);
+            }
+
+            saveActivityLog();
+            refreshAllBadgesAndAnalytics();
+            showToast(`Aktivitas Dicatat: ${itemName} (+1)`);
+
+            if (pulseBadgeId) {
+                const badgeEl = document.getElementById(pulseBadgeId);
+                if (badgeEl) {
+                    badgeEl.classList.remove('counter-pulse');
+                    void badgeEl.offsetWidth;
+                    badgeEl.classList.add('counter-pulse');
+                }
+            }
+        }
+
+        function getCount(itemName) {
+            const found = activityLog.find(i => i.name === itemName);
+            return found ? found.count : 0;
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. PEMBARUAN SELURUH BADGE & PANEL ANALITIK
+         * ------------------------------------------------------------------- */
+        function refreshAllBadgesAndAnalytics() {
+            // 1. Update Nav Tab Counters (Desktop & Mobile)
+            const navMap = [
+                { key: 'Tab 1: Peta Pulau & Region', desk: 'nav-count-beranda', mob: 'mob-count-beranda' },
+                { key: 'Tab 2: 8 Universitas Negeri', desk: 'nav-count-universitas', mob: 'mob-count-universitas' },
+                { key: 'Tab 3: Kota Utama', desk: 'nav-count-kota', mob: 'mob-count-kota' },
+                { key: 'Tab 4: Komparasi Kampus', desk: 'nav-count-komparasi', mob: 'mob-count-komparasi' },
+                { key: 'Tab 5: Simulator & Kuis', desk: 'nav-count-simulasi', mob: 'mob-count-simulasi' }
+            ];
+            navMap.forEach(n => {
+                const c = getCount(n.key);
+                const dEl = document.getElementById(n.desk);
+                const mEl = document.getElementById(n.mob);
+                if (dEl) dEl.innerText = c;
+                if (mEl) mEl.innerText = c;
+            });
+
+            // 2. Update 16 Region Badges
+            REGIONS_16_DATA.forEach(r => {
+                const el = document.getElementById(`badge-reg-${r.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Region: ${r.name}`)}x dipelajari`;
+            });
+
+            // 3. Update 8 Universitas Badges
+            UNIVERSITIES_8_DATA.forEach(u => {
+                const el = document.getElementById(`badge-uni-${u.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Universitas: ${u.name}`)}x dipelajari`;
+            });
+
+            // 4. Update 12 Kota Badges
+            CITIES_12_DATA.forEach(c => {
+                const el = document.getElementById(`badge-city-${c.id}`);
+                if (el) el.innerText = `👁️ ${getCount(`Kota: ${c.name}`)}x dipelajari`;
+            });
+
+            // 5. Update Dropdown Komparasi Badges
+            [1, 2, 3].forEach(col => {
+                const el = document.getElementById(`badge-comp-${col}`);
+                if (el) el.innerText = `👁️ ${getCount(`Komparasi Kampus Kolom ${col}`)}x dipelajari`;
+            });
+
+            // 6. Update Simulator & Kuis Badges
+            const simTotal = getCount('Simulator: Hitung Kecocokan Studi');
+            const simBadge = document.getElementById('badge-simulator-count');
+            if (simBadge) simBadge.innerText = `👁️ ${simTotal}x simulasi dijalankan`;
+
+            const quizTotal = getCount('Kuis: Jawab Soal');
+            const quizBadge = document.getElementById('badge-quiz-count');
+            if (quizBadge) quizBadge.innerText = `👁️ ${quizTotal}x soal dijawab`;
+
+            // 7. Total Klik Global (Header, FAB, Modal)
+            const totalAllClicks = activityLog.reduce((sum, item) => sum + item.count, 0);
+            document.getElementById('header-total-clicks').innerText = `${totalAllClicks} Klik`;
+            document.getElementById('fab-total-clicks').innerText = `${totalAllClicks} Interaksi`;
+            document.getElementById('modal-total-clicks').innerText = totalAllClicks;
+
+            // 8. Kategori Teraktif
+            const catTotals = {};
+            activityLog.forEach(item => {
+                catTotals[item.category] = (catTotals[item.category] || 0) + item.count;
+            });
+            let topCat = '-';
+            let maxVal = 0;
+            Object.entries(catTotals).forEach(([cat, val]) => {
+                if (val > maxVal) {
+                    maxVal = val;
+                    topCat = cat;
+                }
+            });
+            document.getElementById('modal-top-category').innerText = topCat;
+
+            // 9. Persentase Cakupan Eksplorasi (16 Region + 8 Universitas = 24 item)
+            const targetKeys = new Set([
+                ...REGIONS_16_DATA.map(r => `Region: ${r.name}`),
+                ...UNIVERSITIES_8_DATA.map(u => `Universitas: ${u.name}`)
+            ]);
+            const exploredCount = activityLog.filter(item => targetKeys.has(item.name)).length;
+            const totalTargets = targetKeys.size; // 24
+            const coveragePct = Math.min(100, Math.round((exploredCount / totalTargets) * 100));
+
+            document.getElementById('modal-progress-bar').style.width = `${coveragePct}%`;
+            document.getElementById('modal-progress-percent').innerText = `${coveragePct}%`;
+            document.getElementById('modal-coverage-detail').innerText = `${exploredCount} dari ${totalTargets} item (16 Region & 8 Univ)`;
+
+            // 10. Top 5 Sub-Materi Paling Sering Diklik
+            const top5 = [...activityLog].sort((a, b) => b.count - a.count).slice(0, 5);
+            const top5El = document.getElementById('top-5-list');
+            if (top5.length === 0) {
+                top5El.innerHTML = `<p class="text-slate-400 italic py-4 text-center">Belum ada interaksi tercatat. Klik wilayah pada peta SVG atau kartu universitas untuk mulai belajar!</p>`;
+            } else {
+                top5El.innerHTML = top5.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                        <span class="truncate pr-2 font-semibold text-slate-700">
+                            <span class="inline-block w-5 text-pounamu-700 font-extrabold">#${idx + 1}</span> ${item.name}
+                        </span>
+                        <span class="bg-kowhai-100 text-kowhai-700 px-2 py-0.5 rounded-md font-mono font-extrabold shrink-0">${item.count}x</span>
+                    </div>
+                `).join('');
+            }
+
+            // 11. Tabel Log Interaksi Lengkap
+            const tbody = document.getElementById('analytics-log-tbody');
+            if (activityLog.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 italic">Belum ada data aktivitas belajar.</td></tr>`;
+            } else {
+                const reversedLog = [...activityLog].reverse();
+                tbody.innerHTML = reversedLog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-2.5 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-2.5 text-slate-500">${item.category}</td>
+                        <td class="p-2.5 text-center font-extrabold text-pounamu-700 font-mono">${item.count}</td>
+                        <td class="p-2.5 text-right text-slate-400 text-[11px] font-mono">${item.lastTime}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // 12. Grafik Doughnut Chart.js
+            renderDoughnutChart(catTotals);
+        }
+
+        function renderDoughnutChart(catTotals) {
+            const canvas = document.getElementById('analyticsChart');
+            const emptyMsg = document.getElementById('chart-empty-msg');
+            if (!canvas) return;
+
+            const labels = Object.keys(catTotals);
+            const values = Object.values(catTotals);
+
+            if (analyticsChartInstance) {
+                analyticsChartInstance.destroy();
+                analyticsChartInstance = null;
+            }
+
+            if (labels.length === 0) {
+                canvas.classList.add('hidden');
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            canvas.classList.remove('hidden');
+            emptyMsg.classList.add('hidden');
+
+            analyticsChartInstance = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#0f766e', // Pounamu Deep Teal
+                            '#f59e0b', // Kōwhai Gold
+                            '#0f172a', // Silver Fern Dark Slate
+                            '#0284c7', // Tasman Blue
+                            '#14b8a6', // Teal 500
+                            '#d97706', // Amber 600
+                            '#334155'  // Slate 700
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ` ${ctx.label}: ${ctx.parsed} klik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Toast Notification singkat di pojok kanan atas
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            while (container.children.length >= 3) {
+                container.removeChild(container.firstChild);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = "bg-silverFern-950/95 text-white border border-kowhai-400/60 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2.5 transition-all duration-300 transform translate-x-4 opacity-0";
+            toast.innerHTML = `
+                <span class="w-5 h-5 rounded-full bg-pounamu-600 text-white flex items-center justify-center text-[10px] shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <span class="truncate font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. NAVIGASI ANTAR TAB
+         * ------------------------------------------------------------------- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            const targetSec = document.getElementById(`sec-${tabId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-pounamu-700', 'text-white', 'shadow', 'border', 'border-kowhai-400/40');
+                btn.classList.add('text-pounamu-100');
+            });
+            const activeDesk = document.getElementById(`nav-${tabId}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-pounamu-700', 'text-white', 'shadow', 'border', 'border-kowhai-400/40');
+                activeDesk.classList.remove('text-pounamu-100');
+            }
+
+            // Mobile nav styling
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-pounamu-700', 'text-white');
+                btn.classList.add('bg-white/10', 'text-pounamu-100');
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.classList.add('bg-pounamu-700', 'text-white');
+                activeMob.classList.remove('bg-white/10', 'text-pounamu-100');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. TAB 1: PETA SVG INTERAKTIF, PIN KOTA, INSPEKTOR, & 16 REGION
+         * ------------------------------------------------------------------- */
+        function renderCityPinsOnSvg() {
+            const pinsGroup = document.getElementById('svg-city-pins');
+            if (!pinsGroup) return;
+
+            pinsGroup.innerHTML = CITY_PINS_DATA.map(pin => {
+                // Posisi label disesuaikan agar tidak bertabrakan
+                const isLeftLabel = ['pin_nelson', 'pin_queenstown', 'pin_lincoln', 'pin_hamilton', 'pin_palmy'].includes(pin.id);
+                const labelX = isLeftLabel ? pin.x - 9 : pin.x + 9;
+                const anchor = isLeftLabel ? 'end' : 'start';
+
+                return `
+                    <g class="cursor-pointer group" onclick="handleCityPinClick('${pin.id}')">
+                        <title>${pin.label} (${pin.sub}) — Klik untuk detail</title>
+                        <circle cx="${pin.x}" cy="${pin.y}" r="7" fill="rgba(251, 191, 36, 0.45)" class="city-pin-pulse" />
+                        <circle cx="${pin.x}" cy="${pin.y}" r="4.2" fill="#e11d48" stroke="#fbbf24" stroke-width="1.6" />
+                        <text x="${labelX}" y="${pin.y + 3}" text-anchor="${anchor}" fill="#ffffff" font-size="9.5" font-weight="800" style="text-shadow: 0 1px 3px rgba(0,0,0,0.95);">${pin.label}</text>
+                    </g>
+                `;
+            }).join('');
+        }
+
+        function setIslandMapFilter(filterVal) {
+            activeIslandFilter = filterVal;
+
+            // Update button styling
+            const btnAll = document.getElementById('map-btn-all');
+            const btnNorth = document.getElementById('map-btn-north');
+            const btnSouth = document.getElementById('map-btn-south');
+
+            [btnAll, btnNorth, btnSouth].forEach(b => {
+                b.className = "px-3 py-1.5 rounded-xl bg-white/10 text-pounamu-100 hover:bg-white/20 transition";
+            });
+
+            if (filterVal === 'all') {
+                btnAll.className = "px-3 py-1.5 rounded-xl bg-kowhai-400 text-silverFern-950 transition shadow";
+            } else if (filterVal === 'North Island') {
+                btnNorth.className = "px-3 py-1.5 rounded-xl bg-kowhai-400 text-silverFern-950 transition shadow";
+            } else {
+                btnSouth.className = "px-3 py-1.5 rounded-xl bg-kowhai-400 text-silverFern-950 transition shadow";
+            }
+
+            // Highlight/dim island groups on SVG
+            const northGroup = document.getElementById('svg-group-north');
+            const southGroup = document.getElementById('svg-group-south');
+            if (northGroup && southGroup) {
+                northGroup.classList.remove('nz-island-dimmed');
+                southGroup.classList.remove('nz-island-dimmed');
+                if (filterVal === 'North Island') southGroup.classList.add('nz-island-dimmed');
+                if (filterVal === 'South Island') northGroup.classList.add('nz-island-dimmed');
+            }
+
+            trackActivity(`Filter Pulau Peta: ${filterVal}`, 'Peta Pulau & Region');
+            renderRegions16Grid();
+        }
+
+        function highlightSvgRegion(regionId) {
+            document.querySelectorAll('.nz-region-path').forEach(el => {
+                el.classList.remove('nz-region-active');
+            });
+            const targetPath = document.getElementById(`svg-reg-${regionId}`);
+            if (targetPath) {
+                targetPath.classList.add('nz-region-active');
+            }
+        }
+
+        function selectRegion(regionId, sourceLabel = null) {
+            const reg = REGIONS_16_DATA.find(r => r.id === regionId);
+            if (!reg) return;
+
+            selectedRegionId = regionId;
+            highlightSvgRegion(regionId);
+            renderMapInspector(regionId);
+            renderRegions16Grid();
+
+            trackActivity(`Region: ${reg.name}`, '16 Region New Zealand', `badge-reg-${reg.id}`);
+            if (sourceLabel && sourceLabel.startsWith('Peta SVG')) {
+                trackActivity(sourceLabel, 'Peta Interaktif SVG');
+            }
+        }
+
+        function handleCityPinClick(pinId) {
+            const pin = CITY_PINS_DATA.find(p => p.id === pinId);
+            if (!pin) return;
+
+            selectedRegionId = pin.regionId;
+            highlightSvgRegion(pin.regionId);
+            renderMapInspector(pin.regionId, pin);
+            renderRegions16Grid();
+
+            trackActivity(`Pin Peta Kota: ${pin.label}`, 'Peta Interaktif SVG');
+            const reg = REGIONS_16_DATA.find(r => r.id === pin.regionId);
+            if (reg) {
+                trackActivity(`Region: ${reg.name}`, '16 Region New Zealand', `badge-reg-${reg.id}`);
+            }
+        }
+
+        function renderMapInspector(regionId, activePin = null) {
+            const panel = document.getElementById('map-inspector-panel');
+            if (!panel) return;
+
+            const reg = REGIONS_16_DATA.find(r => r.id === regionId) || REGIONS_16_DATA[0];
+            const regUnis = UNIVERSITIES_8_DATA.filter(u => reg.universities.includes(u.id));
+            const viewCount = getCount(`Region: ${reg.name}`);
+
+            const isNorth = reg.island === 'North Island';
+            const islandBadgeClass = isNorth
+                ? 'bg-pounamu-100 text-pounamu-900 border-pounamu-300'
+                : 'bg-sky-100 text-sky-900 border-sky-300';
+
+            panel.innerHTML = `
+                <div class="border-b border-slate-100 pb-4 space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-[11px] font-extrabold px-3 py-1 rounded-full border ${islandBadgeClass}">
+                            <i class="fa-solid fa-island-tropical mr-1"></i> ${reg.island}
+                        </span>
+                        <span class="counter-badge bg-kowhai-100 text-kowhai-700 text-[11px] font-extrabold px-2.5 py-1 rounded-full border border-kowhai-200">
+                            👁️ ${viewCount}x dipelajari
+                        </span>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-pounamu-700 block">Inspektor Wilayah Aktif</span>
+                        <h3 class="text-2xl font-extrabold text-slate-900 leading-tight">${reg.name} Region</h3>
+                        <p class="text-xs font-bold text-kowhai-700 italic">Nama Māori: ${reg.maoriName}</p>
+                    </div>
+                    ${activePin ? `
+                        <div class="bg-kowhai-50 border border-kowhai-300 px-3 py-2 rounded-xl flex items-center justify-between text-xs">
+                            <span class="font-bold text-amber-950"><i class="fa-solid fa-location-dot text-rose-600 mr-1.5"></i>Pin Terpilih: ${activePin.label} (${activePin.sub})</span>
+                            <button onclick="openCityDetailModal('${activePin.cityId}')" class="text-pounamu-800 font-extrabold underline hover:text-pounamu-950">Detail Kota →</button>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <!-- Grid Metrik Kunci Region -->
+                <div class="grid grid-cols-2 gap-2.5 text-xs">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block">Ibu Kota Region</span>
+                        <strong class="text-slate-800 font-extrabold">${reg.capital}</strong>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block">Populasi</span>
+                        <strong class="text-slate-800 font-extrabold">${reg.population}</strong>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 text-xs">
+                    <div class="bg-pounamu-50/70 p-3 rounded-xl border border-pounamu-100">
+                        <span class="text-[10px] font-extrabold uppercase text-pounamu-800 block"><i class="fa-solid fa-cloud-sun mr-1"></i> Karakter Iklim</span>
+                        <p class="text-slate-700 mt-0.5 leading-relaxed">${reg.climate}</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                        <span class="text-[10px] font-extrabold uppercase text-slate-600 block"><i class="fa-solid fa-briefcase mr-1"></i> Sektor Unggulan Ekonomi</span>
+                        <p class="text-slate-700 mt-0.5 leading-relaxed">${reg.sectors}</p>
+                    </div>
+
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase text-slate-500 block mb-1">Kota Utama di Region Ini:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${reg.majorCities.map(c => `<span class="bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-lg border border-slate-200 text-[11px]">${c}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Daftar Universitas di Region Ini -->
+                    <div class="pt-1">
+                        <span class="text-[10px] font-extrabold uppercase text-pounamu-800 block mb-1.5">
+                            <i class="fa-solid fa-building-columns mr-1"></i> Universitas Negeri di Region ${reg.name}:
+                        </span>
+                        ${regUnis.length > 0 ? `
+                            <div class="space-y-2">
+                                ${regUnis.map(u => `
+                                    <button onclick="openUniversityDetailModal('${u.id}')" class="w-full text-left bg-gradient-to-r from-silverFern-900 to-pounamu-900 hover:from-pounamu-800 hover:to-pounamu-700 text-white p-3 rounded-xl shadow transition flex items-center justify-between group">
+                                        <div>
+                                            <strong class="block text-xs font-extrabold text-kowhai-300">${u.name}</strong>
+                                            <span class="text-[10px] text-pounamu-100">${u.maoriName} • ${u.city}</span>
+                                        </div>
+                                        <span class="bg-kowhai-400 text-silverFern-950 font-extrabold text-[10px] px-2.5 py-1 rounded-lg shrink-0 group-hover:scale-105 transition">
+                                            Buka Kampus →
+                                        </span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div class="bg-slate-50 border border-dashed border-slate-300 p-3 rounded-xl text-[11px] text-slate-500">
+                                Tidak terdapat kampus utama 8 universitas negeri di region ini (didominasi politeknik regional Te Pūkenga & pusat industri/alam).
+                            </div>
+                        `}
+                    </div>
+
+                    <p class="text-[11px] text-slate-500 italic border-t border-slate-100 pt-2">
+                        <i class="fa-solid fa-circle-info text-pounamu-600 mr-1"></i> ${reg.notes}
+                    </p>
+                </div>
+            `;
+        }
+
+        function renderRegions16Grid() {
+            const container = document.getElementById('regions-16-grid');
+            if (!container) return;
+
+            const filtered = REGIONS_16_DATA.filter(r => activeIslandFilter === 'all' || r.island === activeIslandFilter);
+
+            container.innerHTML = filtered.map((r, idx) => {
+                const count = getCount(`Region: ${r.name}`);
+                const isSelected = r.id === selectedRegionId;
+                const isNorth = r.island === 'North Island';
+                const hasUni = r.universities.length > 0;
+
+                return `
+                    <div onclick="selectRegion('${r.id}', 'Kartu Region'); document.getElementById('nz-interactive-svg').scrollIntoView({behavior:'smooth', block:'center'})"
+                         class="bg-white p-4 rounded-2xl border-2 ${isSelected ? 'border-kowhai-500 ring-2 ring-kowhai-400/40 bg-kowhai-50/30' : 'border-slate-200/90 hover:border-pounamu-700'} shadow-sm hover:shadow-lg transition cursor-pointer flex flex-col justify-between space-y-2.5 group">
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between gap-1.5">
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${isNorth ? 'bg-pounamu-100 text-pounamu-900' : 'bg-sky-100 text-sky-900'}">
+                                    ${isNorth ? 'North Island' : 'South Island'}
+                                </span>
+                                <span id="badge-reg-${r.id}" class="counter-badge bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-200">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-sm group-hover:text-pounamu-700 transition">${r.name}</h4>
+                                <span class="text-[11px] font-semibold text-kowhai-700 italic block">${r.maoriName}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500">Ibu Kota: <strong class="text-slate-700">${r.capital}</strong></p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                            ${hasUni
+                                ? `<span class="font-bold text-pounamu-700"><i class="fa-solid fa-graduation-cap mr-1"></i>${r.universities.length} Univ. Negeri</span>`
+                                : `<span class="text-slate-400">Wilayah Regional</span>`
+                            }
+                            <span class="font-extrabold text-pounamu-800 group-hover:underline">Sorot Peta →</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. TAB 2: KATALOG 8 UNIVERSITAS NEGERI NEW ZEALAND
+         * ------------------------------------------------------------------- */
+        function renderUniversities8Grid() {
+            const container = document.getElementById('universities-8-grid');
+            if (!container) return;
+
+            const islandFilter = document.getElementById('uni-island-filter').value;
+            const searchQuery = (document.getElementById('uni-search').value || '').toLowerCase();
+
+            const filtered = UNIVERSITIES_8_DATA.filter(u => {
+                const matchIsland = islandFilter === 'all' || u.island === islandFilter;
+                const matchSearch = u.name.toLowerCase().includes(searchQuery) ||
+                    u.maoriName.toLowerCase().includes(searchQuery) ||
+                    u.city.toLowerCase().includes(searchQuery) ||
+                    u.tagline.toLowerCase().includes(searchQuery) ||
+                    u.manaakiPrograms.some(p => p.toLowerCase().includes(searchQuery));
+                return matchIsland && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada universitas atau program studi yang cocok dengan pencarian Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(u => {
+                const count = getCount(`Universitas: ${u.name}`);
+                const isNorth = u.island === 'North Island';
+                const headerGrad = isNorth
+                    ? 'from-silverFern-950 via-pounamu-950 to-pounamu-800'
+                    : 'from-silverFern-950 via-slate-900 to-sky-900';
+
+                return `
+                    <div onclick="openUniversityDetailModal('${u.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group cursor-pointer">
+                        <div class="p-5 bg-gradient-to-br ${headerGrad} text-white space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="bg-white/15 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-white/20">
+                                    #${u.number} • ${u.island}
+                                </span>
+                                <span id="badge-uni-${u.id}" class="counter-badge bg-kowhai-400 text-silverFern-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-base leading-snug group-hover:text-kowhai-300 transition">${u.name}</h4>
+                                <p class="text-[11px] text-kowhai-400 font-bold italic mt-0.5">${u.maoriName}</p>
+                            </div>
+                            <div class="flex items-center justify-between text-[11px] text-pounamu-100 pt-1 border-t border-white/10">
+                                <span><i class="fa-solid fa-location-dot text-kowhai-400 mr-1"></i>${u.city}</span>
+                                <span class="font-mono font-bold">Est. ${u.founded}</span>
+                            </div>
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between space-y-3.5 text-xs">
+                            <div class="space-y-2.5">
+                                <div class="bg-pounamu-50 px-3 py-2 rounded-xl border border-pounamu-100 font-bold text-pounamu-900 text-[11px]">
+                                    <i class="fa-solid fa-ranking-star text-kowhai-600 mr-1"></i> ${u.qsRank}
+                                </div>
+                                <p class="text-slate-600 leading-relaxed">${u.tagline}</p>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-pounamu-800 font-extrabold group-hover:underline">
+                                <span>Profil Kampus & Manaaki</span>
+                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openUniversityDetailModal(uniId) {
+            const u = UNIVERSITIES_8_DATA.find(item => item.id === uniId);
+            if (!u) return;
+
+            trackActivity(`Universitas: ${u.name}`, '8 Universitas Negeri', `badge-uni-${u.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-silverFern-950 via-pounamu-950 to-pounamu-800";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="space-y-1 pr-8">
+                    <span class="bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-kowhai-300">
+                        Universitas #${u.number} • ${u.island} • Berdiri ${u.founded}
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-extrabold mt-1">${u.name}</h3>
+                    <p class="text-xs font-bold text-kowhai-400 italic">Nama Resmi Māori: ${u.maoriName}</p>
+                    <p class="text-[11px] text-pounamu-100 pt-1">
+                        <i class="fa-solid fa-location-dot text-kowhai-400 mr-1"></i> ${u.city} • Koordinat: <span class="font-mono">${u.coordinates}</span>
+                    </p>
+                </div>
+                <div class="mt-3 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-kowhai-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Universitas: ${u.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <!-- 1. Sejarah & Reputasi Global -->
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h4 class="font-extrabold text-silverFern-950 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-award text-pounamu-700"></i>
+                            <span>1. Sejarah & Reputasi Global</span>
+                        </h4>
+                        <span class="bg-pounamu-100 text-pounamu-900 font-bold text-[10px] px-2.5 py-0.5 rounded-full">${u.qsRank}</span>
+                    </div>
+                    <p class="text-slate-700 leading-relaxed">${u.historyReputation}</p>
+                </div>
+
+                <!-- 2. Fakultas & Program Unggulan (Relevan Beasiswa Manaaki) -->
+                <div class="bg-pounamu-50 p-4 rounded-2xl border border-pounamu-200 space-y-2">
+                    <h4 class="font-extrabold text-pounamu-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-graduation-cap text-pounamu-700"></i>
+                        <span>2. Fakultas & Program Unggulan (Fokus Beasiswa Manaaki NZ)</span>
+                    </h4>
+                    <ul class="space-y-1.5 text-slate-800">
+                        ${u.manaakiPrograms.map(prog => `<li class="flex items-start space-x-2"><i class="fa-solid fa-circle-check text-pounamu-700 mt-0.5"></i><span>${prog}</span></li>`).join('')}
+                    </ul>
+                </div>
+
+                <!-- 3. Suasana Kampus & Biaya Hidup Kota -->
+                <div class="bg-kowhai-50 p-4 rounded-2xl border border-kowhai-200 space-y-1.5">
+                    <h4 class="font-extrabold text-amber-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-wallet text-kowhai-700"></i>
+                        <span>3. Suasana Kampus & Biaya Hidup Kota</span>
+                    </h4>
+                    <p class="text-amber-950 leading-relaxed">${u.campusVibeCost}</p>
+                </div>
+
+                <!-- 4. Fakta Unik & Aksi Peta -->
+                <div class="bg-silverFern-900 text-white p-4 rounded-2xl border border-kowhai-400/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <h4 class="font-extrabold text-kowhai-400 text-xs uppercase tracking-wider">Fakta Unik Kampus</h4>
+                        <p class="text-slate-200 leading-relaxed">${u.uniqueFact}</p>
+                    </div>
+                    <button onclick="closeDetailModal(); switchTab('beranda'); selectRegion('${u.regionId}', 'Lompat dari Modal Kampus');" class="bg-kowhai-400 hover:bg-kowhai-300 text-silverFern-950 font-extrabold px-3.5 py-2 rounded-xl text-[11px] shrink-0 transition">
+                        Lihat di Peta SVG →
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('modal-detail').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. TAB 3: KATALOG 12 KOTA UTAMA & PUSAT PELAJAR NEW ZEALAND
+         * ------------------------------------------------------------------- */
+        function renderCities12Grid() {
+            const container = document.getElementById('cities-12-grid');
+            if (!container) return;
+
+            const islandFilter = document.getElementById('city-island-filter').value;
+            const searchQuery = (document.getElementById('city-search').value || '').toLowerCase();
+
+            const filtered = CITIES_12_DATA.filter(c => {
+                const matchIsland = islandFilter === 'all' || c.island === islandFilter;
+                const matchSearch = c.name.toLowerCase().includes(searchQuery) ||
+                    c.maoriName.toLowerCase().includes(searchQuery) ||
+                    c.region.toLowerCase().includes(searchQuery) ||
+                    c.economyLifestyle.toLowerCase().includes(searchQuery);
+                return matchIsland && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white p-10 rounded-2xl border border-slate-200 text-center space-y-2">
+                        <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300"></i>
+                        <p class="text-sm font-bold text-slate-600">Tidak ada kota yang cocok dengan pencarian Anda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map((c, idx) => {
+                const count = getCount(`Kota: ${c.name}`);
+                const isNorth = c.island === 'North Island';
+
+                return `
+                    <div onclick="openCityDetailModal('${c.id}')" class="bg-white p-5 rounded-2xl border-2 border-slate-200/90 hover:border-pounamu-700 shadow-sm hover:shadow-xl transition cursor-pointer flex flex-col justify-between space-y-3 group">
+                        <div class="space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${isNorth ? 'bg-pounamu-100 text-pounamu-900' : 'bg-sky-100 text-sky-900'}">
+                                    ${c.island} • ${c.region}
+                                </span>
+                                <span id="badge-city-${c.id}" class="counter-badge bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-slate-200 shrink-0">
+                                    👁️ ${count}x dipelajari
+                                </span>
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-lg group-hover:text-pounamu-700 transition leading-snug">${c.name}</h4>
+                                <span class="text-xs font-bold text-kowhai-700 italic block">${c.maoriName}</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed line-clamp-3">${c.economyLifestyle}</p>
+                        </div>
+
+                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] font-extrabold text-pounamu-800 group-hover:underline">
+                            <span>Iklim, Transportasi & Kampus</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCityDetailModal(cityId) {
+            const c = CITIES_12_DATA.find(item => item.id === cityId);
+            if (!c) return;
+
+            trackActivity(`Kota: ${c.name}`, 'Kota Utama', `badge-city-${c.id}`);
+
+            const header = document.getElementById('detail-modal-header');
+            header.className = "p-6 text-white relative bg-gradient-to-r from-silverFern-950 via-pounamu-950 to-pounamu-800";
+            header.innerHTML = `
+                <button onclick="closeDetailModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span class="bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-kowhai-300">
+                    ${c.island} • ${c.region}
+                </span>
+                <h3 class="text-xl sm:text-2xl font-extrabold mt-1">Kota ${c.name}</h3>
+                <p class="text-xs font-bold text-kowhai-400 italic">Nama Māori: ${c.maoriName}</p>
+                <div class="mt-2 inline-flex items-center space-x-2 bg-black/25 px-3 py-1 rounded-lg text-xs font-mono text-kowhai-300">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Telah Anda pelajari sebanyak <strong>${getCount(`Kota: ${c.name}`)} kali</strong></span>
+                </div>
+            `;
+
+            const body = document.getElementById('detail-modal-body');
+            body.innerHTML = `
+                <div class="bg-pounamu-50 p-4 rounded-2xl border border-pounamu-200 space-y-1">
+                    <h4 class="font-extrabold text-pounamu-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-temperature-half text-pounamu-700"></i>
+                        <span>Iklim & Suhu Rata-Rata</span>
+                    </h4>
+                    <p class="text-slate-800 leading-relaxed">${c.climate}</p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
+                    <h4 class="font-extrabold text-silverFern-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-city text-silverFern-800"></i>
+                        <span>Karakteristik Ekonomi & Gaya Hidup</span>
+                    </h4>
+                    <p class="text-slate-700 leading-relaxed">${c.economyLifestyle}</p>
+                </div>
+
+                <div class="bg-kowhai-50 p-4 rounded-2xl border border-kowhai-200 space-y-1">
+                    <h4 class="font-extrabold text-amber-950 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-bus text-kowhai-700"></i>
+                        <span>Transportasi Publik Kota</span>
+                    </h4>
+                    <p class="text-amber-950 leading-relaxed">${c.transport}</p>
+                </div>
+
+                <div class="bg-silverFern-900 text-white p-4 rounded-2xl border border-kowhai-400/40 space-y-2">
+                    <h4 class="font-extrabold text-kowhai-400 text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <span>Institusi Pendidikan Tinggi di ${c.name}</span>
+                    </h4>
+                    <ul class="space-y-1 text-slate-200">
+                        ${c.institutions.map(inst => `<li class="flex items-center space-x-2"><i class="fa-solid fa-circle-check text-kowhai-400"></i><span>${inst}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('modal-detail').classList.remove('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. TAB 4: MATRIKS KOMPARASI UNIVERSITAS & KOTA (2 ATAU 3 KAMPUS)
+         * ------------------------------------------------------------------- */
+        function initCompareSelectors() {
+            const defaults = ['uoa', 'vuw', 'otago'];
+            [1, 2, 3].forEach((col, idx) => {
+                const sel = document.getElementById(`comp-select-${col}`);
+                if (!sel) return;
+                sel.innerHTML = UNIVERSITIES_8_DATA.map(u => `<option value="${u.id}" ${u.id === defaults[idx] ? 'selected' : ''}>${u.name} (${u.city.split(',')[0]})</option>`).join('');
+            });
+        }
+
+        function setCompareColumnMode(mode) {
+            compareColumnMode = mode;
+            const btn2 = document.getElementById('btn-comp-mode-2');
+            const btn3 = document.getElementById('btn-comp-mode-3');
+            const box3 = document.getElementById('comp-box-3');
+            const grid = document.getElementById('compare-selectors-grid');
+
+            if (mode === 2) {
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-pounamu-700 text-white transition";
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.add('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+            } else {
+                btn3.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-pounamu-700 text-white transition";
+                btn2.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition";
+                box3.classList.remove('hidden');
+                grid.className = "grid grid-cols-1 md:grid-cols-3 gap-4";
+            }
+
+            trackActivity(`Mode Komparasi ${mode} Kampus`, 'Komparasi Kampus');
+            renderCompareTable();
+        }
+
+        function handleCompareChange(colNum) {
+            const sel = document.getElementById(`comp-select-${colNum}`);
+            const chosen = UNIVERSITIES_8_DATA.find(u => u.id === sel.value);
+            trackActivity(`Komparasi Kampus Kolom ${colNum}`, 'Komparasi Kampus', `badge-comp-${colNum}`);
+            if (chosen) {
+                trackActivity(`Bandingkan: ${chosen.name}`, 'Komparasi Kampus');
+            }
+            renderCompareTable();
+        }
+
+        function renderCompareTable() {
+            const table = document.getElementById('compare-matrix-table');
+            if (!table) return;
+
+            const u1 = UNIVERSITIES_8_DATA.find(u => u.id === document.getElementById('comp-select-1').value) || UNIVERSITIES_8_DATA[0];
+            const u2 = UNIVERSITIES_8_DATA.find(u => u.id === document.getElementById('comp-select-2').value) || UNIVERSITIES_8_DATA[2];
+            const u3 = compareColumnMode === 3 ? (UNIVERSITIES_8_DATA.find(u => u.id === document.getElementById('comp-select-3').value) || UNIVERSITIES_8_DATA[1]) : null;
+
+            const profileFitMap = {
+                uoa: 'Mahasiswa yang menginginkan reputasi riset top dunia, jaringan global luas, dan dinamika kota metropolitan multikultural.',
+                otago: 'Mahasiswa yang menyukai kehidupan kota pelajar klasik, riset kesehatan/kelautan kuat, serta biaya sewa hunian hemat.',
+                vuw: 'Aparatur/akademisi kebijakan publik, hukum, hubungan internasional, dan studi perubahan iklim di pusat pemerintahan.',
+                uc: 'Insinyur sipil, peneliti kebencanaan gempa, kehutanan, dan pecinta aktivitas alam pegunungan South Island.',
+                massey: 'Peneliti pertanian, ketahanan pangan, kedokteran hewan, dan mahasiswa yang mencari kota studi tenang berbiaya rendah.',
+                waikato: 'Mahasiswa manajemen/bisnis berakreditasi Triple Crown, keamanan siber, agroteknologi, dan studi budaya Māori.',
+                lincoln: 'Spesialis agribisnis, ilmu tanah, ekologi, dan pengelolaan lingkungan dalam komunitas kampus butik yang akrab.',
+                aut: 'Mahasiswa berorientasi praktik industri, desain kreatif, perhotelan, teknik terapan, dan analitik teknologi.'
+            };
+
+            const rows = [
+                { label: 'Nama Māori Resmi', getVal: u => `<em class="font-bold text-pounamu-800">${u.maoriName}</em>` },
+                { label: 'Pulau & Kota', getVal: u => `<strong>${u.island}</strong> — ${u.city}` },
+                { label: 'Tahun Berdiri & Peringkat', getVal: u => `Est. <strong>${u.founded}</strong> • ${u.qsRank}` },
+                { label: 'Fokus & Bidang Unggulan', getVal: u => u.manaakiPrograms.slice(0, 3).join('; ') },
+                { label: 'Karakteristik Kampus & Biaya Hidup', getVal: u => u.campusVibeCost },
+                { label: 'Kesesuaian Profil Mahasiswa', getVal: u => profileFitMap[u.id] || u.tagline }
+            ];
+
+            table.innerHTML = `
+                <thead>
+                    <tr class="bg-silverFern-950 text-white">
+                        <th class="p-3.5 font-extrabold w-48">Parameter Perbandingan</th>
+                        <th class="p-3.5 font-extrabold bg-pounamu-900">${u1.name}</th>
+                        <th class="p-3.5 font-extrabold bg-silverFern-900">${u2.name}</th>
+                        ${u3 ? `<th class="p-3.5 font-extrabold bg-kowhai-700">${u3.name}</th>` : ''}
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                    ${rows.map(r => `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-3.5 font-bold text-slate-800 bg-slate-50">${r.label}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed">${r.getVal(u1)}</td>
+                            <td class="p-3.5 text-slate-700 leading-relaxed bg-pounamu-50/25">${r.getVal(u2)}</td>
+                            ${u3 ? `<td class="p-3.5 text-slate-700 leading-relaxed bg-kowhai-50/30">${r.getVal(u3)}</td>` : ''}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. TAB 5A: SIMULATOR PENCOCOKAN KAMPUS & ESTIMASI BIAYA HIDUP NZ
+         * ------------------------------------------------------------------- */
+        function runStudySimulator(shouldTrack = true) {
+            if (shouldTrack) {
+                trackActivity('Simulator: Hitung Kecocokan Studi', 'Simulator Studi NZ', 'badge-simulator-count');
+            }
+
+            const field = document.getElementById('sim-field').value;
+            const citySize = document.getElementById('sim-city-size').value;
+            const lifestyle = document.getElementById('sim-lifestyle').value;
+
+            let primaryId = 'vuw';
+            let altId = 'uoa';
+            let tips = '';
+
+            if (field === 'kebijakan') {
+                primaryId = citySize === 'metropolitan' ? 'uoa' : 'vuw';
+                altId = citySize === 'metropolitan' ? 'vuw' : 'otago';
+                tips = 'Untuk bidang Kebijakan Publik, Hukum, & Hubungan Internasional, Victoria University of Wellington (lokasi tepat di depan Parlemen NZ) dan University of Auckland sangat diminati penerima Beasiswa Manaaki NZ. Siapkan IELTS minimal 6.5 (no band below 6.0) dan proposal dampak pembangunan Indonesia.';
+            } else if (field === 'pertanian') {
+                primaryId = citySize === 'metropolitan' ? 'lincoln' : 'massey';
+                altId = citySize === 'metropolitan' ? 'massey' : 'lincoln';
+                tips = 'Massey University (Palmerston North) dan Lincoln University (dekat Christchurch) merupakan pusat unggulan ketahanan pangan, agribisnis, dan ilmu lingkungan. Biaya hidup di kedua kota ini relatif lebih hemat sehingga tunjangan beasiswa lebih leluasa.';
+            } else if (field === 'teknik') {
+                primaryId = citySize === 'pelajar' ? 'uc' : (citySize === 'ibukota' ? 'vuw' : 'uc');
+                altId = 'uoa';
+                tips = 'University of Canterbury di Christchurch merupakan rujukan utama di NZ untuk Teknik Sipil, Rekayasa Gempa, & Mitigasi Bencana, sedangkan University of Auckland unggul pada Teknik Energi Panas Bumi (Geothermal) dan Infrastruktur.';
+            } else if (field === 'bisnis') {
+                primaryId = citySize === 'pelajar' ? 'waikato' : 'aut';
+                altId = 'uoa';
+                tips = 'AUT unggul pada koneksi industri terapan dan desain/perhotelan di Auckland, sementara University of Waikato di Hamilton menawarkan sekolah bisnis berakreditasi Triple Crown dengan biaya sewa tempat tinggal lebih terjangkau.';
+            } else if (field === 'kesehatan') {
+                primaryId = citySize === 'metropolitan' ? 'uoa' : 'otago';
+                altId = citySize === 'metropolitan' ? 'otago' : 'aut';
+                tips = 'University of Otago (Dunedin) dan The University of Auckland memiliki fakultas kedokteran, kesehatan masyarakat, dan ilmu hayati terlengkap di Selandia Baru dengan laboratorium riset bertaraf internasional.';
+            }
+
+            const primaryUni = UNIVERSITIES_8_DATA.find(u => u.id === primaryId) || UNIVERSITIES_8_DATA[0];
+            const altUni = UNIVERSITIES_8_DATA.find(u => u.id === altId) || UNIVERSITIES_8_DATA[1];
+
+            // Hitung Estimasi Biaya Hidup Bulanan (NZD)
+            let baseCostNzd = 1550;
+            if (citySize === 'metropolitan') baseCostNzd = 1850;
+            else if (citySize === 'ibukota') baseCostNzd = 1720;
+            else baseCostNzd = 1450;
+
+            if (lifestyle === 'moderat') baseCostNzd += 350;
+
+            const idrEstimate = baseCostNzd * 9600;
+            const formattedIdr = idrEstimate.toLocaleString('id-ID');
+
+            document.getElementById('sim-uni-primary').innerText = primaryUni.name;
+            document.getElementById('sim-uni-primary-city').innerText = `${primaryUni.maoriName} • ${primaryUni.city} (${primaryUni.island})`;
+            document.getElementById('sim-uni-primary-btn').onclick = () => openUniversityDetailModal(primaryUni.id);
+
+            document.getElementById('sim-uni-alt').innerText = altUni.name;
+            document.getElementById('sim-uni-alt-city').innerText = `${altUni.maoriName} • ${altUni.city} (${altUni.island})`;
+            document.getElementById('sim-uni-alt-btn').onclick = () => openUniversityDetailModal(altUni.id);
+
+            document.getElementById('sim-cost-nzd').innerText = `NZD ${baseCostNzd.toLocaleString('id-ID')} / bln`;
+            document.getElementById('sim-cost-idr').innerText = `± Rp ${formattedIdr}`;
+            document.getElementById('sim-tips-text').innerText = tips;
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. TAB 5B: KUIS EVALUASI 6 SOAL
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (!container) return;
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 border-b border-slate-200 pb-3">
+                        <span class="bg-pounamu-700 text-white px-3 py-1 rounded-full">Pertanyaan ${currentQuizIdx + 1} dari ${QUIZ_QUESTIONS.length}</span>
+                        <span>Benar: <strong class="text-pounamu-800 font-mono text-sm">${quizScore} / ${QUIZ_QUESTIONS.length}</strong></span>
+                    </div>
+
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-relaxed">${q.q}</h4>
+
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left bg-white hover:bg-pounamu-50 border border-slate-200 hover:border-pounamu-700 p-4 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-between group shadow-2xs">
+                                <span class="pr-3"><strong class="text-pounamu-700 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+                                <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-pounamu-700 transition shrink-0"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIdx) {
+            trackActivity('Kuis: Jawab Soal', 'Kuis Evaluasi', 'badge-quiz-count');
+
+            const q = QUIZ_QUESTIONS[currentQuizIdx];
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) quizScore += 1;
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="p-4 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-rose-100 text-rose-950 border border-rose-300'} text-xs font-extrabold flex items-center space-x-2.5">
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-xl"></i>
+                        <span>${isCorrect ? 'Ka Pai! Jawaban Anda Tepat!' : `Jawaban Kurang Tepat. Jawaban benar: ${String.fromCharCode(65 + q.answer)}`}</span>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <strong class="text-silverFern-950 block">Pembahasan Geografis & Akademik:</strong>
+                        <p>${q.explain}</p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="advanceQuiz()" class="bg-pounamu-700 hover:bg-pounamu-800 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs transition shadow">
+                            ${currentQuizIdx < QUIZ_QUESTIONS.length - 1 ? 'Pertanyaan Berikutnya →' : 'Lihat Hasil Akhir Kuis'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function advanceQuiz() {
+            if (currentQuizIdx < QUIZ_QUESTIONS.length - 1) {
+                currentQuizIdx++;
+                renderQuiz();
+            } else {
+                const container = document.getElementById('quiz-container');
+                const finalPercent = Math.round((quizScore / QUIZ_QUESTIONS.length) * 100);
+                let predicate = 'Terus Jelajahi Peta Aotearoa New Zealand!';
+                if (quizScore === QUIZ_QUESTIONS.length) predicate = 'Tau Ke! Penjelajah Ahli Geografi & Kampus NZ';
+                else if (quizScore >= 4) predicate = 'Sangat Baik! Pemahaman Region & Universitas NZ Kuat';
+                else if (quizScore >= 3) predicate = 'Cukup Baik! Perkuat Detail 16 Region & Spesialisasi Kampus';
+
+                container.innerHTML = `
+                    <div class="bg-gradient-to-br from-silverFern-950 via-pounamu-950 to-pounamu-800 text-white p-8 rounded-3xl text-center space-y-4 shadow-xl border border-kowhai-400/50">
+                        <div class="w-16 h-16 rounded-2xl bg-kowhai-400/20 text-kowhai-400 border border-kowhai-400/40 flex items-center justify-center text-3xl mx-auto">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-kowhai-300 block">${predicate}</span>
+                        <h4 class="font-extrabold text-2xl">Kuis Evaluasi Selesai!</h4>
+                        <div class="py-2">
+                            <span class="text-xs text-pounamu-100 block">Skor Akhir Anda (${quizScore} dari ${QUIZ_QUESTIONS.length} Pertanyaan Benar):</span>
+                            <strong class="text-4xl font-mono font-extrabold text-kowhai-400">${finalPercent} / 100</strong>
+                        </div>
+                        <button onclick="restartQuiz()" class="bg-gradient-to-r from-kowhai-400 to-kowhai-500 hover:from-kowhai-300 hover:to-kowhai-400 text-silverFern-950 font-extrabold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Kuis Evaluasi
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            trackActivity('Kuis: Ulangi Kuis', 'Kuis Evaluasi');
+            renderQuiz();
+        }
+
+        /* -------------------------------------------------------------------
+         * 11. MODAL ANALITIK, KONFIRMASI RESET INLINE & EKSPOR DATA JSON
+         * ------------------------------------------------------------------- */
+        function openAnalyticsModal() {
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            document.getElementById('modal-analytics').classList.remove('hidden');
+        }
+
+        function closeAnalyticsModal() {
+            document.getElementById('modal-analytics').classList.add('hidden');
+        }
+
+        function toggleResetConfirm(show) {
+            const box = document.getElementById('reset-confirm-box');
+            if (!box) return;
+            if (show) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function executeClearAnalytics() {
+            activityLog = [];
+            localStorage.removeItem(STORAGE_KEY);
+            toggleResetConfirm(false);
+            refreshAllBadgesAndAnalytics();
+            showToast('Seluruh riwayat hitungan belajar telah direset.');
+        }
+
+        function exportAnalyticsJSON() {
+            const payload = {
+                aplikasi: 'AotearoaExplorer - Peta Interaktif Region, Kota, & 8 Universitas New Zealand',
+                waktuEkspor: new Date().toISOString(),
+                totalInteraksi: activityLog.reduce((s, i) => s + i.count, 0),
+                riwayatAktivitas: activityLog
+            };
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `Analitik_AotearoaExplorer_${Date.now()}.json`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast('Data analitik berhasil diekspor ke JSON.');
+        }
+    </script>
+</body>
+</html>
